@@ -174,55 +174,24 @@ function generateGeometricIcon(input, size = 48) {
 
 /**
  * Try to fetch favicon from a URL
- * Uses multiple strategies: Google favicon service, DuckDuckGo, etc.
  * @param {string} url - The wallet URL
  * @param {number} timeout - Timeout in ms (default 3000)
  * @returns {Promise<string|null>} - Favicon URL or null if not found
  */
 async function fetchFavicon(url, timeout = 3000) {
   try {
-    const urlObj = new URL(url);
-    const domain = urlObj.hostname;
+    // Route through background script to avoid CORS issues
+    const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
+    const result = await runtime.sendMessage({
+      type: 'FETCH_FAVICON',
+      url: url,
+      timeout: timeout
+    });
     
-    // Google's favicon service - most reliable
-    const googleFaviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
-    
-    // Create an AbortController for timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
-    
-    try {
-      // Try to actually load the image to verify it works
-      const img = new Image();
-      const loadPromise = new Promise((resolve, reject) => {
-        img.onload = () => {
-          // Check if we got a real icon (not a 1x1 placeholder)
-          if (img.width > 1 && img.height > 1) {
-            resolve(googleFaviconUrl);
-          } else {
-            reject(new Error('Invalid favicon size'));
-          }
-        };
-        img.onerror = () => reject(new Error('Failed to load'));
-      });
-      
-      img.src = googleFaviconUrl;
-      
-      // Race between load and timeout
-      const result = await Promise.race([
-        loadPromise,
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Timeout')), timeout)
-        )
-      ]);
-      
-      clearTimeout(timeoutId);
-      return result;
-    } catch (e) {
-      clearTimeout(timeoutId);
-      // Return Google URL anyway - it provides a default globe if no favicon
-      return googleFaviconUrl;
+    if (result && result.success && result.dataUri) {
+      return result.dataUri;
     }
+    return null;
   } catch (e) {
     console.error('Error fetching favicon:', e);
     return null;

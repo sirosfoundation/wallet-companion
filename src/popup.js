@@ -103,10 +103,12 @@ document.addEventListener('DOMContentLoaded', function() {
       const uses = stats?.walletUses?.[wallet.id] || 0;
       const statusClass = wallet.enabled ? 'active' : 'disabled';
       const statusLabel = wallet.enabled ? 'Active' : 'Disabled';
+
+      const icon = wallet.icon ? `<img src="${wallet.icon}" alt="${wallet.name} icon" class="wallet-icon"/>` : '🔐';
       
       return `
         <div class="wallet-item">
-          <div class="wallet-icon-wrapper">${wallet.icon || '🔐'}</div>
+          <div class="wallet-icon-wrapper">${icon}</div>
           <span class="wallet-name">${escapeHtml(wallet.name)}</span>
           <span class="wallet-status ${statusClass}">${statusLabel}</span>
         </div>

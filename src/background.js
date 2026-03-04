@@ -299,6 +299,55 @@ async function handleMessage(message, sender, sendResponse) {
       sendResponse({ success: true });
       return true;
     }
+    
+    else if (message.type === 'FETCH_FAVICON') {
+      // Fetch favicon from a wallet URL via background script to avoid CORS
+      try {
+        const urlObj = new URL(message.url);
+        const faviconUrl = `${urlObj.origin}${urlObj.pathname.replace(/\/?$/, '/')}favicon.ico`;
+        
+        const controller = new AbortController();
+        const timeoutMs = message.timeout || 3000;
+        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+        
+        const res = await fetch(faviconUrl, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        
+        if (!res.ok) {
+          sendResponse({ success: false });
+          return true;
+        }
+        
+        const contentType = res.headers.get('content-type') || 'image/x-icon';
+        if (!contentType.startsWith('image/')) {
+          sendResponse({ success: false });
+          return true;
+        }
+        
+        const buf = await res.arrayBuffer();
+        if (!buf.byteLength) {
+          sendResponse({ success: false });
+          return true;
+        }
+        
+        // Convert ArrayBuffer to base64 data URI
+        // (Service workers in MV3 lack FileReader/btoa for binary)
+        const bytes = new Uint8Array(buf);
+        let binary = '';
+        for (const byte of bytes) {
+          binary += String.fromCharCode(byte);
+        }
+
+        const base64 = btoa(binary);
+        const dataUri = `data:${contentType};base64,${base64}`;
+        
+        sendResponse({ success: true, dataUri });
+      } catch (e) {
+        console.error('Error fetching favicon:', e);
+        sendResponse({ success: false });
+      }
+      return true;
+    }
   } catch (error) {
     console.error('Error handling message:', error);
     sendResponse({ error: error.message });
