@@ -1568,27 +1568,37 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: var(--s-space-4);
-  margin-bottom: var(--s-space-6);
+  margin-bottom: var(--s-space-8);
 }
 
 .content-section {
-  background: var(--s-color-gray-50);
-  border-radius: var(--s-border-radius-sm);
-  padding: var(--s-space-6);
   margin-bottom: var(--s-space-6);
-  border: var(--s-border-light);
 
   > .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--s-space-5);
+    padding-bottom: var(--s-space-4);
   }
 
   > .header > .title {
-    font-size: var(--s-font-size-lg);
+    margin: 0;
+    font-size: var(--s-font-size-2xl);
     font-weight: var(--s-font-weight-semibold);
     color: var(--s-color-gray-950);
+  }
+
+  &:not(.-card) {
+    > .header {
+      margin-bottom: var(--s-space-5);
+      border-bottom: var(--s-border-light);
+    }
+  }
+
+  &.-card {
+    border-radius: var(--s-border-radius-sm);
+    padding: var(--s-space-6);
+    border: var(--s-border-light);
   }
 }
 
