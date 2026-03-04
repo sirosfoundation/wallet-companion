@@ -1398,7 +1398,6 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: var(--s-color-gray-200);
 }
 
 .popup-stats {
