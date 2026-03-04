@@ -67,12 +67,12 @@ document.addEventListener('DOMContentLoaded', function() {
     extensionToggle.checked = enabled;
     
     if (enabled) {
-      statusIndicator.classList.remove('inactive');
-      statusText.classList.remove('inactive');
+      statusIndicator.classList.remove('-inactive');
+      statusText.classList.remove('-inactive');
       statusText.textContent = 'Active & monitoring';
     } else {
-      statusIndicator.classList.add('inactive');
-      statusText.classList.add('inactive');
+      statusIndicator.classList.add('-inactive');
+      statusText.classList.add('-inactive');
       statusText.textContent = 'Disabled';
     }
 
@@ -101,16 +101,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     walletList.innerHTML = wallets.map(wallet => {
       const uses = stats?.walletUses?.[wallet.id] || 0;
-      const statusClass = wallet.enabled ? 'active' : 'disabled';
+      const statusClass = wallet.enabled ? '-active' : '-disabled';
       const statusLabel = wallet.enabled ? 'Active' : 'Disabled';
 
-      const icon = wallet.icon ? `<img src="${wallet.icon}" alt="${wallet.name} icon" class="wallet-icon"/>` : '🔐';
+      const icon = wallet.icon ? `<img src="${wallet.icon}" alt="${wallet.name} icon" class="wallet-emoji"/>` : '🔐';
       
       return `
         <div class="wallet-item">
-          <div class="wallet-icon-wrapper">${icon}</div>
-          <span class="wallet-name">${escapeHtml(wallet.name)}</span>
-          <span class="wallet-status ${statusClass}">${statusLabel}</span>
+          <div class="wallet-icon -small">${icon}</div>
+          <span class="name">${escapeHtml(wallet.name)}</span>
+          <span class="status ${statusClass}">${statusLabel}</span>
         </div>
       `;
     }).join('');

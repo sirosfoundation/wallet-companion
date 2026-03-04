@@ -27,7 +27,8 @@ const filesToCopy = [
   'popup.html',
   'popup.js',
   'options.html',
-  'options.js'
+  'options.js',
+  'style.css'
 ];
 
 // Directories to copy recursively

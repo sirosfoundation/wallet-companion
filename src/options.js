@@ -52,7 +52,7 @@ async function loadData() {
  */
 function setupEventListeners() {
   // Tab switching
-  document.querySelectorAll('.tab').forEach(tab => {
+  document.querySelectorAll('.tab-btn').forEach(tab => {
     tab.addEventListener('click', function() {
       switchTab(this.dataset.tab);
     });
@@ -92,7 +92,7 @@ function setupIconSelectors() {
   // Add form icon selector - emoji buttons
   const iconGrid = document.getElementById('icon-emoji-grid');
   if (iconGrid) {
-    iconGrid.querySelectorAll('.icon-emoji-btn').forEach(btn => {
+    iconGrid.querySelectorAll('.emoji-btn').forEach(btn => {
       btn.addEventListener('click', function() {
         selectIcon('emoji', this.dataset.emoji);
       });
@@ -102,7 +102,7 @@ function setupIconSelectors() {
   // Edit form icon selector
   const editIconGrid = document.getElementById('edit-icon-emoji-grid');
   if (editIconGrid) {
-    editIconGrid.querySelectorAll('.icon-emoji-btn').forEach(btn => {
+    editIconGrid.querySelectorAll('.emoji-btn').forEach(btn => {
       btn.addEventListener('click', function() {
         selectEditIcon('emoji', this.dataset.emoji);
       });
@@ -176,7 +176,7 @@ async function handleUrlChange() {
   generatedIcons.forEach((iconData) => {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'icon-option-btn';
+    btn.className = 'icon-option';
     btn.dataset.type = iconData.type;
     btn.dataset.value = iconData.value;
     btn.title = iconData.type;
@@ -189,7 +189,7 @@ async function handleUrlChange() {
   selectIcon(generatedIcons[0].type, generatedIcons[0].value);
   
   // Now try to fetch favicon in background (with timeout)
-  faviconSection.style.display = 'none';
+  faviconSection.classList.add('_hidden');
   faviconStatus.innerHTML = '';
   
   try {
@@ -198,7 +198,7 @@ async function handleUrlChange() {
       // Test if image actually loads
       const img = new Image();
       img.onload = () => {
-        faviconSection.style.display = 'block';
+        faviconSection.classList.remove('_hidden');
         faviconImg.src = favicon;
         faviconStatus.className = 'favicon-status success';
         faviconStatus.innerHTML = '✓ Found logo';
@@ -206,7 +206,7 @@ async function handleUrlChange() {
         selectIcon('favicon', favicon);
       };
       img.onerror = () => {
-        faviconSection.style.display = 'none';
+        faviconSection.classList.add('_hidden');
       };
       img.src = favicon;
     }
@@ -244,7 +244,7 @@ function handleNameChange() {
   generatedIcons.forEach((iconData) => {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'icon-option-btn';
+    btn.className = 'icon-option';
     btn.dataset.type = iconData.type;
     btn.dataset.value = iconData.value;
     btn.title = iconData.type;
@@ -263,8 +263,8 @@ function selectIcon(type, value, auto = false) {
   const iconTypeInput = document.getElementById('wallet-icon-type');
   
   // Clear all selections
-  document.querySelectorAll('#icon-emoji-grid .icon-emoji-btn, #generated-icons .icon-option-btn, #favicon-option').forEach(btn => {
-    btn.classList.remove('selected');
+  document.querySelectorAll('#icon-emoji-grid .emoji-btn, #generated-icons .icon-option, #favicon-option').forEach(btn => {
+    btn.classList.remove('-selected');
   });
   
   // Update preview and inputs
@@ -274,8 +274,8 @@ function selectIcon(type, value, auto = false) {
     iconTypeInput.value = 'emoji';
     
     // Select emoji button
-    const emojiBtn = document.querySelector(`#icon-emoji-grid .icon-emoji-btn[data-emoji="${value}"]`);
-    if (emojiBtn) emojiBtn.classList.add('selected');
+    const emojiBtn = document.querySelector(`#icon-emoji-grid .emoji-btn[data-emoji="${value}"]`);
+    if (emojiBtn) emojiBtn.classList.add('-selected');
   } else if (type === 'favicon') {
     preview.innerHTML = `<img src="${value}" alt="Wallet icon">`;
     iconInput.value = value;
@@ -283,7 +283,7 @@ function selectIcon(type, value, auto = false) {
     
     // Select favicon button
     const faviconBtn = document.getElementById('favicon-option');
-    if (faviconBtn) faviconBtn.classList.add('selected');
+    if (faviconBtn) faviconBtn.classList.add('-selected');
   } else {
     // Generated icons (identicon, initial, geometric)
     preview.innerHTML = `<img src="${value}" alt="Wallet icon">`;
@@ -291,8 +291,8 @@ function selectIcon(type, value, auto = false) {
     iconTypeInput.value = type;
     
     // Select generated button
-    const genBtn = document.querySelector(`#generated-icons .icon-option-btn[data-value="${CSS.escape(value)}"]`);
-    if (genBtn) genBtn.classList.add('selected');
+    const genBtn = document.querySelector(`#generated-icons .icon-option[data-value="${CSS.escape(value)}"]`);
+    if (genBtn) genBtn.classList.add('-selected');
   }
 }
 
@@ -305,8 +305,8 @@ function selectEditIcon(type, value) {
   const iconTypeInput = document.getElementById('edit-wallet-icon-type');
   
   // Clear all selections in edit form
-  document.querySelectorAll('#edit-icon-emoji-grid .icon-emoji-btn, #edit-generated-icons .icon-option-btn, #edit-favicon-option').forEach(btn => {
-    btn.classList.remove('selected');
+  document.querySelectorAll('#edit-icon-emoji-grid .emoji-btn, #edit-generated-icons .icon-option, #edit-favicon-option').forEach(btn => {
+    btn.classList.remove('-selected');
   });
   
   // Update preview and inputs
@@ -316,22 +316,22 @@ function selectEditIcon(type, value) {
     if (iconTypeInput) iconTypeInput.value = 'emoji';
     
     // Select emoji button
-    const emojiBtn = document.querySelector(`#edit-icon-emoji-grid .icon-emoji-btn[data-emoji="${value}"]`);
-    if (emojiBtn) emojiBtn.classList.add('selected');
+    const emojiBtn = document.querySelector(`#edit-icon-emoji-grid .emoji-btn[data-emoji="${value}"]`);
+    if (emojiBtn) emojiBtn.classList.add('-selected');
   } else if (type === 'favicon') {
     preview.innerHTML = `<img src="${value}" alt="Wallet icon">`;
     iconInput.value = value;
     if (iconTypeInput) iconTypeInput.value = 'favicon';
     
     const faviconBtn = document.getElementById('edit-favicon-option');
-    if (faviconBtn) faviconBtn.classList.add('selected');
+    if (faviconBtn) faviconBtn.classList.add('-selected');
   } else {
     preview.innerHTML = `<img src="${value}" alt="Wallet icon">`;
     iconInput.value = value;
     if (iconTypeInput) iconTypeInput.value = type;
     
-    const genBtn = document.querySelector(`#edit-generated-icons .icon-option-btn[data-value="${CSS.escape(value)}"]`);
-    if (genBtn) genBtn.classList.add('selected');
+    const genBtn = document.querySelector(`#edit-generated-icons .icon-option[data-value="${CSS.escape(value)}"]`);
+    if (genBtn) genBtn.classList.add('-selected');
   }
 }
 
@@ -340,13 +340,13 @@ function selectEditIcon(type, value) {
  */
 function switchTab(tabName) {
   // Update tab buttons
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.classList.toggle('active', tab.dataset.tab === tabName);
+  document.querySelectorAll('.tab-btn').forEach(tab => {
+    tab.classList.toggle('-active', tab.dataset.tab === tabName);
   });
 
   // Update tab content
   document.querySelectorAll('.tab-content').forEach(content => {
-    content.classList.toggle('active', content.id === `${tabName}-tab`);
+    content.classList.toggle('-active', content.id === `${tabName}-tab`);
   });
 }
 
@@ -369,10 +369,10 @@ function renderWallets() {
   if (wallets.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
-        <div class="empty-state-icon">🔐</div>
-        <div class="empty-state-title">No wallets configured</div>
-        <div class="empty-state-text">Add your first digital wallet to get started</div>
-        <button class="btn empty-state-add-btn">Add Your First Wallet</button>
+        <div class="icon">🔐</div>
+        <div class="title">No wallets configured</div>
+        <div class="text">Add your first digital wallet to get started</div>
+        <button class="action-btn empty-state-add-btn">Add Your First Wallet</button>
       </div>
     `;
     // Attach click handler for empty state button
@@ -385,7 +385,7 @@ function renderWallets() {
   container.innerHTML = `
     <div class="wallet-grid">
       ${wallets.map(wallet => renderWalletCard(wallet)).join('')}
-      <div class="add-wallet-card">
+      <div class="add-card">
         <div class="icon">+</div>
         <div>Add Another Wallet</div>
       </div>
@@ -393,7 +393,7 @@ function renderWallets() {
   `;
   
   // Attach click handler for add another wallet card
-  container.querySelector('.add-wallet-card').addEventListener('click', function() {
+  container.querySelector('.add-card').addEventListener('click', function() {
     switchTab('add');
   });
 
@@ -453,40 +453,40 @@ function renderWalletCard(wallet) {
   if (iconIsUrl) {
     iconHtml = `<img src="${escapeHtml(icon)}" alt="${escapeHtml(wallet.name)}" style="width: 32px; height: 32px; object-fit: contain;">`;
   } else {
-    iconHtml = `<span class="wallet-icon">${icon}</span>`;
+    iconHtml = `<span class="wallet-emoji">${icon}</span>`;
   }
   
   return `
-    <div class="wallet-card ${wallet.enabled ? '' : 'disabled'}" data-wallet-id="${wallet.id}">
-      <div class="wallet-header">
-        <div class="wallet-icon-wrapper">
+    <div class="wallet-card ${wallet.enabled ? '' : '-disabled'}" data-wallet-id="${wallet.id}">
+      <div class="header">
+        <div class="wallet-icon -large">
           ${iconHtml}
         </div>
-        <div class="wallet-info">
-          <div class="wallet-name">${escapeHtml(wallet.name)}</div>
-          <div class="wallet-url">${escapeHtml(wallet.url)}</div>
+        <div class="info">
+          <div class="name">${escapeHtml(wallet.name)}</div>
+          <div class="url">${escapeHtml(wallet.url)}</div>
         </div>
       </div>
       
       ${protocolsDisplay}
       
-      <div class="wallet-meta">
-        ${wallet.enabled ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-warning">Disabled</span>'}
-        ${isDefault ? '<span class="badge badge-info">Default</span>' : ''}
-        ${wallet.preset ? '<span class="badge badge-info">wwWallet</span>' : ''}
-        ${uses > 0 ? `<span class="badge badge-info">Used ${uses}x</span>` : ''}
+      <div class="meta">
+        ${wallet.enabled ? '<span class="badge-label -success">Active</span>' : '<span class="badge-label -warning">Disabled</span>'}
+        ${isDefault ? '<span class="badge-label -info">Default</span>' : ''}
+        ${wallet.preset ? '<span class="badge-label -info">wwWallet</span>' : ''}
+        ${uses > 0 ? `<span class="badge-label -info">Used ${uses}x</span>` : ''}
       </div>
       
-      <div class="wallet-actions">
-        <div class="wallet-actions-left">
-          <label class="toggle-switch" title="${wallet.enabled ? 'Disable' : 'Enable'} wallet">
+      <div class="actions">
+        <div class="left">
+          <label class="toggle-switch -large" title="${wallet.enabled ? 'Disable' : 'Enable'} wallet">
             <input type="checkbox" class="toggle-wallet" ${wallet.enabled ? 'checked' : ''}>
-            <span class="toggle-slider"></span>
+            <span class="slider"></span>
           </label>
         </div>
-        <div class="wallet-actions-right">
-          <button class="btn btn-secondary btn-small btn-edit">Edit</button>
-          <button class="btn-icon danger btn-delete" title="Delete wallet">
+        <div class="right">
+          <button class="action-btn -secondary -small btn-edit">Edit</button>
+          <button class="icon-btn -danger btn-delete" title="Delete wallet">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="3 6 5 6 21 6"/>
               <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
@@ -507,23 +507,23 @@ function renderPresets() {
   container.innerHTML = WWWALLET_PRESETS.map(preset => {
     const isAdded = wallets.some(w => w.url === preset.url);
     return `
-      <div class="preset-card ${isAdded ? 'added' : ''}" data-preset='${JSON.stringify(preset)}'>
-        <div class="preset-icon">${preset.icon}</div>
-        <div class="preset-info">
-          <div class="preset-name">${escapeHtml(preset.name)}</div>
+      <div class="preset-card ${isAdded ? '-added' : ''}" data-preset='${JSON.stringify(preset)}'>
+        <div class="icon">${preset.icon}</div>
+        <div class="info">
+          <div class="name">${escapeHtml(preset.name)}</div>
           ${isAdded 
-            ? '<div class="preset-status added"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Added</div>'
-            : '<div class="preset-status">Click to add</div>'
+            ? '<div class="status -added"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Added</div>'
+            : '<div class="status">Click to add</div>'
           }
         </div>
-        <button class="preset-btn" ${isAdded ? 'disabled' : ''}>${isAdded ? 'Added' : 'Add'}</button>
+        <button class="btn" ${isAdded ? 'disabled' : ''}>${isAdded ? 'Added' : 'Add'}</button>
       </div>
     `;
   }).join('');
 
   // Attach click handlers
-  container.querySelectorAll('.preset-card:not(.added)').forEach(card => {
-    card.querySelector('.preset-btn').addEventListener('click', function(e) {
+  container.querySelectorAll('.preset-card:not(.-added)').forEach(card => {
+    card.querySelector('.btn').addEventListener('click', function(e) {
       e.stopPropagation();
       const preset = JSON.parse(card.dataset.preset);
       addPresetWallet(preset);
@@ -629,13 +629,13 @@ function resetIconSelector() {
   const generatedIcons = document.getElementById('generated-icons');
   
   // Clear all selections
-  document.querySelectorAll('#icon-emoji-grid .icon-emoji-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('#icon-emoji-grid .emoji-btn').forEach(b => b.classList.remove('-selected'));
   
   // Reset preview
   if (preview) preview.innerHTML = '<span class="placeholder">?</span>';
   if (iconInput) iconInput.value = '';
   if (iconTypeInput) iconTypeInput.value = '';
-  if (faviconSection) faviconSection.style.display = 'none';
+  if (faviconSection) faviconSection.classList.add('_hidden');
   if (generatedIcons) generatedIcons.innerHTML = '';
 }
 
@@ -665,8 +665,8 @@ async function openEditModal(wallet) {
   
   // Select emoji if it's an emoji icon
   if (editIconGrid && !isIconUrl(icon)) {
-    editIconGrid.querySelectorAll('.icon-emoji-btn').forEach(btn => {
-      btn.classList.toggle('selected', btn.dataset.emoji === icon);
+    editIconGrid.querySelectorAll('.emoji-btn').forEach(btn => {
+      btn.classList.toggle('-selected', btn.dataset.emoji === icon);
     });
   }
   
@@ -680,14 +680,14 @@ async function openEditModal(wallet) {
   // Ensure developer mode UI is updated for the modal
   updateDeveloperModeUI();
   
-  document.getElementById('edit-modal').classList.add('active');
+  document.getElementById('edit-modal').classList.add('-active');
 }
 
 /**
  * Close edit modal
  */
 function closeEditModal() {
-  document.getElementById('edit-modal').classList.remove('active');
+  document.getElementById('edit-modal').classList.remove('-active');
 }
 
 /**
@@ -791,10 +791,10 @@ function updateDeveloperModeUI() {
   const editProtocolsGroup = document.getElementById('edit-protocols-group');
   
   if (addProtocolsGroup) {
-    addProtocolsGroup.style.display = devMode ? 'flex' : 'none';
+    addProtocolsGroup.classList.toggle('_hidden', !devMode);
   }
   if (editProtocolsGroup) {
-    editProtocolsGroup.style.display = devMode ? 'flex' : 'none';
+    editProtocolsGroup.classList.toggle('_hidden', !devMode);
   }
 }
 
@@ -956,17 +956,3 @@ function showNotification(message, type = 'info') {
     setTimeout(() => toast.remove(), 300);
   }, 3000);
 }
-
-// Add CSS for animations
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes slideIn {
-    from { transform: translateX(400px); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-  }
-  @keyframes slideOut {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(400px); opacity: 0; }
-  }
-`;
-document.head.appendChild(style);
