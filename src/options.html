@@ -10,10 +10,12 @@
   <div class="toast-container" id="toast-container"></div>
 
   <div class="page-header -full">
-    <div class="logoplchldr"></div>
-    <div class="text">
-      <h1>Digital Wallet Configuration</h1>
-      <p>Manage your digital identity wallets and credential providers</p>
+    <div class="left">
+      <img src="icons/logo-dark.svg" alt="Siros" class="logo">
+      <div class="text">
+        <h1>Digital Wallet Configuration</h1>
+        <p>Manage your digital identity wallets and credential providers</p>
+      </div>
     </div>
   </div>
 
@@ -53,12 +55,11 @@
       <div class="content-section">
         <div class="header">
           <h2 class="title">My Wallets</h2>
-          <button class="action-btn" id="add-wallet-btn">
-            <span class="plus-icon">+</span>
+          <button class="s-button -primary" id="add-wallet-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
             <span>Add New Wallet</span>
           </button>
         </div>
-
         <div id="wallets-container">
           <!-- Wallets will be rendered here -->
         </div>
@@ -160,8 +161,8 @@
           </div>
 
           <div class="form-actions _max-w-400">
-            <button type="reset" class="action-btn -secondary -small">Clear Form</button>
-            <button type="submit" class="action-btn -small">Add Wallet</button>
+            <button type="reset" class="s-button -outline">Clear Form</button>
+            <button type="submit" class="s-button -primary">Add Wallet</button>
           </div>
         </form>
       </div>
@@ -175,37 +176,29 @@
         <div class="settings-section">
           <h3 class="title">Extension Settings</h3>
           
-          <div class="setting-item">
-            <div class="info">
-              <div class="label">Wallet interception</div>
-              <div class="description">When wallet interception is disabled, all requests will use the browser's native implementation</div>
-            </div>
+          <div class="setting-item -stacked">
+            <div class="description">When wallet interception is disabled, all requests will use the browser's native implementation</div>
             <label class="toggle-switch -large">
               <input type="checkbox" id="extension-enabled">
               <span class="slider"></span>
+              <span class="label">Wallet interception</span>
             </label>
           </div>
 
-          <div class="setting-item">
-            <div class="info">
-              <div class="label">
-                Developer Mode
-                <span class="info-icon" data-tooltip="Enable advanced features like editing supported protocols for each wallet">?</span>
-              </div>
-              <div class="description">Enable advanced features for developers</div>
-            </div>
+          <div class="setting-item -stacked">
+            <div class="description">Enable advanced features like editing supported protocols for each wallet <span class="info-icon" data-tooltip="Enable advanced features like editing supported protocols for each wallet">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            </span></div>
             <label class="toggle-switch -large">
               <input type="checkbox" id="developer-mode">
               <span class="slider"></span>
+              <span class="label">Developer Mode</span>
             </label>
           </div>
 
-          <div class="setting-item">
-            <div class="info">
-              <div class="label">Total Requests</div>
-              <div class="description">Clear Total Requests statistics</div>
-            </div>
-            <button class="action-btn -secondary -small" id="clear-stats">Clear</button>
+          <div class="setting-item -stacked">
+            <div class="description">Clear Total Requests statistics</div>
+            <button class="s-button -outline" id="clear-stats">Clear</button>
           </div>
         </div>
       </div>
@@ -215,11 +208,8 @@
           <h3 class="title">Configuration Management</h3>
           
           <div class="setting-item">
-            <div class="info">
-              <div class="label">Download Configuration</div>
-              <div class="description">Download your wallet configurations as a JSON file</div>
-            </div>
-            <button class="action-btn -secondary -small" id="export-config">
+            <div class="description">Download your wallet configurations as a JSON file</div>
+            <button class="s-button -outline -small" id="export-config">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="7 10 12 15 17 10"/>
@@ -230,10 +220,7 @@
           </div>
 
           <div class="setting-item">
-            <div class="info">
-              <div class="label">Import Configuration</div>
-              <div class="description">Add wallet configurations from a JSON file</div>
-            </div>
+            <div class="description">Add wallet configurations from a JSON file</div>
             <div class="file-input">
               <input type="file" id="import-config" accept=".json">
               <label for="import-config" class="label">
@@ -313,8 +300,8 @@
         </form>
       </div>
       <div class="footer">
-        <button class="action-btn -secondary" id="cancel-edit">Cancel</button>
-        <button class="action-btn" id="save-edit">Save Changes</button>
+        <button class="s-button -outline" id="cancel-edit">Cancel</button>
+        <button class="s-button -primary" id="save-edit">Save Changes</button>
       </div>
     </div>
   </div>

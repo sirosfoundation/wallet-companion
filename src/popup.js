@@ -3,6 +3,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+  const statusBar = document.getElementById('statusBar');
   const statusIndicator = document.getElementById('statusIndicator');
   const statusText = document.getElementById('statusText');
   const extensionToggle = document.getElementById('extensionToggle');
@@ -67,12 +68,10 @@ document.addEventListener('DOMContentLoaded', function() {
     extensionToggle.checked = enabled;
     
     if (enabled) {
-      statusIndicator.classList.remove('-inactive');
-      statusText.classList.remove('-inactive');
+      statusBar.classList.remove('-inactive');
       statusText.textContent = 'Active & monitoring';
     } else {
-      statusIndicator.classList.add('-inactive');
-      statusText.classList.add('-inactive');
+      statusBar.classList.add('-inactive');
       statusText.textContent = 'Disabled';
     }
 
@@ -103,12 +102,39 @@ document.addEventListener('DOMContentLoaded', function() {
       const uses = stats?.walletUses?.[wallet.id] || 0;
       const statusClass = wallet.enabled ? '-active' : '-disabled';
       const statusLabel = wallet.enabled ? 'Active' : 'Disabled';
-
-      const icon = wallet.icon ? `<img src="${wallet.icon}" alt="${wallet.name} icon" class="wallet-emoji"/>` : '🔐';
       
+      let iconHtml;
+      let icon = wallet.icon;
+      
+      // If icon is missing or is the default emoji, generate one dynamically
+      if (!icon || icon === '🔐') {
+        // Generate an identicon based on the wallet URL or name
+        const identifier = wallet.url || wallet.name || wallet.id;
+        try {
+          // Use window.iconUtils for icon generation
+          if (window.iconUtils && window.iconUtils.generateIdenticon && window.iconUtils.svgToDataUrl) {
+            const svg = window.iconUtils.generateIdenticon(identifier);
+            icon = window.iconUtils.svgToDataUrl(svg);
+          } else {
+            icon = '🔐'; // Fallback
+          }
+        } catch (e) {
+          console.error('Icon generation failed:', e);
+          icon = '🔐'; // Fallback to emoji if generation fails
+        }
+      }
+      
+      // Check if icon is a URL (data: or http)
+      const iconIsUrl = icon && (icon.startsWith('data:') || icon.startsWith('http'));
+      if (iconIsUrl) {
+        iconHtml = `<img src="${escapeHtml(icon)}" alt="${escapeHtml(wallet.name)}" style="width: 32px; height: 32px; object-fit: contain;">`;
+      } else {
+        iconHtml = `<span class="wallet-emoji">${icon}</span>`;
+      }
+
       return `
         <div class="wallet-item">
-          <div class="wallet-icon -small">${icon}</div>
+          <div class="wallet-icon -small">${iconHtml}</div>
           <span class="name">${escapeHtml(wallet.name)}</span>
           <span class="status ${statusClass}">${statusLabel}</span>
         </div>

@@ -372,7 +372,7 @@ function renderWallets() {
         <div class="icon">🔐</div>
         <div class="title">No wallets configured</div>
         <div class="text">Add your first digital wallet to get started</div>
-        <button class="action-btn empty-state-add-btn">Add Your First Wallet</button>
+        <button class="s-button empty-state-add-btn">Add Your First Wallet</button>
       </div>
     `;
     // Attach click handler for empty state button
@@ -386,8 +386,11 @@ function renderWallets() {
     <div class="wallet-grid">
       ${wallets.map(wallet => renderWalletCard(wallet)).join('')}
       <div class="add-card">
-        <div class="icon">+</div>
-        <div>Add Another Wallet</div>
+        <div class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        </div>
+        <h3 class="title">Add Another Wallet</h3>
+        <p class="description">Connect a new digital identity provider to your dashboard.</p>
       </div>
     </div>
   `;
@@ -419,7 +422,7 @@ function renderWalletCard(wallet) {
   let protocolsDisplay = '';
   if (settings.developerMode && wallet.protocols && wallet.protocols.length > 0) {
     protocolsDisplay = `
-      <div class="wallet-protocols" style="margin-top: 8px; padding: 8px; background: #f3f4f6; border-radius: 6px;">
+      <div class="wallet-protocols" style="margin: 8px 0; padding: 8px; background: #f3f4f6; border-radius: 6px;">
         <div style="font-size: 11px; font-weight: 500; color: #6b7280; margin-bottom: 4px;">Protocols:</div>
         <div style="font-size: 11px; color: #374151;">${wallet.protocols.map(p => `<code style="background: white; padding: 2px 6px; border-radius: 3px; margin-right: 4px;">${escapeHtml(p)}</code>`).join('')}</div>
       </div>
@@ -467,6 +470,7 @@ function renderWalletCard(wallet) {
           <div class="url">${escapeHtml(wallet.url)}</div>
         </div>
       </div>
+      ${wallet.description ? `<div class="description">${escapeHtml(wallet.description)}</div>` : ''}
       
       ${protocolsDisplay}
       
@@ -483,15 +487,12 @@ function renderWalletCard(wallet) {
             <input type="checkbox" class="toggle-wallet" ${wallet.enabled ? 'checked' : ''}>
             <span class="slider"></span>
           </label>
+          <button class="s-button -danger -square -link btn-delete" title="Delete wallet">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
         </div>
         <div class="right">
-          <button class="action-btn -secondary -small btn-edit">Edit</button>
-          <button class="icon-btn -danger btn-delete" title="Delete wallet">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="3 6 5 6 21 6"/>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-            </svg>
-          </button>
+          <button class="s-button -secondary btn-edit">Edit</button>
         </div>
       </div>
     </div>
@@ -930,26 +931,48 @@ function escapeHtml(unsafe) {
 
 /**
  * Show notification
+ * 
+ * @param {string} message - The message to display
+ * @param {'success' | 'error' | 'warning' | 'info'} type - The type of notification
  */
 function showNotification(message, type = 'info') {
-  // Create a simple toast notification
+  const types = {
+    success: {
+      title: 'Success!',
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>'
+    },
+    error: {
+      title: 'Error!',
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>'
+    },
+    warning: {
+      title: 'Warning!',
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>'
+    },
+    info: {
+      title: 'Info',
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>'
+    }
+  }
+
   const toast = document.createElement('div');
-  toast.style.cssText = `
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    padding: 16px 24px;
-    background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#1C4587'};
-    color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 10000;
-    font-size: 14px;
-    font-weight: 500;
-    animation: slideIn 0.3s ease;
+  toast.className = `toast-item -${type}`;
+  toast.innerHTML = `
+    <span class="icon">${types[type]?.icon || types.info.icon}</span>
+    <div class="body">
+      <div class="title">${types[type]?.title || types.info.title}</div>
+      <div class="message">${escapeHtml(message)}</div>
+    </div>
+    <button class="close" aria-label="Close">&times;</button>
   `;
-  toast.textContent = message;
-  document.body.appendChild(toast);
+
+  toast.querySelector('.close').addEventListener('click', () => {
+    toast.style.animation = 'slideOut 0.3s ease';
+    setTimeout(() => toast.remove(), 300);
+  });
+
+  const container = document.getElementById('toast-container');
+  container.appendChild(toast);
 
   setTimeout(() => {
     toast.style.animation = 'slideOut 0.3s ease';
