@@ -136,8 +136,9 @@ async function handleMessage(message, sender, sendResponse) {
       // Check if extension is enabled
       const enabled = await isExtensionEnabled();
       if (!enabled) {
-        sendResponse({ useNative: true });
-        return true;
+        const response = { useNative: true };
+        sendResponse(response);
+        return response;
       }
 
       // Update statistics
@@ -161,16 +162,18 @@ async function handleMessage(message, sender, sendResponse) {
       // If no wallets support the requested protocols, fall back to native
       if (matchingWallets.length === 0) {
         console.log('No wallets support requested protocols, using native API');
-        sendResponse({ useNative: true });
-        return true;
+        const response = { useNative: true };
+        sendResponse(response);
+        return response;
       }
 
       // Inject modal and show wallet selector
       await injectWalletModal(sender.tab.id, sender.frameId);
       
       // Send matching wallets to content script
-      sendResponse({ wallets: matchingWallets, requests: message.requests });
-      return true;
+      const response = { wallets: matchingWallets, requests: message.requests };
+      sendResponse(response);
+      return response;
     }
     
     else if (message.type === 'WALLET_SELECTED') {
@@ -179,32 +182,36 @@ async function handleMessage(message, sender, sendResponse) {
       
       // Here you would handle the actual credential request to the wallet
       // For now, we'll just acknowledge
-      sendResponse({ success: true });
-      return true;
+      const response = { success: true };
+      sendResponse(response);
+      return response;
     }
     
     else if (message.type === 'GET_WALLETS') {
       const wallets = await getConfiguredWallets();
-      sendResponse({ wallets });
-      return true;
+      const response = { wallets };
+      sendResponse(response);
+      return response;
     }
     
     else if (message.type === 'SAVE_WALLETS') {
       const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
       await storage.local.set({ [STORAGE_KEYS.WALLETS]: message.wallets });
-      sendResponse({ success: true });
-      return true;
+      const response = { success: true };
+      sendResponse(response);
+      return response;
     }
     
     else if (message.type === 'GET_SETTINGS') {
       const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
       const result = await storage.local.get([STORAGE_KEYS.ENABLED, STORAGE_KEYS.DEVELOPER_MODE, STORAGE_KEYS.STATS]);
-      sendResponse({
+      const response = {
         enabled: result[STORAGE_KEYS.ENABLED] !== false,
         developerMode: result[STORAGE_KEYS.DEVELOPER_MODE] === true,
         stats: result[STORAGE_KEYS.STATS] || { interceptCount: 0, walletUses: {} }
-      });
-      return true;
+      };
+      sendResponse(response);
+      return response;
     }
     
     else if (message.type === 'SAVE_SETTINGS') {
@@ -217,15 +224,17 @@ async function handleMessage(message, sender, sendResponse) {
         updates[STORAGE_KEYS.DEVELOPER_MODE] = message.developerMode;
       }
       await storage.local.set(updates);
-      sendResponse({ success: true });
-      return true;
+      const response = { success: true };
+      sendResponse(response);
+      return response;
     }
     
     else if (message.type === 'TOGGLE_ENABLED') {
       const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
       await storage.local.set({ [STORAGE_KEYS.ENABLED]: message.enabled });
-      sendResponse({ success: true });
-      return true;
+      const response = { success: true };
+      sendResponse(response);
+      return response;
     }
     
     else if (message.type === 'REGISTER_WALLET') {
@@ -240,12 +249,13 @@ async function handleMessage(message, sender, sendResponse) {
       if (existingWallet) {
         // Wallet already registered
         console.log('Wallet already registered:', message.wallet.url);
-        sendResponse({
+        const response = {
           success: true,
           alreadyRegistered: true,
           wallet: existingWallet
-        });
-        return true;
+        };
+        sendResponse(response);
+        return response;
       }
       
       // Generate new wallet ID
@@ -266,12 +276,13 @@ async function handleMessage(message, sender, sendResponse) {
       
       console.log('Wallet registered:', newWallet.name, 'from', message.origin);
       
-      sendResponse({
+      const response = {
         success: true,
         alreadyRegistered: false,
         wallet: newWallet
-      });
-      return true;
+      };
+      sendResponse(response);
+      return response;
     }
     
     else if (message.type === 'CHECK_WALLET') {
@@ -282,22 +293,25 @@ async function handleMessage(message, sender, sendResponse) {
       
       const isRegistered = wallets.some(w => w.url === message.url);
       
-      sendResponse({ isRegistered: isRegistered });
-      return true;
+      const response = { isRegistered: isRegistered };
+      sendResponse(response);
+      return response;
     }
     
     else if (message.type === 'GET_SUPPORTED_PROTOCOLS') {
       // Get all supported protocols
       const protocols = await getSupportedProtocols();
-      sendResponse({ protocols: protocols });
-      return true;
+      const response = { protocols: protocols };
+      sendResponse(response);
+      return response;
     }
     
     else if (message.type === 'CONTENT_SCRIPT_READY') {
       // Content script has loaded
       console.log('Content script ready on:', message.origin);
-      sendResponse({ success: true });
-      return true;
+      const response = { success: true };
+      sendResponse(response);
+      return response;
     }
     
     else if (message.type === 'FETCH_FAVICON') {
@@ -314,20 +328,23 @@ async function handleMessage(message, sender, sendResponse) {
         clearTimeout(timeoutId);
         
         if (!res.ok) {
-          sendResponse({ success: false });
-          return true;
+          const response = { success: false };
+          sendResponse(response);
+          return response;
         }
         
         const contentType = res.headers.get('content-type') || 'image/x-icon';
         if (!contentType.startsWith('image/')) {
-          sendResponse({ success: false });
-          return true;
+          const response = { success: false };
+          sendResponse(response);
+          return response;
         }
         
         const buf = await res.arrayBuffer();
         if (!buf.byteLength) {
-          sendResponse({ success: false });
-          return true;
+          const response = { success: false };
+          sendResponse(response);
+          return response;
         }
         
         // Convert ArrayBuffer to base64 data URI
@@ -341,16 +358,21 @@ async function handleMessage(message, sender, sendResponse) {
         const base64 = btoa(binary);
         const dataUri = `data:${contentType};base64,${base64}`;
         
-        sendResponse({ success: true, dataUri });
+        const response = { success: true, dataUri };
+        sendResponse(response);
+        return response;
       } catch (e) {
         console.error('Error fetching favicon:', e);
-        sendResponse({ success: false });
+        const response = { success: false };
+        sendResponse(response);
+        return response;
       }
-      return true;
     }
   } catch (error) {
     console.error('Error handling message:', error);
-    sendResponse({ error: error.message });
+    const response = { error: error.message };
+    sendResponse(response);
+    return response;
   }
   
   return true; // Keep the message channel open for async responses
