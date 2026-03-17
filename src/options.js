@@ -148,6 +148,7 @@ async function handleUrlChange() {
   if (!url) return;
   
   const preview = document.getElementById('icon-preview');
+  const iconOptions = document.getElementById('icon-options');
   const faviconSection = document.getElementById('favicon-section');
   const faviconImg = document.getElementById('favicon-img');
   const faviconStatus = document.getElementById('favicon-status');
@@ -214,6 +215,8 @@ async function handleUrlChange() {
     // Favicon fetch failed, keep generated icon selected
     console.log('Favicon fetch failed:', e);
   }
+
+  iconOptions.classList.remove('_hidden');
 }
 
 /**
@@ -624,6 +627,7 @@ async function handleAddWallet(e) {
  */
 function resetIconSelector() {
   const preview = document.getElementById('icon-preview');
+  const iconOptions = document.getElementById('icon-options');
   const iconInput = document.getElementById('wallet-icon');
   const iconTypeInput = document.getElementById('wallet-icon-type');
   const faviconSection = document.getElementById('favicon-section');
@@ -634,6 +638,7 @@ function resetIconSelector() {
   
   // Reset preview
   if (preview) preview.innerHTML = '<span class="placeholder">?</span>';
+  if (iconOptions) iconOptions.classList.add('_hidden');
   if (iconInput) iconInput.value = '';
   if (iconTypeInput) iconTypeInput.value = '';
   if (faviconSection) faviconSection.classList.add('_hidden');

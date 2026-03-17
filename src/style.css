@@ -1397,7 +1397,7 @@ body {
     font-weight: var(--s-font-weight-regular);
     white-space: normal;
     z-index: var(--s-z-dropdown);
-    max-width: 250px;
+    width: min(100vw, 250px);
     text-align: center;
   }
 }
@@ -1444,8 +1444,8 @@ body {
     }
 
     > svg {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
     }
   }
 }
@@ -1507,6 +1507,7 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  gap: var(--s-space-2);
 }
 
 .popup-stats {

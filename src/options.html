@@ -94,13 +94,13 @@
             <div class="form-group">
               <label class="form-label -required" for="wallet-name">Wallet Name</label>
               <span class="form-help">A friendly name to identify this wallet</span>
-              <input type="text" id="wallet-name" class="form-input _max-w-300" placeholder="e.g., My Personal Wallet" required>
+              <input type="text" id="wallet-name" class="form-input _max-w-400" placeholder="e.g., My Personal Wallet" required>
             </div>
 
             <div class="form-group">
               <label class="form-label -required" for="wallet-url">Wallet URL</label>
               <span class="form-help">The base URL of your wallet provider</span>
-              <input type="url" id="wallet-url" class="form-input _max-w-300" placeholder="https://wallet.example.com" required>
+              <input type="url" id="wallet-url" class="form-input _max-w-400" placeholder="https://wallet.example.com" required>
             </div>
           </div>
 
@@ -118,7 +118,7 @@
                 <div class="icon-preview" id="icon-preview">
                   <span class="placeholder">?</span>
                 </div>
-                <div class="icon-options">
+                <div class="icon-options _hidden" id="icon-options">
                   <div id="favicon-section" class="_hidden">
                     <div class="icon-options-label">From wallet URL</div>
                     <div class="icon-options-row">
@@ -209,7 +209,7 @@
           
           <div class="setting-item">
             <div class="description">Download your wallet configurations as a JSON file</div>
-            <button class="s-button -outline -small" id="export-config">
+            <button class="s-button -outline" id="export-config">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="7 10 12 15 17 10"/>
