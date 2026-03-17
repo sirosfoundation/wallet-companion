@@ -759,7 +759,7 @@ function renderPresets() {
             : '<div class="status">Click to add</div>'
           }
         </div>
-        <button class="btn" ${isAdded ? 'disabled' : ''}>${isAdded ? 'Added' : 'Add'}</button>
+        ${!isAdded ? '<button class="btn">Add</button>' : ''}
       </div>
     `;
   }).join('');
