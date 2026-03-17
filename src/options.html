@@ -125,8 +125,8 @@
                       <button type="button" class="icon-option -favicon" id="favicon-option" data-type="favicon">
                         <img id="favicon-img" src="" alt="Favicon">
                       </button>
+                      <div class="favicon-status" id="favicon-status"></div>
                     </div>
-                    <div class="favicon-status" id="favicon-status"></div>
                   </div>
                   <div id="generated-section">
                     <div class="icon-options-label">Generated icons</div>
@@ -264,24 +264,46 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="edit-wallet-icon">Icon</label>
+            <label class="form-label" for="edit-wallet-icon">Wallet Icon</label>
+            <span class="form-help">We'll try to fetch the logo from the wallet URL. You can also choose a generated icon.</span>
             <div class="icon-selector">
-              <div class="icon-preview" id="edit-icon-preview">
-                <span class="placeholder">🔐</span>
-              </div>
-              <div class="icon-options">
-                <div class="emoji-grid" id="edit-icon-emoji-grid">
-                  <button type="button" class="emoji-btn" data-emoji="🔐">🔐</button>
-                  <button type="button" class="emoji-btn" data-emoji="🌐">🌐</button>
-                  <button type="button" class="emoji-btn" data-emoji="🇪🇺">🇪🇺</button>
-                  <button type="button" class="emoji-btn" data-emoji="🧪">🧪</button>
-                  <button type="button" class="emoji-btn" data-emoji="💼">💼</button>
-                  <button type="button" class="emoji-btn" data-emoji="🏦">🏦</button>
-                  <button type="button" class="emoji-btn" data-emoji="🎓">🎓</button>
-                  <button type="button" class="emoji-btn" data-emoji="🏥">🏥</button>
+              <div class="icon-selector-row">
+                <div class="icon-preview" id="edit-icon-preview">
+                  <span class="placeholder">?</span>
                 </div>
-                <input type="hidden" id="edit-wallet-icon">
+                <div class="icon-options _hidden" id="edit-icon-options">
+                  <div id="edit-favicon-section" class="_hidden">
+                    <div class="icon-options-label">From wallet URL</div>
+                    <div class="icon-options-row">
+                      <button type="button" class="icon-option -favicon" id="edit-favicon-option" data-type="favicon">
+                        <img id="edit-favicon-img" src="" alt="Favicon">
+                      </button>
+                      <div class="favicon-status" id="edit-favicon-status"></div>
+                    </div>
+                  </div>
+                  <div id="edit-generated-section">
+                    <div class="icon-options-label">Generated icons</div>
+                    <div class="icon-options-row" id="edit-generated-icons">
+                      <!-- Generated icons will be inserted here -->
+                    </div>
+                  </div>
+                  <div>
+                    <div class="icon-options-label">Or choose an emoji</div>
+                    <div class="emoji-grid" id="edit-icon-emoji-grid">
+                      <button type="button" class="emoji-btn" data-emoji="🔐">🔐</button>
+                      <button type="button" class="emoji-btn" data-emoji="🌐">🌐</button>
+                      <button type="button" class="emoji-btn" data-emoji="🇪🇺">🇪🇺</button>
+                      <button type="button" class="emoji-btn" data-emoji="🧪">🧪</button>
+                      <button type="button" class="emoji-btn" data-emoji="💼">💼</button>
+                      <button type="button" class="emoji-btn" data-emoji="🏦">🏦</button>
+                      <button type="button" class="emoji-btn" data-emoji="🎓">🎓</button>
+                      <button type="button" class="emoji-btn" data-emoji="🏥">🏥</button>
+                    </div>
+                  </div>
+                </div>
               </div>
+              <input type="hidden" id="edit-wallet-icon" value="">
+              <input type="hidden" id="edit-wallet-icon-type" value="">
             </div>
           </div>
 
