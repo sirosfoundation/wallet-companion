@@ -404,9 +404,9 @@ function renderWalletCard(wallet) {
   let protocolsDisplay = '';
   if (settings.developerMode && wallet.protocols && wallet.protocols.length > 0) {
     protocolsDisplay = `
-      <div class="wallet-protocols" style="margin: 8px 0; padding: 8px; background: #f3f4f6; border-radius: 6px;">
-        <div style="font-size: 11px; font-weight: 500; color: #6b7280; margin-bottom: 4px;">Protocols:</div>
-        <div style="font-size: 11px; color: #374151;">${wallet.protocols.map(p => `<code style="background: white; padding: 2px 6px; border-radius: 3px; margin-right: 4px;">${escapeHtml(p)}</code>`).join('')}</div>
+      <div class="wallet-protocols">
+        <div class="label">Protocols</div>
+        <div class="protocols">${wallet.protocols.map(p => `<code>${escapeHtml(p)}</code>`).join('')}</div>
       </div>
     `;
   }

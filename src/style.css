@@ -860,6 +860,34 @@ body {
     align-items: center;
     gap: var(--s-space-2);
   }
+
+  > .wallet-protocols {
+    margin: var(--s-space-2) 0;
+    padding: var(--s-space-2);
+    background: var(--s-color-gray-200);
+    border-radius: var(--s-border-radius-sm);
+
+    > .label {
+      font-size: var(--s-font-size-xs);
+      font-weight: var(--s-font-weight-medium);
+      color: var(--s-color-gray-700);
+      margin-bottom: var(--s-space-1);
+    }
+
+    > .protocols {
+      font-size: var(--s-font-size-xs);
+      color: var(--s-color-gray-800);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-space-1);
+    }
+
+    > .protocols > code {
+      background: var(--s-color-gray-50);
+      padding: var(--s-space-1) var(--s-space-2);
+      border-radius: var(--s-border-radius-xs);
+    }
+  }
 }
 
 .wallet-grid {
