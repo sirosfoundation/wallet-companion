@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
       statusText.textContent = 'Active & monitoring';
     } else {
       statusBar.classList.add('-inactive');
-      statusText.textContent = 'Disabled';
+      statusText.textContent = 'Inactive';
     }
 
     if (stats) {
@@ -100,8 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     walletList.innerHTML = wallets.map(wallet => {
       const uses = stats?.walletUses?.[wallet.id] || 0;
-      const statusClass = wallet.enabled ? '-active' : '-disabled';
-      const statusLabel = wallet.enabled ? 'Active' : 'Disabled';
+      const statusClass = wallet.enabled ? '-active' : '-inactive';
+      const statusLabel = wallet.enabled ? 'Active' : 'Inactive';
       
       let iconHtml;
       let icon = wallet.icon;

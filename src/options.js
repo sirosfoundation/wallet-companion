@@ -457,7 +457,7 @@ function renderWalletCard(wallet) {
       ${protocolsDisplay}
       
       <div class="meta">
-        ${wallet.enabled ? '<span class="badge-label -success">Active</span>' : '<span class="badge-label -warning">Disabled</span>'}
+        ${wallet.enabled ? '<span class="badge-label -success">Active</span>' : '<span class="badge-label -warning">Inactive</span>'}
         ${isDefault ? '<span class="badge-label -info">Default</span>' : ''}
         ${wallet.preset ? '<span class="badge-label -info">wwWallet</span>' : ''}
         ${uses > 0 ? `<span class="badge-label -info">Used ${uses}x</span>` : ''}
@@ -465,7 +465,7 @@ function renderWalletCard(wallet) {
       
       <div class="actions">
         <div class="left">
-          <label class="toggle-switch -large" title="${wallet.enabled ? 'Disable' : 'Enable'} wallet">
+          <label class="toggle-switch -large" title="${wallet.enabled ? 'Deactivate' : 'Activate'} wallet">
             <input type="checkbox" class="toggle-wallet" ${wallet.enabled ? 'checked' : ''}>
             <span class="slider"></span>
           </label>
@@ -664,7 +664,7 @@ async function handleDeleteEdit() {
  */
 function updateWalletStatusLabel() {
   const enabled = document.getElementById('edit-wallet-enabled').checked;
-  document.getElementById('edit-wallet-status').textContent = enabled ? 'Enabled' : 'Disabled';
+  document.getElementById('edit-wallet-status').textContent = enabled ? 'Active' : 'Inactive';
 }
 
 /**
@@ -737,7 +737,7 @@ async function handleToggleWallet(walletId, enabled) {
   wallet.enabled = enabled;
   await saveWallets();
   renderAll();
-  showNotification(`Wallet ${wallet.enabled ? 'enabled' : 'disabled'}`, 'success');
+  showNotification(`Wallet ${wallet.enabled ? 'activated' : 'deactivated'}`, 'success');
 }
 
 /**
@@ -747,7 +747,7 @@ async function handleToggleEnabled(e) {
   settings.enabled = e.target.checked;
   await saveSettings();
   showNotification(
-    settings.enabled ? 'Extension enabled' : 'Extension disabled',
+    settings.enabled ? 'Extension active' : 'Extension inactive',
     'success'
   );
 }

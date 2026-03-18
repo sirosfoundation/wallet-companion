@@ -775,7 +775,7 @@ body {
       color: var(--s-color-green);
     }
 
-    &.-disabled {
+    &.-inactive {
       background: var(--s-color-red-lighter);
       color: var(--s-color-red);
     }

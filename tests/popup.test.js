@@ -63,7 +63,7 @@ describe('Popup - UI State Management', () => {
         statusText.textContent = 'Active & Monitoring';
       } else {
         statusDiv.className = 'status inactive';
-        statusText.textContent = 'Disabled';
+        statusText.textContent = 'Inactive';
       }
 
       if (stats) {
@@ -92,11 +92,11 @@ describe('Popup - UI State Management', () => {
       expect(statusText.textContent).toBe('Active & Monitoring');
     });
 
-    test('should show "Disabled" when not enabled', () => {
+    test('should show "Inactive" when not enabled', () => {
       updateUI(false, mockSettings.stats);
       
       const statusText = document.getElementById('statusText');
-      expect(statusText.textContent).toBe('Disabled');
+      expect(statusText.textContent).toBe('Inactive');
     });
 
     test('should set status class to active when enabled', () => {
@@ -168,7 +168,7 @@ describe('Popup - UI State Management', () => {
         const uses = stats?.walletUses?.[wallet.id] || 0;
         const statusBadge = wallet.enabled 
           ? `<span class="wallet-status">Active</span>`
-          : `<span class="wallet-status" style="background: #fee2e2; color: #991b1b;">Disabled</span>`;
+          : `<span class="wallet-status" style="background: #fee2e2; color: #991b1b;">Inactive</span>`;
         
         return `
           <div class="wallet-item">
@@ -239,11 +239,11 @@ describe('Popup - UI State Management', () => {
       expect(walletList.innerHTML).toContain('>Active</span>');
     });
 
-    test('should show Disabled badge for disabled wallets', () => {
+    test('should show Inactive badge for inactive wallets', () => {
       displayWallets(mockWallets, mockSettings.stats);
       
       const walletList = document.getElementById('walletList');
-      expect(walletList.innerHTML).toContain('>Disabled</span>');
+      expect(walletList.innerHTML).toContain('>Inactive</span>');
     });
 
     test('should escape HTML in wallet names', () => {
