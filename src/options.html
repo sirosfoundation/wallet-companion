@@ -83,25 +83,16 @@
       <div class="content-section -card">
         <h2 class="title">Add Custom Wallet</h2>
         <form id="add-wallet-form" class="form-grid">
-          <div class="form-group _mb-16">
-            <div class="checkbox-group">
-              <input type="checkbox" id="wallet-enabled" checked>
-              <label for="wallet-enabled">Enable this wallet immediately</label>
-            </div>
+          <div class="form-group">
+            <label class="form-label -required" for="wallet-name">Wallet Name</label>
+            <span class="form-help">A friendly name to identify this wallet</span>
+            <input type="text" id="wallet-name" class="form-input _max-w-400" placeholder="e.g., My Personal Wallet" required>
           </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label -required" for="wallet-name">Wallet Name</label>
-              <span class="form-help">A friendly name to identify this wallet</span>
-              <input type="text" id="wallet-name" class="form-input _max-w-400" placeholder="e.g., My Personal Wallet" required>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label -required" for="wallet-url">Wallet URL</label>
-              <span class="form-help">The base URL of your wallet provider</span>
-              <input type="url" id="wallet-url" class="form-input _max-w-400" placeholder="https://wallet.example.com" required>
-            </div>
+          <div class="form-group">
+            <label class="form-label -required" for="wallet-url">Wallet URL</label>
+            <span class="form-help">The base URL of your wallet provider</span>
+            <input type="url" id="wallet-url" class="form-input _max-w-400" placeholder="https://wallet.example.com" required>
           </div>
 
           <div class="form-group">
@@ -116,11 +107,11 @@
             <div class="icon-selector">
               <div class="icon-selector-row">
                 <div class="icon-preview" id="icon-preview">
-                  <span class="placeholder">?</span>
+                  <span class="placeholder">Select from the icons below</span>
                 </div>
                 <div class="icon-options _hidden" id="icon-options">
                   <div id="favicon-section" class="_hidden">
-                    <div class="icon-options-label">From wallet URL</div>
+                    <div class="icon-options-label">From URL</div>
                     <div class="icon-options-row">
                       <button type="button" class="icon-option -favicon" id="favicon-option" data-type="favicon">
                         <img id="favicon-img" src="" alt="Favicon">
@@ -134,19 +125,6 @@
                       <!-- Generated icons will be inserted here -->
                     </div>
                   </div>
-                  <div>
-                    <div class="icon-options-label">Or choose an emoji</div>
-                    <div class="emoji-grid" id="icon-emoji-grid">
-                      <button type="button" class="emoji-btn" data-emoji="🔐">🔐</button>
-                      <button type="button" class="emoji-btn" data-emoji="🌐">🌐</button>
-                      <button type="button" class="emoji-btn" data-emoji="🇪🇺">🇪🇺</button>
-                      <button type="button" class="emoji-btn" data-emoji="🧪">🧪</button>
-                      <button type="button" class="emoji-btn" data-emoji="💼">💼</button>
-                      <button type="button" class="emoji-btn" data-emoji="🏦">🏦</button>
-                      <button type="button" class="emoji-btn" data-emoji="🎓">🎓</button>
-                      <button type="button" class="emoji-btn" data-emoji="🏥">🏥</button>
-                    </div>
-                  </div>
                 </div>
               </div>
               <input type="hidden" id="wallet-icon" value="">
@@ -158,6 +136,13 @@
             <label class="form-label" for="wallet-protocols">Supported Protocols</label>
             <span class="form-help">Enter protocol identifiers supported by this wallet (one per line)</span>
             <textarea id="wallet-protocols" class="form-textarea _max-w-400" placeholder="One protocol per line, e.g.:&#10;openid4vp&#10;openid4vp-v1-unsigned&#10;openid4vp-v1-signed&#10;w3c-vc"></textarea>
+          </div>
+
+          <div class="form-group">
+            <div class="checkbox-group">
+              <input type="checkbox" id="wallet-enabled" checked>
+              <label for="wallet-enabled">Enable this wallet immediately</label>
+            </div>
           </div>
 
           <div class="form-actions _max-w-400">
@@ -242,7 +227,10 @@
   <div class="modal-dialog" id="edit-modal">
     <div class="content">
       <div class="header">
-        <h3 class="title">Edit Wallet</h3>
+        <h3 class="title">Edit</h3>
+        <button type="button" class="s-button -square -invisible" id="close-edit" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
       </div>
       <div class="body">
         <form id="edit-wallet-form" class="form-grid">
@@ -269,11 +257,11 @@
             <div class="icon-selector">
               <div class="icon-selector-row">
                 <div class="icon-preview" id="edit-icon-preview">
-                  <span class="placeholder">?</span>
+                  <span class="placeholder">Select from the icons below</span>
                 </div>
                 <div class="icon-options _hidden" id="edit-icon-options">
                   <div id="edit-favicon-section" class="_hidden">
-                    <div class="icon-options-label">From wallet URL</div>
+                    <div class="icon-options-label">From URL</div>
                     <div class="icon-options-row">
                       <button type="button" class="icon-option -favicon" id="edit-favicon-option" data-type="favicon">
                         <img id="edit-favicon-img" src="" alt="Favicon">
@@ -285,19 +273,6 @@
                     <div class="icon-options-label">Generated icons</div>
                     <div class="icon-options-row" id="edit-generated-icons">
                       <!-- Generated icons will be inserted here -->
-                    </div>
-                  </div>
-                  <div>
-                    <div class="icon-options-label">Or choose an emoji</div>
-                    <div class="emoji-grid" id="edit-icon-emoji-grid">
-                      <button type="button" class="emoji-btn" data-emoji="🔐">🔐</button>
-                      <button type="button" class="emoji-btn" data-emoji="🌐">🌐</button>
-                      <button type="button" class="emoji-btn" data-emoji="🇪🇺">🇪🇺</button>
-                      <button type="button" class="emoji-btn" data-emoji="🧪">🧪</button>
-                      <button type="button" class="emoji-btn" data-emoji="💼">💼</button>
-                      <button type="button" class="emoji-btn" data-emoji="🏦">🏦</button>
-                      <button type="button" class="emoji-btn" data-emoji="🎓">🎓</button>
-                      <button type="button" class="emoji-btn" data-emoji="🏥">🏥</button>
                     </div>
                   </div>
                 </div>
@@ -314,14 +289,19 @@
           </div>
 
           <div class="form-group">
+            <label class="form-label">Wallet status</label>
             <div class="checkbox-group">
               <input type="checkbox" id="edit-wallet-enabled">
-              <label for="edit-wallet-enabled">Enabled</label>
+              <label for="edit-wallet-enabled" id="edit-wallet-status">Enabled</label>
             </div>
           </div>
         </form>
       </div>
       <div class="footer">
+        <button class="s-button -danger _mr-auto" id="delete-edit" title="Delete wallet">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Delete wallet
+        </button> 
         <button class="s-button -outline" id="cancel-edit">Cancel</button>
         <button class="s-button -primary" id="save-edit">Save Changes</button>
       </div>
