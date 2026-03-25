@@ -4,422 +4,54 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Digital Credentials Wallet Selector</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    
-    body {
-      width: 401px;
-      min-height: 500px;
-      max-height: 595px;
-      padding: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      margin: 0;
-      background: #ffffff;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .header {
-      background: #ffffff;
-      color: #000000;
-      padding: 17px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #e5e7eb;
-      flex-shrink: 0;
-      min-height: 72px;
-    }
-    
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    
-    .logo {
-      width: 24px;
-      height: 24px;
-    }
-    
-    .header-text h1 {
-      font-size: 16px;
-      font-weight: 600;
-      margin: 0 0 4px 0;
-      color: #000000;
-      letter-spacing: 0;
-    }
-    
-    .header-text .subtitle {
-      font-size: 12px;
-      font-weight: 400;
-      color: #000000;
-      margin: 0;
-      letter-spacing: 0;
-    }
-    
-    /* Toggle Switch - matches Penpot design */
-    .toggle-switch {
-      position: relative;
-      width: 31px;
-      height: 19px;
-      flex-shrink: 0;
-    }
-    
-    .toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    
-    .toggle-slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #b1b2b5;
-      transition: 0.3s;
-      border-radius: 60px;
-    }
-    
-    .toggle-slider:before {
-      position: absolute;
-      content: "";
-      height: 14.73px;
-      width: 14.59px;
-      left: 3px;
-      top: 2px;
-      background-color: #ffffff;
-      transition: 0.3s;
-      border-radius: 50%;
-    }
-    
-    .toggle-switch input:checked + .toggle-slider {
-      background-color: #19712f;
-    }
-    
-    .toggle-switch input:checked + .toggle-slider:before {
-      transform: translateX(11px);
-    }
-    
-    .content {
-      padding: 0 32px;
-      flex: 1;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      background: #f9fafb;
-    }
-    
-    /* Status section */
-    .status-section {
-      padding: 12px 0;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid #e5e7eb;
-      flex-shrink: 0;
-    }
-    
-    .status-indicator {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #19712f;
-    }
-    
-    .status-indicator.inactive {
-      background: #bc221a;
-    }
-    
-    .status-text {
-      font-size: 11px;
-      font-weight: 500;
-      color: #19712f;
-      letter-spacing: 0;
-    }
-    
-    .status-text.inactive {
-      color: #bc221a;
-    }
-
-    /* Statistics section */
-    .statistics-section {
-      padding: 12px 0;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    
-    .section-label {
-      font-size: 12px;
-      font-weight: 500;
-      color: #000000;
-      margin: 0 0 8px 0;
-      letter-spacing: 0;
-    }
-    
-    .stat-card {
-      background: #ffffff;
-      padding: 16px;
-      border-radius: 8px;
-      border: 1px solid #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    
-    .stat-content {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    
-    .stat-value {
-      font-size: 24px;
-      font-weight: 600;
-      color: #1C4587;
-      line-height: 1.2;
-      letter-spacing: 0;
-    }
-    
-    .stat-label {
-      font-size: 11px;
-      font-weight: 400;
-      color: #000000;
-      letter-spacing: 0;
-    }
-    
-    /* Outline button style from Penpot */
-    .btn-outline {
-      font-size: 14px;
-      font-weight: 500;
-      color: #000000;
-      background: #f8f9f9;
-      border: 1px solid #6e7582;
-      cursor: pointer;
-      padding: 8px 16px;
-      border-radius: 8px;
-      transition: all 0.2s;
-      letter-spacing: 0;
-      min-height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .btn-outline:hover {
-      background: #f3f4f6;
-      border-color: #4b5563;
-    }
-
-    /* Wallets section */
-    .wallets-section {
-      padding: 12px 0;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      overflow: hidden;
-    }
-    
-    .wallets-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      flex-shrink: 0;
-    }
-    
-    .wallets-title {
-      font-size: 12px;
-      font-weight: 500;
-      color: #000000;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      letter-spacing: 0;
-    }
-    
-    .wallet-count-badge {
-      width: 21px;
-      height: 21px;
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 50%;
-      font-size: 12px;
-      font-weight: 600;
-      color: #1C4587;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .wallet-list {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    
-    .wallet-item {
-      padding: 14px 13px;
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .wallet-icon-wrapper {
-      width: 33px;
-      height: 33px;
-      background: #e8e9ea;
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-    
-    .wallet-name {
-      flex: 1;
-      font-size: 14px;
-      font-weight: 500;
-      color: #000000;
-      letter-spacing: 0;
-    }
-    
-    .wallet-status {
-      font-size: 11px;
-      font-weight: 400;
-      padding: 6px 14px;
-      border-radius: 50px;
-      letter-spacing: 0;
-    }
-    
-    .wallet-status.active {
-      background: #d1fae5;
-      color: #19712f;
-    }
-    
-    .wallet-status.disabled {
-      background: #ffe2e3;
-      color: #bc221a;
-    }
-    
-    /* Primary button style from Penpot */
-    .btn-primary {
-      width: 100%;
-      padding: 8px 16px;
-      background: #1C4587;
-      color: #ffffff;
-      border: 1px solid #1C4587;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 0.2s;
-      margin-top: 12px;
-      flex-shrink: 0;
-      min-height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      letter-spacing: 0;
-    }
-    
-    .btn-primary:hover {
-      background: #14366B;
-      border-color: #14366B;
-    }
-    
-    .footer {
-      padding: 12px 32px;
-      background: #f9fafb;
-      font-size: 11px;
-      font-weight: 400;
-      color: #a3a8b1;
-      text-align: center;
-      flex-shrink: 0;
-      letter-spacing: 0;
-    }
-    
-    /* Scrollbar styling */
-    .wallet-list::-webkit-scrollbar {
-      width: 7px;
-    }
-    
-    .wallet-list::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    
-    .wallet-list::-webkit-scrollbar-thumb {
-      background: #e5e7eb;
-      border-radius: 30px;
-    }
-    
-    .wallet-list::-webkit-scrollbar-thumb:hover {
-      background: #d1d5db;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="header">
-    <div class="header-left">
+<body class="popup-layout">
+  <div class="page-header -compact">
+    <div class="left">
       <img src="icons/logo-dark.svg" alt="Siros" class="logo">
-      <div class="header-text">
+      <div class="text">
         <h1>Wallet Selector DC API</h1>
         <p class="subtitle">W3C Digital Credentials API</p>
       </div>
     </div>
-    <label class="toggle-switch" title="Toggle extension on/off">
-      <input type="checkbox" id="extensionToggle" checked>
-      <span class="toggle-slider"></span>
-    </label>
+    
   </div>
   
-  <div class="content">
-    <div class="status-section">
-      <span class="status-indicator" id="statusIndicator"></span>
-      <span class="status-text" id="statusText">Active & monitoring</span>
+  <div class="popup-content">
+    <div class="status-bar" id="statusBar">
+      <span class="indicator" id="statusIndicator"></span>
+      <span class="text" id="statusText">Active &amp; monitoring</span>
+      <label class="toggle-switch -compact _ml-auto" title="Toggle extension on/off">
+        <input type="checkbox" id="extensionToggle" checked>
+        <span class="slider"></span>
+      </label>
     </div>
 
-    <div class="statistics-section">
-      <p class="section-label">Statistics</p>
-      <div class="stat-card">
-        <div class="stat-content">
-          <div class="stat-value" id="interceptCount">0</div>
-          <div class="stat-label">Requests intercepted</div>
-        </div>
-        <button id="clearBtn" class="btn-outline">Clear</button>
+    <div class="popup-stats">
+      <p class="label">Statistics</p>
+      <div class="stat-card -simple">
+        <div class="value" id="interceptCount">0</div>
+        <div class="label">Requests intercepted</div>
+        <button id="clearBtn" class="s-button -outline -small">Clear</button>
       </div>
     </div>
 
-    <div class="wallets-section">
-      <div class="wallets-header">
-        <h3 class="wallets-title">
+    <div class="popup-wallets">
+      <div class="header">
+        <h3 class="title">
           My Wallets
-          <span class="wallet-count-badge" id="walletCount">0</span>
+          <span class="badge" id="walletCount">0</span>
         </h3>
+        <button id="configureBtn" class="s-button -primary -small">Add or Configure</button>
       </div>
-      <div class="wallet-list" id="walletList">
+      <div class="list" id="walletList">
         <!-- Wallets will be inserted here -->
       </div>
-      <button id="configureBtn" class="btn-primary">Add or Configure</button>
     </div>
   </div>
 
-  <div class="footer">
+  <div class="popup-footer">
     Digital Credentials Wallets Selector v1.0.0
   </div>
 

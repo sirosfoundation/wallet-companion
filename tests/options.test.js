@@ -525,7 +525,7 @@ describe('Options Page - Wallet Management', () => {
             </div>
           </div>
           <div class="wallet-meta">
-            ${wallet.enabled ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-warning">Disabled</span>'}
+            ${wallet.enabled ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-warning">Inactive</span>'}
           </div>
           <div class="wallet-actions">
             <div class="wallet-actions-left">

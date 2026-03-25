@@ -145,7 +145,8 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
-          ">${wallet.icon || '🔐'}</div>
+            overflow: hidden;
+          ">${renderWalletIcon(wallet.icon)}</div>
           <div style="flex: 1;">
             <div style="
               font-weight: 500;
@@ -224,6 +225,29 @@
       }
     });
   };
+
+  /**
+   * Render wallet icon - handles emoji, data URLs, and SVG
+   */
+  function renderWalletIcon(icon) {
+    if (!icon) {
+      return '🔐';
+    }
+    // Check if it's a data URL (base64 image)
+    if (icon.startsWith('data:image/')) {
+      return `<img src="${icon}" alt="Wallet icon" style="width: 32px; height: 32px; object-fit: contain;">`;
+    }
+    // Check if it's an SVG
+    if (icon.startsWith('<svg')) {
+      return icon;
+    }
+    // Check if it's a URL
+    if (icon.startsWith('http://') || icon.startsWith('https://')) {
+      return `<img src="${escapeHtml(icon)}" alt="Wallet icon" style="width: 32px; height: 32px; object-fit: contain;">`;
+    }
+    // Otherwise treat as emoji
+    return icon;
+  }
 
   /**
    * Escape HTML to prevent XSS
