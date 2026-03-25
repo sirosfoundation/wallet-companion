@@ -20,6 +20,7 @@ const targetDir = path.join(__dirname, '..', browser);
 const filesToCopy = [
   'background.js',
   'content.js',
+  'icon-utils.js',
   'inject.js',
   'protocols.js',
   'modal.js',
