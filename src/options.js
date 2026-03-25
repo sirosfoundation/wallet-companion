@@ -352,9 +352,11 @@ function renderWallets() {
   if (wallets.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
-        <div class="icon">🔐</div>
-        <div class="title">No wallets configured</div>
-        <div class="text">Add your first digital wallet to get started</div>
+        <div class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        </div>
+        <div class="title">Configure a wallet</div>
+        <div class="text">No wallets configured, add one to get started.</div>
         <button class="s-button empty-state-add-btn">Add Your First Wallet</button>
       </div>
     `;
@@ -655,7 +657,7 @@ async function openEditModal(wallet) {
  */
 async function handleDeleteEdit() {
   const walletId = document.getElementById('edit-wallet-id').value;
-  await handleDeleteWallet(walletId);
+  await handleRemoveWallet(walletId);
   closeEditModal();
 }
 
@@ -714,17 +716,17 @@ async function handleSaveEdit() {
 }
 
 /**
- * Handle delete wallet
+ * Handle remove wallet
  */
-async function handleDeleteWallet(walletId) {
-  if (!confirm('Are you sure you want to delete this wallet?')) {
+async function handleRemoveWallet(walletId) {
+  if (!confirm('Are you sure you want to remove this wallet?')) {
     return;
   }
 
   wallets = wallets.filter(w => w.id !== walletId);
   await saveWallets();
   renderAll();
-  showNotification('Wallet deleted successfully', 'success');
+  showNotification('Wallet removed successfully', 'success');
 }
 
 /**

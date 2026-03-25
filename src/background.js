@@ -3,20 +3,6 @@
  * Manages wallet configuration and credential requests
  */
 
-// Default wallets configuration
-const DEFAULT_WALLETS = [
-  {
-    id: 'wallet-1',
-    name: 'Example Wallet',
-    url: 'https://wallet.example.com',
-    protocols: ['openid4vp', 'w3c-vc'],
-    icon: '🔐',
-    color: '#1C4587',
-    description: 'Example digital identity wallet',
-    enabled: true
-  }
-];
-
 // Storage keys
 const STORAGE_KEYS = {
   WALLETS: 'configured_wallets',
@@ -33,10 +19,6 @@ async function initializeExtension() {
   
   // Initialize default settings if not exists
   const result = await storage.local.get([STORAGE_KEYS.WALLETS, STORAGE_KEYS.ENABLED]);
-  
-  if (!result[STORAGE_KEYS.WALLETS]) {
-    await storage.local.set({ [STORAGE_KEYS.WALLETS]: DEFAULT_WALLETS });
-  }
   
   if (result[STORAGE_KEYS.ENABLED] === undefined) {
     await storage.local.set({ [STORAGE_KEYS.ENABLED]: true });
@@ -57,7 +39,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime) {
 async function getConfiguredWallets() {
   const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
   const result = await storage.local.get(STORAGE_KEYS.WALLETS);
-  return result[STORAGE_KEYS.WALLETS] || DEFAULT_WALLETS;
+  return result[STORAGE_KEYS.WALLETS] || [];
 }
 
 /**
@@ -232,7 +214,7 @@ async function handleMessage(message, sender, sendResponse) {
       // Handle wallet auto-registration
       const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
       const result = await storage.local.get(STORAGE_KEYS.WALLETS);
-      let wallets = result[STORAGE_KEYS.WALLETS] || DEFAULT_WALLETS;
+      let wallets = result[STORAGE_KEYS.WALLETS] || [];
       
       // Check if wallet already exists (by URL)
       const existingWallet = wallets.find(w => w.url === message.wallet.url);
@@ -278,7 +260,7 @@ async function handleMessage(message, sender, sendResponse) {
       // Check if a wallet is registered
       const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
       const result = await storage.local.get(STORAGE_KEYS.WALLETS);
-      const wallets = result[STORAGE_KEYS.WALLETS] || DEFAULT_WALLETS;
+      const wallets = result[STORAGE_KEYS.WALLETS] || [];
       
       const isRegistered = wallets.some(w => w.url === message.url);
       
