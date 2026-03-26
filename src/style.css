@@ -775,7 +775,7 @@ body {
       color: var(--s-color-green);
     }
 
-    &.-disabled {
+    &.-inactive {
       background: var(--s-color-red-lighter);
       color: var(--s-color-red);
     }
@@ -859,6 +859,34 @@ body {
     display: flex;
     align-items: center;
     gap: var(--s-space-2);
+  }
+
+  > .wallet-protocols {
+    margin: var(--s-space-2) 0;
+    padding: var(--s-space-2);
+    background: var(--s-color-gray-200);
+    border-radius: var(--s-border-radius-sm);
+
+    > .label {
+      font-size: var(--s-font-size-xs);
+      font-weight: var(--s-font-weight-medium);
+      color: var(--s-color-gray-700);
+      margin-bottom: var(--s-space-1);
+    }
+
+    > .protocols {
+      font-size: var(--s-font-size-xs);
+      color: var(--s-color-gray-800);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-space-1);
+    }
+
+    > .protocols > code {
+      background: var(--s-color-gray-50);
+      padding: var(--s-space-1) var(--s-space-2);
+      border-radius: var(--s-border-radius-xs);
+    }
   }
 }
 
@@ -954,7 +982,7 @@ body {
     font-size: var(--s-font-size-lg);
     font-weight: var(--s-font-weight-medium);
     color: var(--s-color-gray-950);
-    margin-bottom: var(--s-space-1);
+    margin-bottom: var(--s-space-2);
   }
 
   > .info > .status {
@@ -1074,14 +1102,13 @@ body {
    -------------------------------------------------------------------------- */
 
 .icon-preview {
-  width: 64px;
-  height: 64px;
+  width: 82px;
+  height: 82px;
   border: var(--s-border-light);
   border-radius: var(--s-border-radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
   background: var(--s-color-gray-50);
   position: relative;
   overflow: hidden;
@@ -1107,6 +1134,7 @@ body {
 
   > .placeholder {
     color: var(--temp-muted);
+    text-align: center;
   }
 }
 
@@ -1117,8 +1145,7 @@ body {
 .icon-options {
   margin-top: var(--s-space-3);
   display: flex;
-  flex-direction: column;
-  gap: var(--s-space-3);
+  gap: var(--s-space-4);
   flex: 1;
 
   > .label {
@@ -1287,11 +1314,15 @@ body {
   }
 
   > .content > .header {
-    padding: var(--s-space-6);
+    padding: var(--s-space-4) var(--s-space-4) var(--s-space-4) var(--s-space-6);
     border-bottom: var(--s-border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   > .content > .header > .title {
+    margin: 0;
     font-size: var(--s-font-size-lg);
     font-weight: var(--s-font-weight-semibold);
     color: var(--s-color-gray-950);
@@ -1340,13 +1371,27 @@ body {
    -------------------------------------------------------------------------- */
 
 .empty-state {
-  text-align: center;
   padding: var(--s-space-10) var(--s-space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   color: var(--s-color-gray-700);
 
   > .icon {
-    font-size: 64px;
+    width: 60px;
+    aspect-ratio: 1;
+    background-color: var(--s-color-gray-300);
+    border-radius: 100%;
+    display: grid;
+    place-content: center;
+    color: var(--s-color-brand);
     margin-bottom: var(--s-space-4);
+  }
+
+  > .icon > svg {
+    width: 32px;
+    height: 32px;
   }
 
   > .title {
@@ -1508,13 +1553,10 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: var(--s-space-2);
+  gap: var(--s-space-5);
 }
 
 .popup-stats {
-  padding: var(--s-space-3) 0;
-  border-bottom: var(--s-border-light);
-
   > .label {
     font-size: var(--s-font-size-xs);
     font-weight: var(--s-font-weight-medium);
@@ -1525,7 +1567,6 @@ body {
 }
 
 .popup-wallets {
-  padding: var(--s-space-3) 0;
   flex: 1;
   display: flex;
   flex-direction: column;

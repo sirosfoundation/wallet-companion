@@ -67,8 +67,11 @@ function setupEventListeners() {
   document.getElementById('add-wallet-form').addEventListener('submit', handleAddWallet);
 
   // Edit modal
+  document.getElementById('delete-edit').addEventListener('click', handleDeleteEdit);
   document.getElementById('cancel-edit').addEventListener('click', closeEditModal);
+  document.getElementById('close-edit').addEventListener('click', closeEditModal);
   document.getElementById('save-edit').addEventListener('click', handleSaveEdit);
+  document.getElementById('edit-wallet-enabled').addEventListener('change', updateWalletStatusLabel);
 
   // Settings
   document.getElementById('extension-enabled').addEventListener('change', handleToggleEnabled);
@@ -349,9 +352,11 @@ function renderWallets() {
   if (wallets.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
-        <div class="icon">🔐</div>
-        <div class="title">No wallets configured</div>
-        <div class="text">Add your first digital wallet to get started</div>
+        <div class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        </div>
+        <div class="title">Configure a wallet</div>
+        <div class="text">No wallets configured, add one to get started.</div>
         <button class="s-button empty-state-add-btn">Add Your First Wallet</button>
       </div>
     `;
@@ -385,7 +390,6 @@ function renderWallets() {
     const card = container.querySelector(`[data-wallet-id="${wallet.id}"]`);
     if (card) {
       card.querySelector('.btn-edit').addEventListener('click', () => openEditModal(wallet));
-      card.querySelector('.btn-delete').addEventListener('click', () => handleDeleteWallet(wallet.id));
       card.querySelector('.toggle-wallet').addEventListener('change', (e) => handleToggleWallet(wallet.id, e.target.checked));
     }
   });
@@ -402,9 +406,9 @@ function renderWalletCard(wallet) {
   let protocolsDisplay = '';
   if (settings.developerMode && wallet.protocols && wallet.protocols.length > 0) {
     protocolsDisplay = `
-      <div class="wallet-protocols" style="margin: 8px 0; padding: 8px; background: #f3f4f6; border-radius: 6px;">
-        <div style="font-size: 11px; font-weight: 500; color: #6b7280; margin-bottom: 4px;">Protocols:</div>
-        <div style="font-size: 11px; color: #374151;">${wallet.protocols.map(p => `<code style="background: white; padding: 2px 6px; border-radius: 3px; margin-right: 4px;">${escapeHtml(p)}</code>`).join('')}</div>
+      <div class="wallet-protocols">
+        <div class="label">Protocols</div>
+        <div class="protocols">${wallet.protocols.map(p => `<code>${escapeHtml(p)}</code>`).join('')}</div>
       </div>
     `;
   }
@@ -455,7 +459,7 @@ function renderWalletCard(wallet) {
       ${protocolsDisplay}
       
       <div class="meta">
-        ${wallet.enabled ? '<span class="badge-label -success">Active</span>' : '<span class="badge-label -warning">Disabled</span>'}
+        ${wallet.enabled ? '<span class="badge-label -success">Active</span>' : '<span class="badge-label -warning">Inactive</span>'}
         ${isDefault ? '<span class="badge-label -info">Default</span>' : ''}
         ${wallet.preset ? '<span class="badge-label -info">wwWallet</span>' : ''}
         ${uses > 0 ? `<span class="badge-label -info">Used ${uses}x</span>` : ''}
@@ -463,13 +467,13 @@ function renderWalletCard(wallet) {
       
       <div class="actions">
         <div class="left">
-          <label class="toggle-switch -large" title="${wallet.enabled ? 'Disable' : 'Enable'} wallet">
+          <label class="toggle-switch -large" title="${wallet.enabled ? 'Deactivate' : 'Activate'} wallet">
             <input type="checkbox" class="toggle-wallet" ${wallet.enabled ? 'checked' : ''}>
             <span class="slider"></span>
           </label>
-          <button class="s-button -danger -square -link btn-delete" title="Delete wallet">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-          </button>
+        </div>
+        <div class="right">
+          <button class="s-button -secondary btn-edit">Edit</button>
         </div>
         <div class="right">
           <button class="s-button -secondary btn-edit">Edit</button>
@@ -633,6 +637,7 @@ async function openEditModal(wallet) {
   document.getElementById('edit-wallet-icon').value = wallet.icon || '🔐';
   document.getElementById('edit-wallet-icon-type').value = wallet.iconType || 'emoji';
   document.getElementById('edit-wallet-enabled').checked = wallet.enabled;
+  updateWalletStatusLabel();
   
   // Generate and display icon options
   await generateEditIconOptions(wallet.url, wallet.name, wallet.icon, wallet.iconType);
@@ -648,6 +653,23 @@ async function openEditModal(wallet) {
   updateDeveloperModeUI();
   
   document.getElementById('edit-modal').classList.add('-active');
+}
+
+/**
+ * Handle delete wallet from edit modal
+ */
+async function handleDeleteEdit() {
+  const walletId = document.getElementById('edit-wallet-id').value;
+  await handleRemoveWallet(walletId);
+  closeEditModal();
+}
+
+/**
+ * Update the wallet status label based on toggle state
+ */
+function updateWalletStatusLabel() {
+  const enabled = document.getElementById('edit-wallet-enabled').checked;
+  document.getElementById('edit-wallet-status').textContent = enabled ? 'Active' : 'Inactive';
 }
 
 /**
@@ -697,17 +719,17 @@ async function handleSaveEdit() {
 }
 
 /**
- * Handle delete wallet
+ * Handle remove wallet
  */
-async function handleDeleteWallet(walletId) {
-  if (!confirm('Are you sure you want to delete this wallet?')) {
+async function handleRemoveWallet(walletId) {
+  if (!confirm('Are you sure you want to remove this wallet?')) {
     return;
   }
 
   wallets = wallets.filter(w => w.id !== walletId);
   await saveWallets();
   renderAll();
-  showNotification('Wallet deleted successfully', 'success');
+  showNotification('Wallet removed successfully', 'success');
 }
 
 /**
@@ -720,7 +742,7 @@ async function handleToggleWallet(walletId, enabled) {
   wallet.enabled = enabled;
   await saveWallets();
   renderAll();
-  showNotification(`Wallet ${wallet.enabled ? 'enabled' : 'disabled'}`, 'success');
+  showNotification(`Wallet ${wallet.enabled ? 'activated' : 'deactivated'}`, 'success');
 }
 
 /**
@@ -730,7 +752,7 @@ async function handleToggleEnabled(e) {
   settings.enabled = e.target.checked;
   await saveSettings();
   showNotification(
-    settings.enabled ? 'Extension enabled' : 'Extension disabled',
+    settings.enabled ? 'Extension active' : 'Extension inactive',
     'success'
   );
 }
@@ -1017,8 +1039,6 @@ async function fetchAndDisplayFavicon(url, elements, onSuccess) {
       testImg.onload = () => {
         section.classList.remove('_hidden');
         img.src = favicon;
-        status.className = 'favicon-status success';
-        status.innerHTML = '✓ Found logo';
         onSuccess(favicon);
       };
       testImg.onerror = () => {
@@ -1058,7 +1078,7 @@ function selectIconInForm(prefix, type, value) {
     iconInput.value = value;
     if (iconTypeInput) iconTypeInput.value = 'emoji';
     
-    const emojiBtn = document.querySelector(`${emojiSelector}[data-emoji="${value}"]`);
+    const emojiBtn = document.querySelector(`${emojiSelector}[data-emoji="${CSS.escape(value)}"]`);
     if (emojiBtn) emojiBtn.classList.add('-selected');
   } else if (type === 'favicon') {
     preview.innerHTML = `<img src="${value}" alt="Wallet icon">`;
