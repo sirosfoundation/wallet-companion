@@ -24,7 +24,7 @@ rebuild();
 
 // Watch for changes
 fs.watch(srcDir, { recursive: true }, (eventType, filename) => {
-  if (filename && filename.endsWith('.js') || filename.endsWith('.html')) {
+  if (filename && filename.endsWith('.js') || filename.endsWith('.html') || filename.endsWith('.css')) {
     console.log(`\n📝 Detected change in ${filename}`);
     rebuild();
   }

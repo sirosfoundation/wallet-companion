@@ -8,9 +8,9 @@ Testing framework successfully implemented and verified for the Web Wallet Selec
 
 ### Unit Tests ✅
 **Status**: All Passing  
-**Tests**: 69/69 passed  
-**Time**: ~2.3 seconds  
-**Command**: `npm run test:unit`
+**Tests**: 332 passed (9 test suites)  
+**Time**: ~1.5 seconds  
+**Command**: `npm test`
 
 #### Coverage by Module
 
@@ -22,7 +22,7 @@ Testing framework successfully implemented and verified for the Web Wallet Selec
    - ✅ Usage statistics tracking
    - ✅ Message handling
 
-2. **Inject Script Tests** (25 tests)
+2. **Inject Script Tests** (61 tests)
    - ✅ DC API interception detection
    - ✅ Request ID generation
    - ✅ Event dispatching
@@ -30,8 +30,10 @@ Testing framework successfully implemented and verified for the Web Wallet Selec
    - ✅ URL validation
    - ✅ Response handling
    - ✅ Error handling
+   - ✅ OpenID4VP URL building
+   - ✅ Protocol validation
 
-3. **Options Page Tests** (31 tests)
+3. **Options Page Tests** (59 tests)
    - ✅ Wallet CRUD operations
    - ✅ wwWallet preset handling
    - ✅ Form validation
@@ -39,6 +41,38 @@ Testing framework successfully implemented and verified for the Web Wallet Selec
    - ✅ Statistics calculation
    - ✅ HTML escaping (XSS prevention)
    - ✅ Tab switching logic
+   - ✅ Toggle switches and icon selectors (new UX)
+
+4. **OpenID4VP Tests** (36 tests)
+   - ✅ Request parsing
+   - ✅ JAR handling
+   - ✅ Response validation
+   - ✅ Presentation submission validation
+
+5. **JWT Verification Tests** (21 tests)
+   - ✅ Verifier registration
+   - ✅ Callback execution
+   - ✅ Integration with OpenID4VP
+
+6. **Protocol Plugin Tests** (20 tests)
+   - ✅ Plugin registration
+   - ✅ Protocol filtering
+   - ✅ Request processing
+
+7. **Popup Tests** (33 tests)
+   - ✅ UI state management
+   - ✅ Wallet display
+   - ✅ Toggle events
+
+8. **Modal Tests** (45 tests)
+   - ✅ Wallet selector UI
+   - ✅ Event handling
+   - ✅ Protocol matching
+
+9. **Content Script Tests** (44 tests)
+   - ✅ Message bridge
+   - ✅ Event handling
+   - ✅ Cross-browser compatibility
 
 ### Integration Tests ⚠️
 **Status**: Pending (requires `ws` package for Node.js)  

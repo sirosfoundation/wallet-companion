@@ -3,7 +3,7 @@
 A cross-browser extension that intercepts W3C Digital Credentials API calls and enables users to choose between multiple digital identity wallet providers.
 
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-146%2F146-brightgreen.svg)](DEVELOPMENT.md#testing)
+[![Tests](https://img.shields.io/badge/tests-332%2F332-brightgreen.svg)](DEVELOPMENT.md#testing)
 [![OpenID4VP](https://img.shields.io/badge/OpenID4VP-Full%20Implementation-green.svg)](docs/design/OPENID4VP_IMPLEMENTATION.md)
 
 ## 🎯 What It Does
@@ -83,7 +83,7 @@ if (window.DCWS?.isInstalled()) {
 - Wallet auto-registration API
 - Protocol-aware wallet filtering
 - Cross-browser support (Chrome, Firefox, Safari)
-- 146 passing tests (100% coverage)
+- 332 passing tests
 
 ### 🚧 Planned
 
@@ -176,7 +176,7 @@ open test-page.html
 open test-wallet-api.html
 ```
 
-**Test Coverage:** 146/146 tests passing (100%)
+**Test Coverage:** 332 tests passing
 
 **[→ Testing Documentation](DEVELOPMENT.md#testing)**
 

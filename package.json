@@ -14,7 +14,7 @@
     "watch:safari": "node scripts/watch.js safari",
     "package:chrome": "cd chrome && zip -r ../dist/chrome-extension.zip . -x '*.git*' -x 'README.md'",
     "package:firefox": "cd firefox && zip -r ../dist/firefox-extension.xpi . -x '*.git*' -x 'README.md'",
-    "clean": "rm -rf chrome/*.js chrome/*.html safari/*.js safari/*.html firefox/*.js firefox/*.html",
+    "clean": "rm -rf chrome/ firefox/ safari/ dist/",
     "dev:firefox": "cd firefox && web-ext run",
     "lint": "eslint src/**/*.js",
     "test": "jest",

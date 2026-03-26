@@ -21,6 +21,7 @@ module.exports = {
     '**/tests/**/*.test.js',
     '**/tests/**/*.spec.js',
     '!**/tests/integration.test.js', // Exclude integration tests (use separate config)
+    '!**/tests/wallet-integration.test.js', // Exclude wallet integration tests
   ],
   
   // Module name mapper for browser APIs

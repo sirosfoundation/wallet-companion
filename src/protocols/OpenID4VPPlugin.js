@@ -10,18 +10,45 @@
  * - wwWallet implementation: wallet-frontend/src/lib/services/OpenID4VP/OpenID4VP.ts
  */
 
-(function() {
+(function(root, factory) {
+  'use strict';
+  
+  // Universal Module Definition (UMD) pattern
+  // Supports CommonJS, AMD, and browser globals
+  if (typeof module !== 'undefined' && module.exports) {
+    // Node.js/CommonJS - get ProtocolPlugin from protocols.js
+    const { ProtocolPlugin } = require('../protocols.js');
+    module.exports = factory(ProtocolPlugin);
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD
+    define(['ProtocolPlugin'], factory);
+  } else {
+    // Browser globals
+    if (!root.ProtocolPlugin) {
+      console.error('ProtocolPlugin base class not found. Make sure protocols.js is loaded first.');
+      return;
+    }
+    const OpenID4VPPlugin = factory(root.ProtocolPlugin);
+    root.OpenID4VPPlugin = OpenID4VPPlugin;
+    
+    // Store plugins to be registered
+    if (!root._pendingProtocolPlugins) {
+      root._pendingProtocolPlugins = [];
+    }
+    
+    // Add OpenID4VP variants to pending list
+    root._pendingProtocolPlugins.push(
+      new OpenID4VPPlugin(),              // openid4vp
+      new OpenID4VPPlugin('v1-unsigned'), // openid4vp-v1-unsigned
+      new OpenID4VPPlugin('v1-signed')    // openid4vp-v1-signed
+    );
+    
+    console.log('OpenID4VPPlugin variants queued for registration:', root._pendingProtocolPlugins.length);
+  }
+})(typeof window !== 'undefined' ? window : this, function(ProtocolPlugin) {
   'use strict';
 
   console.log('OpenID4VPPlugin.js loaded');
-
-  // Get the base plugin class from the global window object
-  const ProtocolPlugin = window.ProtocolPlugin;
-  
-  if (!ProtocolPlugin) {
-    console.error('ProtocolPlugin base class not found. Make sure protocols.js is loaded first.');
-    return;
-  }
 
 class OpenID4VPPlugin extends ProtocolPlugin {
   constructor(variant = '') {
@@ -448,27 +475,5 @@ class OpenID4VPPlugin extends ProtocolPlugin {
   }
 }
 
-// Export for both Node.js and browser environments
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = OpenID4VPPlugin;
-}
-
-if (typeof window !== 'undefined') {
-  window.OpenID4VPPlugin = OpenID4VPPlugin;
-  
-  // Store plugins to be registered
-  if (!window._pendingProtocolPlugins) {
-    window._pendingProtocolPlugins = [];
-  }
-  
-  // Add OpenID4VP variants to pending list
-  window._pendingProtocolPlugins.push(
-    new OpenID4VPPlugin(),              // openid4vp
-    new OpenID4VPPlugin('v1-unsigned'), // openid4vp-v1-unsigned
-    new OpenID4VPPlugin('v1-signed')    // openid4vp-v1-signed
-  );
-  
-  console.log('OpenID4VPPlugin variants queued for registration:', window._pendingProtocolPlugins.length);
-}
-
-})(); // End IIFE
+  return OpenID4VPPlugin;
+});

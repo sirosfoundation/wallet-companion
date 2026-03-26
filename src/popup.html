@@ -4,217 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Web Wallet Selector</title>
-  <style>
-    body {
-      width: 380px;
-      min-height: 400px;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      margin: 0;
-      background: #f9fafb;
-    }
-
-    .header {
-      background: linear-gradient(135deg, #1C4587 0%, #2557A7 100%);
-      color: white;
-      padding: 20px;
-    }
-
-    h1 {
-      font-size: 18px;
-      font-weight: 600;
-      margin: 0 0 8px 0;
-    }
-
-    .subtitle {
-      font-size: 13px;
-      opacity: 0.9;
-      margin: 0;
-    }
-
-    .content {
-      padding: 16px;
-    }
-
-    .status {
-      padding: 12px 16px;
-      border-radius: 8px;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-    }
-
-    .status.active {
-      background-color: #d1fae5;
-      color: #065f46;
-      border: 1px solid #a7f3d0;
-    }
-
-    .status.inactive {
-      background-color: #fee2e2;
-      color: #991b1b;
-      border: 1px solid #fecaca;
-    }
-
-    .status-indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: currentColor;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .stat {
-      background: white;
-      padding: 14px;
-      border-radius: 8px;
-      border: 1px solid #e5e7eb;
-    }
-
-    .stat-value {
-      font-size: 24px;
-      font-weight: bold;
-      color: #1C4587;
-      margin-bottom: 4px;
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: #6b7280;
-    }
-
-    .section {
-      background: white;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 16px;
-      border: 1px solid #e5e7eb;
-    }
-
-    .section-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: #111827;
-      margin: 0 0 12px 0;
-    }
-
-    .wallet-item {
-      padding: 10px;
-      border: 1px solid #e5e7eb;
-      border-radius: 6px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
-    }
-
-    .wallet-icon {
-      font-size: 20px;
-    }
-
-    .wallet-name {
-      flex: 1;
-      font-weight: 500;
-      color: #374151;
-    }
-
-    .wallet-status {
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 12px;
-      background: #d1fae5;
-      color: #065f46;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px 16px;
-      background: #1C4587;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      transition: background 0.2s;
-    }
-
-    button:hover {
-      background: #14366B;
-    }
-
-    button.secondary {
-      background: white;
-      color: #374151;
-      border: 1px solid #d1d5db;
-      margin-top: 8px;
-    }
-
-    button.secondary:hover {
-      background: #f9fafb;
-    }
-
-    button:disabled {
-      background: #9ca3af;
-      cursor: not-allowed;
-    }
-
-    .footer {
-      padding: 12px 16px;
-      background: white;
-      border-top: 1px solid #e5e7eb;
-      font-size: 11px;
-      color: #6b7280;
-      text-align: center;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="header">
-    <h1>🔐 Wallet Selector</h1>
-    <p class="subtitle">W3C Digital Credentials API</p>
+<body class="popup-layout">
+  <div class="page-header -compact">
+    <div class="left">
+      <img src="icons/logo-dark.svg" alt="Siros" class="logo">
+      <div class="text">
+        <h1>Wallet Selector DC API</h1>
+        <p class="subtitle">W3C Digital Credentials API</p>
+      </div>
+    </div>
+
   </div>
 
-  <div class="content">
-    <div id="status" class="status active">
-      <span class="status-indicator"></span>
-      <span id="statusText">Active & Monitoring</span>
+  <div class="popup-content">
+    <div class="status-bar" id="statusBar">
+      <span class="indicator" id="statusIndicator"></span>
+      <span class="text" id="statusText">Active &amp; monitoring</span>
+      <label class="toggle-switch -compact _ml-auto" title="Toggle extension on/off">
+        <input type="checkbox" id="extensionToggle" checked>
+        <span class="slider"></span>
+      </label>
     </div>
 
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-value" id="interceptCount">0</div>
-        <div class="stat-label">Requests Intercepted</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value" id="walletCount">0</div>
-        <div class="stat-label">Wallets Configured</div>
+    <div class="popup-stats">
+      <p class="label">Statistics</p>
+      <div class="stat-card -simple">
+        <div class="value" id="interceptCount">0</div>
+        <div class="label">Requests intercepted</div>
+        <button id="clearBtn" class="s-button -outline -small">Clear</button>
       </div>
     </div>
 
-    <div class="section">
-      <h3 class="section-title">Configured Wallets</h3>
-      <div id="walletList">
+    <div class="popup-wallets">
+      <div class="header">
+        <h3 class="title">
+          My Wallets
+          <span class="badge" id="walletCount">0</span>
+        </h3>
+        <button id="configureBtn" class="s-button -primary -small">Add or Configure</button>
+      </div>
+      <div class="list" id="walletList">
         <!-- Wallets will be inserted here -->
       </div>
-      <button id="configureBtn">Configure Wallets</button>
     </div>
-
-    <button id="toggleBtn">Disable Extension</button>
-    <button id="clearBtn" class="secondary">Clear Statistics</button>
   </div>
 
-  <div class="footer">
-    Web Wallet Selector v1.0.0
+  <div class="popup-footer">
+	  Web Wallet Selector v1.0.0
   </div>
 
   <script src="popup.js"></script>
