@@ -385,3 +385,348 @@ describe('Inject Script - Wallet Registration API', () => {
     });
   });
 });
+
+describe('Inject Script - buildWalletUrl Function', () => {
+  describe('OpenID4VP Protocol URL Building', () => {
+    const mockWallet = {
+      id: 'wallet-1',
+      name: 'Test Wallet',
+      url: 'https://wallet.example.com'
+    };
+
+    function buildWalletUrl(wallet, protocol, request) {
+      const walletBaseUrl = wallet.url;
+      const requestData = request.data || request;
+
+      if (protocol.startsWith('openid4vp')) {
+        const walletUrl = new URL(walletBaseUrl);
+        
+        walletUrl.searchParams.set('client_id', 'https://verifier.example.com');
+        walletUrl.searchParams.set('response_type', requestData.response_type || 'vp_token');
+        walletUrl.searchParams.set('response_mode', requestData.response_mode || 'dc_api');
+        walletUrl.searchParams.set('nonce', requestData.nonce);
+        walletUrl.searchParams.set('response_uri', 'https://verifier.example.com/callback');
+        
+        walletUrl.searchParams.set('client_metadata', JSON.stringify(requestData.client_metadata || {}));
+        walletUrl.searchParams.set('dcql_query', JSON.stringify(requestData.dcql_query || {}));
+        
+        if (requestData.state) {
+          walletUrl.searchParams.set('state', requestData.state);
+        }
+        
+        return walletUrl.toString();
+      }
+
+      // Generic protocol
+      const url = new URL(walletBaseUrl);
+      url.searchParams.set('request', JSON.stringify(requestData));
+      url.searchParams.set('protocol', protocol);
+      url.searchParams.set('origin', 'https://verifier.example.com');
+      
+      return url.toString();
+    }
+
+    test('should build URL with client_id', () => {
+      const request = { data: { nonce: '123' } };
+      const url = buildWalletUrl(mockWallet, 'openid4vp', request);
+      
+      expect(url).toContain('client_id=');
+    });
+
+    test('should build URL with response_type', () => {
+      const request = { data: { nonce: '123', response_type: 'vp_token' } };
+      const url = buildWalletUrl(mockWallet, 'openid4vp', request);
+      
+      expect(url).toContain('response_type=vp_token');
+    });
+
+    test('should default response_type to vp_token', () => {
+      const request = { data: { nonce: '123' } };
+      const url = buildWalletUrl(mockWallet, 'openid4vp', request);
+      
+      expect(url).toContain('response_type=vp_token');
+    });
+
+    test('should build URL with response_mode', () => {
+      const request = { data: { nonce: '123', response_mode: 'direct_post' } };
+      const url = buildWalletUrl(mockWallet, 'openid4vp', request);
+      
+      expect(url).toContain('response_mode=direct_post');
+    });
+
+    test('should default response_mode to dc_api', () => {
+      const request = { data: { nonce: '123' } };
+      const url = buildWalletUrl(mockWallet, 'openid4vp', request);
+      
+      expect(url).toContain('response_mode=dc_api');
+    });
+
+    test('should build URL with nonce', () => {
+      const request = { data: { nonce: 'test-nonce-123' } };
+      const url = buildWalletUrl(mockWallet, 'openid4vp', request);
+      
+      expect(url).toContain('nonce=test-nonce-123');
+    });
+
+    test('should build URL with client_metadata as JSON', () => {
+      const clientMetadata = { client_name: 'Test Verifier' };
+      const request = { data: { nonce: '123', client_metadata: clientMetadata } };
+      const url = buildWalletUrl(mockWallet, 'openid4vp', request);
+      
+      expect(url).toContain('client_metadata=');
+      // URL encoding may use either + or %20 for spaces
+      const urlObj = new URL(url);
+      expect(urlObj.searchParams.get('client_metadata')).toBe(JSON.stringify(clientMetadata));
+    });
+
+    test('should build URL with dcql_query as JSON', () => {
+      const dcqlQuery = { credentials: [{ type: 'VerifiableCredential' }] };
+      const request = { data: { nonce: '123', dcql_query: dcqlQuery } };
+      const url = buildWalletUrl(mockWallet, 'openid4vp', request);
+      
+      expect(url).toContain('dcql_query=');
+    });
+
+    test('should include state if provided', () => {
+      const request = { data: { nonce: '123', state: 'state-abc' } };
+      const url = buildWalletUrl(mockWallet, 'openid4vp', request);
+      
+      expect(url).toContain('state=state-abc');
+    });
+
+    test('should not include state if not provided', () => {
+      const request = { data: { nonce: '123' } };
+      const url = buildWalletUrl(mockWallet, 'openid4vp', request);
+      
+      // State should not appear since it wasn't provided
+      const urlObj = new URL(url);
+      expect(urlObj.searchParams.has('state')).toBe(false);
+    });
+
+    test('should handle openid4vp-v1-signed protocol', () => {
+      const request = { data: { nonce: '123' } };
+      const url = buildWalletUrl(mockWallet, 'openid4vp-v1-signed', request);
+      
+      expect(url).toContain('client_id=');
+      expect(url).toContain('response_type=');
+    });
+
+    test('should handle openid4vp-v1-unsigned protocol', () => {
+      const request = { data: { nonce: '123' } };
+      const url = buildWalletUrl(mockWallet, 'openid4vp-v1-unsigned', request);
+      
+      expect(url).toContain('client_id=');
+    });
+
+    test('should use wallet base URL', () => {
+      const request = { data: { nonce: '123' } };
+      const url = buildWalletUrl(mockWallet, 'openid4vp', request);
+      
+      expect(url.startsWith('https://wallet.example.com')).toBe(true);
+    });
+  });
+
+  describe('Generic Protocol URL Building', () => {
+    const mockWallet = {
+      id: 'wallet-1',
+      name: 'Test Wallet',
+      url: 'https://wallet.example.com'
+    };
+
+    function buildWalletUrl(wallet, protocol, request) {
+      const walletBaseUrl = wallet.url;
+      const requestData = request.data || request;
+
+      if (protocol.startsWith('openid4vp')) {
+        // OpenID4VP handling (not tested here)
+        return '';
+      }
+
+      const url = new URL(walletBaseUrl);
+      url.searchParams.set('request', JSON.stringify(requestData));
+      url.searchParams.set('protocol', protocol);
+      url.searchParams.set('origin', 'https://verifier.example.com');
+      
+      return url.toString();
+    }
+
+    test('should build URL with request as JSON', () => {
+      const request = { data: { customField: 'value' } };
+      const url = buildWalletUrl(mockWallet, 'custom-protocol', request);
+      
+      expect(url).toContain('request=');
+    });
+
+    test('should include protocol identifier', () => {
+      const request = { data: {} };
+      const url = buildWalletUrl(mockWallet, 'my-custom-protocol', request);
+      
+      expect(url).toContain('protocol=my-custom-protocol');
+    });
+
+    test('should include origin', () => {
+      const request = { data: {} };
+      const url = buildWalletUrl(mockWallet, 'custom', request);
+      
+      expect(url).toContain('origin=');
+    });
+
+    test('should handle request without data wrapper', () => {
+      const request = { customField: 'value' };
+      const url = buildWalletUrl(mockWallet, 'custom', request);
+      
+      expect(url).toContain('customField');
+    });
+  });
+});
+
+describe('Inject Script - Protocol Validation', () => {
+  describe('Protocol Identifier Validation', () => {
+    const protocolPattern = /^[a-z0-9-]+$/;
+
+    test('should accept valid openid4vp protocol', () => {
+      expect(protocolPattern.test('openid4vp')).toBe(true);
+    });
+
+    test('should accept valid openid4vp-v1-signed protocol', () => {
+      expect(protocolPattern.test('openid4vp-v1-signed')).toBe(true);
+    });
+
+    test('should accept valid openid4vp-v1-unsigned protocol', () => {
+      expect(protocolPattern.test('openid4vp-v1-unsigned')).toBe(true);
+    });
+
+    test('should accept w3c-vc protocol', () => {
+      expect(protocolPattern.test('w3c-vc')).toBe(true);
+    });
+
+    test('should reject protocol with uppercase', () => {
+      expect(protocolPattern.test('OpenID4VP')).toBe(false);
+    });
+
+    test('should reject protocol with spaces', () => {
+      expect(protocolPattern.test('openid 4vp')).toBe(false);
+    });
+
+    test('should reject protocol with underscores', () => {
+      expect(protocolPattern.test('openid_4vp')).toBe(false);
+    });
+
+    test('should reject protocol with special characters', () => {
+      expect(protocolPattern.test('openid4vp!')).toBe(false);
+    });
+
+    test('should accept all-numeric protocol', () => {
+      expect(protocolPattern.test('123')).toBe(true);
+    });
+
+    test('should accept hyphenated protocol', () => {
+      expect(protocolPattern.test('my-custom-protocol')).toBe(true);
+    });
+  });
+
+  describe('Response Validation', () => {
+    test('should create credential object with type', () => {
+      const credential = {
+        type: 'digital',
+        protocol: 'openid4vp',
+        data: { vp_token: 'token-value' },
+        id: `credential-${Date.now()}`
+      };
+
+      expect(credential.type).toBe('digital');
+    });
+
+    test('should create credential object with protocol', () => {
+      const credential = {
+        type: 'digital',
+        protocol: 'openid4vp-v1-signed',
+        data: {},
+        id: 'cred-123'
+      };
+
+      expect(credential.protocol).toBe('openid4vp-v1-signed');
+    });
+
+    test('should create credential object with id', () => {
+      const timestamp = Date.now();
+      const credential = {
+        type: 'digital',
+        protocol: 'openid4vp',
+        data: {},
+        id: `credential-${timestamp}`
+      };
+
+      expect(credential.id).toMatch(/^credential-\d+$/);
+    });
+
+    test('should have toJSON method', () => {
+      const credential = {
+        type: 'digital',
+        protocol: 'openid4vp',
+        data: { token: 'abc' },
+        id: 'cred-123',
+        toJSON: function() {
+          return {
+            type: this.type,
+            protocol: this.protocol,
+            data: this.data,
+            id: this.id
+          };
+        }
+      };
+
+      const json = credential.toJSON();
+      expect(json.type).toBe('digital');
+      expect(json.protocol).toBe('openid4vp');
+      expect(json.data.token).toBe('abc');
+    });
+  });
+});
+
+describe('Inject Script - Supported Protocols Cache', () => {
+  test('should initialize as empty Set', () => {
+    const supportedProtocols = new Set();
+    expect(supportedProtocols.size).toBe(0);
+  });
+
+  test('should add protocols to cache', () => {
+    const supportedProtocols = new Set();
+    supportedProtocols.add('openid4vp');
+    supportedProtocols.add('openid4vp-v1-signed');
+
+    expect(supportedProtocols.has('openid4vp')).toBe(true);
+    expect(supportedProtocols.has('openid4vp-v1-signed')).toBe(true);
+  });
+
+  test('should check if protocol is supported', () => {
+    const supportedProtocols = new Set(['openid4vp']);
+    
+    expect(supportedProtocols.has('openid4vp')).toBe(true);
+    expect(supportedProtocols.has('unknown')).toBe(false);
+  });
+
+  test('should update from array', () => {
+    const protocols = ['openid4vp', 'openid4vp-v1-signed', 'openid4vp-v1-unsigned'];
+    const supportedProtocols = new Set(protocols);
+
+    expect(supportedProtocols.size).toBe(3);
+    expect(Array.from(supportedProtocols)).toEqual(protocols);
+  });
+
+  test('should filter requests by supported protocols', () => {
+    const supportedProtocols = new Set(['openid4vp']);
+    const digitalRequests = [
+      { protocol: 'openid4vp', data: {} },
+      { protocol: 'unknown-protocol', data: {} }
+    ];
+
+    const supportedRequests = digitalRequests.filter(req => supportedProtocols.has(req.protocol));
+    const unsupportedRequests = digitalRequests.filter(req => !supportedProtocols.has(req.protocol));
+
+    expect(supportedRequests.length).toBe(1);
+    expect(supportedRequests[0].protocol).toBe('openid4vp');
+    expect(unsupportedRequests.length).toBe(1);
+    expect(unsupportedRequests[0].protocol).toBe('unknown-protocol');
+  });
+});

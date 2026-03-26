@@ -1,6 +1,7 @@
 # Dependencies
 node_modules/
 package-lock.json
+.playwright-mcp
 
 # Build outputs
 dist/
@@ -8,45 +9,11 @@ dist/
 *.xpi
 *.crx
 
-# Browser extension directories (built from src/)
-chrome/background.js
-chrome/content.js
-chrome/inject.js
-chrome/protocols.js
-chrome/modal.js
-chrome/popup.html
-chrome/popup.js
-chrome/options.html
-chrome/options.js
-chrome/icons/icon*.png
-chrome/icons/logo-*.svg
-chrome/protocols
-
-firefox/background.js
-firefox/content.js
-firefox/inject.js
-firefox/protocols.js
-firefox/modal.js
-firefox/popup.html
-firefox/popup.js
-firefox/options.html
-firefox/options.js
-firefox/icons/icon*.png
-firefox/icons/logo-*.svg
-firefox/protocols
-
-safari/background.js
-safari/content.js
-safari/inject.js
-safari/protocols.js
-safari/modal.js
-safari/popup.html
-safari/popup.js
-safari/options.html
-safari/options.js
-safari/icons/icon*.png
-safari/icons/logo-*.svg
-safari/protocols
+# Browser extension build directories (built from src/)
+# Only manifest.json files are hand-maintained and tracked
+chrome/
+firefox/
+safari/
 
 # Source generated icons (regenerated from SVG)
 src/icons/icon*.png

@@ -15,11 +15,18 @@ This project includes both **unit tests** and **integration tests** to ensure th
 
 ```
 tests/
-├── setup.js              # Jest setup and mocks
-├── background.test.js    # Background script tests
-├── inject.test.js        # DC API & wallet registration tests
-├── options.test.js       # Options page logic tests
-└── integration.test.js   # End-to-end integration tests
+├── setup.js                  # Jest setup and mocks
+├── background.test.js        # Background script tests (13)
+├── content.test.js           # Content script message bridge (44)
+├── inject.test.js            # DC API & wallet registration tests (61)
+├── jwt-verification.test.js  # JWT callback tests (21)
+├── modal.test.js             # Wallet selector modal tests (45)
+├── openid4vp.test.js         # OpenID4VP protocol tests (36)
+├── options.test.js           # Options page logic tests (59)
+├── popup.test.js             # Popup UI tests (33)
+├── protocols.test.js         # Protocol plugin tests (20)
+├── integration.test.js       # E2E integration tests (separate config)
+└── wallet-integration.test.js # Wallet integration tests (separate config)
 ```
 
 ## Running Tests

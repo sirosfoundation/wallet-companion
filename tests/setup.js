@@ -40,19 +40,8 @@ global.chrome = {
 // Also expose as browser for Firefox compatibility
 global.browser = global.chrome;
 
-// Mock window.location
-delete window.location;
-window.location = {
-  href: 'https://example.com',
-  origin: 'https://example.com',
-  protocol: 'https:',
-  host: 'example.com',
-  hostname: 'example.com',
-  port: '',
-  pathname: '/',
-  search: '',
-  hash: ''
-};
+// Note: jsdom provides window.location automatically, no need to mock it
+// The default jsdom URL is 'about:blank' but tests can set it via testEnvironmentOptions
 
 // Mock navigator.credentials
 global.navigator.credentials = {
@@ -71,28 +60,8 @@ global.console = {
   error: jest.fn()
 };
 
-// Mock DOM methods
-document.createElement = jest.fn((tag) => {
-  const element = {
-    tagName: tag.toUpperCase(),
-    appendChild: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    setAttribute: jest.fn(),
-    getAttribute: jest.fn(),
-    remove: jest.fn(),
-    src: '',
-    onload: null,
-    style: {},
-    classList: {
-      add: jest.fn(),
-      remove: jest.fn(),
-      toggle: jest.fn(),
-      contains: jest.fn()
-    }
-  };
-  return element;
-});
+// Note: Do NOT mock document.createElement - jsdom provides a real implementation
+// that is needed for DOM manipulation tests
 
 // Reset mocks before each test
 beforeEach(() => {

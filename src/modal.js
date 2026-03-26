@@ -21,12 +21,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     ">
       <div id="dc-wallet-modal" style="
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.15);
+        background: #ffffff;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
         max-width: 480px;
         width: 90%;
         max-height: 80vh;
@@ -41,14 +41,14 @@
         ">
           <h2 style="
             margin: 0;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
-            color: #111827;
+            color: #000000;
           ">Select Digital Wallet</h2>
           <p style="
             margin: 8px 0 0 0;
             font-size: 14px;
-            color: #6b7280;
+            color: #6e7582;
           ">Choose which wallet to use for this credential request</p>
         </div>
 
@@ -70,23 +70,23 @@
           justify-content: flex-end;
         ">
           <button id="dc-wallet-native" style="
-            padding: 10px 20px;
-            background: white;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
+            padding: 8px 16px;
+            background: #f8f9f9;
+            border: 1px solid #6e7582;
+            border-radius: 8px;
             font-size: 14px;
             font-weight: 500;
-            color: #374151;
+            color: #000000;
             cursor: pointer;
           ">Use Browser Wallet</button>
           <button id="dc-wallet-cancel" style="
-            padding: 10px 20px;
-            background: white;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
+            padding: 8px 16px;
+            background: #f8f9f9;
+            border: 1px solid #6e7582;
+            border-radius: 8px;
             font-size: 14px;
             font-weight: 500;
-            color: #374151;
+            color: #000000;
             cursor: pointer;
           ">Cancel</button>
         </div>
@@ -125,36 +125,38 @@
         walletItem.style.cssText = `
           padding: 16px;
           margin-bottom: 8px;
-          border: 2px solid #e5e7eb;
+          border: 1px solid #e5e7eb;
           border-radius: 8px;
           cursor: pointer;
           transition: all 0.2s;
           display: flex;
           align-items: center;
           gap: 12px;
+          background: #ffffff;
         `;
         
         walletItem.innerHTML = `
           <div style="
             width: 48px;
             height: 48px;
-            background: ${wallet.color || '#1C4587'};
+            background: #e8e9ea;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
-          ">${wallet.icon || '🔐'}</div>
+            overflow: hidden;
+          ">${renderWalletIcon(wallet.icon)}</div>
           <div style="flex: 1;">
             <div style="
-              font-weight: 600;
-              font-size: 16px;
-              color: #111827;
+              font-weight: 500;
+              font-size: 14px;
+              color: #000000;
               margin-bottom: 4px;
             ">${escapeHtml(wallet.name)}</div>
             <div style="
-              font-size: 13px;
-              color: #6b7280;
+              font-size: 12px;
+              color: #6e7582;
             ">${escapeHtml(wallet.description || wallet.url || 'Digital Identity Wallet')}</div>
           </div>
         `;
@@ -184,10 +186,10 @@
         <div style="
           text-align: center;
           padding: 32px;
-          color: #6b7280;
+          color: #6e7582;
         ">
           <p style="margin: 0 0 16px 0; font-size: 14px;">No wallets configured</p>
-          <p style="margin: 0; font-size: 13px;">Use the extension settings to add wallet providers</p>
+          <p style="margin: 0; font-size: 12px;">Use the extension settings to add wallet providers</p>
         </div>
       `;
     }
@@ -223,6 +225,29 @@
       }
     });
   };
+
+  /**
+   * Render wallet icon - handles emoji, data URLs, and SVG
+   */
+  function renderWalletIcon(icon) {
+    if (!icon) {
+      return '🔐';
+    }
+    // Check if it's a data URL (base64 image)
+    if (icon.startsWith('data:image/')) {
+      return `<img src="${icon}" alt="Wallet icon" style="width: 32px; height: 32px; object-fit: contain;">`;
+    }
+    // Check if it's an SVG
+    if (icon.startsWith('<svg')) {
+      return icon;
+    }
+    // Check if it's a URL
+    if (icon.startsWith('http://') || icon.startsWith('https://')) {
+      return `<img src="${escapeHtml(icon)}" alt="Wallet icon" style="width: 32px; height: 32px; object-fit: contain;">`;
+    }
+    // Otherwise treat as emoji
+    return icon;
+  }
 
   /**
    * Escape HTML to prevent XSS

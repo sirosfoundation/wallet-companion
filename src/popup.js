@@ -3,9 +3,10 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-  const statusDiv = document.getElementById('status');
+  const statusBar = document.getElementById('statusBar');
+  const statusIndicator = document.getElementById('statusIndicator');
   const statusText = document.getElementById('statusText');
-  const toggleBtn = document.getElementById('toggleBtn');
+  const extensionToggle = document.getElementById('extensionToggle');
   const clearBtn = document.getElementById('clearBtn');
   const configureBtn = document.getElementById('configureBtn');
   const interceptCount = document.getElementById('interceptCount');
@@ -19,12 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
   // Load initial state
   loadState();
 
-  // Toggle extension
-  toggleBtn.addEventListener('click', async function() {
-    const response = await runtime.sendMessage({ type: 'GET_SETTINGS' });
-    const newState = !response.enabled;
-
+  // Toggle extension via header toggle switch
+  extensionToggle.addEventListener('change', async function() {
+    const newState = this.checked;
     await runtime.sendMessage({ type: 'TOGGLE_ENABLED', enabled: newState });
+    const response = await runtime.sendMessage({ type: 'GET_SETTINGS' });
     updateUI(newState, response.stats);
   });
 
@@ -65,14 +65,14 @@ document.addEventListener('DOMContentLoaded', function() {
    * Update UI based on enabled state
    */
   function updateUI(enabled, stats) {
+    extensionToggle.checked = enabled;
+
     if (enabled) {
-      statusDiv.className = 'status active';
-      statusText.textContent = 'Active & Monitoring';
-      toggleBtn.textContent = 'Disable Extension';
+      statusBar.classList.remove('-inactive');
+      statusText.textContent = 'Active & monitoring';
     } else {
-      statusDiv.className = 'status inactive';
-      statusText.textContent = 'Disabled';
-      toggleBtn.textContent = 'Enable Extension';
+      statusBar.classList.add('-inactive');
+      statusText.textContent = 'Inactive';
     }
 
     if (stats) {
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
       walletList.innerHTML = `
         <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 13px;">
           No wallets configured yet.<br>
-          Click "Configure Wallets" to add one.
+          Click "Add or Configure" to add one.
         </div>
       `;
       walletCount.textContent = '0';
@@ -98,28 +98,48 @@ document.addEventListener('DOMContentLoaded', function() {
     const enabledWallets = wallets.filter(w => w.enabled);
     walletCount.textContent = enabledWallets.length;
 
-    walletList.innerHTML = wallets.slice(0, 3).map(wallet => {
+    walletList.innerHTML = wallets.map(wallet => {
       const uses = stats?.walletUses?.[wallet.id] || 0;
-      const statusBadge = wallet.enabled
-        ? `<span class="wallet-status">Active</span>`
-        : `<span class="wallet-status" style="background: #fee2e2; color: #991b1b;">Disabled</span>`;
+      const statusClass = wallet.enabled ? '-active' : '-inactive';
+      const statusLabel = wallet.enabled ? 'Active' : 'Inactive';
+
+      let iconHtml;
+      let icon = wallet.icon;
+
+      // If icon is missing or is the default emoji, generate one dynamically
+      if (!icon || icon === '🔐') {
+        // Generate an identicon based on the wallet URL or name
+        const identifier = wallet.url || wallet.name || wallet.id;
+        try {
+          // Use window.iconUtils for icon generation
+          if (window.iconUtils && window.iconUtils.generateIdenticon && window.iconUtils.svgToDataUrl) {
+            const svg = window.iconUtils.generateIdenticon(identifier);
+            icon = window.iconUtils.svgToDataUrl(svg);
+          } else {
+            icon = '🔐'; // Fallback
+          }
+        } catch (e) {
+          console.error('Icon generation failed:', e);
+          icon = '🔐'; // Fallback to emoji if generation fails
+        }
+      }
+
+      // Check if icon is a URL (data: or http)
+      const iconIsUrl = icon && (icon.startsWith('data:') || icon.startsWith('http'));
+      if (iconIsUrl) {
+        iconHtml = `<img src="${escapeHtml(icon)}" alt="${escapeHtml(wallet.name)}" style="width: 32px; height: 32px; object-fit: contain;">`;
+      } else {
+        iconHtml = `<span class="wallet-emoji">${icon}</span>`;
+      }
 
       return `
         <div class="wallet-item">
-          <span class="wallet-icon">${wallet.icon || '🔐'}</span>
-          <span class="wallet-name">${escapeHtml(wallet.name)}</span>
-          ${statusBadge}
+          <div class="wallet-icon -small">${iconHtml}</div>
+          <span class="name">${escapeHtml(wallet.name)}</span>
+          <span class="status ${statusClass}">${statusLabel}</span>
         </div>
       `;
     }).join('');
-
-    if (wallets.length > 3) {
-      walletList.innerHTML += `
-        <div style="text-align: center; padding: 8px; font-size: 12px; color: #6b7280;">
-          +${wallets.length - 3} more wallet${wallets.length - 3 > 1 ? 's' : ''}
-        </div>
-      `;
-    }
   }
 
   /**

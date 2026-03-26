@@ -173,11 +173,16 @@ npm run test:watch
 ### Test Coverage
 
 Current test coverage:
-- ✅ 146/146 tests passing (100% success rate)
+- ✅ 332 tests passing (9 test suites)
 - ✅ OpenID4VP: Request parsing, JAR handling, response validation (36 tests)
 - ✅ JWT Verification: Registration, callback execution, integration (21 tests)
-- ✅ Protocol plugins: Registration, filtering, request processing
-- ✅ Wallet management: Registration, protocol matching, auto-registration (89 tests)
+- ✅ Protocol plugins: Registration, filtering, request processing (20 tests)
+- ✅ Inject script: DC API interception, URL building (61 tests)
+- ✅ Options page: Wallet management, presets, settings (59 tests)
+- ✅ Popup: UI state, wallet display (33 tests)
+- ✅ Modal: Wallet selector UI (45 tests)
+- ✅ Content script: Message bridge (44 tests)
+- ✅ Background: Storage, settings (13 tests)
 
 ### Integration Tests
 

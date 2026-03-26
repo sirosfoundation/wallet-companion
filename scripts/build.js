@@ -20,13 +20,15 @@ const targetDir = path.join(__dirname, '..', browser);
 const filesToCopy = [
   'background.js',
   'content.js',
+  'icon-utils.js',
   'inject.js',
   'protocols.js',
   'modal.js',
   'popup.html',
   'popup.js',
   'options.html',
-  'options.js'
+  'options.js',
+  'style.css'
 ];
 
 // Directories to copy recursively
@@ -34,11 +36,23 @@ const dirsToCopy = [
   'protocols'
 ];
 
+const manifestsDir = path.join(__dirname, '..', 'manifests');
+
 console.log(`Building ${browser} extension...`);
 
 // Create target directory if it doesn't exist
 if (!fs.existsSync(targetDir)) {
   fs.mkdirSync(targetDir, { recursive: true });
+}
+
+// Copy browser-specific manifest
+const manifestSrc = path.join(manifestsDir, `${browser}-manifest.json`);
+const manifestDest = path.join(targetDir, 'manifest.json');
+if (fs.existsSync(manifestSrc)) {
+  fs.copyFileSync(manifestSrc, manifestDest);
+  console.log(`✓ Copied manifest.json`);
+} else {
+  console.warn(`⚠ Warning: ${browser}-manifest.json not found in manifests/`);
 }
 
 // Copy files
@@ -86,20 +100,24 @@ dirsToCopy.forEach(dir => {
   }
 });
 
-// Copy SVG logos to icons directory
+// Copy icons directory (PNGs and SVGs)
+const srcIconsDir = path.join(srcDir, 'icons');
 const iconsDir = path.join(targetDir, 'icons');
 if (!fs.existsSync(iconsDir)) {
   fs.mkdirSync(iconsDir, { recursive: true });
 }
 
-const logos = ['logo-light.svg', 'logo-dark.svg'];
-logos.forEach(logo => {
-  const srcPath = path.join(srcDir, 'icons', logo);
-  const targetPath = path.join(iconsDir, logo);
+// Copy all icon files (PNGs for manifest, SVGs for UI)
+const iconFiles = ['icon16.png', 'icon32.png', 'icon48.png', 'icon128.png', 'logo-light.svg', 'logo-dark.svg'];
+iconFiles.forEach(icon => {
+  const srcPath = path.join(srcIconsDir, icon);
+  const targetPath = path.join(iconsDir, icon);
   
   if (fs.existsSync(srcPath)) {
     fs.copyFileSync(srcPath, targetPath);
-    console.log(`✓ Copied ${logo}`);
+    console.log(`✓ Copied ${icon}`);
+  } else {
+    console.warn(`⚠ Warning: ${icon} not found in src/icons/`);
   }
 });
 

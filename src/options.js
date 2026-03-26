@@ -11,27 +11,9 @@ const WWWALLET_PRESETS = [
   {
     name: 'wwWallet Demo',
     url: 'https://demo.wwwallet.org',
-    icon: '🌐',
+    icon: '<svg width="24" height="24" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="1024" height="1024" rx="512" fill="white"/><path fill-rule="evenodd" clip-rule="evenodd" d="M374.192 204.43C398.46 362.058 398.46 362.058 556.087 386.441C398.514 410.701 398.46 411.056 374.217 568.404C374.208 568.458 374.2 568.513 374.192 568.568C349.808 410.825 349.808 410.825 192.181 386.441C349.808 362.058 349.808 362.058 374.192 204.43ZM386.441 658.938C662.636 616.18 662.636 616.18 705.394 339.87C746.997 609.13 748.037 616.064 1003.55 655.702C1016.84 610.055 1024 561.865 1024 512.058C1024 229.161 794.839 0 511.942 0C229.161 0 0 229.161 0 512.058C0 794.839 229.161 1024 511.942 1024C742.49 1024 937.328 871.804 1001.58 662.405C747.921 701.696 746.881 709.785 705.394 977.775C662.636 701.58 662.636 701.58 386.441 658.938Z" fill="#1C4587"/></svg>',
     color: '#1C4587',
     description: 'Official wwWallet demonstration instance',
-    protocols: ['openid4vp', 'openid4vp-v1-unsigned', 'openid4vp-v1-signed'],
-    preset: true
-  },
-  {
-    name: 'wwWallet EU',
-    url: 'https://wallet.europa.eu',
-    icon: '🇪🇺',
-    color: '#0033a1',
-    description: 'European Union official wallet instance',
-    protocols: ['openid4vp', 'openid4vp-v1-unsigned', 'openid4vp-v1-signed'],
-    preset: true
-  },
-  {
-    name: 'wwWallet Test',
-    url: 'https://test.wwwallet.org',
-    icon: '🧪',
-    color: '#10b981',
-    description: 'wwWallet testing environment',
     protocols: ['openid4vp', 'openid4vp-v1-unsigned', 'openid4vp-v1-signed'],
     preset: true
   }
@@ -44,6 +26,7 @@ let settings = { enabled: true, developerMode: false, stats: { interceptCount: 0
 document.addEventListener('DOMContentLoaded', async function() {
   await loadData();
   setupEventListeners();
+  setupIconSelectors();
   renderAll();
   updateDeveloperModeUI();
 });
@@ -69,7 +52,7 @@ async function loadData() {
  */
 function setupEventListeners() {
   // Tab switching
-  document.querySelectorAll('.tab').forEach(tab => {
+  document.querySelectorAll('.tab-btn').forEach(tab => {
     tab.addEventListener('click', function() {
       switchTab(this.dataset.tab);
     });
@@ -84,8 +67,11 @@ function setupEventListeners() {
   document.getElementById('add-wallet-form').addEventListener('submit', handleAddWallet);
 
   // Edit modal
+  document.getElementById('delete-edit').addEventListener('click', handleDeleteEdit);
   document.getElementById('cancel-edit').addEventListener('click', closeEditModal);
+  document.getElementById('close-edit').addEventListener('click', closeEditModal);
   document.getElementById('save-edit').addEventListener('click', handleSaveEdit);
+  document.getElementById('edit-wallet-enabled').addEventListener('change', updateWalletStatusLabel);
 
   // Settings
   document.getElementById('extension-enabled').addEventListener('change', handleToggleEnabled);
@@ -103,17 +89,247 @@ function setupEventListeners() {
 }
 
 /**
+ * Setup icon selector buttons
+ */
+function setupIconSelectors() {
+  // Add form icon selector - emoji buttons
+  const iconGrid = document.getElementById('icon-emoji-grid');
+  if (iconGrid) {
+    iconGrid.querySelectorAll('.emoji-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        selectIcon('emoji', this.dataset.emoji);
+      });
+    });
+  }
+  
+  // Add form favicon button
+  const faviconBtn = document.getElementById('favicon-option');
+  if (faviconBtn) {
+    faviconBtn.addEventListener('click', function() {
+      const faviconImg = document.getElementById('favicon-img');
+      if (faviconImg && faviconImg.src) {
+        selectIcon('favicon', faviconImg.src);
+      }
+    });
+  }
+
+  // Edit form icon selector - emoji buttons
+  const editIconGrid = document.getElementById('edit-icon-emoji-grid');
+  if (editIconGrid) {
+    editIconGrid.querySelectorAll('.emoji-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        selectEditIcon('emoji', this.dataset.emoji);
+      });
+    });
+  }
+  
+  // Edit form favicon button
+  const editFaviconBtn = document.getElementById('edit-favicon-option');
+  if (editFaviconBtn) {
+    editFaviconBtn.addEventListener('click', function() {
+      const faviconImg = document.getElementById('edit-favicon-img');
+      if (faviconImg && faviconImg.src) {
+        selectEditIcon('favicon', faviconImg.src);
+      }
+    });
+  }
+
+  // URL input listener for favicon fetching
+  const urlInput = document.getElementById('wallet-url');
+  const nameInput = document.getElementById('wallet-name');
+  
+  if (urlInput) {
+    urlInput.addEventListener('blur', handleUrlChange);
+    urlInput.addEventListener('change', handleUrlChange);
+  }
+  
+  if (nameInput) {
+    nameInput.addEventListener('input', debounce(handleNameChange, 300));
+  }
+  
+  // Edit form URL and name listeners  
+  const editUrlInput = document.getElementById('edit-wallet-url');
+  const editNameInput = document.getElementById('edit-wallet-name');
+  
+  if (editUrlInput) {
+    editUrlInput.addEventListener('blur', handleEditUrlChange);
+    editUrlInput.addEventListener('change', handleEditUrlChange);
+  }
+  
+  if (editNameInput) {
+    editNameInput.addEventListener('input', debounce(handleEditNameChange, 300));
+  }
+}
+
+/**
+ * Debounce helper
+ */
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+/**
+ * Handle URL input change - fetch favicon and generate icons
+ */
+async function handleUrlChange() {
+  const url = document.getElementById('wallet-url').value.trim();
+  const name = document.getElementById('wallet-name').value.trim();
+  
+  if (!url) return;
+  if (!window.iconUtils) {
+    console.error('Icon utilities not loaded');
+    return;
+  }
+  
+  const iconOptions = document.getElementById('icon-options');
+  const generatedIconsContainer = document.getElementById('generated-icons');
+  
+  // Generate and render icons
+  const generatedIcons = generateIconsArray(url, name);
+  renderIconButtons(generatedIconsContainer, generatedIcons, selectIcon);
+  
+  // Auto-select first generated icon
+  selectIcon(generatedIcons[0].type, generatedIcons[0].value);
+  
+  // Fetch favicon in background
+  await fetchAndDisplayFavicon(url, {
+    section: document.getElementById('favicon-section'),
+    img: document.getElementById('favicon-img'),
+    status: document.getElementById('favicon-status')
+  }, (favicon) => selectIcon('favicon', favicon));
+
+  iconOptions.classList.remove('_hidden');
+}
+
+/**
+ * Handle name input change - regenerate icons
+ */
+function handleNameChange() {
+  const url = document.getElementById('wallet-url').value.trim();
+  const name = document.getElementById('wallet-name').value.trim();
+  
+  if (!name || !window.iconUtils) return;
+  
+  const generatedIconsContainer = document.getElementById('generated-icons');
+  const generatedIcons = generateIconsArray(url, name);
+  renderIconButtons(generatedIconsContainer, generatedIcons, selectIcon);
+}
+
+/**
+ * Generate icon options for the edit form
+ */
+async function generateEditIconOptions(url, name, currentIcon, currentIconType) {
+  if (!window.iconUtils) {
+    console.error('Icon utilities not loaded');
+    return;
+  }
+  
+  const iconOptions = document.getElementById('edit-icon-options');
+  const generatedIconsContainer = document.getElementById('edit-generated-icons');
+  const preview = document.getElementById('edit-icon-preview');
+  
+  // Generate and render icons
+  const generatedIcons = generateIconsArray(url, name);
+  renderIconButtons(generatedIconsContainer, generatedIcons, selectEditIcon);
+  
+  // Show icon options
+  iconOptions.classList.remove('_hidden');
+  
+  // Fetch favicon in background
+  if (url) {
+    await fetchAndDisplayFavicon(url, {
+      section: document.getElementById('edit-favicon-section'),
+      img: document.getElementById('edit-favicon-img'),
+      status: document.getElementById('edit-favicon-status')
+    }, (favicon) => {
+      // If current icon is favicon type, select it
+      if (currentIconType === 'favicon') {
+        selectEditIcon('favicon', favicon);
+      }
+    });
+  }
+  
+  // Select current icon
+  if (currentIcon) {
+    if (currentIconType === 'emoji' || !isIconUrl(currentIcon)) {
+      selectEditIcon('emoji', currentIcon);
+    } else if (currentIconType && currentIconType !== 'favicon') {
+      // It's a generated icon type - select matching generated icon
+      selectEditIcon(currentIconType, currentIcon);
+    } else if (currentIconType !== 'favicon') {
+      // Default: show the current icon in preview but don't select anything
+      if (isIconUrl(currentIcon)) {
+        preview.innerHTML = `<img src="${currentIcon}" alt="Wallet icon">`;
+      } else {
+        preview.innerHTML = `<span style="font-size: 32px;">${currentIcon}</span>`;
+      }
+    }
+  }
+}
+
+/**
+ * Handle URL change in edit form - regenerate icons
+ */
+async function handleEditUrlChange() {
+  const url = document.getElementById('edit-wallet-url').value.trim();
+  const name = document.getElementById('edit-wallet-name').value.trim();
+  
+  if (!url || !window.iconUtils) return;
+  
+  const generatedIconsContainer = document.getElementById('edit-generated-icons');
+  const iconOptions = document.getElementById('edit-icon-options');
+  
+  // Generate and render icons
+  const generatedIcons = generateIconsArray(url, name);
+  renderIconButtons(generatedIconsContainer, generatedIcons, selectEditIcon);
+  
+  // Auto-select first generated icon
+  selectEditIcon(generatedIcons[0].type, generatedIcons[0].value);
+  
+  // Fetch favicon in background
+  await fetchAndDisplayFavicon(url, {
+    section: document.getElementById('edit-favicon-section'),
+    img: document.getElementById('edit-favicon-img'),
+    status: document.getElementById('edit-favicon-status')
+  }, (favicon) => selectEditIcon('favicon', favicon));
+  
+  iconOptions.classList.remove('_hidden');
+}
+
+/**
+ * Handle name change in edit form - regenerate icons
+ */
+function handleEditNameChange() {
+  const url = document.getElementById('edit-wallet-url').value.trim();
+  const name = document.getElementById('edit-wallet-name').value.trim();
+  
+  if (!name || !window.iconUtils) return;
+  
+  const generatedIconsContainer = document.getElementById('edit-generated-icons');
+  const generatedIcons = generateIconsArray(url, name);
+  renderIconButtons(generatedIconsContainer, generatedIcons, selectEditIcon);
+}
+
+/**
  * Switch between tabs
  */
 function switchTab(tabName) {
   // Update tab buttons
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.classList.toggle('active', tab.dataset.tab === tabName);
+  document.querySelectorAll('.tab-btn').forEach(tab => {
+    tab.classList.toggle('-active', tab.dataset.tab === tabName);
   });
 
   // Update tab content
   document.querySelectorAll('.tab-content').forEach(content => {
-    content.classList.toggle('active', content.id === `${tabName}-tab`);
+    content.classList.toggle('-active', content.id === `${tabName}-tab`);
   });
 }
 
@@ -136,28 +352,45 @@ function renderWallets() {
   if (wallets.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
-        <div class="empty-state-icon">🔐</div>
-        <div class="empty-state-title">No wallets configured</div>
-        <div class="empty-state-text">Add your first digital wallet to get started</div>
-        <button class="btn" onclick="switchTab('add')">Add Your First Wallet</button>
+        <div class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        </div>
+        <div class="title">Configure a wallet</div>
+        <div class="text">No wallets configured, add one to get started.</div>
+        <button class="s-button empty-state-add-btn">Add Your First Wallet</button>
       </div>
     `;
+    // Attach click handler for empty state button
+    container.querySelector('.empty-state-add-btn').addEventListener('click', function() {
+      switchTab('add');
+    });
     return;
   }
 
   container.innerHTML = `
     <div class="wallet-grid">
       ${wallets.map(wallet => renderWalletCard(wallet)).join('')}
+      <div class="add-card">
+        <div class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        </div>
+        <h3 class="title">Add Another Wallet</h3>
+        <p class="description">Connect a new digital identity provider to your dashboard.</p>
+      </div>
     </div>
   `;
+  
+  // Attach click handler for add another wallet card
+  container.querySelector('.add-card').addEventListener('click', function() {
+    switchTab('add');
+  });
 
   // Attach event listeners to wallet actions
   wallets.forEach((wallet, index) => {
     const card = container.querySelector(`[data-wallet-id="${wallet.id}"]`);
     if (card) {
       card.querySelector('.btn-edit').addEventListener('click', () => openEditModal(wallet));
-      card.querySelector('.btn-delete').addEventListener('click', () => handleDeleteWallet(wallet.id));
-      card.querySelector('.btn-toggle').addEventListener('click', () => handleToggleWallet(wallet.id));
+      card.querySelector('.toggle-wallet').addEventListener('change', (e) => handleToggleWallet(wallet.id, e.target.checked));
     }
   });
 }
@@ -173,39 +406,75 @@ function renderWalletCard(wallet) {
   let protocolsDisplay = '';
   if (settings.developerMode && wallet.protocols && wallet.protocols.length > 0) {
     protocolsDisplay = `
-      <div class="wallet-protocols" style="margin-top: 8px; padding: 8px; background: #f3f4f6; border-radius: 6px;">
-        <div style="font-size: 12px; font-weight: 500; color: #6b7280; margin-bottom: 4px;">Protocols:</div>
-        <div style="font-size: 12px; color: #374151;">${wallet.protocols.map(p => `<code style="background: white; padding: 2px 6px; border-radius: 3px; margin-right: 4px;">${escapeHtml(p)}</code>`).join('')}</div>
+      <div class="wallet-protocols">
+        <div class="label">Protocols</div>
+        <div class="protocols">${wallet.protocols.map(p => `<code>${escapeHtml(p)}</code>`).join('')}</div>
       </div>
     `;
   }
   
+  // Render icon - handle both emoji and image icons
+  let iconHtml;
+  let icon = wallet.icon;
+  
+  // If icon is missing or is the default emoji, generate one dynamically
+  if (!icon || icon === '🔐') {
+    // Generate an identicon based on the wallet URL or name
+    const identifier = wallet.url || wallet.name || wallet.id;
+    try {
+      // Use window.iconUtils for icon generation
+      if (window.iconUtils && window.iconUtils.generateIdenticon && window.iconUtils.svgToDataUrl) {
+        const svg = window.iconUtils.generateIdenticon(identifier);
+        icon = window.iconUtils.svgToDataUrl(svg);
+      } else {
+        icon = '🔐'; // Fallback
+      }
+    } catch (e) {
+      console.error('Icon generation failed:', e);
+      icon = '🔐'; // Fallback to emoji if generation fails
+    }
+  }
+  
+  // Check if icon is a URL (data: or http)
+  const iconIsUrl = icon && (icon.startsWith('data:') || icon.startsWith('http'));
+  if (iconIsUrl) {
+    iconHtml = `<img src="${escapeHtml(icon)}" alt="${escapeHtml(wallet.name)}" style="width: 32px; height: 32px; object-fit: contain;">`;
+  } else {
+    iconHtml = `<span class="wallet-emoji">${icon}</span>`;
+  }
+  
   return `
-    <div class="wallet-card ${wallet.enabled ? '' : 'disabled'}" data-wallet-id="${wallet.id}">
-      <div class="wallet-header">
-        <div class="wallet-icon" style="background-color: ${wallet.color || '#1C4587'}">
-          ${wallet.icon || '🔐'}
+    <div class="wallet-card ${wallet.enabled ? '' : '-disabled'}" data-wallet-id="${wallet.id}">
+      <div class="header">
+        <div class="wallet-icon -large">
+          ${iconHtml}
         </div>
-        <div class="wallet-info">
-          <div class="wallet-name">${escapeHtml(wallet.name)}</div>
-          <div class="wallet-url">${escapeHtml(wallet.url)}</div>
+        <div class="info">
+          <div class="name">${escapeHtml(wallet.name)}</div>
+          <div class="url">${escapeHtml(wallet.url)}</div>
         </div>
       </div>
+      ${wallet.description ? `<div class="description">${escapeHtml(wallet.description)}</div>` : ''}
       
-      ${wallet.description ? `<div class="wallet-description">${escapeHtml(wallet.description)}</div>` : ''}
       ${protocolsDisplay}
       
-      <div class="wallet-meta">
-        ${wallet.enabled ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-warning">Disabled</span>'}
-        ${isDefault ? '<span class="badge badge-info">Default</span>' : ''}
-        ${wallet.preset ? '<span class="badge badge-info">wwWallet</span>' : ''}
-        ${uses > 0 ? `<span class="badge badge-info">Used ${uses}x</span>` : ''}
+      <div class="meta">
+        ${wallet.enabled ? '<span class="badge-label -success">Active</span>' : '<span class="badge-label -warning">Inactive</span>'}
+        ${isDefault ? '<span class="badge-label -info">Default</span>' : ''}
+        ${wallet.preset ? '<span class="badge-label -info">wwWallet</span>' : ''}
+        ${uses > 0 ? `<span class="badge-label -info">Used ${uses}x</span>` : ''}
       </div>
       
-      <div class="wallet-actions">
-        <button class="btn btn-small btn-secondary btn-edit">Edit</button>
-        <button class="btn btn-small btn-secondary btn-toggle">${wallet.enabled ? 'Disable' : 'Enable'}</button>
-        <button class="btn btn-small btn-danger btn-delete">Delete</button>
+      <div class="actions">
+        <div class="left">
+          <label class="toggle-switch -large" title="${wallet.enabled ? 'Deactivate' : 'Activate'} wallet">
+            <input type="checkbox" class="toggle-wallet" ${wallet.enabled ? 'checked' : ''}>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="right">
+          <button class="s-button -secondary btn-edit">Edit</button>
+        </div>
       </div>
     </div>
   `;
@@ -217,17 +486,28 @@ function renderWalletCard(wallet) {
 function renderPresets() {
   const container = document.getElementById('preset-wallets');
   
-  container.innerHTML = WWWALLET_PRESETS.map(preset => `
-    <div class="preset-card" data-preset='${JSON.stringify(preset)}'>
-      <div class="preset-icon">${preset.icon}</div>
-      <div class="preset-name">${escapeHtml(preset.name)}</div>
-    </div>
-  `).join('');
+  container.innerHTML = WWWALLET_PRESETS.map(preset => {
+    const isAdded = wallets.some(w => w.url === preset.url);
+    return `
+      <div class="preset-card ${isAdded ? '-added' : ''}" data-preset='${JSON.stringify(preset)}'>
+        <div class="icon">${preset.icon}</div>
+        <div class="info">
+          <div class="name">${escapeHtml(preset.name)}</div>
+          ${isAdded 
+            ? '<div class="status -added"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Added</div>'
+            : '<div class="status">Click to add</div>'
+          }
+        </div>
+        ${!isAdded ? '<button class="btn">Add</button>' : ''}
+      </div>
+    `;
+  }).join('');
 
   // Attach click handlers
-  container.querySelectorAll('.preset-card').forEach(card => {
-    card.addEventListener('click', function() {
-      const preset = JSON.parse(this.dataset.preset);
+  container.querySelectorAll('.preset-card:not(.-added)').forEach(card => {
+    card.querySelector('.btn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      const preset = JSON.parse(card.dataset.preset);
       addPresetWallet(preset);
     });
   });
@@ -292,7 +572,8 @@ async function handleAddWallet(e) {
     url: document.getElementById('wallet-url').value,
     description: document.getElementById('wallet-description').value,
     icon: document.getElementById('wallet-icon').value || '🔐',
-    color: document.getElementById('wallet-color').value,
+    iconType: document.getElementById('wallet-icon-type')?.value || 'emoji',
+    color: '#1C4587', // Auto-assign default color
     enabled: document.getElementById('wallet-enabled').checked,
     preset: false
   };
@@ -311,22 +592,52 @@ async function handleAddWallet(e) {
   await saveWallets();
   
   e.target.reset();
+  // Reset icon selector
+  resetIconSelector();
+  
   renderAll();
   showNotification(`${wallet.name} added successfully`, 'success');
   switchTab('wallets');
 }
 
 /**
+ * Reset the icon selector to default state
+ */
+function resetIconSelector() {
+  const preview = document.getElementById('icon-preview');
+  const iconOptions = document.getElementById('icon-options');
+  const iconInput = document.getElementById('wallet-icon');
+  const iconTypeInput = document.getElementById('wallet-icon-type');
+  const faviconSection = document.getElementById('favicon-section');
+  const generatedIcons = document.getElementById('generated-icons');
+  
+  // Clear all selections
+  document.querySelectorAll('#icon-emoji-grid .emoji-btn').forEach(b => b.classList.remove('-selected'));
+  
+  // Reset preview
+  if (preview) preview.innerHTML = '<span class="placeholder">?</span>';
+  if (iconOptions) iconOptions.classList.add('_hidden');
+  if (iconInput) iconInput.value = '';
+  if (iconTypeInput) iconTypeInput.value = '';
+  if (faviconSection) faviconSection.classList.add('_hidden');
+  if (generatedIcons) generatedIcons.innerHTML = '';
+}
+
+/**
  * Open edit modal
  */
-function openEditModal(wallet) {
+async function openEditModal(wallet) {
   document.getElementById('edit-wallet-id').value = wallet.id;
   document.getElementById('edit-wallet-name').value = wallet.name;
   document.getElementById('edit-wallet-url').value = wallet.url;
   document.getElementById('edit-wallet-description').value = wallet.description || '';
-  document.getElementById('edit-wallet-icon').value = wallet.icon || '';
-  document.getElementById('edit-wallet-color').value = wallet.color || '#1C4587';
+  document.getElementById('edit-wallet-icon').value = wallet.icon || '🔐';
+  document.getElementById('edit-wallet-icon-type').value = wallet.iconType || 'emoji';
   document.getElementById('edit-wallet-enabled').checked = wallet.enabled;
+  updateWalletStatusLabel();
+  
+  // Generate and display icon options
+  await generateEditIconOptions(wallet.url, wallet.name, wallet.icon, wallet.iconType);
   
   // Populate protocols if developer mode is enabled
   if (settings.developerMode && wallet.protocols) {
@@ -338,14 +649,31 @@ function openEditModal(wallet) {
   // Ensure developer mode UI is updated for the modal
   updateDeveloperModeUI();
   
-  document.getElementById('edit-modal').classList.add('active');
+  document.getElementById('edit-modal').classList.add('-active');
+}
+
+/**
+ * Handle delete wallet from edit modal
+ */
+async function handleDeleteEdit() {
+  const walletId = document.getElementById('edit-wallet-id').value;
+  await handleRemoveWallet(walletId);
+  closeEditModal();
+}
+
+/**
+ * Update the wallet status label based on toggle state
+ */
+function updateWalletStatusLabel() {
+  const enabled = document.getElementById('edit-wallet-enabled').checked;
+  document.getElementById('edit-wallet-status').textContent = enabled ? 'Active' : 'Inactive';
 }
 
 /**
  * Close edit modal
  */
 function closeEditModal() {
-  document.getElementById('edit-modal').classList.remove('active');
+  document.getElementById('edit-modal').classList.remove('-active');
 }
 
 /**
@@ -362,8 +690,8 @@ async function handleSaveEdit() {
     name: document.getElementById('edit-wallet-name').value,
     url: document.getElementById('edit-wallet-url').value,
     description: document.getElementById('edit-wallet-description').value,
-    icon: document.getElementById('edit-wallet-icon').value,
-    color: document.getElementById('edit-wallet-color').value,
+    icon: document.getElementById('edit-wallet-icon').value || '🔐',
+    iconType: document.getElementById('edit-wallet-icon-type')?.value || 'emoji',
     enabled: document.getElementById('edit-wallet-enabled').checked
   };
 
@@ -388,30 +716,30 @@ async function handleSaveEdit() {
 }
 
 /**
- * Handle delete wallet
+ * Handle remove wallet
  */
-async function handleDeleteWallet(walletId) {
-  if (!confirm('Are you sure you want to delete this wallet?')) {
+async function handleRemoveWallet(walletId) {
+  if (!confirm('Are you sure you want to remove this wallet?')) {
     return;
   }
 
   wallets = wallets.filter(w => w.id !== walletId);
   await saveWallets();
   renderAll();
-  showNotification('Wallet deleted successfully', 'success');
+  showNotification('Wallet removed successfully', 'success');
 }
 
 /**
  * Handle toggle wallet
  */
-async function handleToggleWallet(walletId) {
+async function handleToggleWallet(walletId, enabled) {
   const wallet = wallets.find(w => w.id === walletId);
   if (!wallet) return;
 
-  wallet.enabled = !wallet.enabled;
+  wallet.enabled = enabled;
   await saveWallets();
   renderAll();
-  showNotification(`Wallet ${wallet.enabled ? 'enabled' : 'disabled'}`, 'success');
+  showNotification(`Wallet ${wallet.enabled ? 'activated' : 'deactivated'}`, 'success');
 }
 
 /**
@@ -421,7 +749,7 @@ async function handleToggleEnabled(e) {
   settings.enabled = e.target.checked;
   await saveSettings();
   showNotification(
-    settings.enabled ? 'Extension enabled' : 'Extension disabled',
+    settings.enabled ? 'Extension active' : 'Extension inactive',
     'success'
   );
 }
@@ -450,10 +778,10 @@ function updateDeveloperModeUI() {
   const editProtocolsGroup = document.getElementById('edit-protocols-group');
   
   if (addProtocolsGroup) {
-    addProtocolsGroup.style.display = devMode ? 'flex' : 'none';
+    addProtocolsGroup.classList.toggle('_hidden', !devMode);
   }
   if (editProtocolsGroup) {
-    editProtocolsGroup.style.display = devMode ? 'flex' : 'none';
+    editProtocolsGroup.classList.toggle('_hidden', !devMode);
   }
 }
 
@@ -589,26 +917,48 @@ function escapeHtml(unsafe) {
 
 /**
  * Show notification
+ * 
+ * @param {string} message - The message to display
+ * @param {'success' | 'error' | 'warning' | 'info'} type - The type of notification
  */
 function showNotification(message, type = 'info') {
-  // Create a simple toast notification
+  const types = {
+    success: {
+      title: 'Success!',
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>'
+    },
+    error: {
+      title: 'Error!',
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>'
+    },
+    warning: {
+      title: 'Warning!',
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>'
+    },
+    info: {
+      title: 'Info',
+      icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>'
+    }
+  }
+
   const toast = document.createElement('div');
-  toast.style.cssText = `
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    padding: 16px 24px;
-    background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#1C4587'};
-    color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 10000;
-    font-size: 14px;
-    font-weight: 500;
-    animation: slideIn 0.3s ease;
+  toast.className = `toast-item -${type}`;
+  toast.innerHTML = `
+    <span class="icon">${types[type]?.icon || types.info.icon}</span>
+    <div class="body">
+      <div class="title">${types[type]?.title || types.info.title}</div>
+      <div class="message">${escapeHtml(message)}</div>
+    </div>
+    <button class="close" aria-label="Close">&times;</button>
   `;
-  toast.textContent = message;
-  document.body.appendChild(toast);
+
+  toast.querySelector('.close').addEventListener('click', () => {
+    toast.style.animation = 'slideOut 0.3s ease';
+    setTimeout(() => toast.remove(), 300);
+  });
+
+  const container = document.getElementById('toast-container');
+  container.appendChild(toast);
 
   setTimeout(() => {
     toast.style.animation = 'slideOut 0.3s ease';
@@ -616,16 +966,140 @@ function showNotification(message, type = 'info') {
   }, 3000);
 }
 
-// Add CSS for animations
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes slideIn {
-    from { transform: translateX(400px); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+// ============================================================================
+// Icon Selector Helpers (shared between add and edit forms)
+// ============================================================================
+
+/**
+ * Generate icon options array from URL and name
+ * @param {string} url - Wallet URL (used for identicon/geometric generation)
+ * @param {string} name - Wallet name (used for initial avatar)
+ * @returns {Array<{type: string, value: string}>} Array of icon options
+ */
+function generateIconsArray(url, name) {
+  const iu = window.iconUtils;
+  if (!iu) return [];
+  
+  const identifier = url || name || 'wallet';
+  const walletName = name || 'Wallet';
+  
+  return [
+    { type: 'identicon', value: iu.svgToDataUrl(iu.generateIdenticon(identifier)) },
+    { type: 'initial', value: iu.svgToDataUrl(iu.generateInitialAvatar(walletName)) },
+    { type: 'geometric-1', value: iu.svgToDataUrl(iu.generateGeometricIcon(identifier)) },
+    { type: 'geometric-2', value: iu.svgToDataUrl(iu.generateGeometricIcon(identifier + '2')) }
+  ];
+}
+
+/**
+ * Render icon buttons into a container
+ * @param {HTMLElement} container - Container to render buttons into
+ * @param {Array<{type: string, value: string}>} icons - Array of icon options
+ * @param {function} onSelect - Callback when an icon is selected: (type, value) => void
+ */
+function renderIconButtons(container, icons, onSelect) {
+  container.innerHTML = '';
+  icons.forEach((iconData) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'icon-option';
+    btn.dataset.type = iconData.type;
+    btn.dataset.value = iconData.value;
+    btn.title = iconData.type;
+    btn.innerHTML = `<img src="${iconData.value}" alt="${iconData.type}">`;
+    btn.addEventListener('click', () => onSelect(iconData.type, iconData.value));
+    container.appendChild(btn);
+  });
+}
+
+/**
+ * Fetch and display favicon with validation
+ * @param {string} url - URL to fetch favicon from
+ * @param {Object} elements - DOM elements { section, img, status }
+ * @param {function} onSuccess - Callback when favicon loads: (faviconUrl) => void
+ */
+async function fetchAndDisplayFavicon(url, elements, onSuccess) {
+  const { section, img, status } = elements;
+  const iu = window.iconUtils;
+  
+  // Reset state
+  section.classList.add('_hidden');
+  status.innerHTML = '';
+  
+  if (!url || !iu) return;
+  
+  try {
+    const favicon = await iu.fetchFavicon(url, 2000);
+    if (favicon) {
+      // Validate image actually loads
+      const testImg = new Image();
+      testImg.onload = () => {
+        section.classList.remove('_hidden');
+        img.src = favicon;
+        onSuccess(favicon);
+      };
+      testImg.onerror = () => {
+        section.classList.add('_hidden');
+      };
+      testImg.src = favicon;
+    }
+  } catch (e) {
+    console.log('Favicon fetch failed:', e);
   }
-  @keyframes slideOut {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(400px); opacity: 0; }
+}
+
+/**
+ * Select an icon in a form (unified for both add and edit forms)
+ * @param {string} prefix - Element ID prefix ('' for add form, 'edit-' for edit form)
+ * @param {string} type - Icon type: 'emoji', 'favicon', or generated type
+ * @param {string} value - Icon value (emoji char or data URL)
+ */
+function selectIconInForm(prefix, type, value) {
+  const preview = document.getElementById(`${prefix}icon-preview`);
+  const iconInput = document.getElementById(`${prefix}wallet-icon`);
+  const iconTypeInput = document.getElementById(`${prefix}wallet-icon-type`);
+  
+  // Build selectors for this form
+  const emojiSelector = `#${prefix}icon-emoji-grid .emoji-btn`;
+  const generatedSelector = `#${prefix}generated-icons .icon-option`;
+  const faviconSelector = `#${prefix}favicon-option`;
+  
+  // Clear all selections
+  document.querySelectorAll(`${emojiSelector}, ${generatedSelector}, ${faviconSelector}`).forEach(btn => {
+    btn.classList.remove('-selected');
+  });
+  
+  // Update preview and inputs
+  if (type === 'emoji') {
+    preview.innerHTML = `<span style="font-size: 32px;">${value}</span>`;
+    iconInput.value = value;
+    if (iconTypeInput) iconTypeInput.value = 'emoji';
+    
+    const emojiBtn = document.querySelector(`${emojiSelector}[data-emoji="${CSS.escape(value)}"]`);
+    if (emojiBtn) emojiBtn.classList.add('-selected');
+  } else if (type === 'favicon') {
+    preview.innerHTML = `<img src="${value}" alt="Wallet icon">`;
+    iconInput.value = value;
+    if (iconTypeInput) iconTypeInput.value = 'favicon';
+    
+    const faviconBtn = document.getElementById(`${prefix}favicon-option`);
+    if (faviconBtn) faviconBtn.classList.add('-selected');
+  } else {
+    // Generated icons (identicon, initial, geometric)
+    preview.innerHTML = `<img src="${value}" alt="Wallet icon">`;
+    iconInput.value = value;
+    if (iconTypeInput) iconTypeInput.value = type;
+    
+    const genBtn = document.querySelector(`${generatedSelector}[data-value="${CSS.escape(value)}"]`);
+    if (genBtn) genBtn.classList.add('-selected');
   }
-`;
-document.head.appendChild(style);
+}
+
+// Convenience wrappers for backward compatibility
+function selectIcon(type, value) {
+  selectIconInForm('', type, value);
+}
+
+function selectEditIcon(type, value) {
+  selectIconInForm('edit-', type, value);
+}

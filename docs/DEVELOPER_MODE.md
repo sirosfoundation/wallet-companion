@@ -53,7 +53,7 @@ Protocol identifiers are strings that match the `protocol` field in Digital Cred
 
 ## Preset Wallets
 
-The wwWallet presets (Demo, EU, Test) come pre-configured with these protocols:
+The wwWallet Demo preset (demo.wwwallet.org) comes pre-configured with these protocols:
 - `openid4vp`
 - `openid4vp-v1-unsigned`
 - `openid4vp-v1-signed`
