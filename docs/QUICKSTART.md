@@ -50,7 +50,7 @@ Safari requires additional setup:
 
 1. **Convert to Safari Extension:**
    ```bash
-   xcrun safari-web-extension-converter safari/ --app-name "DC API Interceptor"
+   xcrun safari-web-extension-converter safari/ --app-name "Web Wallet Selector"
    ```
 
 2. **Open in Xcode:**
@@ -60,7 +60,7 @@ Safari requires additional setup:
 3. **Enable in Safari:**
    - Open Safari → Preferences
    - Go to Extensions tab
-   - Enable "DC API Interceptor"
+   - Enable "Web Wallet Selector"
    - Grant any requested permissions
 
 ## Customizing for Your DC API

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Digital Credentials Wallet Selector extension allows users to configure multiple web-based digital identity wallets. This guide explains how to manage wallets and integrate with wwWallet and other providers.
+The Web Wallet Selector extension allows users to configure multiple web-based digital identity wallets. This guide explains how to manage wallets and integrate with wwWallet and other providers.
 
 ## Accessing Wallet Configuration
 
@@ -14,7 +14,7 @@ The Digital Credentials Wallet Selector extension allows users to configure mult
 ### Method 2: Browser Settings
 - **Chrome**: Right-click extension icon → Options
 - **Firefox**: Right-click extension icon → Manage Extension → Options
-- **Safari**: Safari → Preferences → Extensions → Digital Credentials Wallet Selector → Options
+- **Safari**: Safari → Preferences → Extensions → Web Wallet Selector → Options
 
 ## Options Page Structure
 

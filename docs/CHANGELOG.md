@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the DC API Interceptor browser extension will be documented in this file.
+All notable changes to the Web Wallet Selector browser extension will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -46,5 +46,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cross-browser compatible codebase
 - Automated build process
 
-[Unreleased]: https://github.com/yourusername/dc-api-interceptor/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/yourusername/dc-api-interceptor/releases/tag/v1.0.0
+[Unreleased]: https://github.com/sirosfoundation/web-wallet-selector/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/sirosfoundation/web-wallet-selector/releases/tag/v1.0.0

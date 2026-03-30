@@ -1,5 +1,5 @@
 /**
- * Background script for W3C Digital Credentials API interceptor
+ * Background script for Web Wallet Selector
  * Manages wallet configuration and credential requests
  */
 
@@ -16,15 +16,15 @@ const STORAGE_KEYS = {
  */
 async function initializeExtension() {
   const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
-  
+
   // Initialize default settings if not exists
   const result = await storage.local.get([STORAGE_KEYS.WALLETS, STORAGE_KEYS.ENABLED]);
-  
+
   if (result[STORAGE_KEYS.ENABLED] === undefined) {
     await storage.local.set({ [STORAGE_KEYS.ENABLED]: true });
   }
-  
-  console.log('Digital Credentials API Interceptor initialized');
+
+  console.log('Web Wallet Selector initialized');
 }
 
 // Initialize on install/startup
@@ -58,16 +58,16 @@ async function updateStats(action) {
   const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
   const result = await storage.local.get(STORAGE_KEYS.STATS);
   const stats = result[STORAGE_KEYS.STATS] || { interceptCount: 0, walletUses: {} };
-  
+
   if (action === 'intercept') {
     stats.interceptCount = (stats.interceptCount || 0) + 1;
   } else if (action.startsWith('wallet:')) {
     const walletId = action.substring(7);
     stats.walletUses[walletId] = (stats.walletUses[walletId] || 0) + 1;
   }
-  
+
   await storage.local.set({ [STORAGE_KEYS.STATS]: stats });
-  
+
   // Notify popup if open
   const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
   runtime.sendMessage({ type: 'STATS_UPDATE', stats }).catch(() => {});
@@ -79,7 +79,7 @@ async function updateStats(action) {
 async function getSupportedProtocols() {
   const wallets = await getConfiguredWallets();
   const enabledWallets = wallets.filter(w => w.enabled);
-  
+
   // Collect all unique protocols
   const protocols = new Set();
   for (const wallet of enabledWallets) {
@@ -87,7 +87,7 @@ async function getSupportedProtocols() {
       wallet.protocols.forEach(p => protocols.add(p));
     }
   }
-  
+
   return Array.from(protocols);
 }
 
@@ -96,10 +96,10 @@ async function getSupportedProtocols() {
  */
 async function getWalletsForProtocol(protocol) {
   const wallets = await getConfiguredWallets();
-  return wallets.filter(w => 
-    w.enabled && 
-    w.protocols && 
-    Array.isArray(w.protocols) && 
+  return wallets.filter(w =>
+    w.enabled &&
+    w.protocols &&
+    Array.isArray(w.protocols) &&
     w.protocols.includes(protocol)
   );
 }
@@ -112,7 +112,7 @@ async function getWalletsForProtocol(protocol) {
  */
 async function handleMessage(message, sender, sendResponse) {
   console.log('Received message:', message.type);
-  
+
   try {
     if (message.type === 'SHOW_WALLET_SELECTOR') {
       // Check if extension is enabled
@@ -128,13 +128,13 @@ async function handleMessage(message, sender, sendResponse) {
       // Get configured wallets that support the requested protocols
       const allWallets = await getConfiguredWallets();
       const enabledWallets = allWallets.filter(w => w.enabled);
-      
+
       // Filter wallets by protocols if requests specify protocols
       let matchingWallets = enabledWallets;
       if (message.requests && Array.isArray(message.requests)) {
         const requestedProtocols = message.requests.map(r => r.protocol);
-        matchingWallets = enabledWallets.filter(wallet => 
-          wallet.protocols && 
+        matchingWallets = enabledWallets.filter(wallet =>
+          wallet.protocols &&
           Array.isArray(wallet.protocols) &&
           wallet.protocols.some(p => requestedProtocols.includes(p))
         );
@@ -149,35 +149,35 @@ async function handleMessage(message, sender, sendResponse) {
 
       // Inject modal and show wallet selector
       await injectWalletModal(sender.tab.id, sender.frameId);
-      
+
       // Send matching wallets to content script
       sendResponse({ wallets: matchingWallets, requests: message.requests });
       return true;
     }
-    
+
     else if (message.type === 'WALLET_SELECTED') {
       // Record wallet usage
       await updateStats(`wallet:${message.walletId}`);
-      
+
       // Here you would handle the actual credential request to the wallet
       // For now, we'll just acknowledge
       sendResponse({ success: true });
       return true;
     }
-    
+
     else if (message.type === 'GET_WALLETS') {
       const wallets = await getConfiguredWallets();
       sendResponse({ wallets });
       return true;
     }
-    
+
     else if (message.type === 'SAVE_WALLETS') {
       const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
       await storage.local.set({ [STORAGE_KEYS.WALLETS]: message.wallets });
       sendResponse({ success: true });
       return true;
     }
-    
+
     else if (message.type === 'GET_SETTINGS') {
       const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
       const result = await storage.local.get([STORAGE_KEYS.ENABLED, STORAGE_KEYS.DEVELOPER_MODE, STORAGE_KEYS.STATS]);
@@ -188,7 +188,7 @@ async function handleMessage(message, sender, sendResponse) {
       });
       return true;
     }
-    
+
     else if (message.type === 'SAVE_SETTINGS') {
       const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
       const updates = {};
@@ -202,23 +202,23 @@ async function handleMessage(message, sender, sendResponse) {
       sendResponse({ success: true });
       return true;
     }
-    
+
     else if (message.type === 'TOGGLE_ENABLED') {
       const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
       await storage.local.set({ [STORAGE_KEYS.ENABLED]: message.enabled });
       sendResponse({ success: true });
       return true;
     }
-    
+
     else if (message.type === 'REGISTER_WALLET') {
       // Handle wallet auto-registration
       const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
       const result = await storage.local.get(STORAGE_KEYS.WALLETS);
       let wallets = result[STORAGE_KEYS.WALLETS] || [];
-      
+
       // Check if wallet already exists (by URL)
       const existingWallet = wallets.find(w => w.url === message.wallet.url);
-      
+
       if (existingWallet) {
         // Wallet already registered
         console.log('Wallet already registered:', message.wallet.url);
@@ -229,10 +229,10 @@ async function handleMessage(message, sender, sendResponse) {
         });
         return true;
       }
-      
+
       // Generate new wallet ID
       const walletId = 'wallet-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-      
+
       // Add wallet to the list
       const newWallet = {
         id: walletId,
@@ -242,12 +242,12 @@ async function handleMessage(message, sender, sendResponse) {
         registeredFrom: message.origin,
         registeredAt: new Date().toISOString()
       };
-      
+
       wallets.push(newWallet);
       await storage.local.set({ [STORAGE_KEYS.WALLETS]: wallets });
-      
+
       console.log('Wallet registered:', newWallet.name, 'from', message.origin);
-      
+
       sendResponse({
         success: true,
         alreadyRegistered: false,
@@ -255,63 +255,63 @@ async function handleMessage(message, sender, sendResponse) {
       });
       return true;
     }
-    
+
     else if (message.type === 'CHECK_WALLET') {
       // Check if a wallet is registered
       const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
       const result = await storage.local.get(STORAGE_KEYS.WALLETS);
       const wallets = result[STORAGE_KEYS.WALLETS] || [];
-      
+
       const isRegistered = wallets.some(w => w.url === message.url);
-      
+
       sendResponse({ isRegistered: isRegistered });
       return true;
     }
-    
+
     else if (message.type === 'GET_SUPPORTED_PROTOCOLS') {
       // Get all supported protocols
       const protocols = await getSupportedProtocols();
       sendResponse({ protocols: protocols });
       return true;
     }
-    
+
     else if (message.type === 'CONTENT_SCRIPT_READY') {
       // Content script has loaded
       console.log('Content script ready on:', message.origin);
       sendResponse({ success: true });
       return true;
     }
-    
+
     else if (message.type === 'FETCH_FAVICON') {
       // Fetch favicon from a wallet URL via background script to avoid CORS
       try {
         const urlObj = new URL(message.url);
         const faviconUrl = `${urlObj.origin}${urlObj.pathname.replace(/\/?$/, '/')}favicon.ico`;
-        
+
         const controller = new AbortController();
         const timeoutMs = message.timeout || 3000;
         const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-        
+
         const res = await fetch(faviconUrl, { signal: controller.signal });
         clearTimeout(timeoutId);
-        
+
         if (!res.ok) {
           sendResponse({ success: false });
           return true;
         }
-        
+
         const contentType = res.headers.get('content-type') || 'image/x-icon';
         if (!contentType.startsWith('image/')) {
           sendResponse({ success: false });
           return true;
         }
-        
+
         const buf = await res.arrayBuffer();
         if (!buf.byteLength) {
           sendResponse({ success: false });
           return true;
         }
-        
+
         // Convert ArrayBuffer to base64 data URI
         // (Service workers in MV3 lack FileReader/btoa for binary)
         const bytes = new Uint8Array(buf);
@@ -322,7 +322,7 @@ async function handleMessage(message, sender, sendResponse) {
 
         const base64 = btoa(binary);
         const dataUri = `data:${contentType};base64,${base64}`;
-        
+
         sendResponse({ success: true, dataUri });
       } catch (e) {
         console.error('Error fetching favicon:', e);
@@ -334,7 +334,7 @@ async function handleMessage(message, sender, sendResponse) {
     console.error('Error handling message:', error);
     sendResponse({ error: error.message });
   }
-  
+
   return true; // Keep the message channel open for async responses
 }
 
@@ -343,7 +343,7 @@ async function handleMessage(message, sender, sendResponse) {
  */
 async function injectWalletModal(tabId, frameId) {
   const tabs = typeof browser !== 'undefined' ? browser.tabs : chrome.tabs;
-  
+
   try {
     await tabs.executeScript(tabId, {
       file: 'modal.js',

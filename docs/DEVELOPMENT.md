@@ -1,4 +1,4 @@
-# DC API Interceptor - Development Guide
+# Web Wallet Selector - Development Guide
 
 ## Architecture
 

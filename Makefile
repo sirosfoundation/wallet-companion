@@ -1,4 +1,4 @@
-# Makefile for DC API Interceptor Browser Extensions
+# Makefile for Web Wallet Selector Browser Extensions
 
 .PHONY: help install clean build build-chrome build-firefox build-safari \
         watch watch-chrome watch-firefox watch-safari \
@@ -24,7 +24,7 @@ DIST_DIR := dist
 SCRIPTS_DIR := scripts
 
 help: ## Show this help message
-	@echo "$(BLUE)DC API Interceptor - Browser Extension Build System$(NC)"
+	@echo "$(BLUE)Web Wallet Selector - Browser Extension Build System$(NC)"
 	@echo ""
 	@echo "$(GREEN)Available targets:$(NC)"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  $(YELLOW)%-20s$(NC) %s\n", $$1, $$2}'
@@ -123,7 +123,7 @@ dev-safari: build-safari ## Instructions for Safari development
 	@echo "$(YELLOW)Safari Extension Development:$(NC)"
 	@echo ""
 	@echo "1. Convert to Safari Web Extension:"
-	@echo "   xcrun safari-web-extension-converter $(SAFARI_DIR)/ --app-name 'DC API Interceptor'"
+	@echo "   xcrun safari-web-extension-converter $(SAFARI_DIR)/ --app-name 'Web Wallet Selector'"
 	@echo ""
 	@echo "2. Open the generated Xcode project and run it"
 	@echo ""

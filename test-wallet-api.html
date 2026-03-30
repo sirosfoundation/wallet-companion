@@ -91,7 +91,7 @@
 </head>
 <body>
   <h1>🔐 Wallet Auto-Registration API Test</h1>
-  <p class="subtitle">Test the Digital Credentials Wallet Selector extension API</p>
+  <p class="subtitle">Test the Web Wallet Selector extension API</p>
 
   <div id="extension-status"></div>
 
@@ -124,7 +124,7 @@ const walletInfo = {
 // Check extension
 if (window.DCWS?.isInstalled()) {
   console.log('Extension detected!');
-  
+
   // Register wallet
   const result = await window.DCWS.registerWallet(walletInfo);
   console.log('Registration result:', result);
@@ -149,7 +149,7 @@ if (window.DCWS?.isInstalled()) {
       statusDiv.className = `status ${type}`;
       statusDiv.innerHTML = message;
       output.appendChild(statusDiv);
-      
+
       // Scroll to bottom
       statusDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
@@ -159,14 +159,14 @@ if (window.DCWS?.isInstalled()) {
       output.innerHTML = '';
 
       if (typeof window.DigitalCredentialsWalletSelector === 'undefined') {
-        showStatus('❌ Extension NOT detected. Please install the Digital Credentials Wallet Selector extension.', 'error');
+        showStatus('❌ Extension NOT detected. Please install the Web Wallet Selector extension.', 'error');
         return;
       }
 
       if (window.DCWS.isInstalled()) {
         showStatus(`✅ Extension detected! Version: ${window.DCWS.version}`, 'success');
         document.getElementById('check-wallet').disabled = false;
-        document.getElementById('extension-status').innerHTML = 
+        document.getElementById('extension-status').innerHTML =
           '<div class="status success">Extension is installed and ready!</div>';
       } else {
         showStatus('❌ Extension API found but not active', 'error');
@@ -176,9 +176,9 @@ if (window.DCWS?.isInstalled()) {
     async function checkWallet() {
       try {
         showStatus('Checking wallet registration...', 'info');
-        
+
         const isRegistered = await window.DCWS.isWalletRegistered(walletInfo.url);
-        
+
         if (isRegistered) {
           showStatus('✅ Wallet is already registered with the extension', 'success');
           document.getElementById('register-wallet').textContent = '3. Already Registered';
@@ -196,11 +196,11 @@ if (window.DCWS?.isInstalled()) {
         const btn = document.getElementById('register-wallet');
         btn.disabled = true;
         btn.textContent = 'Registering...';
-        
+
         showStatus('Registering wallet with extension...', 'info');
-        
+
         const result = await window.DCWS.registerWallet(walletInfo);
-        
+
         if (result.alreadyRegistered) {
           showStatus('ℹ️ Wallet was already registered. No changes made.', 'info');
           showStatus(`<strong>Wallet ID:</strong> ${result.wallet.id}<br>
@@ -215,7 +215,7 @@ if (window.DCWS?.isInstalled()) {
                       <strong>Registered At:</strong> ${result.wallet.registeredAt}`, 'success');
           showStatus('💡 You can now see this wallet in the extension popup and use it for credential requests!', 'info');
         }
-        
+
         btn.textContent = '✓ Registered';
       } catch (error) {
         showStatus('❌ Registration failed: ' + error.message, 'error');
@@ -226,7 +226,7 @@ if (window.DCWS?.isInstalled()) {
 
     async function triggerDCAPI() {
       showStatus('Triggering Digital Credentials API call...', 'info');
-      
+
       try {
         const credential = await navigator.credentials.get({
           digital: true,
@@ -249,7 +249,7 @@ if (window.DCWS?.isInstalled()) {
             }]
           }
         });
-        
+
         showStatus('✅ Credential received: ' + JSON.stringify(credential, null, 2), 'success');
       } catch (error) {
         if (error.name === 'AbortError' && error.message.includes('cancelled')) {

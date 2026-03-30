@@ -1,5 +1,5 @@
 /**
- * Popup script for Digital Credentials Wallet Selector extension
+ * Popup script for Web Wallet Selector extension
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
       const settings = await runtime.sendMessage({ type: 'GET_SETTINGS' });
       const wallets = await runtime.sendMessage({ type: 'GET_WALLETS' });
-      
+
       updateUI(settings.enabled, settings.stats);
       displayWallets(wallets.wallets, settings.stats);
     } catch (error) {
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
    */
   function updateUI(enabled, stats) {
     extensionToggle.checked = enabled;
-    
+
     if (enabled) {
       statusBar.classList.remove('-inactive');
       statusText.textContent = 'Active & monitoring';
@@ -102,10 +102,10 @@ document.addEventListener('DOMContentLoaded', function() {
       const uses = stats?.walletUses?.[wallet.id] || 0;
       const statusClass = wallet.enabled ? '-active' : '-inactive';
       const statusLabel = wallet.enabled ? 'Active' : 'Inactive';
-      
+
       let iconHtml;
       let icon = wallet.icon;
-      
+
       // If icon is missing or is the default emoji, generate one dynamically
       if (!icon || icon === '🔐') {
         // Generate an identicon based on the wallet URL or name
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
           icon = '🔐'; // Fallback to emoji if generation fails
         }
       }
-      
+
       // Check if icon is a URL (data: or http)
       const iconIsUrl = icon && (icon.startsWith('data:') || icon.startsWith('http'));
       if (iconIsUrl) {

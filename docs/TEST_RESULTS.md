@@ -2,7 +2,7 @@
 
 ## Overview
 
-Testing framework successfully implemented and verified for the Digital Credentials API Interceptor browser extension.
+Testing framework successfully implemented and verified for the Web Wallet Selector browser extension.
 
 ## Test Execution Summary
 

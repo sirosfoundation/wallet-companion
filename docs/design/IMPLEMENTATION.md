@@ -1,4 +1,4 @@
-# W3C Digital Credentials API Interceptor - Implementation Summary
+# Web Wallet Selector - Implementation Summary
 
 ## Overview
 
