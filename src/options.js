@@ -475,6 +475,9 @@ function renderWalletCard(wallet) {
         <div class="right">
           <button class="s-button -secondary btn-edit">Edit</button>
         </div>
+        <div class="right">
+          <button class="s-button -secondary btn-edit">Edit</button>
+        </div>
       </div>
     </div>
   `;
