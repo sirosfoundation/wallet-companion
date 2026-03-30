@@ -1,7 +1,7 @@
 /* ==========================================================================
-   Digital Credentials Wallet Selector — Unified Styles
+   Web Wallet Selector — Unified Styles
    Authored with RSCSS conventions and native CSS nesting.
-   
+
    Components: two-word dashed names  (.page-header, .toggle-switch)
    Elements:   one-word child selectors (> .title, > .slider)
    Variants:   dash-prefixed (&.-compact, &.-large)
@@ -644,7 +644,7 @@ body {
     background: var(--s-color-blue-lighter);
     color: var(--s-color-blue);
     gap: var(--s-space-4);
-    grid-template-areas: 
+    grid-template-areas:
       'value icon'
       'label label';
     grid-template-columns: 1fr auto;
@@ -681,7 +681,7 @@ body {
     padding: var(--s-space-4);
     border-radius: var(--s-border-radius-sm);
     justify-content: space-between;
-    grid-template-areas: 
+    grid-template-areas:
       'value other'
       'label other';
 

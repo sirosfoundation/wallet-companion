@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Digital Credentials Wallet Selector extension provides a JavaScript API that allows digital identity wallets to automatically detect the extension and register themselves with the user's browser. This enables seamless integration without requiring users to manually configure wallet endpoints.
+The Web Wallet Selector extension provides a JavaScript API that allows digital identity wallets to automatically detect the extension and register themselves with the user's browser. This enables seamless integration without requiring users to manually configure wallet endpoints.
 
 ## API Reference
 

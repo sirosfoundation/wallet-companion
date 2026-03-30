@@ -7,4 +7,4 @@ Add your extension icons here:
 - icon48.png (48x48)
 - icon128.png (128x128)
 
-You can generate icons using an online tool or design software. Make sure they represent your DC API Interceptor extension clearly.
+You can generate icons using an online tool or design software. Make sure they represent your Web Wallet Selector extension clearly.

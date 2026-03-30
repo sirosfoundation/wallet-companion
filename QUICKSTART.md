@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-Get started with the Digital Credentials Wallet Selector extension in minutes.
+Get started with the Web Wallet Selector extension in minutes.
 
 ## For Verifiers (Websites Requesting Credentials)
 

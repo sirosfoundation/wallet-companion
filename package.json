@@ -1,5 +1,5 @@
 {
-  "name": "dc-api-interceptor",
+  "name": "web-wallet-selector",
   "version": "1.0.0",
   "description": "Cross-browser extension to intercept DC API calls and provide additional functionality",
   "main": "index.js",
@@ -31,6 +31,7 @@
     "firefox-addon",
     "safari-extension",
     "api-interceptor",
+    "wallet-selector",
     "webextension"
   ],
   "author": "SIROS Foundation",

@@ -1,6 +1,6 @@
 # Protocol Support and Plugin Architecture
 
-This document describes the protocol-aware business logic implemented in the Digital Credentials API interceptor extension.
+This document describes the protocol-aware business logic implemented in the Web Wallet Selector extension.
 
 ## Overview
 

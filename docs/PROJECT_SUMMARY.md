@@ -1,4 +1,4 @@
-# Project Summary: DC API Interceptor Browser Extension
+# Project Summary: Web Wallet Selector Browser Extension
 
 ## Overview
 This project provides a cross-browser extension framework for intercepting DC API calls and adding custom functionality. The extension works on Chrome, Firefox, and Safari using a shared codebase.

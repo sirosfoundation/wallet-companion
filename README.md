@@ -1,4 +1,4 @@
-# Digital Credentials Wallet Selector
+# Web Wallet Selector
 
 A cross-browser extension that intercepts W3C Digital Credentials API calls and enables users to choose between multiple digital identity wallet providers.
 
