@@ -1,0 +1,29 @@
+//
+//  Config.xcconfig
+//  Web Wallet Selector
+//
+//  Created by Benjamin Erhart on 05.12.25.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
+
+APP_BUNDLE_ID[config=Debug] = org.siros.webwalletselector
+EXT_BUNDLE_ID[config=Debug] = org.siros.webwalletselector.ext
+DEVELOPMENT_TEAM[config=Debug] = X3YM693CZ3
+IOS_APP_PROVISIONING_PROFILE_SPECIFIER[config=Debug] =
+IOS_EXT_PROVISIONING_PROFILE_SPECIFIER[config=Debug] =
+
+APP_BUNDLE_ID[config=Release] = org.siros.webwalletselector
+EXT_BUNDLE_ID[config=Release] = org.siros.webwalletselector.ext
+DEVELOPMENT_TEAM[config=Release] = X3YM693CZ3
+IOS_APP_PROVISIONING_PROFILE_SPECIFIER[config=Release] = Web Wallet Selector iOS Dist
+IOS_EXT_PROVISIONING_PROFILE_SPECIFIER[config=Release] = Web Wallet Selector Ext iOS Dist
+MAC_APP_PROVISIONING_PROFILE_SPECIFIER[config=Release] = Web Wallet Selector macOS Dist
+MAC_EXT_PROVISIONING_PROFILE_SPECIFIER[config=Release] = Web Wallet Selector Ext macOS Dist
+
+
+MARKETING_VERSION = 0.1.0
+CURRENT_PROJECT_VERSION = 2
+
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) EXT_BUNDLE_ID="$(EXT_BUNDLE_ID)"

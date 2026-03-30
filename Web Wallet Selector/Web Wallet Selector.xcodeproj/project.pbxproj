@@ -1,0 +1,1069 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A00D1D122F2B92D8002B5B4B /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00D1D112F2B92D8002B5B4B /* Config.swift */; };
+		A00D1D132F2B92D8002B5B4B /* Config.m in Sources */ = {isa = PBXBuildFile; fileRef = A00D1D102F2B92D8002B5B4B /* Config.m */; };
+		A00D1D142F2B92D8002B5B4B /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00D1D112F2B92D8002B5B4B /* Config.swift */; };
+		A00D1D152F2B92D8002B5B4B /* Config.m in Sources */ = {isa = PBXBuildFile; fileRef = A00D1D102F2B92D8002B5B4B /* Config.m */; };
+		A0444DD62EE1CC4900E7155E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0444DD52EE1CC4900E7155E /* AppDelegate.swift */; };
+		A0444DD82EE1CC4900E7155E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0444DD72EE1CC4900E7155E /* SceneDelegate.swift */; };
+		A0444DDB2EE1CC4900E7155E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0444DD92EE1CC4900E7155E /* LaunchScreen.storyboard */; };
+		A0444DDE2EE1CC4900E7155E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0444DDC2EE1CC4900E7155E /* Main.storyboard */; };
+		A0444DE72EE1CC4900E7155E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0444DE62EE1CC4900E7155E /* AppDelegate.swift */; };
+		A0444DEA2EE1CC4900E7155E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0444DE82EE1CC4900E7155E /* Main.storyboard */; };
+		A0444DF12EE1CC4900E7155E /* Web Wallet Selector Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A0444DF02EE1CC4900E7155E /* Web Wallet Selector Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A0444DFB2EE1CC4900E7155E /* Web Wallet Selector Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A0444DFA2EE1CC4900E7155E /* Web Wallet Selector Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A0444E002EE1CC4900E7155E /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = A0444DC52EE1CC4800E7155E /* Main.html */; };
+		A0444E012EE1CC4900E7155E /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = A0444DC52EE1CC4800E7155E /* Main.html */; };
+		A0444E022EE1CC4900E7155E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A0444DC72EE1CC4800E7155E /* Icon.png */; };
+		A0444E032EE1CC4900E7155E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A0444DC72EE1CC4800E7155E /* Icon.png */; };
+		A0444E042EE1CC4900E7155E /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = A0444DC82EE1CC4800E7155E /* Style.css */; };
+		A0444E052EE1CC4900E7155E /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = A0444DC82EE1CC4800E7155E /* Style.css */; };
+		A0444E062EE1CC4900E7155E /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444DC92EE1CC4800E7155E /* Script.js */; };
+		A0444E072EE1CC4900E7155E /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444DC92EE1CC4800E7155E /* Script.js */; };
+		A0444E082EE1CC4900E7155E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0444DCA2EE1CC4800E7155E /* ViewController.swift */; };
+		A0444E092EE1CC4900E7155E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0444DCA2EE1CC4800E7155E /* ViewController.swift */; };
+		A0444E0A2EE1CC4900E7155E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0444DCB2EE1CC4900E7155E /* Assets.xcassets */; };
+		A0444E0B2EE1CC4900E7155E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0444DCB2EE1CC4900E7155E /* Assets.xcassets */; };
+		A0444E0C2EE1CC4900E7155E /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0444DCD2EE1CC4900E7155E /* SafariWebExtensionHandler.swift */; };
+		A0444E0D2EE1CC4900E7155E /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0444DCD2EE1CC4900E7155E /* SafariWebExtensionHandler.swift */; };
+		A0444E2B2EE1CC4A00E7155E /* protocols.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E1F2EE1CC4A00E7155E /* protocols.js */; };
+		A0444E2C2EE1CC4A00E7155E /* popup.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E202EE1CC4A00E7155E /* popup.js */; };
+		A0444E2D2EE1CC4A00E7155E /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E212EE1CC4A00E7155E /* background.js */; };
+		A0444E2E2EE1CC4A00E7155E /* popup.html in Resources */ = {isa = PBXBuildFile; fileRef = A0444E222EE1CC4A00E7155E /* popup.html */; };
+		A0444E2F2EE1CC4A00E7155E /* options.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E232EE1CC4A00E7155E /* options.js */; };
+		A0444E302EE1CC4A00E7155E /* icons in Resources */ = {isa = PBXBuildFile; fileRef = A0444E242EE1CC4A00E7155E /* icons */; };
+		A0444E312EE1CC4A00E7155E /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = A0444E252EE1CC4A00E7155E /* manifest.json */; };
+		A0444E322EE1CC4A00E7155E /* options.html in Resources */ = {isa = PBXBuildFile; fileRef = A0444E262EE1CC4A00E7155E /* options.html */; };
+		A0444E332EE1CC4A00E7155E /* inject.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E272EE1CC4A00E7155E /* inject.js */; };
+		A0444E342EE1CC4A00E7155E /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E282EE1CC4A00E7155E /* content.js */; };
+		A0444E352EE1CC4A00E7155E /* modal.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E292EE1CC4A00E7155E /* modal.js */; };
+		A0444E362EE1CC4A00E7155E /* protocols in Resources */ = {isa = PBXBuildFile; fileRef = A0444E2A2EE1CC4A00E7155E /* protocols */; };
+		A0444E372EE1CC4A00E7155E /* protocols.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E1F2EE1CC4A00E7155E /* protocols.js */; };
+		A0444E382EE1CC4A00E7155E /* popup.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E202EE1CC4A00E7155E /* popup.js */; };
+		A0444E392EE1CC4A00E7155E /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E212EE1CC4A00E7155E /* background.js */; };
+		A0444E3A2EE1CC4A00E7155E /* popup.html in Resources */ = {isa = PBXBuildFile; fileRef = A0444E222EE1CC4A00E7155E /* popup.html */; };
+		A0444E3B2EE1CC4A00E7155E /* options.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E232EE1CC4A00E7155E /* options.js */; };
+		A0444E3C2EE1CC4A00E7155E /* icons in Resources */ = {isa = PBXBuildFile; fileRef = A0444E242EE1CC4A00E7155E /* icons */; };
+		A0444E3D2EE1CC4A00E7155E /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = A0444E252EE1CC4A00E7155E /* manifest.json */; };
+		A0444E3E2EE1CC4A00E7155E /* options.html in Resources */ = {isa = PBXBuildFile; fileRef = A0444E262EE1CC4A00E7155E /* options.html */; };
+		A0444E3F2EE1CC4A00E7155E /* inject.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E272EE1CC4A00E7155E /* inject.js */; };
+		A0444E402EE1CC4A00E7155E /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E282EE1CC4A00E7155E /* content.js */; };
+		A0444E412EE1CC4A00E7155E /* modal.js in Resources */ = {isa = PBXBuildFile; fileRef = A0444E292EE1CC4A00E7155E /* modal.js */; };
+		A0444E422EE1CC4A00E7155E /* protocols in Resources */ = {isa = PBXBuildFile; fileRef = A0444E2A2EE1CC4A00E7155E /* protocols */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A0444DF22EE1CC4900E7155E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A0444DBF2EE1CC4800E7155E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A0444DEF2EE1CC4900E7155E;
+			remoteInfo = "Web Wallet Selector Extension (iOS)";
+		};
+		A0444DFC2EE1CC4900E7155E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A0444DBF2EE1CC4800E7155E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A0444DF92EE1CC4900E7155E;
+			remoteInfo = "Web Wallet Selector Extension (macOS)";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A0444E132EE1CC4900E7155E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A0444DF12EE1CC4900E7155E /* Web Wallet Selector Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0444E1A2EE1CC4900E7155E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A0444DFB2EE1CC4900E7155E /* Web Wallet Selector Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A00D1D0F2F2B92D8002B5B4B /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
+		A00D1D102F2B92D8002B5B4B /* Config.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Config.m; sourceTree = "<group>"; };
+		A00D1D112F2B92D8002B5B4B /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		A00D1D162F2B92DB002B5B4B /* Web Wallet Selector (iOS)-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Web Wallet Selector (iOS)-Bridging-Header.h"; sourceTree = "<group>"; };
+		A00D1D172F2B92DB002B5B4B /* Web Wallet Selector (macOS)-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Web Wallet Selector (macOS)-Bridging-Header.h"; sourceTree = "<group>"; };
+		A0444DC62EE1CC4800E7155E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/Main.html; sourceTree = "<group>"; };
+		A0444DC72EE1CC4800E7155E /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		A0444DC82EE1CC4800E7155E /* Style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = Style.css; sourceTree = "<group>"; };
+		A0444DC92EE1CC4800E7155E /* Script.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Script.js; sourceTree = "<group>"; };
+		A0444DCA2EE1CC4800E7155E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A0444DCB2EE1CC4900E7155E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A0444DCD2EE1CC4900E7155E /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		A0444DD22EE1CC4900E7155E /* Web Wallet Selector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Web Wallet Selector.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0444DD52EE1CC4900E7155E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A0444DD72EE1CC4900E7155E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		A0444DDA2EE1CC4900E7155E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A0444DDD2EE1CC4900E7155E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A0444DDF2EE1CC4900E7155E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A0444DE42EE1CC4900E7155E /* Web Wallet Selector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Web Wallet Selector.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0444DE62EE1CC4900E7155E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A0444DE92EE1CC4900E7155E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A0444DEB2EE1CC4900E7155E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A0444DF02EE1CC4900E7155E /* Web Wallet Selector Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Web Wallet Selector Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0444DF52EE1CC4900E7155E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A0444DFA2EE1CC4900E7155E /* Web Wallet Selector Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Web Wallet Selector Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0444DFF2EE1CC4900E7155E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A0444E1F2EE1CC4A00E7155E /* protocols.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = protocols.js; path = ../../safari/protocols.js; sourceTree = "<group>"; };
+		A0444E202EE1CC4A00E7155E /* popup.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = popup.js; path = ../../safari/popup.js; sourceTree = "<group>"; };
+		A0444E212EE1CC4A00E7155E /* background.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = background.js; path = ../../safari/background.js; sourceTree = "<group>"; };
+		A0444E222EE1CC4A00E7155E /* popup.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = popup.html; path = ../../safari/popup.html; sourceTree = "<group>"; };
+		A0444E232EE1CC4A00E7155E /* options.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = options.js; path = ../../safari/options.js; sourceTree = "<group>"; };
+		A0444E242EE1CC4A00E7155E /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = ../../safari/icons; sourceTree = "<group>"; };
+		A0444E252EE1CC4A00E7155E /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../safari/manifest.json; sourceTree = "<group>"; };
+		A0444E262EE1CC4A00E7155E /* options.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = options.html; path = ../../safari/options.html; sourceTree = "<group>"; };
+		A0444E272EE1CC4A00E7155E /* inject.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = inject.js; path = ../../safari/inject.js; sourceTree = "<group>"; };
+		A0444E282EE1CC4A00E7155E /* content.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = content.js; path = ../../safari/content.js; sourceTree = "<group>"; };
+		A0444E292EE1CC4A00E7155E /* modal.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = modal.js; path = ../../safari/modal.js; sourceTree = "<group>"; };
+		A0444E2A2EE1CC4A00E7155E /* protocols */ = {isa = PBXFileReference; lastKnownFileType = folder; name = protocols; path = ../../safari/protocols; sourceTree = "<group>"; };
+		A0DBB2A52EE2E68500109241 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A0444DCF2EE1CC4900E7155E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0444DE12EE1CC4900E7155E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0444DED2EE1CC4900E7155E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0444DF72EE1CC4900E7155E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A0444DBE2EE1CC4800E7155E = {
+			isa = PBXGroup;
+			children = (
+				A0DBB2A52EE2E68500109241 /* Config.xcconfig */,
+				A0444DC32EE1CC4800E7155E /* Shared (App) */,
+				A0444DCC2EE1CC4900E7155E /* Shared (Extension) */,
+				A0444DD42EE1CC4900E7155E /* iOS (App) */,
+				A0444DE52EE1CC4900E7155E /* macOS (App) */,
+				A0444DF42EE1CC4900E7155E /* iOS (Extension) */,
+				A0444DFE2EE1CC4900E7155E /* macOS (Extension) */,
+				A0444DD32EE1CC4900E7155E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A0444DC32EE1CC4800E7155E /* Shared (App) */ = {
+			isa = PBXGroup;
+			children = (
+				A0444DCA2EE1CC4800E7155E /* ViewController.swift */,
+				A00D1D0F2F2B92D8002B5B4B /* Config.h */,
+				A00D1D102F2B92D8002B5B4B /* Config.m */,
+				A00D1D112F2B92D8002B5B4B /* Config.swift */,
+				A0444DCB2EE1CC4900E7155E /* Assets.xcassets */,
+				A0444DC42EE1CC4800E7155E /* Resources */,
+				A00D1D162F2B92DB002B5B4B /* Web Wallet Selector (iOS)-Bridging-Header.h */,
+				A00D1D172F2B92DB002B5B4B /* Web Wallet Selector (macOS)-Bridging-Header.h */,
+			);
+			path = "Shared (App)";
+			sourceTree = "<group>";
+		};
+		A0444DC42EE1CC4800E7155E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A0444DC52EE1CC4800E7155E /* Main.html */,
+				A0444DC72EE1CC4800E7155E /* Icon.png */,
+				A0444DC82EE1CC4800E7155E /* Style.css */,
+				A0444DC92EE1CC4800E7155E /* Script.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A0444DCC2EE1CC4900E7155E /* Shared (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				A0444E1E2EE1CC4A00E7155E /* Resources */,
+				A0444DCD2EE1CC4900E7155E /* SafariWebExtensionHandler.swift */,
+			);
+			path = "Shared (Extension)";
+			sourceTree = "<group>";
+		};
+		A0444DD32EE1CC4900E7155E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A0444DD22EE1CC4900E7155E /* Web Wallet Selector.app */,
+				A0444DE42EE1CC4900E7155E /* Web Wallet Selector.app */,
+				A0444DF02EE1CC4900E7155E /* Web Wallet Selector Extension.appex */,
+				A0444DFA2EE1CC4900E7155E /* Web Wallet Selector Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A0444DD42EE1CC4900E7155E /* iOS (App) */ = {
+			isa = PBXGroup;
+			children = (
+				A0444DD52EE1CC4900E7155E /* AppDelegate.swift */,
+				A0444DD72EE1CC4900E7155E /* SceneDelegate.swift */,
+				A0444DD92EE1CC4900E7155E /* LaunchScreen.storyboard */,
+				A0444DDC2EE1CC4900E7155E /* Main.storyboard */,
+				A0444DDF2EE1CC4900E7155E /* Info.plist */,
+			);
+			path = "iOS (App)";
+			sourceTree = "<group>";
+		};
+		A0444DE52EE1CC4900E7155E /* macOS (App) */ = {
+			isa = PBXGroup;
+			children = (
+				A0444DE62EE1CC4900E7155E /* AppDelegate.swift */,
+				A0444DE82EE1CC4900E7155E /* Main.storyboard */,
+				A0444DEB2EE1CC4900E7155E /* Info.plist */,
+			);
+			path = "macOS (App)";
+			sourceTree = "<group>";
+		};
+		A0444DF42EE1CC4900E7155E /* iOS (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				A0444DF52EE1CC4900E7155E /* Info.plist */,
+			);
+			path = "iOS (Extension)";
+			sourceTree = "<group>";
+		};
+		A0444DFE2EE1CC4900E7155E /* macOS (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				A0444DFF2EE1CC4900E7155E /* Info.plist */,
+			);
+			path = "macOS (Extension)";
+			sourceTree = "<group>";
+		};
+		A0444E1E2EE1CC4A00E7155E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A0444E1F2EE1CC4A00E7155E /* protocols.js */,
+				A0444E202EE1CC4A00E7155E /* popup.js */,
+				A0444E212EE1CC4A00E7155E /* background.js */,
+				A0444E222EE1CC4A00E7155E /* popup.html */,
+				A0444E232EE1CC4A00E7155E /* options.js */,
+				A0444E242EE1CC4A00E7155E /* icons */,
+				A0444E252EE1CC4A00E7155E /* manifest.json */,
+				A0444E262EE1CC4A00E7155E /* options.html */,
+				A0444E272EE1CC4A00E7155E /* inject.js */,
+				A0444E282EE1CC4A00E7155E /* content.js */,
+				A0444E292EE1CC4A00E7155E /* modal.js */,
+				A0444E2A2EE1CC4A00E7155E /* protocols */,
+			);
+			name = Resources;
+			path = "Shared (Extension)";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A0444DD12EE1CC4900E7155E /* Web Wallet Selector (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A0444E142EE1CC4900E7155E /* Build configuration list for PBXNativeTarget "Web Wallet Selector (iOS)" */;
+			buildPhases = (
+				A0444DCE2EE1CC4900E7155E /* Sources */,
+				A0444DCF2EE1CC4900E7155E /* Frameworks */,
+				A0444DD02EE1CC4900E7155E /* Resources */,
+				A0444E132EE1CC4900E7155E /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A0444DF32EE1CC4900E7155E /* PBXTargetDependency */,
+			);
+			name = "Web Wallet Selector (iOS)";
+			packageProductDependencies = (
+			);
+			productName = "Web Wallet Selector (iOS)";
+			productReference = A0444DD22EE1CC4900E7155E /* Web Wallet Selector.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A0444DE32EE1CC4900E7155E /* Web Wallet Selector (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A0444E1B2EE1CC4900E7155E /* Build configuration list for PBXNativeTarget "Web Wallet Selector (macOS)" */;
+			buildPhases = (
+				A0444DE02EE1CC4900E7155E /* Sources */,
+				A0444DE12EE1CC4900E7155E /* Frameworks */,
+				A0444DE22EE1CC4900E7155E /* Resources */,
+				A0444E1A2EE1CC4900E7155E /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A0444DFD2EE1CC4900E7155E /* PBXTargetDependency */,
+			);
+			name = "Web Wallet Selector (macOS)";
+			packageProductDependencies = (
+			);
+			productName = "Web Wallet Selector (macOS)";
+			productReference = A0444DE42EE1CC4900E7155E /* Web Wallet Selector.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A0444DEF2EE1CC4900E7155E /* Web Wallet Selector Extension (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A0444E102EE1CC4900E7155E /* Build configuration list for PBXNativeTarget "Web Wallet Selector Extension (iOS)" */;
+			buildPhases = (
+				A0444DEC2EE1CC4900E7155E /* Sources */,
+				A0444DED2EE1CC4900E7155E /* Frameworks */,
+				A0444DEE2EE1CC4900E7155E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Web Wallet Selector Extension (iOS)";
+			packageProductDependencies = (
+			);
+			productName = "Web Wallet Selector Extension (iOS)";
+			productReference = A0444DF02EE1CC4900E7155E /* Web Wallet Selector Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		A0444DF92EE1CC4900E7155E /* Web Wallet Selector Extension (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A0444E172EE1CC4900E7155E /* Build configuration list for PBXNativeTarget "Web Wallet Selector Extension (macOS)" */;
+			buildPhases = (
+				A0444DF62EE1CC4900E7155E /* Sources */,
+				A0444DF72EE1CC4900E7155E /* Frameworks */,
+				A0444DF82EE1CC4900E7155E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Web Wallet Selector Extension (macOS)";
+			packageProductDependencies = (
+			);
+			productName = "Web Wallet Selector Extension (macOS)";
+			productReference = A0444DFA2EE1CC4900E7155E /* Web Wallet Selector Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A0444DBF2EE1CC4800E7155E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2610;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					A0444DD12EE1CC4900E7155E = {
+						CreatedOnToolsVersion = 26.1.1;
+						LastSwiftMigration = 2620;
+					};
+					A0444DE32EE1CC4900E7155E = {
+						CreatedOnToolsVersion = 26.1.1;
+						LastSwiftMigration = 2620;
+					};
+					A0444DEF2EE1CC4900E7155E = {
+						CreatedOnToolsVersion = 26.1.1;
+					};
+					A0444DF92EE1CC4900E7155E = {
+						CreatedOnToolsVersion = 26.1.1;
+					};
+				};
+			};
+			buildConfigurationList = A0444DC22EE1CC4800E7155E /* Build configuration list for PBXProject "Web Wallet Selector" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A0444DBE2EE1CC4800E7155E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A0444DD32EE1CC4900E7155E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A0444DD12EE1CC4900E7155E /* Web Wallet Selector (iOS) */,
+				A0444DE32EE1CC4900E7155E /* Web Wallet Selector (macOS) */,
+				A0444DEF2EE1CC4900E7155E /* Web Wallet Selector Extension (iOS) */,
+				A0444DF92EE1CC4900E7155E /* Web Wallet Selector Extension (macOS) */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A0444DD02EE1CC4900E7155E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0444E022EE1CC4900E7155E /* Icon.png in Resources */,
+				A0444DDB2EE1CC4900E7155E /* LaunchScreen.storyboard in Resources */,
+				A0444E002EE1CC4900E7155E /* Main.html in Resources */,
+				A0444E062EE1CC4900E7155E /* Script.js in Resources */,
+				A0444E0A2EE1CC4900E7155E /* Assets.xcassets in Resources */,
+				A0444DDE2EE1CC4900E7155E /* Main.storyboard in Resources */,
+				A0444E042EE1CC4900E7155E /* Style.css in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0444DE22EE1CC4900E7155E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0444E032EE1CC4900E7155E /* Icon.png in Resources */,
+				A0444E052EE1CC4900E7155E /* Style.css in Resources */,
+				A0444DEA2EE1CC4900E7155E /* Main.storyboard in Resources */,
+				A0444E072EE1CC4900E7155E /* Script.js in Resources */,
+				A0444E0B2EE1CC4900E7155E /* Assets.xcassets in Resources */,
+				A0444E012EE1CC4900E7155E /* Main.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0444DEE2EE1CC4900E7155E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0444E372EE1CC4A00E7155E /* protocols.js in Resources */,
+				A0444E3D2EE1CC4A00E7155E /* manifest.json in Resources */,
+				A0444E422EE1CC4A00E7155E /* protocols in Resources */,
+				A0444E3A2EE1CC4A00E7155E /* popup.html in Resources */,
+				A0444E3E2EE1CC4A00E7155E /* options.html in Resources */,
+				A0444E402EE1CC4A00E7155E /* content.js in Resources */,
+				A0444E392EE1CC4A00E7155E /* background.js in Resources */,
+				A0444E3C2EE1CC4A00E7155E /* icons in Resources */,
+				A0444E382EE1CC4A00E7155E /* popup.js in Resources */,
+				A0444E3B2EE1CC4A00E7155E /* options.js in Resources */,
+				A0444E412EE1CC4A00E7155E /* modal.js in Resources */,
+				A0444E3F2EE1CC4A00E7155E /* inject.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0444DF82EE1CC4900E7155E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0444E2B2EE1CC4A00E7155E /* protocols.js in Resources */,
+				A0444E312EE1CC4A00E7155E /* manifest.json in Resources */,
+				A0444E362EE1CC4A00E7155E /* protocols in Resources */,
+				A0444E2E2EE1CC4A00E7155E /* popup.html in Resources */,
+				A0444E322EE1CC4A00E7155E /* options.html in Resources */,
+				A0444E342EE1CC4A00E7155E /* content.js in Resources */,
+				A0444E2D2EE1CC4A00E7155E /* background.js in Resources */,
+				A0444E302EE1CC4A00E7155E /* icons in Resources */,
+				A0444E2C2EE1CC4A00E7155E /* popup.js in Resources */,
+				A0444E2F2EE1CC4A00E7155E /* options.js in Resources */,
+				A0444E352EE1CC4A00E7155E /* modal.js in Resources */,
+				A0444E332EE1CC4A00E7155E /* inject.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A0444DCE2EE1CC4900E7155E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0444E082EE1CC4900E7155E /* ViewController.swift in Sources */,
+				A0444DD62EE1CC4900E7155E /* AppDelegate.swift in Sources */,
+				A00D1D122F2B92D8002B5B4B /* Config.swift in Sources */,
+				A00D1D132F2B92D8002B5B4B /* Config.m in Sources */,
+				A0444DD82EE1CC4900E7155E /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0444DE02EE1CC4900E7155E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A00D1D142F2B92D8002B5B4B /* Config.swift in Sources */,
+				A00D1D152F2B92D8002B5B4B /* Config.m in Sources */,
+				A0444E092EE1CC4900E7155E /* ViewController.swift in Sources */,
+				A0444DE72EE1CC4900E7155E /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0444DEC2EE1CC4900E7155E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0444E0C2EE1CC4900E7155E /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0444DF62EE1CC4900E7155E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0444E0D2EE1CC4900E7155E /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A0444DF32EE1CC4900E7155E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A0444DEF2EE1CC4900E7155E /* Web Wallet Selector Extension (iOS) */;
+			targetProxy = A0444DF22EE1CC4900E7155E /* PBXContainerItemProxy */;
+		};
+		A0444DFD2EE1CC4900E7155E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A0444DF92EE1CC4900E7155E /* Web Wallet Selector Extension (macOS) */;
+			targetProxy = A0444DFC2EE1CC4900E7155E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A0444DC52EE1CC4800E7155E /* Main.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A0444DC62EE1CC4800E7155E /* Base */,
+			);
+			name = Main.html;
+			sourceTree = "<group>";
+		};
+		A0444DD92EE1CC4900E7155E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A0444DDA2EE1CC4900E7155E /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A0444DDC2EE1CC4900E7155E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A0444DDD2EE1CC4900E7155E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A0444DE82EE1CC4900E7155E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A0444DE92EE1CC4900E7155E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A0444E0E2EE1CC4900E7155E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A0DBB2A52EE2E68500109241 /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A0444E0F2EE1CC4900E7155E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A0DBB2A52EE2E68500109241 /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		A0444E112EE1CC4900E7155E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Web Wallet Selector Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(EXT_BUNDLE_ID)";
+				PRODUCT_NAME = "Web Wallet Selector Extension";
+				PROVISIONING_PROFILE_SPECIFIER = "$(IOS_EXT_PROVISIONING_PROFILE_SPECIFIER)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A0444E122EE1CC4900E7155E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Web Wallet Selector Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(EXT_BUNDLE_ID)";
+				PRODUCT_NAME = "Web Wallet Selector Extension";
+				PROVISIONING_PROFILE_SPECIFIER = "$(IOS_EXT_PROVISIONING_PROFILE_SPECIFIER)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A0444E152EE1CC4900E7155E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Web Wallet Selector";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
+				PRODUCT_NAME = "Web Wallet Selector";
+				PROVISIONING_PROFILE_SPECIFIER = "$(IOS_APP_PROVISIONING_PROFILE_SPECIFIER)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared (App)/Web Wallet Selector (iOS)-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A0444E162EE1CC4900E7155E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Web Wallet Selector";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
+				PRODUCT_NAME = "Web Wallet Selector";
+				PROVISIONING_PROFILE_SPECIFIER = "$(IOS_APP_PROVISIONING_PROFILE_SPECIFIER)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared (App)/Web Wallet Selector (iOS)-Bridging-Header.h";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A0444E182EE1CC4900E7155E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Web Wallet Selector Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(EXT_BUNDLE_ID)";
+				PRODUCT_NAME = "Web Wallet Selector Extension";
+				PROVISIONING_PROFILE_SPECIFIER = "$(MAC_EXT_PROVISIONING_PROFILE_SPECIFIER)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A0444E192EE1CC4900E7155E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Web Wallet Selector Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(EXT_BUNDLE_ID)";
+				PRODUCT_NAME = "Web Wallet Selector Extension";
+				PROVISIONING_PROFILE_SPECIFIER = "$(MAC_EXT_PROVISIONING_PROFILE_SPECIFIER)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A0444E1C2EE1CC4900E7155E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Web Wallet Selector";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
+				PRODUCT_NAME = "Web Wallet Selector";
+				PROVISIONING_PROFILE_SPECIFIER = "$(MAC_APP_PROVISIONING_PROFILE_SPECIFIER)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared (App)/Web Wallet Selector (macOS)-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A0444E1D2EE1CC4900E7155E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Web Wallet Selector";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
+				PRODUCT_NAME = "Web Wallet Selector";
+				PROVISIONING_PROFILE_SPECIFIER = "$(MAC_APP_PROVISIONING_PROFILE_SPECIFIER)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Shared (App)/Web Wallet Selector (macOS)-Bridging-Header.h";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A0444DC22EE1CC4800E7155E /* Build configuration list for PBXProject "Web Wallet Selector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A0444E0E2EE1CC4900E7155E /* Debug */,
+				A0444E0F2EE1CC4900E7155E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A0444E102EE1CC4900E7155E /* Build configuration list for PBXNativeTarget "Web Wallet Selector Extension (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A0444E112EE1CC4900E7155E /* Debug */,
+				A0444E122EE1CC4900E7155E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A0444E142EE1CC4900E7155E /* Build configuration list for PBXNativeTarget "Web Wallet Selector (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A0444E152EE1CC4900E7155E /* Debug */,
+				A0444E162EE1CC4900E7155E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A0444E172EE1CC4900E7155E /* Build configuration list for PBXNativeTarget "Web Wallet Selector Extension (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A0444E182EE1CC4900E7155E /* Debug */,
+				A0444E192EE1CC4900E7155E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A0444E1B2EE1CC4900E7155E /* Build configuration list for PBXNativeTarget "Web Wallet Selector (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A0444E1C2EE1CC4900E7155E /* Debug */,
+				A0444E1D2EE1CC4900E7155E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A0444DBF2EE1CC4800E7155E /* Project object */;
+}
