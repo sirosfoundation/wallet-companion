@@ -17,11 +17,7 @@ NC := \033[0m # No Color
 
 # Directories
 SRC_DIR := src
-CHROME_DIR := chrome
-FIREFOX_DIR := firefox
-SAFARI_DIR := safari
 DIST_DIR := dist
-SCRIPTS_DIR := scripts
 
 help: ## Show this help message
 	@echo "$(BLUE)DC API Interceptor - Browser Extension Build System$(NC)"
@@ -32,12 +28,11 @@ help: ## Show this help message
 
 install: ## Install Node.js dependencies
 	@echo "$(BLUE)Installing dependencies...$(NC)"
-	npm install
+	pnpm install
 	@echo "$(GREEN)✓ Dependencies installed$(NC)"
 
-clean: ## Clean built files from all browser directories and prepare for git
+clean: ## Clean built files and prepare for git
 	@echo "$(BLUE)Cleaning built files...$(NC)"
-	npm run clean
 	rm -rf $(DIST_DIR)
 	@echo "$(BLUE)Cleaning test artifacts...$(NC)"
 	rm -rf coverage/
@@ -51,7 +46,6 @@ clean: ## Clean built files from all browser directories and prepare for git
 	find . -type f -name '*.swo' -delete
 	@echo "$(BLUE)Cleaning log files...$(NC)"
 	find . -type f -name '*.log' -delete
-	find . -type f -name 'npm-debug.log*' -delete
 	@echo "$(GREEN)✓ Cleaned and ready for git$(NC)"
 
 # Build targets
@@ -59,17 +53,17 @@ build: build-chrome build-firefox build-safari ## Build extensions for all brows
 
 build-chrome: ## Build Chrome extension
 	@echo "$(BLUE)Building Chrome extension...$(NC)"
-	node $(SCRIPTS_DIR)/build.js chrome
+	BROWSER=chrome pnpm vite build
 	@echo "$(GREEN)✓ Chrome extension built$(NC)"
 
 build-firefox: ## Build Firefox extension
 	@echo "$(BLUE)Building Firefox extension...$(NC)"
-	node $(SCRIPTS_DIR)/build.js firefox
+	BROWSER=firefox pnpm vite build
 	@echo "$(GREEN)✓ Firefox extension built$(NC)"
 
 build-safari: ## Build Safari extension
 	@echo "$(BLUE)Building Safari extension...$(NC)"
-	node $(SCRIPTS_DIR)/build.js safari
+	BROWSER=safari pnpm vite build
 	@echo "$(GREEN)✓ Safari extension built$(NC)"
 
 # Watch targets for development
@@ -77,39 +71,37 @@ watch: watch-chrome ## Watch mode (default: Chrome)
 
 watch-chrome: ## Watch and rebuild Chrome extension on changes
 	@echo "$(BLUE)Watching Chrome extension for changes...$(NC)"
-	node $(SCRIPTS_DIR)/watch.js chrome
+	BROWSER=chrome pnpm vite build --watch
 
 watch-firefox: ## Watch and rebuild Firefox extension on changes
 	@echo "$(BLUE)Watching Firefox extension for changes...$(NC)"
-	node $(SCRIPTS_DIR)/watch.js firefox
+	BROWSER=firefox pnpm vite build --watch
 
 watch-safari: ## Watch and rebuild Safari extension on changes
 	@echo "$(BLUE)Watching Safari extension for changes...$(NC)"
-	node $(SCRIPTS_DIR)/watch.js safari
+	BROWSER=safari pnpm vite build --watch
 
 # Package targets
 package: package-chrome package-firefox ## Package extensions for distribution
 
 package-chrome: build-chrome ## Package Chrome extension as ZIP
 	@echo "$(BLUE)Packaging Chrome extension...$(NC)"
-	mkdir -p $(DIST_DIR)
-	cd $(CHROME_DIR) && zip -r ../$(DIST_DIR)/chrome-extension.zip . -x '*.git*' -x 'README.md'
+	cd $(DIST_DIR)/chrome && zip -r ../chrome-extension.zip . -x '*.git*' -x 'README.md'
 	@echo "$(GREEN)✓ Chrome extension packaged: $(DIST_DIR)/chrome-extension.zip$(NC)"
 
 package-firefox: build-firefox ## Package Firefox extension as XPI
 	@echo "$(BLUE)Packaging Firefox extension...$(NC)"
-	mkdir -p $(DIST_DIR)
-	cd $(FIREFOX_DIR) && zip -r ../$(DIST_DIR)/firefox-extension.xpi . -x '*.git*' -x 'README.md'
+	cd $(DIST_DIR)/firefox && zip -r ../firefox-extension.xpi . -x '*.git*' -x 'README.md'
 	@echo "$(GREEN)✓ Firefox extension packaged: $(DIST_DIR)/firefox-extension.xpi$(NC)"
 
 # Development targets
-dev-firefox: build-firefox ## Run Firefox with the extension loaded
+dev-firefox: ## Run Firefox with the extension loaded (requires build)
 	@echo "$(BLUE)Starting Firefox with extension...$(NC)"
-	cd $(FIREFOX_DIR) && web-ext run
+	pnpm dev:firefox
 
-dev-chrome: build-chrome ## Open Chrome extensions page (manual load required)
+dev-chrome: ## Open Chrome extensions page (manual load required)
 	@echo "$(YELLOW)Opening Chrome extensions page...$(NC)"
-	@echo "$(YELLOW)Load the extension from: $(CHROME_DIR)$(NC)"
+	@echo "$(YELLOW)Load the extension from: $(DIST_DIR)/chrome$(NC)"
 	@if command -v google-chrome >/dev/null 2>&1; then \
 		google-chrome chrome://extensions/; \
 	elif command -v chromium >/dev/null 2>&1; then \
@@ -123,7 +115,7 @@ dev-safari: build-safari ## Instructions for Safari development
 	@echo "$(YELLOW)Safari Extension Development:$(NC)"
 	@echo ""
 	@echo "1. Convert to Safari Web Extension:"
-	@echo "   xcrun safari-web-extension-converter $(SAFARI_DIR)/ --app-name 'DC API Interceptor'"
+	@echo "   xcrun safari-web-extension-converter $(DIST_DIR)/safari/ --app-name 'DC API Interceptor'"
 	@echo ""
 	@echo "2. Open the generated Xcode project and run it"
 	@echo ""
@@ -132,19 +124,23 @@ dev-safari: build-safari ## Instructions for Safari development
 # Quality targets
 lint: ## Run ESLint on source files
 	@echo "$(BLUE)Running ESLint...$(NC)"
-	npm run lint
+	pnpm lint
 
-test: ## Run tests (placeholder)
-	@echo "$(YELLOW)No tests configured yet$(NC)"
-	npm test
+test: ## Run unit tests
+	@echo "$(BLUE)Running tests...$(NC)"
+	pnpm test
+
+typecheck: ## Run TypeScript type checking
+	@echo "$(BLUE)Type checking...$(NC)"
+	pnpm typecheck
 
 # Utility targets
 check-deps: ## Check if required dependencies are installed
 	@echo "$(BLUE)Checking dependencies...$(NC)"
 	@command -v node >/dev/null 2>&1 || { echo "$(RED)✗ Node.js not found$(NC)"; exit 1; }
-	@command -v npm >/dev/null 2>&1 || { echo "$(RED)✗ npm not found$(NC)"; exit 1; }
+	@command -v pnpm >/dev/null 2>&1 || { echo "$(RED)✗ pnpm not found$(NC)"; exit 1; }
 	@echo "$(GREEN)✓ Node.js $(shell node --version)$(NC)"
-	@echo "$(GREEN)✓ npm $(shell npm --version)$(NC)"
+	@echo "$(GREEN)✓ pnpm $(shell pnpm --version)$(NC)"
 	@if [ -d node_modules ]; then \
 		echo "$(GREEN)✓ Dependencies installed$(NC)"; \
 	else \
@@ -155,21 +151,21 @@ status: ## Show build status for all browsers
 	@echo "$(BLUE)Extension Build Status:$(NC)"
 	@echo ""
 	@echo "$(YELLOW)Chrome:$(NC)"
-	@if [ -f "$(CHROME_DIR)/background.js" ]; then \
+	@if [ -f "$(DIST_DIR)/chrome/manifest.json" ]; then \
 		echo "  $(GREEN)✓ Built$(NC)"; \
 	else \
 		echo "  $(RED)✗ Not built$(NC)"; \
 	fi
 	@echo ""
 	@echo "$(YELLOW)Firefox:$(NC)"
-	@if [ -f "$(FIREFOX_DIR)/background.js" ]; then \
+	@if [ -f "$(DIST_DIR)/firefox/manifest.json" ]; then \
 		echo "  $(GREEN)✓ Built$(NC)"; \
 	else \
 		echo "  $(RED)✗ Not built$(NC)"; \
 	fi
 	@echo ""
 	@echo "$(YELLOW)Safari:$(NC)"
-	@if [ -f "$(SAFARI_DIR)/background.js" ]; then \
+	@if [ -f "$(DIST_DIR)/safari/manifest.json" ]; then \
 		echo "  $(GREEN)✓ Built$(NC)"; \
 	else \
 		echo "  $(RED)✗ Not built$(NC)"; \
@@ -177,7 +173,7 @@ status: ## Show build status for all browsers
 	@echo ""
 	@if [ -d "$(DIST_DIR)" ]; then \
 		echo "$(YELLOW)Packages:$(NC)"; \
-		ls -lh $(DIST_DIR)/ 2>/dev/null || echo "  $(YELLOW)No packages$(NC)"; \
+		ls -lh $(DIST_DIR)/*.zip $(DIST_DIR)/*.xpi 2>/dev/null || echo "  $(YELLOW)No packages$(NC)"; \
 	fi
 
 all: clean install build package ## Clean, install, build and package everything
