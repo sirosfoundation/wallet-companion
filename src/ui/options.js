@@ -2,7 +2,7 @@
  * Options page script for Digital Wallet Configuration
  */
 
-import { fetchFavicon, generateGeometricIcon, generateIdenticon, generateInitialAvatar, svgToDataUrl } from '../utils/icons.js';
+import { fetchFavicon, generateGeometricIcon, generateIdenticon, generateInitialAvatar, svgToDataUrl } from './utils/icons';
 
 // Cross-browser compatibility
 const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;

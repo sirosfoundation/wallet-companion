@@ -44,10 +44,10 @@ export const CHROME_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
 		},
 	],
 	'action': {
-		'default_popup': use('src/ui/popup/index.html'),
+		'default_popup': use('src/ui/popup.html'),
 		'default_icon': iconsFrom('src/ui/assets/icons/logo-dark.svg'),
 	},
-	'options_page': use('src/ui/options/index.html'),
+	'options_page': use('src/ui/options.html'),
 	'icons': iconsFrom('src/ui/assets/icons/logo-dark.svg'),
 });
 
@@ -75,11 +75,11 @@ export const FIREFOX_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
 		use('src/content/modal.js'),
 	],
 	'browser_action': {
-		'default_popup': use('src/ui/popup/index.html'),
+		'default_popup': use('src/ui/popup.html'),
 		'default_icon': iconsFrom('src/ui/assets/icons/logo-dark.svg'),
 	},
 	'options_ui': {
-		'page': use('src/ui/options/index.html'),
+		'page': use('src/ui/options.html'),
 		'open_in_tab': true
 	},
 	'icons': iconsFrom('src/ui/assets/icons/logo-dark.svg'),
@@ -116,11 +116,11 @@ export const SAFARI_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
 		use('src/content/modal.js'),
 	],
 	'browser_action': {
-		'default_popup': use('src/ui/popup/index.html'),
+		'default_popup': use('src/ui/popup.html'),
 		'default_icon': iconsFrom('src/ui/assets/icons/logo-dark.svg'),
 	},
 	'options_ui': {
-		'page': use('src/ui/options/index.html'),
+		'page': use('src/ui/options.html'),
 		'open_in_tab': true
 	},
 	'icons': iconsFrom('src/ui/assets/icons/logo-dark.svg'),

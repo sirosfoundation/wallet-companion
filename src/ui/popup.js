@@ -2,7 +2,7 @@
  * Popup script for Digital Credentials Wallet Selector extension
  */
 
-import { generateIdenticon, svgToDataUrl } from '../utils/icons';
+import { generateIdenticon, svgToDataUrl } from './utils/icons';
 
 document.addEventListener('DOMContentLoaded', function() {
   const statusBar = document.getElementById('statusBar');
