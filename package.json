@@ -53,5 +53,6 @@
   "repository": {
     "type": "git",
     "url": ""
-  }
+  },
+  "packageManager": "pnpm@10.4.0"
 }
