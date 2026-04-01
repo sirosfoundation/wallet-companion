@@ -21,10 +21,8 @@ const ICON_COLORS = [
 
 /**
  * Generate a deterministic hash from a string
- * @param {string} str - Input string
- * @returns {number} - Hash value
  */
-function hashString(str) {
+function hashString(str: string): number {
 	let hash = 0;
 	for (let i = 0; i < str.length; i++) {
 		const char = str.charCodeAt(i);
@@ -36,10 +34,8 @@ function hashString(str) {
 
 /**
  * Get a color from the palette based on input string
- * @param {string} str - Input string
- * @returns {string} - Hex color
  */
-function getColorFromString(str) {
+function getColorFromString(str: string): string {
 	const hash = hashString(str);
 	return ICON_COLORS[hash % ICON_COLORS.length];
 }
@@ -47,11 +43,8 @@ function getColorFromString(str) {
 /**
  * Generate an SVG identicon based on a string
  * Creates a unique pattern based on the hash of the input
- * @param {string} input - String to generate identicon from
- * @param {number} size - Size of the identicon (default 48)
- * @returns {string} - SVG string
  */
-function generateIdenticon(input, size = 48) {
+function generateIdenticon(input: string, size: number = 48): string {
 	const hash = hashString(input);
 	const color = getColorFromString(input);
 	const bgColor = '#e8e9ea';
@@ -93,11 +86,8 @@ function generateIdenticon(input, size = 48) {
 
 /**
  * Generate an initial avatar (letter-based icon)
- * @param {string} name - Name to extract initials from
- * @param {number} size - Size of the avatar (default 48)
- * @returns {string} - SVG string
  */
-function generateInitialAvatar(name, size = 48) {
+function generateInitialAvatar(name: string, size: number = 48): string {
 	const color = getColorFromString(name);
 
 	// Extract initials (up to 2 characters)
@@ -122,11 +112,8 @@ function generateInitialAvatar(name, size = 48) {
 
 /**
  * Generate a geometric pattern icon
- * @param {string} input - String to base pattern on
- * @param {number} size - Size of the icon (default 48)
- * @returns {string} - SVG string
  */
-function generateGeometricIcon(input, size = 48) {
+function generateGeometricIcon(input: string, size: number = 48): string {
 	const hash = hashString(`${input}geo`);
 	const color = getColorFromString(`${input}geo`);
 	const bgColor = '#e8e9ea';
@@ -185,11 +172,8 @@ function generateGeometricIcon(input, size = 48) {
 
 /**
  * Try to fetch favicon from a URL
- * @param {string} url - The wallet URL
- * @param {number} timeout - Timeout in ms (default 3000)
- * @returns {Promise<string|null>} - Favicon URL or null if not found
  */
-async function fetchFavicon(url, timeout = 3000) {
+async function fetchFavicon(url: string, timeout: number = 3000): Promise<string | null> {
 	try {
 		// Route through background script to avoid CORS issues
 		const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
@@ -209,14 +193,16 @@ async function fetchFavicon(url, timeout = 3000) {
 	}
 }
 
+type WalletIconOptionsResult = {
+	favicon: string | null;
+	generated: { type: string; value: string }[];
+};
+
 /**
  * Generate all icon options for a wallet
  * Returns generated icons immediately, favicon is fetched asynchronously
- * @param {string} url - Wallet URL
- * @param {string} name - Wallet name
- * @returns {Promise<object>} - Object containing favicon URL and generated icons array
  */
-async function generateWalletIconOptions(url, name) {
+async function generateWalletIconOptions(url: string, name: string): Promise<WalletIconOptionsResult> {
 	const identifier = url || name || 'wallet';
 	const walletName = name || 'Wallet';
 
@@ -226,7 +212,7 @@ async function generateWalletIconOptions(url, name) {
 	const geometric1Svg = generateGeometricIcon(identifier);
 	const geometric2Svg = generateGeometricIcon(`${identifier}2`);
 
-	const result = {
+	const result: WalletIconOptionsResult = {
 		favicon: null,
 		generated: [
 			{ type: 'identicon', value: svgToDataUrl(identiconSvg) },
@@ -251,21 +237,17 @@ async function generateWalletIconOptions(url, name) {
 
 /**
  * Convert SVG string to data URL
- * @param {string} svg - SVG string
- * @returns {string} - Data URL
  */
-function svgToDataUrl(svg) {
+function svgToDataUrl(svg: string): string {
 	const encoded = encodeURIComponent(svg);
 	return `data:image/svg+xml,${encoded}`;
 }
 
 /**
  * Check if a string is a data URL or external URL (not an emoji)
- * @param {string} icon - Icon value
- * @returns {boolean}
  */
-function isIconUrl(icon) {
-	return icon && (icon.startsWith('data:') || icon.startsWith('http'));
+function isIconUrl(icon: string): boolean {
+	return !!(icon && (icon.startsWith('data:') || icon.startsWith('http')));
 }
 
 export {

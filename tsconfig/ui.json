@@ -14,6 +14,7 @@
     "types": ["chrome"]
   },
   "include": [
+    "src/globals.d.ts",
     "src/ui/**/*.ts",
     "src/ui/**/*.js"
   ],
