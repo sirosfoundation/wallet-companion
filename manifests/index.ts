@@ -15,9 +15,9 @@ const VERSION = process.env.npm_package_version ?? '0.0.0';
 
 export const CHROME_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
 	'manifest_version': 3,
-	'name': 'Digital Credentials Wallet Selector',
+	'name': 'Wallet Companion',
 	'version': VERSION,
-	'description': 'Intercepts W3C Digital Credentials API calls and provides wallet selection',
+	'description': 'A cross-browser companion extension that intercepts W3C Digital Credentials API calls, enabling users to select from multiple digital identity wallet providers.',
 	'permissions': [
 		'storage',
 		'activeTab',
@@ -53,9 +53,9 @@ export const CHROME_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
 
 export const FIREFOX_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
 	'manifest_version': 2,
-	'name': 'Digital Credentials Wallet Selector',
+	'name': 'Wallet Companion',
 	'version': VERSION,
-	'description': 'Intercepts W3C Digital Credentials API calls and provides wallet selection',
+	'description': 'A cross-browser companion extension that intercepts W3C Digital Credentials API calls, enabling users to select from multiple digital identity wallet providers.',
 	'permissions': [
 		'storage',
 		'<all_urls>'
@@ -93,9 +93,9 @@ export const FIREFOX_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
 
 export const SAFARI_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
 	'manifest_version': 2,
-	'name': 'Digital Credentials Wallet Selector',
+	'name': 'Wallet Companion',
 	'version': VERSION,
-	'description': 'Intercepts W3C Digital Credentials API calls and provides wallet selection',
+	'description': 'A cross-browser companion extension that intercepts W3C Digital Credentials API calls, enabling users to select from multiple digital identity wallet providers.',
 	'permissions': [
 		'storage',
 		'<all_urls>'

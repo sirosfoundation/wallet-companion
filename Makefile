@@ -115,7 +115,7 @@ dev-safari: build-safari ## Instructions for Safari development
 	@echo "$(YELLOW)Safari Extension Development:$(NC)"
 	@echo ""
 	@echo "1. Convert to Safari Web Extension:"
-	@echo "   xcrun safari-web-extension-converter $(DIST_DIR)/safari/ --app-name 'DC API Interceptor'"
+	@echo "   xcrun safari-web-extension-converter $(DIST_DIR)/safari/ --app-name 'Wallet Companion'"
 	@echo ""
 	@echo "2. Open the generated Xcode project and run it"
 	@echo ""

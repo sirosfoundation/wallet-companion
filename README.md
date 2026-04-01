@@ -1,6 +1,6 @@
-# Digital Credentials Wallet Selector
+# Wallet Companion
 
-A cross-browser extension that intercepts W3C Digital Credentials API calls and enables users to choose between multiple digital identity wallet providers.
+A cross-browser companion extension that intercepts W3C Digital Credentials API calls, enabling users to select from multiple digital identity wallet providers.
 
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-332%2F332-brightgreen.svg)](DEVELOPMENT.md#testing)

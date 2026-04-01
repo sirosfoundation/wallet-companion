@@ -262,14 +262,14 @@ pnpm test:integration
 2. Convert to Safari Web Extension (first time only):
 
    ```bash
-   xcrun safari-web-extension-converter dist/safari/ --app-name "DC API Interceptor"
+   xcrun safari-web-extension-converter dist/safari/ --app-name "Wallet Companion"
    ```
 
 3. Open the generated Xcode project and run it
 
 4. Enable in Safari:
    - Safari → Preferences → Extensions
-   - Enable "DC API Interceptor"
+   - Enable "Wallet Companion"
 
 5. View logs:
    - Develop menu → Show Extension Background Page

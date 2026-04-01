@@ -1,6 +1,6 @@
-# Safari Extension - DC API Interceptor
+# Safari Extension - Wallet Companion
 
-This is the Safari version of the DC API Interceptor extension.
+This is the Safari version of the Wallet Companion extension.
 
 ## Installation
 
@@ -10,7 +10,7 @@ Safari Web Extensions require Xcode for development. Follow these steps:
 
 1. **Convert to Safari Web Extension (if needed):**
    ```bash
-   xcrun safari-web-extension-converter safari/ --app-name "DC API Interceptor"
+   xcrun safari-web-extension-converter dist/safari/ --app-name "Wallet Companion"
    ```
 
 2. **Open in Xcode:**
@@ -19,7 +19,7 @@ Safari Web Extensions require Xcode for development. Follow these steps:
 
 3. **Enable in Safari:**
    - Open Safari Preferences → Extensions
-   - Enable "DC API Interceptor"
+   - Enable "Wallet Companion"
    - Grant necessary permissions
 
 ### Building for Distribution

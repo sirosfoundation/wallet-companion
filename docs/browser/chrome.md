@@ -1,6 +1,6 @@
-# Chrome Extension - DC API Interceptor
+# Chrome Extension - Wallet Companion
 
-This is the Chrome version of the DC API Interceptor extension.
+This is the Chrome version of the Wallet Companion extension.
 
 ## Installation
 

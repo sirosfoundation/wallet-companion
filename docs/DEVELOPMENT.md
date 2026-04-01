@@ -1,4 +1,4 @@
-# DC API Interceptor - Development Guide
+# Wallet Companion - Development Guide
 
 ## Architecture
 
