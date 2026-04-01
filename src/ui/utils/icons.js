@@ -257,29 +257,14 @@ function isIconUrl(icon) {
   return icon && (icon.startsWith('data:') || icon.startsWith('http'));
 }
 
-// Export functions globally for use in other scripts
-if (typeof window !== 'undefined') {
-  // Make functions globally available
-  window.generateIdenticon = generateIdenticon;
-  window.generateInitialAvatar = generateInitialAvatar;
-  window.generateGeometricIcon = generateGeometricIcon;
-  window.fetchFavicon = fetchFavicon;
-  window.generateWalletIconOptions = generateWalletIconOptions;
-  window.svgToDataUrl = svgToDataUrl;
-  window.isIconUrl = isIconUrl;
-  window.getColorFromString = getColorFromString;
-  window.ICON_COLORS = ICON_COLORS;
-  
-  // Also export as namespace for backwards compatibility
-  window.iconUtils = {
-    generateIdenticon,
-    generateInitialAvatar,
-    generateGeometricIcon,
-    fetchFavicon,
-    generateWalletIconOptions,
-    svgToDataUrl,
-    isIconUrl,
-    getColorFromString,
-    ICON_COLORS
-  };
-}
+export {
+  ICON_COLORS,
+  getColorFromString,
+  generateIdenticon,
+  generateInitialAvatar,
+  generateGeometricIcon,
+  fetchFavicon,
+  generateWalletIconOptions,
+  svgToDataUrl,
+  isIconUrl,
+};

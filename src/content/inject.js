@@ -3,46 +3,31 @@
  * Intercepts navigator.credentials.get() calls for the Digital Credentials API
  */
 
-(function() {
-  'use strict';
+import { ProtocolPluginRegistry } from './protocols.js';
+import { OpenID4VPPlugin } from './protocols/OpenID4VPPlugin.js';
 
-  console.log('Digital Credentials API interceptor injected');
+console.log('Digital Credentials API interceptor injected');
 
-  // Store the original navigator.credentials.get
-  const originalCredentialsGet = navigator.credentials.get.bind(navigator.credentials);
-  
-  // Store original DigitalCredential.userAgentAllowsProtocol if it exists
-  const originalUserAgentAllowsProtocol = typeof DigitalCredential !== 'undefined' && DigitalCredential.userAgentAllowsProtocol 
-    ? DigitalCredential.userAgentAllowsProtocol.bind(DigitalCredential)
-    : null;
-  
-  // Counter for request IDs
-  let requestIdCounter = 0;
-  
-  // Store pending requests
-  const pendingRequests = new Map();
-  
-  // Cache of supported protocols (updated when wallets register)
-  let supportedProtocols = new Set();
-  
-    // Initialize protocol plugin registry
-  const protocolRegistry = typeof window.ProtocolPluginRegistry !== 'undefined' 
-    ? new window.ProtocolPluginRegistry()
-    : null;
+// Store the original navigator.credentials.get
+const originalCredentialsGet = navigator.credentials.get.bind(navigator.credentials);
 
-  // Register any pending protocol plugins that were loaded before inject.js
-  if (protocolRegistry && window._pendingProtocolPlugins) {
-    console.log('Registering pending protocol plugins:', window._pendingProtocolPlugins.length);
-    window._pendingProtocolPlugins.forEach(plugin => {
-      try {
-        protocolRegistry.register(plugin);
-      } catch (err) {
-        console.error('Failed to register pending protocol plugin:', err);
-      }
-    });
-    // Clear the pending list
-    window._pendingProtocolPlugins = [];
-  }
+// Store original DigitalCredential.userAgentAllowsProtocol if it exists
+const originalUserAgentAllowsProtocol = typeof DigitalCredential !== 'undefined' && DigitalCredential.userAgentAllowsProtocol 
+  ? DigitalCredential.userAgentAllowsProtocol.bind(DigitalCredential)
+  : null;
+
+// Counter for request IDs
+let requestIdCounter = 0;
+
+// Store pending requests
+const pendingRequests = new Map();
+
+// Cache of supported protocols (updated when wallets register)
+let supportedProtocols = new Set();
+
+// Initialize protocol plugin registry and register plugins
+const protocolRegistry = new ProtocolPluginRegistry();
+protocolRegistry.register(new OpenID4VPPlugin());
 
   // Store wallet-provided callbacks
   const walletCallbacks = {
@@ -577,5 +562,3 @@
   window.DCWS = window.DigitalCredentialsWalletSelector;
   
   console.log('Wallet auto-registration API exposed');
-
-})();

@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Digital Wallet Configuration</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../style.css">
 </head>
 <body class="options-layout">
   <div class="toast-container" id="toast-container"></div>
 
   <div class="page-header -full">
     <div class="left">
-      <img src="icons/logo-dark.svg" alt="Siros" class="logo">
+      <img src="../assets/icons/logo-dark.svg" alt="Siros" class="logo">
       <div class="text">
         <h1>Digital Wallet Configuration</h1>
         <p>Manage your digital identity wallets and credential providers</p>
@@ -156,11 +156,11 @@
     <!-- Settings Tab -->
     <div class="tab-content" id="settings-tab">
       <h1 class="page-title">General Settings</h1>
-      
+
       <div class="content-section -card">
         <div class="settings-section">
           <h3 class="title">Extension Settings</h3>
-          
+
           <div class="setting-item -stacked">
             <div class="description">When wallet interception is inactive, all requests will use the browser's native implementation</div>
             <label class="toggle-switch -large">
@@ -191,7 +191,7 @@
       <div class="content-section -card">
         <div class="settings-section">
           <h3 class="title">Configuration Management</h3>
-          
+
           <div class="setting-item">
             <div class="description">Download your wallet configurations as a JSON file</div>
             <button class="s-button -outline" id="export-config">
@@ -235,7 +235,7 @@
       <div class="body">
         <form id="edit-wallet-form" class="form-grid">
           <input type="hidden" id="edit-wallet-id">
-          
+
           <div class="form-group">
             <label class="form-label -required" for="edit-wallet-name">Wallet Name</label>
             <input type="text" id="edit-wallet-name" class="form-input" required>
@@ -301,14 +301,13 @@
         <button class="s-button -danger _mr-auto" id="delete-edit" title="Remove wallet">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
           Remove wallet
-        </button> 
+        </button>
         <button class="s-button -outline" id="cancel-edit">Cancel</button>
         <button class="s-button -primary" id="save-edit">Save Changes</button>
       </div>
     </div>
   </div>
 
-  <script src="icon-utils.js"></script>
-  <script src="options.js"></script>
+  <script src="./options.js" type="module"></script>
 </body>
 </html>

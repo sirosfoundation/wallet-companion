@@ -2,6 +2,8 @@
  * Popup script for Digital Credentials Wallet Selector extension
  */
 
+import { generateIdenticon, svgToDataUrl } from '../utils/icons';
+
 document.addEventListener('DOMContentLoaded', function() {
   const statusBar = document.getElementById('statusBar');
   const statusIndicator = document.getElementById('statusIndicator');
@@ -111,13 +113,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Generate an identicon based on the wallet URL or name
         const identifier = wallet.url || wallet.name || wallet.id;
         try {
-          // Use window.iconUtils for icon generation
-          if (window.iconUtils && window.iconUtils.generateIdenticon && window.iconUtils.svgToDataUrl) {
-            const svg = window.iconUtils.generateIdenticon(identifier);
-            icon = window.iconUtils.svgToDataUrl(svg);
-          } else {
-            icon = '🔐'; // Fallback
-          }
+            const svg = generateIdenticon(identifier);
+            icon = svgToDataUrl(svg);
         } catch (e) {
           console.error('Icon generation failed:', e);
           icon = '🔐'; // Fallback to emoji if generation fails

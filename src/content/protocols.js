@@ -7,7 +7,7 @@
  * Base Protocol Plugin Interface
  * All protocol plugins must implement these methods
  */
-class ProtocolPlugin {
+export class ProtocolPlugin {
   /**
    * Get the protocol identifier
    * @returns {string} Protocol identifier (e.g., 'openid4vp', 'mdoc-openid4vp')
@@ -41,7 +41,6 @@ class ProtocolPlugin {
    * @returns {Object} Request ready for transmission
    */
   formatForWallet(preparedRequest, walletUrl) {
-    // Default implementation - can be overridden
     return {
       protocol: this.getProtocolId(),
       data: preparedRequest,
@@ -52,22 +51,17 @@ class ProtocolPlugin {
 
 /**
  * Example Protocol Plugin Implementation
- * This is a stub showing how to implement a protocol plugin
- * Real protocol implementations should be added as separate plugins
  */
-class ExampleProtocolPlugin extends ProtocolPlugin {
+export class ExampleProtocolPlugin extends ProtocolPlugin {
   getProtocolId() {
     return 'example-protocol';
   }
   
   prepareRequest(requestData) {
-    // Validate request structure
     if (!requestData || typeof requestData !== 'object') {
       throw new Error('Request data must be an object');
     }
     
-    // Add any protocol-specific validation here
-    // Transform and return the prepared request
     return {
       ...requestData,
       timestamp: new Date().toISOString()
@@ -75,12 +69,10 @@ class ExampleProtocolPlugin extends ProtocolPlugin {
   }
   
   validateResponse(responseData) {
-    // Validate response structure
     if (!responseData || typeof responseData !== 'object') {
       throw new Error('Invalid response data');
     }
     
-    // Add any protocol-specific validation here
     return responseData;
   }
 }
@@ -89,11 +81,10 @@ class ExampleProtocolPlugin extends ProtocolPlugin {
  * Protocol Plugin Registry
  * Manages registration and retrieval of protocol plugins
  */
-class ProtocolPluginRegistry {
+export class ProtocolPluginRegistry {
   constructor() {
     this.plugins = new Map();
     
-    // Register example plugin (replace with real implementations)
     this.register(new ExampleProtocolPlugin());
   }
   
@@ -186,20 +177,4 @@ class ProtocolPluginRegistry {
     
     return plugin.formatForWallet(preparedRequest, walletUrl);
   }
-}
-
-// Export for use in other scripts
-if (typeof module !== 'undefined' && module.exports) {
-  // Node.js environment (for testing)
-  module.exports = {
-    ProtocolPlugin,
-    ExampleProtocolPlugin,
-    ProtocolPluginRegistry
-  };
-}
-
-// Make available globally for browser extension
-if (typeof window !== 'undefined') {
-  window.ProtocolPluginRegistry = ProtocolPluginRegistry;
-  window.ProtocolPlugin = ProtocolPlugin;
 }

@@ -10,47 +10,9 @@
  * - wwWallet implementation: wallet-frontend/src/lib/services/OpenID4VP/OpenID4VP.ts
  */
 
-(function(root, factory) {
-  'use strict';
-  
-  // Universal Module Definition (UMD) pattern
-  // Supports CommonJS, AMD, and browser globals
-  if (typeof module !== 'undefined' && module.exports) {
-    // Node.js/CommonJS - get ProtocolPlugin from protocols.js
-    const { ProtocolPlugin } = require('../protocols.js');
-    module.exports = factory(ProtocolPlugin);
-  } else if (typeof define === 'function' && define.amd) {
-    // AMD
-    define(['ProtocolPlugin'], factory);
-  } else {
-    // Browser globals
-    if (!root.ProtocolPlugin) {
-      console.error('ProtocolPlugin base class not found. Make sure protocols.js is loaded first.');
-      return;
-    }
-    const OpenID4VPPlugin = factory(root.ProtocolPlugin);
-    root.OpenID4VPPlugin = OpenID4VPPlugin;
-    
-    // Store plugins to be registered
-    if (!root._pendingProtocolPlugins) {
-      root._pendingProtocolPlugins = [];
-    }
-    
-    // Add OpenID4VP variants to pending list
-    root._pendingProtocolPlugins.push(
-      new OpenID4VPPlugin(),              // openid4vp
-      new OpenID4VPPlugin('v1-unsigned'), // openid4vp-v1-unsigned
-      new OpenID4VPPlugin('v1-signed')    // openid4vp-v1-signed
-    );
-    
-    console.log('OpenID4VPPlugin variants queued for registration:', root._pendingProtocolPlugins.length);
-  }
-})(typeof window !== 'undefined' ? window : this, function(ProtocolPlugin) {
-  'use strict';
+import { ProtocolPlugin } from '../protocols.js';
 
-  console.log('OpenID4VPPlugin.js loaded');
-
-class OpenID4VPPlugin extends ProtocolPlugin {
+export class OpenID4VPPlugin extends ProtocolPlugin {
   constructor(variant = '') {
     super();
     this.variant = variant;
@@ -474,6 +436,3 @@ class OpenID4VPPlugin extends ProtocolPlugin {
     }
   }
 }
-
-  return OpenID4VPPlugin;
-});

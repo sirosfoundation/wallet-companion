@@ -3,10 +3,7 @@
  * Injected into pages when a Digital Credentials API call is intercepted
  */
 
-(function() {
-  'use strict';
-
-  console.log('[modal.js] Loading wallet selector modal');
+console.log('[modal.js] Loading wallet selector modal');
 
   // Create modal HTML
   const modalHTML = `
@@ -312,5 +309,3 @@
       }
     );
   });
-
-})();

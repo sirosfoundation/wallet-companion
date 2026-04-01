@@ -2,6 +2,8 @@
  * Options page script for Digital Wallet Configuration
  */
 
+import { fetchFavicon, generateGeometricIcon, generateIdenticon, generateInitialAvatar, svgToDataUrl } from '../utils/icons.js';
+
 // Cross-browser compatibility
 const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
 const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
@@ -38,7 +40,7 @@ async function loadData() {
   try {
     const walletsResponse = await runtime.sendMessage({ type: 'GET_WALLETS' });
     const settingsResponse = await runtime.sendMessage({ type: 'GET_SETTINGS' });
-    
+
     wallets = walletsResponse.wallets || [];
     settings = settingsResponse || { enabled: true, developerMode: false, stats: { interceptCount: 0, walletUses: {} } };
   } catch (error) {
@@ -101,7 +103,7 @@ function setupIconSelectors() {
       });
     });
   }
-  
+
   // Add form favicon button
   const faviconBtn = document.getElementById('favicon-option');
   if (faviconBtn) {
@@ -122,7 +124,7 @@ function setupIconSelectors() {
       });
     });
   }
-  
+
   // Edit form favicon button
   const editFaviconBtn = document.getElementById('edit-favicon-option');
   if (editFaviconBtn) {
@@ -137,25 +139,25 @@ function setupIconSelectors() {
   // URL input listener for favicon fetching
   const urlInput = document.getElementById('wallet-url');
   const nameInput = document.getElementById('wallet-name');
-  
+
   if (urlInput) {
     urlInput.addEventListener('blur', handleUrlChange);
     urlInput.addEventListener('change', handleUrlChange);
   }
-  
+
   if (nameInput) {
     nameInput.addEventListener('input', debounce(handleNameChange, 300));
   }
-  
-  // Edit form URL and name listeners  
+
+  // Edit form URL and name listeners
   const editUrlInput = document.getElementById('edit-wallet-url');
   const editNameInput = document.getElementById('edit-wallet-name');
-  
+
   if (editUrlInput) {
     editUrlInput.addEventListener('blur', handleEditUrlChange);
     editUrlInput.addEventListener('change', handleEditUrlChange);
   }
-  
+
   if (editNameInput) {
     editNameInput.addEventListener('input', debounce(handleEditNameChange, 300));
   }
@@ -182,23 +184,19 @@ function debounce(func, wait) {
 async function handleUrlChange() {
   const url = document.getElementById('wallet-url').value.trim();
   const name = document.getElementById('wallet-name').value.trim();
-  
+
   if (!url) return;
-  if (!window.iconUtils) {
-    console.error('Icon utilities not loaded');
-    return;
-  }
-  
+
   const iconOptions = document.getElementById('icon-options');
   const generatedIconsContainer = document.getElementById('generated-icons');
-  
+
   // Generate and render icons
   const generatedIcons = generateIconsArray(url, name);
   renderIconButtons(generatedIconsContainer, generatedIcons, selectIcon);
-  
+
   // Auto-select first generated icon
   selectIcon(generatedIcons[0].type, generatedIcons[0].value);
-  
+
   // Fetch favicon in background
   await fetchAndDisplayFavicon(url, {
     section: document.getElementById('favicon-section'),
@@ -215,9 +213,9 @@ async function handleUrlChange() {
 function handleNameChange() {
   const url = document.getElementById('wallet-url').value.trim();
   const name = document.getElementById('wallet-name').value.trim();
-  
-  if (!name || !window.iconUtils) return;
-  
+
+  if (!name) return;
+
   const generatedIconsContainer = document.getElementById('generated-icons');
   const generatedIcons = generateIconsArray(url, name);
   renderIconButtons(generatedIconsContainer, generatedIcons, selectIcon);
@@ -227,22 +225,17 @@ function handleNameChange() {
  * Generate icon options for the edit form
  */
 async function generateEditIconOptions(url, name, currentIcon, currentIconType) {
-  if (!window.iconUtils) {
-    console.error('Icon utilities not loaded');
-    return;
-  }
-  
   const iconOptions = document.getElementById('edit-icon-options');
   const generatedIconsContainer = document.getElementById('edit-generated-icons');
   const preview = document.getElementById('edit-icon-preview');
-  
+
   // Generate and render icons
   const generatedIcons = generateIconsArray(url, name);
   renderIconButtons(generatedIconsContainer, generatedIcons, selectEditIcon);
-  
+
   // Show icon options
   iconOptions.classList.remove('_hidden');
-  
+
   // Fetch favicon in background
   if (url) {
     await fetchAndDisplayFavicon(url, {
@@ -256,7 +249,7 @@ async function generateEditIconOptions(url, name, currentIcon, currentIconType) 
       }
     });
   }
-  
+
   // Select current icon
   if (currentIcon) {
     if (currentIconType === 'emoji' || !isIconUrl(currentIcon)) {
@@ -281,26 +274,26 @@ async function generateEditIconOptions(url, name, currentIcon, currentIconType) 
 async function handleEditUrlChange() {
   const url = document.getElementById('edit-wallet-url').value.trim();
   const name = document.getElementById('edit-wallet-name').value.trim();
-  
-  if (!url || !window.iconUtils) return;
-  
+
+  if (!url) return;
+
   const generatedIconsContainer = document.getElementById('edit-generated-icons');
   const iconOptions = document.getElementById('edit-icon-options');
-  
+
   // Generate and render icons
   const generatedIcons = generateIconsArray(url, name);
   renderIconButtons(generatedIconsContainer, generatedIcons, selectEditIcon);
-  
+
   // Auto-select first generated icon
   selectEditIcon(generatedIcons[0].type, generatedIcons[0].value);
-  
+
   // Fetch favicon in background
   await fetchAndDisplayFavicon(url, {
     section: document.getElementById('edit-favicon-section'),
     img: document.getElementById('edit-favicon-img'),
     status: document.getElementById('edit-favicon-status')
   }, (favicon) => selectEditIcon('favicon', favicon));
-  
+
   iconOptions.classList.remove('_hidden');
 }
 
@@ -310,9 +303,9 @@ async function handleEditUrlChange() {
 function handleEditNameChange() {
   const url = document.getElementById('edit-wallet-url').value.trim();
   const name = document.getElementById('edit-wallet-name').value.trim();
-  
-  if (!name || !window.iconUtils) return;
-  
+
+  if (!name) return;
+
   const generatedIconsContainer = document.getElementById('edit-generated-icons');
   const generatedIcons = generateIconsArray(url, name);
   renderIconButtons(generatedIconsContainer, generatedIcons, selectEditIcon);
@@ -348,7 +341,7 @@ function renderAll() {
  */
 function renderWallets() {
   const container = document.getElementById('wallets-container');
-  
+
   if (wallets.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
@@ -379,7 +372,7 @@ function renderWallets() {
       </div>
     </div>
   `;
-  
+
   // Attach click handler for add another wallet card
   container.querySelector('.add-card').addEventListener('click', function() {
     switchTab('add');
@@ -401,7 +394,7 @@ function renderWallets() {
 function renderWalletCard(wallet) {
   const uses = settings.stats.walletUses[wallet.id] || 0;
   const isDefault = wallets.findIndex(w => w.id === wallet.id) === 0;
-  
+
   // Build protocols display for developer mode
   let protocolsDisplay = '';
   if (settings.developerMode && wallet.protocols && wallet.protocols.length > 0) {
@@ -412,29 +405,24 @@ function renderWalletCard(wallet) {
       </div>
     `;
   }
-  
+
   // Render icon - handle both emoji and image icons
   let iconHtml;
   let icon = wallet.icon;
-  
+
   // If icon is missing or is the default emoji, generate one dynamically
   if (!icon || icon === '🔐') {
     // Generate an identicon based on the wallet URL or name
     const identifier = wallet.url || wallet.name || wallet.id;
     try {
-      // Use window.iconUtils for icon generation
-      if (window.iconUtils && window.iconUtils.generateIdenticon && window.iconUtils.svgToDataUrl) {
-        const svg = window.iconUtils.generateIdenticon(identifier);
-        icon = window.iconUtils.svgToDataUrl(svg);
-      } else {
-        icon = '🔐'; // Fallback
-      }
+        const svg = generateIdenticon(identifier);
+        icon = svgToDataUrl(svg);
     } catch (e) {
       console.error('Icon generation failed:', e);
       icon = '🔐'; // Fallback to emoji if generation fails
     }
   }
-  
+
   // Check if icon is a URL (data: or http)
   const iconIsUrl = icon && (icon.startsWith('data:') || icon.startsWith('http'));
   if (iconIsUrl) {
@@ -442,7 +430,7 @@ function renderWalletCard(wallet) {
   } else {
     iconHtml = `<span class="wallet-emoji">${icon}</span>`;
   }
-  
+
   return `
     <div class="wallet-card ${wallet.enabled ? '' : '-disabled'}" data-wallet-id="${wallet.id}">
       <div class="header">
@@ -455,16 +443,16 @@ function renderWalletCard(wallet) {
         </div>
       </div>
       ${wallet.description ? `<div class="description">${escapeHtml(wallet.description)}</div>` : ''}
-      
+
       ${protocolsDisplay}
-      
+
       <div class="meta">
         ${wallet.enabled ? '<span class="badge-label -success">Active</span>' : '<span class="badge-label -warning">Inactive</span>'}
         ${isDefault ? '<span class="badge-label -info">Default</span>' : ''}
         ${wallet.preset ? '<span class="badge-label -info">wwWallet</span>' : ''}
         ${uses > 0 ? `<span class="badge-label -info">Used ${uses}x</span>` : ''}
       </div>
-      
+
       <div class="actions">
         <div class="left">
           <label class="toggle-switch -large" title="${wallet.enabled ? 'Deactivate' : 'Activate'} wallet">
@@ -485,7 +473,7 @@ function renderWalletCard(wallet) {
  */
 function renderPresets() {
   const container = document.getElementById('preset-wallets');
-  
+
   container.innerHTML = WWWALLET_PRESETS.map(preset => {
     const isAdded = wallets.some(w => w.url === preset.url);
     return `
@@ -493,7 +481,7 @@ function renderPresets() {
         <div class="icon">${preset.icon}</div>
         <div class="info">
           <div class="name">${escapeHtml(preset.name)}</div>
-          ${isAdded 
+          ${isAdded
             ? '<div class="status -added"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Added</div>'
             : '<div class="status">Click to add</div>'
           }
@@ -590,11 +578,11 @@ async function handleAddWallet(e) {
 
   wallets.push(wallet);
   await saveWallets();
-  
+
   e.target.reset();
   // Reset icon selector
   resetIconSelector();
-  
+
   renderAll();
   showNotification(`${wallet.name} added successfully`, 'success');
   switchTab('wallets');
@@ -610,10 +598,10 @@ function resetIconSelector() {
   const iconTypeInput = document.getElementById('wallet-icon-type');
   const faviconSection = document.getElementById('favicon-section');
   const generatedIcons = document.getElementById('generated-icons');
-  
+
   // Clear all selections
   document.querySelectorAll('#icon-emoji-grid .emoji-btn').forEach(b => b.classList.remove('-selected'));
-  
+
   // Reset preview
   if (preview) preview.innerHTML = '<span class="placeholder">?</span>';
   if (iconOptions) iconOptions.classList.add('_hidden');
@@ -635,20 +623,20 @@ async function openEditModal(wallet) {
   document.getElementById('edit-wallet-icon-type').value = wallet.iconType || 'emoji';
   document.getElementById('edit-wallet-enabled').checked = wallet.enabled;
   updateWalletStatusLabel();
-  
+
   // Generate and display icon options
   await generateEditIconOptions(wallet.url, wallet.name, wallet.icon, wallet.iconType);
-  
+
   // Populate protocols if developer mode is enabled
   if (settings.developerMode && wallet.protocols) {
     document.getElementById('edit-wallet-protocols').value = wallet.protocols.join('\n');
   } else {
     document.getElementById('edit-wallet-protocols').value = '';
   }
-  
+
   // Ensure developer mode UI is updated for the modal
   updateDeveloperModeUI();
-  
+
   document.getElementById('edit-modal').classList.add('-active');
 }
 
@@ -682,7 +670,7 @@ function closeEditModal() {
 async function handleSaveEdit() {
   const walletId = document.getElementById('edit-wallet-id').value;
   const walletIndex = wallets.findIndex(w => w.id === walletId);
-  
+
   if (walletIndex === -1) return;
 
   const updatedWallet = {
@@ -772,11 +760,11 @@ async function handleToggleDeveloperMode(e) {
  */
 function updateDeveloperModeUI() {
   const devMode = settings.developerMode === true;
-  
+
   // Show/hide protocols fields in add and edit forms
   const addProtocolsGroup = document.getElementById('add-protocols-group');
   const editProtocolsGroup = document.getElementById('edit-protocols-group');
-  
+
   if (addProtocolsGroup) {
     addProtocolsGroup.classList.toggle('_hidden', !devMode);
   }
@@ -822,7 +810,7 @@ function handleExportConfig() {
   a.download = `wallet-config-${Date.now()}.json`;
   a.click();
   URL.revokeObjectURL(url);
-  
+
   showNotification('Configuration exported', 'success');
 }
 
@@ -884,8 +872,8 @@ async function saveWallets() {
  */
 async function saveSettings() {
   try {
-    await runtime.sendMessage({ 
-      type: 'SAVE_SETTINGS', 
+    await runtime.sendMessage({
+      type: 'SAVE_SETTINGS',
       enabled: settings.enabled,
       developerMode: settings.developerMode
     });
@@ -917,7 +905,7 @@ function escapeHtml(unsafe) {
 
 /**
  * Show notification
- * 
+ *
  * @param {string} message - The message to display
  * @param {'success' | 'error' | 'warning' | 'info'} type - The type of notification
  */
@@ -977,17 +965,14 @@ function showNotification(message, type = 'info') {
  * @returns {Array<{type: string, value: string}>} Array of icon options
  */
 function generateIconsArray(url, name) {
-  const iu = window.iconUtils;
-  if (!iu) return [];
-  
   const identifier = url || name || 'wallet';
   const walletName = name || 'Wallet';
-  
+
   return [
-    { type: 'identicon', value: iu.svgToDataUrl(iu.generateIdenticon(identifier)) },
-    { type: 'initial', value: iu.svgToDataUrl(iu.generateInitialAvatar(walletName)) },
-    { type: 'geometric-1', value: iu.svgToDataUrl(iu.generateGeometricIcon(identifier)) },
-    { type: 'geometric-2', value: iu.svgToDataUrl(iu.generateGeometricIcon(identifier + '2')) }
+    { type: 'identicon', value: svgToDataUrl(generateIdenticon(identifier)) },
+    { type: 'initial', value: svgToDataUrl(generateInitialAvatar(walletName)) },
+    { type: 'geometric-1', value: svgToDataUrl(generateGeometricIcon(identifier)) },
+    { type: 'geometric-2', value: svgToDataUrl(generateGeometricIcon(identifier + '2')) }
   ];
 }
 
@@ -1020,16 +1005,15 @@ function renderIconButtons(container, icons, onSelect) {
  */
 async function fetchAndDisplayFavicon(url, elements, onSuccess) {
   const { section, img, status } = elements;
-  const iu = window.iconUtils;
-  
+
   // Reset state
   section.classList.add('_hidden');
   status.innerHTML = '';
-  
-  if (!url || !iu) return;
-  
+
+  if (!url) return;
+
   try {
-    const favicon = await iu.fetchFavicon(url, 2000);
+    const favicon = await fetchFavicon(url, 2000);
     if (favicon) {
       // Validate image actually loads
       const testImg = new Image();
@@ -1058,30 +1042,30 @@ function selectIconInForm(prefix, type, value) {
   const preview = document.getElementById(`${prefix}icon-preview`);
   const iconInput = document.getElementById(`${prefix}wallet-icon`);
   const iconTypeInput = document.getElementById(`${prefix}wallet-icon-type`);
-  
+
   // Build selectors for this form
   const emojiSelector = `#${prefix}icon-emoji-grid .emoji-btn`;
   const generatedSelector = `#${prefix}generated-icons .icon-option`;
   const faviconSelector = `#${prefix}favicon-option`;
-  
+
   // Clear all selections
   document.querySelectorAll(`${emojiSelector}, ${generatedSelector}, ${faviconSelector}`).forEach(btn => {
     btn.classList.remove('-selected');
   });
-  
+
   // Update preview and inputs
   if (type === 'emoji') {
     preview.innerHTML = `<span style="font-size: 32px;">${value}</span>`;
     iconInput.value = value;
     if (iconTypeInput) iconTypeInput.value = 'emoji';
-    
+
     const emojiBtn = document.querySelector(`${emojiSelector}[data-emoji="${CSS.escape(value)}"]`);
     if (emojiBtn) emojiBtn.classList.add('-selected');
   } else if (type === 'favicon') {
     preview.innerHTML = `<img src="${value}" alt="Wallet icon">`;
     iconInput.value = value;
     if (iconTypeInput) iconTypeInput.value = 'favicon';
-    
+
     const faviconBtn = document.getElementById(`${prefix}favicon-option`);
     if (faviconBtn) faviconBtn.classList.add('-selected');
   } else {
@@ -1089,7 +1073,7 @@ function selectIconInForm(prefix, type, value) {
     preview.innerHTML = `<img src="${value}" alt="Wallet icon">`;
     iconInput.value = value;
     if (iconTypeInput) iconTypeInput.value = type;
-    
+
     const genBtn = document.querySelector(`${generatedSelector}[data-value="${CSS.escape(value)}"]`);
     if (genBtn) genBtn.classList.add('-selected');
   }
