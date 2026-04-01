@@ -1,39 +1,41 @@
 /**
- * Jest setup file for browser extension testing
+ * Vitest setup file for browser extension testing
  */
+
+import { vi, beforeEach } from 'vitest';
 
 // Mock browser/chrome APIs
 global.chrome = {
   runtime: {
     id: 'test-extension-id',
     getURL: (path) => `chrome-extension://test-extension-id/${path}`,
-    sendMessage: jest.fn((message, callback) => {
+    sendMessage: vi.fn((message, callback) => {
       if (callback) callback({ success: true });
       return Promise.resolve({ success: true });
     }),
     onMessage: {
-      addListener: jest.fn(),
-      removeListener: jest.fn()
+      addListener: vi.fn(),
+      removeListener: vi.fn()
     },
     onInstalled: {
-      addListener: jest.fn()
+      addListener: vi.fn()
     },
     onStartup: {
-      addListener: jest.fn()
+      addListener: vi.fn()
     },
-    openOptionsPage: jest.fn()
+    openOptionsPage: vi.fn()
   },
   storage: {
     local: {
-      get: jest.fn((keys) => Promise.resolve({})),
-      set: jest.fn(() => Promise.resolve()),
-      remove: jest.fn(() => Promise.resolve()),
-      clear: jest.fn(() => Promise.resolve())
+      get: vi.fn((keys) => Promise.resolve({})),
+      set: vi.fn(() => Promise.resolve()),
+      remove: vi.fn(() => Promise.resolve()),
+      clear: vi.fn(() => Promise.resolve())
     }
   },
   tabs: {
-    executeScript: jest.fn(() => Promise.resolve()),
-    query: jest.fn(() => Promise.resolve([]))
+    executeScript: vi.fn(() => Promise.resolve()),
+    query: vi.fn(() => Promise.resolve([]))
   }
 };
 
@@ -45,19 +47,19 @@ global.browser = global.chrome;
 
 // Mock navigator.credentials
 global.navigator.credentials = {
-  get: jest.fn(() => Promise.resolve(null)),
-  create: jest.fn(() => Promise.resolve(null)),
-  store: jest.fn(() => Promise.resolve())
+  get: vi.fn(() => Promise.resolve(null)),
+  create: vi.fn(() => Promise.resolve(null)),
+  store: vi.fn(() => Promise.resolve())
 };
 
 // Mock console methods to reduce test output noise
 global.console = {
   ...console,
-  log: jest.fn(),
-  debug: jest.fn(),
-  info: jest.fn(),
-  warn: jest.fn(),
-  error: jest.fn()
+  log: vi.fn(),
+  debug: vi.fn(),
+  info: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn()
 };
 
 // Note: Do NOT mock document.createElement - jsdom provides a real implementation
@@ -65,5 +67,5 @@ global.console = {
 
 // Reset mocks before each test
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });

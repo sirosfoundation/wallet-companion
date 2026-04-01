@@ -8,8 +8,8 @@ describe('Content Script - Message Bridge', () => {
   beforeEach(() => {
     // Mock browser/chrome runtime
     mockRuntime = {
-      sendMessage: jest.fn(() => Promise.resolve({ success: true })),
-      getURL: jest.fn((path) => `chrome-extension://test-id/${path}`)
+      sendMessage: vi.fn(() => Promise.resolve({ success: true })),
+      getURL: vi.fn((path) => `chrome-extension://test-id/${path}`)
     };
 
     // Setup global chrome object
@@ -18,8 +18,8 @@ describe('Content Script - Message Bridge', () => {
     };
 
     // Mock window event methods
-    window.dispatchEvent = jest.fn();
-    window.addEventListener = jest.fn();
+    window.dispatchEvent = vi.fn();
+    window.addEventListener = vi.fn();
   });
 
   afterEach(() => {

@@ -3,24 +3,24 @@
  * Tests end-to-end flows using Puppeteer
  */
 
-const puppeteer = require('puppeteer');
-const path = require('path');
-const fs = require('fs');
+import { launch } from 'puppeteer';
+import { join } from 'path';
+import { existsSync } from 'fs';
 
 describe('Browser Extension - Integration Tests', () => {
   let browser;
   let extensionPage;
   let extensionId;
-  const EXTENSION_PATH = path.join(__dirname, '..', 'chrome');
+  const EXTENSION_PATH = join(__dirname, '..', 'chrome');
 
   beforeAll(async () => {
     // Check if extension is built
-    if (!fs.existsSync(EXTENSION_PATH)) {
+    if (!existsSync(EXTENSION_PATH)) {
       throw new Error('Extension not built. Run "npm run build:chrome" first.');
     }
 
     // Launch browser with extension
-    browser = await puppeteer.launch({
+    browser = await launch({
       headless: false, // Extensions require headed mode
       args: [
         `--disable-extensions-except=${EXTENSION_PATH}`,
@@ -59,8 +59,8 @@ describe('Browser Extension - Integration Tests', () => {
 
     if (!extensionId) {
       // Try alternative method: navigate to extension page directly
-      const manifestPath = path.join(EXTENSION_PATH, 'manifest.json');
-      if (fs.existsSync(manifestPath)) {
+      const manifestPath = join(EXTENSION_PATH, 'manifest.json');
+      if (existsSync(manifestPath)) {
         console.log('✓ Extension files found, will use file:// URLs for testing');
       } else {
         const targets = await browser.targets();
@@ -163,7 +163,7 @@ describe('Browser Extension - Integration Tests', () => {
     });
 
     test('should inject DC API interception script', async () => {
-      const testPagePath = path.join(__dirname, '..', 'test-page.html');
+      const testPagePath = join(__dirname, '..', 'test-page.html');
       await page.goto(`file://${testPagePath}`);
 
       // Check if navigator.credentials.get is overridden
@@ -175,7 +175,7 @@ describe('Browser Extension - Integration Tests', () => {
     });
 
     test('should detect extension API', async () => {
-      const testPagePath = path.join(__dirname, '..', 'test-wallet-api.html');
+      const testPagePath = join(__dirname, '..', 'test-wallet-api.html');
       await page.goto(`file://${testPagePath}`);
 
       await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for injection
@@ -188,7 +188,7 @@ describe('Browser Extension - Integration Tests', () => {
     });
 
     test('should expose DCWS API methods', async () => {
-      const testPagePath = path.join(__dirname, '..', 'test-wallet-api.html');
+      const testPagePath = join(__dirname, '..', 'test-wallet-api.html');
       await page.goto(`file://${testPagePath}`);
 
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -206,7 +206,7 @@ describe('Browser Extension - Integration Tests', () => {
     });
 
     test('should detect extension installation', async () => {
-      const testPagePath = path.join(__dirname, '..', 'test-wallet-api.html');
+      const testPagePath = join(__dirname, '..', 'test-wallet-api.html');
       await page.goto(`file://${testPagePath}`);
 
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -224,7 +224,7 @@ describe('Browser Extension - Integration Tests', () => {
 
     beforeEach(async () => {
       page = await browser.newPage();
-      const testPagePath = path.join(__dirname, '..', 'test-wallet-api.html');
+      const testPagePath = join(__dirname, '..', 'test-wallet-api.html');
       await page.goto(`file://${testPagePath}`);
       await new Promise(resolve => setTimeout(resolve, 1000));
     });

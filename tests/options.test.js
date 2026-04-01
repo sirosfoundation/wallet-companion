@@ -421,7 +421,7 @@ describe('Options Page - Wallet Management', () => {
 
       // Simulate clicking the globe icon
       buttons.forEach(btn => btn.classList.remove('selected'));
-      const globeBtn = iconGrid.querySelector('[data-emoji="🌐"]');
+      const globeBtn = Array.from(buttons).find(btn => btn.getAttribute('data-emoji') === '🌐');
       globeBtn.classList.add('selected');
       walletIcon.value = '🌐';
       iconPreview.innerHTML = '<span>🌐</span>';
@@ -433,8 +433,9 @@ describe('Options Page - Wallet Management', () => {
 
     test('should deselect previous icon', () => {
       const iconGrid = document.getElementById('icon-emoji-grid');
-      const lockBtn = iconGrid.querySelector('[data-emoji="🔐"]');
-      const globeBtn = iconGrid.querySelector('[data-emoji="🌐"]');
+      const buttons = iconGrid.querySelectorAll('.icon-emoji-btn');
+      const lockBtn = Array.from(buttons).find(btn => btn.getAttribute('data-emoji') === '🔐');
+      const globeBtn = Array.from(buttons).find(btn => btn.getAttribute('data-emoji') === '🌐');
 
       lockBtn.classList.add('selected');
       

@@ -3,7 +3,7 @@
  * Based on wwWallet implementation patterns
  */
 
-const OpenID4VPPlugin = require('../src/protocols/OpenID4VPPlugin.js');
+import { OpenID4VPPlugin } from '../src/content/protocols/OpenID4VPPlugin.js';
 
 describe('OpenID4VPPlugin', () => {
   let plugin;
@@ -153,7 +153,7 @@ describe('OpenID4VPPlugin', () => {
     });
 
     it('should warn on unsupported client_id_scheme', () => {
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation();
 
       const requestData = {
         url: 'openid4vp://?client_id=did:web:verifier.example.com&request_uri=https://verifier.example.com/req'
@@ -169,7 +169,7 @@ describe('OpenID4VPPlugin', () => {
     });
 
     it('should accept x509_san_dns client_id_scheme', () => {
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation();
 
       const requestData = {
         url: 'openid4vp://?client_id=x509_san_dns:verifier.example.com&request_uri=https://verifier.example.com/req'
@@ -183,7 +183,7 @@ describe('OpenID4VPPlugin', () => {
     });
 
     it('should accept https URL as client_id', () => {
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation();
 
       const requestData = {
         url: 'openid4vp://?client_id=https://verifier.example.com&request_uri=https://verifier.example.com/req'
@@ -300,7 +300,7 @@ describe('OpenID4VPPlugin', () => {
     });
 
     it('should warn if vp_token present but presentation_submission missing', () => {
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation();
 
       const responseData = {
         vp_token: 'eyJhbGciOiJFUzI1NiJ9...'

@@ -132,8 +132,9 @@ describe('JWT Verification Callbacks', () => {
   });
 });
 
+import { OpenID4VPPlugin } from '../src/content/protocols/OpenID4VPPlugin.js';
+
 describe('OpenID4VPPlugin - JWT Verification Integration', () => {
-  const OpenID4VPPlugin = require('../src/protocols/OpenID4VPPlugin.js');
   let plugin;
 
   beforeEach(() => {
@@ -229,7 +230,7 @@ describe('OpenID4VPPlugin - JWT Verification Integration', () => {
   describe('handleRequestUri with JWT verification', () => {
     beforeEach(() => {
       // Mock fetch
-      global.fetch = jest.fn();
+      global.fetch = vi.fn();
     });
 
     afterEach(() => {
@@ -281,7 +282,7 @@ describe('OpenID4VPPlugin - JWT Verification Integration', () => {
     });
 
     it('should skip verification if no verifier provided', async () => {
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation();
       const mockJWT = 'eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0IiwiYWxnIjoiRVMyNTYifQ.eyJjbGllbnRfaWQiOiJ0ZXN0In0.sig';
       
       global.fetch.mockResolvedValue({

@@ -7,12 +7,12 @@ describe('Inject Script - DC API Interception', () => {
 
   beforeEach(() => {
     // Mock original credentials.get
-    originalCredentialsGet = jest.fn(() => Promise.resolve({ id: 'native-credential' }));
+    originalCredentialsGet = vi.fn(() => Promise.resolve({ id: 'native-credential' }));
     navigator.credentials.get = originalCredentialsGet;
 
     // Mock custom event dispatching
-    window.dispatchEvent = jest.fn();
-    window.addEventListener = jest.fn();
+    window.dispatchEvent = vi.fn();
+    window.addEventListener = vi.fn();
   });
 
   describe('navigator.credentials.get override', () => {
@@ -138,9 +138,9 @@ describe('Inject Script - Wallet Registration API', () => {
     delete window.DCWS;
 
     // Mock event listeners
-    window.addEventListener = jest.fn();
-    window.removeEventListener = jest.fn();
-    window.dispatchEvent = jest.fn();
+    window.addEventListener = vi.fn();
+    window.removeEventListener = vi.fn();
+    window.dispatchEvent = vi.fn();
   });
 
   describe('API Exposure', () => {
@@ -149,8 +149,8 @@ describe('Inject Script - Wallet Registration API', () => {
       window.DigitalCredentialsWalletSelector = {
         version: '1.0.0',
         isInstalled: () => true,
-        registerWallet: jest.fn(),
-        isWalletRegistered: jest.fn()
+        registerWallet: vi.fn(),
+        isWalletRegistered: vi.fn()
       };
 
       expect(window.DigitalCredentialsWalletSelector).toBeDefined();

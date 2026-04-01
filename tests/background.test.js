@@ -44,7 +44,7 @@ describe('Background Script - Wallet Management', () => {
       });
 
       const message = { type: 'GET_WALLETS' };
-      const sendResponse = jest.fn();
+      const sendResponse = vi.fn();
 
       // Simulate the handler (we'll need to export handleMessage from background.js)
       // For now, we'll test the logic

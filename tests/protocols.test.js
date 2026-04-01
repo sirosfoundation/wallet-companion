@@ -2,11 +2,7 @@
  * Tests for Protocol Plugin System
  */
 
-const {
-  ProtocolPlugin,
-  ExampleProtocolPlugin,
-  ProtocolPluginRegistry
-} = require('../src/protocols.js');
+import { ProtocolPlugin, ExampleProtocolPlugin, ProtocolPluginRegistry } from '../src/content/protocols.js';
 
 describe('Protocol Plugin System', () => {
   describe('Base ProtocolPlugin', () => {
@@ -191,7 +187,7 @@ describe('Protocol Plugin System', () => {
         validateResponse(data) { return data; }
       }
       
-      const spy = jest.spyOn(console, 'warn').mockImplementation();
+      const spy = vi.spyOn(console, 'warn').mockImplementation();
       
       const customPlugin = new CustomExamplePlugin();
       registry.register(customPlugin);

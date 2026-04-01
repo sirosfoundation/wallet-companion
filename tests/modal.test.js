@@ -227,7 +227,7 @@ describe('Modal - Wallet Selector', () => {
 
   describe('Callback Handling', () => {
     test('should call onSelect callback with wallet', () => {
-      const onSelect = jest.fn();
+      const onSelect = vi.fn();
       const wallet = mockWallets[0];
       
       onSelect(wallet);
@@ -237,7 +237,7 @@ describe('Modal - Wallet Selector', () => {
     });
 
     test('should call onNative callback', () => {
-      const onNative = jest.fn();
+      const onNative = vi.fn();
       
       onNative();
       
@@ -245,7 +245,7 @@ describe('Modal - Wallet Selector', () => {
     });
 
     test('should call onCancel callback', () => {
-      const onCancel = jest.fn();
+      const onCancel = vi.fn();
       
       onCancel();
       
@@ -255,7 +255,7 @@ describe('Modal - Wallet Selector', () => {
 
   describe('Event Handling', () => {
     test('should register click handler on element', () => {
-      const clickHandler = jest.fn();
+      const clickHandler = vi.fn();
       const div = document.createElement('div');
       div.addEventListener('click', clickHandler);
       
@@ -267,7 +267,7 @@ describe('Modal - Wallet Selector', () => {
     });
 
     test('should register click handler on button', () => {
-      const clickHandler = jest.fn();
+      const clickHandler = vi.fn();
       const button = document.createElement('button');
       button.addEventListener('click', clickHandler);
       
@@ -278,7 +278,7 @@ describe('Modal - Wallet Selector', () => {
     });
 
     test('should handle button click event', () => {
-      const clickHandler = jest.fn();
+      const clickHandler = vi.fn();
       const button = document.createElement('button');
       button.addEventListener('click', clickHandler);
       
@@ -289,7 +289,7 @@ describe('Modal - Wallet Selector', () => {
     });
 
     test('should handle ESC key press', () => {
-      const escHandler = jest.fn();
+      const escHandler = vi.fn();
       
       const handleKeydown = (e) => {
         if (e.key === 'Escape') {
@@ -308,7 +308,7 @@ describe('Modal - Wallet Selector', () => {
     });
 
     test('should not trigger cancel on other keys', () => {
-      const escHandler = jest.fn();
+      const escHandler = vi.fn();
       
       const handleKeydown = (e) => {
         if (e.key === 'Escape') {
@@ -327,7 +327,7 @@ describe('Modal - Wallet Selector', () => {
     });
 
     test('should detect click on overlay element', () => {
-      const handler = jest.fn();
+      const handler = vi.fn();
       
       const overlay = document.createElement('div');
       overlay.id = 'dc-wallet-modal-overlay';
@@ -348,7 +348,7 @@ describe('Modal - Wallet Selector', () => {
     });
 
     test('should not trigger handler when target is child element', () => {
-      const handler = jest.fn();
+      const handler = vi.fn();
       
       const overlay = document.createElement('div');
       overlay.id = 'dc-wallet-modal-overlay';

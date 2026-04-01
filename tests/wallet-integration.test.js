@@ -5,29 +5,29 @@
  * Uses Puppeteer to load the mock wallet in a browser with the extension installed.
  */
 
-const puppeteer = require('puppeteer');
-const path = require('path');
-const fs = require('fs');
+import { launch } from 'puppeteer';
+import { join } from 'path';
+import { existsSync } from 'fs';
 
 describe('Mock Wallet Integration Tests', () => {
   let browser;
   let extensionId;
-  const EXTENSION_PATH = path.join(__dirname, '..', 'chrome');
-  const MOCK_WALLET_PATH = path.join(__dirname, 'fixtures', 'mock-wallet.html');
+  const EXTENSION_PATH = join(__dirname, '..', 'chrome');
+  const MOCK_WALLET_PATH = join(__dirname, 'fixtures', 'mock-wallet.html');
 
   beforeAll(async () => {
     // Check if extension is built
-    if (!fs.existsSync(EXTENSION_PATH)) {
+    if (!existsSync(EXTENSION_PATH)) {
       throw new Error('Extension not built. Run "npm run build:chrome" first.');
     }
 
     // Check if mock wallet fixture exists
-    if (!fs.existsSync(MOCK_WALLET_PATH)) {
+    if (!existsSync(MOCK_WALLET_PATH)) {
       throw new Error('Mock wallet fixture not found at: ' + MOCK_WALLET_PATH);
     }
 
     // Launch browser with extension
-    browser = await puppeteer.launch({
+    browser = await launch({
       headless: false, // Extensions require headed mode
       args: [
         `--disable-extensions-except=${EXTENSION_PATH}`,
