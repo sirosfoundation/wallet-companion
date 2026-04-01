@@ -96,13 +96,13 @@ Some documentation is auto-generated from source code:
 
 ```bash
 # Generate API docs from JSDoc comments (future)
-npm run docs:api
+pnpm docs:api
 
 # Generate test coverage reports
-npm run test:coverage
+pnpm test:coverage
 
 # Build all documentation
-npm run docs:build
+pnpm docs:build
 ```
 
 ## Version History

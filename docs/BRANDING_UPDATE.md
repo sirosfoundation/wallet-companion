@@ -33,10 +33,7 @@
 
 ### 3. Build Process Updates ✅
 
-**package.json Scripts**:
-- Added `"icons": "node scripts/generate-icons.js"`
-- Updated `"build"` to run icons generation first
-- Build sequence: `icons` → `build:chrome` → `build:firefox` → `build:safari`
+Icon generation is now handled automatically by the Vite build plugin (`sharp`) during `pnpm build`. No separate step is needed.
 
 **build.js Enhancements**:
 - Now copies SVG logos to browser icon directories
@@ -91,36 +88,34 @@ Each browser directory (`chrome/`, `firefox/`, `safari/`) contains:
 
 ### Tests
 ```bash
-npm test                    # ✅ All 69 unit tests passing
-npm run test:integration    # ✅ All 8 integration tests passing
+pnpm test                    # ✅ All 69 unit tests passing
+pnpm test:integration        # ✅ All 8 integration tests passing
 ```
 
 ### Build
 ```bash
-npm run icons              # ✅ Generates icons successfully
-npm run build              # ✅ Builds all browsers with new branding
+pnpm build              # ✅ Builds all browsers with new branding (icons generated automatically)
 ```
 
 ## Usage Commands
 
 ### Generate Icons
 ```bash
-npm run icons              # Generate PNG icons from SVG logo
+pnpm icons              # Generate PNG icons from SVG logo
 ```
 
 ### Build Extensions
 ```bash
-npm run build              # Build all (includes icon generation)
-npm run build:chrome       # Build Chrome only
-npm run build:firefox      # Build Firefox only
-npm run build:safari       # Build Safari only
+pnpm build              # Build all (icons generated automatically)
+pnpm build:chrome       # Build Chrome only
+pnpm build:firefox      # Build Firefox only
+pnpm build:safari       # Build Safari only
 ```
 
 ### Update Branding
 1. Replace `src/icons/logo-light.svg` with new logo
-2. Run `npm run icons` to regenerate PNG icons
-3. Run `npm run build` to update all browser builds
-4. Update colors by searching/replacing hex codes in `src/`
+2. Run `pnpm build` to regenerate icons and rebuild all browsers
+3. Update colors by searching/replacing hex codes in `src/`
 
 ## Color Reference
 

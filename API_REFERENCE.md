@@ -18,9 +18,9 @@ The extension intercepts standard W3C Digital Credentials API calls. Websites re
 ```javascript
 const credential = await navigator.credentials.get({
   digital: {
-    providers: [{
+    requests: [{
       protocol: "openid4vp",
-      request: {
+      data: {
         // OpenID4VP authorization request
         client_id: "https://verifier.example.com",
         client_id_scheme: "https",
@@ -262,7 +262,7 @@ All parameters inline in the request object:
 ```javascript
 {
   protocol: "openid4vp",
-  request: {
+  data: {
     client_id: "https://verifier.example.com",
     response_type: "vp_token",
     response_mode: "direct_post",
@@ -280,7 +280,7 @@ Request by reference using `request_uri`:
 ```javascript
 {
   protocol: "openid4vp",
-  request: {
+  data: {
     client_id: "https://verifier.example.com",
     request_uri: "https://verifier.example.com/request/abc123"
   }
@@ -299,7 +299,7 @@ Credential requests using DCQL format:
 ```javascript
 {
   protocol: "openid4vp",
-  request: {
+  data: {
     client_id: "https://verifier.example.com",
     response_type: "vp_token",
     dcql_query: {

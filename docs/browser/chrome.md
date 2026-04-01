@@ -15,7 +15,7 @@ This is the Chrome version of the DC API Interceptor extension.
 
 Run the build script from the root directory:
 ```bash
-npm run build:chrome
+pnpm build:chrome
 ```
 
 ## Features

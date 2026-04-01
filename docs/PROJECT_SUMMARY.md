@@ -120,8 +120,8 @@ Create or add icon files in each browser's `icons/` directory:
 
 ### 4. Build and Test
 ```bash
-npm install           # Install dependencies
-npm run build         # Build all extensions
+pnpm install           # Install dependencies
+pnpm build             # Build all extensions
 ```
 
 Then load in your browser following QUICKSTART.md instructions.
@@ -138,18 +138,18 @@ Update the following in manifest.json files:
 
 ```bash
 # Initial setup
-npm install
-npm run build
+pnpm install
+pnpm build
 
 # Development (auto-rebuild on changes)
-npm run watch:chrome   # Or firefox, safari
+pnpm watch:chrome   # Or firefox, safari
 
 # Testing
 # Load extension in browser (see QUICKSTART.md)
 
 # Packaging for distribution
-npm run package:chrome
-npm run package:firefox
+pnpm package:chrome
+pnpm package:firefox
 ```
 
 ## Important Security Notes

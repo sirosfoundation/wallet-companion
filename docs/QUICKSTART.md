@@ -4,14 +4,14 @@
 
 1. **Install dependencies:**
    ```bash
-   npm install
+   pnpm install
    # or
    make install
    ```
 
 2. **Build all extensions:**
    ```bash
-   npm run build
+   pnpm build
    # or
    make build
    ```
@@ -40,7 +40,7 @@
 
 **Option 2: Using web-ext**
 ```bash
-npm run dev:firefox
+pnpm dev:firefox
 ```
 This will open Firefox with the extension automatically loaded.
 
@@ -102,7 +102,7 @@ function isDCApiUrl(url) {
 
 After making changes:
 ```bash
-npm run build
+pnpm build
 ```
 
 Then reload the extension in your browser.
@@ -162,7 +162,7 @@ Use watch mode for automatic rebuilds:
 
 ```bash
 # Terminal 1 - Watch for changes
-npm run watch:chrome
+pnpm watch:chrome
 
 # Terminal 2 - Your code editor
 # Edit files in src/
@@ -194,7 +194,7 @@ After changes are built, reload the extension:
 
 ### "Build fails"
 - Ensure Node.js is installed
-- Run `npm install` first
+- Run `pnpm install` first
 - Check that `src/` directory has all required files
 
 ## Next Steps
@@ -245,28 +245,28 @@ make clean                # Clean built files
 make all                  # Clean, install, build, package
 ```
 
-### Using npm
+### Using pnpm
 
 ```bash
 # Build all
-npm run build
+pnpm build
 
 # Build specific browser
-npm run build:chrome
-npm run build:firefox
-npm run build:safari
+pnpm build:chrome
+pnpm build:firefox
+pnpm build:safari
 
 # Watch mode
-npm run watch:chrome
-npm run watch:firefox
+pnpm watch:chrome
+pnpm watch:firefox
 
 # Package for distribution
-npm run package:chrome
-npm run package:firefox
+pnpm package:chrome
+pnpm package:firefox
 
 # Clean built files
-npm run clean
+pnpm clean
 
 # Firefox development server
-npm run dev:firefox
+pnpm dev:firefox
 ```

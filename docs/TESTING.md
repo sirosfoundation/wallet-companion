@@ -33,36 +33,36 @@ tests/
 
 ### All Tests
 ```bash
-npm test
+pnpm test
 ```
 
 ### Unit Tests Only
 ```bash
-npm run test:unit
+pnpm test:unit
 ```
 
 ### Integration Tests Only
 ```bash
 # First, build the Chrome extension
-npm run build:chrome
+pnpm build:chrome
 
 # Then run integration tests
-npm run test:integration
+pnpm test:integration
 ```
 
 ### Watch Mode (for development)
 ```bash
-npm run test:watch
+pnpm test:watch
 ```
 
 ### Coverage Report
 ```bash
-npm run test:coverage
+pnpm test:coverage
 ```
 
 ### Full Test Suite
 ```bash
-npm run test:all
+pnpm test:all
 ```
 
 ## Test Categories
@@ -182,7 +182,7 @@ test('should interact with extension', async () => {
 
 ## Coverage
 
-Run `npm run test:coverage` to generate a coverage report.
+Run `pnpm test:coverage` to generate a coverage report.
 
 Coverage reports are generated in the `coverage/` directory:
 - `coverage/lcov-report/index.html` - HTML report (open in browser)
@@ -218,19 +218,19 @@ jobs:
           node-version: '20'
       
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
       
       - name: Run unit tests
-        run: npm run test:unit
+        run: pnpm test:unit
       
       - name: Build extension
-        run: npm run build:chrome
+        run: pnpm build:chrome
       
       - name: Run integration tests
-        run: npm run test:integration
+        run: pnpm test:integration
       
       - name: Generate coverage
-        run: npm run test:coverage
+        run: pnpm test:coverage
       
       - name: Upload coverage
         uses: codecov/codecov-action@v3
@@ -243,7 +243,7 @@ jobs:
 **Problem**: Integration tests timeout or fail to find extension
 
 **Solutions**:
-1. Ensure Chrome extension is built: `npm run build:chrome`
+1. Ensure Chrome extension is built: `pnpm build:chrome`
 2. Check that `chrome/` directory exists and contains all files
 3. Increase timeout in test (default is 10000ms)
 4. Run with `headless: false` to see what's happening
@@ -253,7 +253,7 @@ jobs:
 **Problem**: `Cannot find module 'XXX'`
 
 **Solutions**:
-1. Install dependencies: `npm install`
+1. Install dependencies: `pnpm install`
 2. Check Jest configuration in `jest.config.js`
 3. Ensure babel is configured correctly
 

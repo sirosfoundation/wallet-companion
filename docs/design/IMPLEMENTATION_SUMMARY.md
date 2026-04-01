@@ -182,7 +182,7 @@ All browser extensions built successfully:
 1. **Build the extension:**
    ```bash
    make build
-   # or: npm run build
+   # or: pnpm build
    ```
 
 2. **Load in browser:**

@@ -50,14 +50,7 @@ Extension icons are automatically generated from `logo-light.svg` in multiple si
 
 ### Generating Icons
 
-Icons are automatically generated during build:
-
-```bash
-npm run icons        # Generate icons only
-npm run build        # Generate icons + build all extensions
-```
-
-The icon generation script (`scripts/generate-icons.js`) converts the SVG logo to PNG at various sizes using ImageMagick.
+Icons are automatically generated during `pnpm build` by the Vite build plugin using `sharp`. No separate command is needed.
 
 ## Typography
 
@@ -118,9 +111,8 @@ safari/icons/               # Built icons for Safari
 To update the logo or colors:
 
 1. **Update Logo**: Replace `src/icons/logo-light.svg` and/or `logo-dark.svg`
-2. **Generate Icons**: Run `npm run icons`
-3. **Update Colors**: Search for color hex codes in `src/` and replace
-4. **Rebuild**: Run `npm run build`
+2. **Update Colors**: Search for color hex codes in `src/` and replace
+3. **Rebuild**: Run `pnpm build` (icons are regenerated automatically)
 
 ### Color References
 

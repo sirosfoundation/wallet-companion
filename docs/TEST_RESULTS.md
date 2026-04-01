@@ -10,7 +10,7 @@ Testing framework successfully implemented and verified for the Digital Credenti
 **Status**: All Passing  
 **Tests**: 332 passed (9 test suites)  
 **Time**: ~1.5 seconds  
-**Command**: `npm test`
+**Command**: `pnpm test`
 
 #### Coverage by Module
 
@@ -77,7 +77,7 @@ Testing framework successfully implemented and verified for the Digital Credenti
 ### Integration Tests ⚠️
 **Status**: Pending (requires `ws` package for Node.js)  
 **Tests**: 19 integration test scenarios defined  
-**Command**: `npm run test:integration`
+**Command**: `pnpm test:integration`
 
 **Note**: Integration tests are defined but currently fail due to missing `ws` WebSocket package dependency for Puppeteer. These can be run manually or are better suited for local development rather than CI/CD.
 
@@ -97,12 +97,12 @@ Testing framework successfully implemented and verified for the Digital Credenti
 ### Test Scripts Available
 
 ```bash
-npm test              # Run all unit tests
-npm run test:unit     # Run unit tests only
-npm run test:integration  # Run integration tests (requires build)
-npm run test:watch    # Run tests in watch mode
-npm run test:coverage # Generate coverage report
-npm run test:all      # Build extension and run all tests
+pnpm test              # Run all unit tests
+pnpm test:unit         # Run unit tests only
+pnpm test:integration  # Run integration tests (requires build)
+pnpm test:watch        # Run tests in watch mode
+pnpm test:coverage     # Generate coverage report
+pnpm test:all          # Build extension and run all tests
 ```
 
 ## Mock Environment
@@ -164,13 +164,13 @@ Integration tests require the `ws` package for Puppeteer's WebSocket communicati
 
 ```bash
 # To run integration tests, first install ws:
-npm install --save-dev ws
+pnpm add -D ws
 
 # Then build the extension:
-npm run build:chrome
+pnpm build:chrome
 
 # Finally run integration tests:
-npm run test:integration
+pnpm test:integration
 ```
 
 **Note**: Integration tests launch a real Chrome browser with the extension loaded, so they:
@@ -215,7 +215,7 @@ npm run test:integration
 
 1. **Run unit tests only in CI**
    ```yaml
-   - run: npm run test:unit
+   - run: pnpm test:unit
    ```
    Unit tests are fast, reliable, and don't require a display server.
 
@@ -228,7 +228,7 @@ npm run test:integration
 
 3. **Coverage reporting**
    ```yaml
-   - run: npm run test:coverage
+   - run: pnpm test:coverage
    - uses: codecov/codecov-action@v3
    ```
 
@@ -236,17 +236,17 @@ npm run test:integration
 
 1. **Use watch mode during development**
    ```bash
-   npm run test:watch
+   pnpm test:watch
    ```
 
 2. **Run integration tests before releases**
    ```bash
-   npm run test:all
+   pnpm test:all
    ```
 
 3. **Check coverage periodically**
    ```bash
-   npm run test:coverage
+   pnpm test:coverage
    open coverage/lcov-report/index.html
    ```
 

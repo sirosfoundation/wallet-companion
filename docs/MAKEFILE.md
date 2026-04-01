@@ -175,7 +175,7 @@ Both systems work, but Make provides:
 | Color output | ✓ Built-in | ✗ Requires packages |
 | Cross-platform | ⚠ Requires make | ✓ npm everywhere |
 
-**Recommendation**: Use `make` on Linux/macOS for better DX. Use `npm run` on Windows or if make is unavailable.
+**Recommendation**: Use `make` on Linux/macOS for better DX. Use `pnpm` on Windows or if make is unavailable.
 
 ## Troubleshooting
 
@@ -190,7 +190,7 @@ sudo apt-get install build-essential
 xcode-select --install
 
 # Or use npm commands instead
-npm run build
+pnpm build
 ```
 
 ### Build Fails

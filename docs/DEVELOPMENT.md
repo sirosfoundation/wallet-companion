@@ -9,10 +9,10 @@ The extension follows a modular architecture:
 │   Web Page      │
 └────────┬────────┘
          │
-         ├─ XHR/Fetch calls intercepted by content.js
+         ├─ XHR/Fetch calls intercepted by content/index.js
          │
 ┌────────▼────────┐
-│  Content Script │ (content.js)
+│  Content Script │ (content/index.js)
 │  - Intercepts    │
 │  - Monitors      │
 └────────┬────────┘
@@ -20,14 +20,14 @@ The extension follows a modular architecture:
          │ Message passing
          │
 ┌────────▼────────┐
-│ Background      │ (background.js)
+│ Background      │ (background/index.js)
 │ - WebRequest    │
 │ - Processing    │
 │ - Storage       │
 └────────┬────────┘
          │
 ┌────────▼────────┐
-│  Popup UI       │ (popup.html/js)
+│  Popup UI       │ (ui/popup/)
 │  - Status       │
 │  - Controls     │
 └─────────────────┘
@@ -35,19 +35,19 @@ The extension follows a modular architecture:
 
 ## Key Components
 
-### Content Script (`src/content.js`)
+### Content Script (`src/content/index.js`)
 - Runs in web page context
 - Intercepts XHR and fetch() calls
 - Monitors for DC API patterns
 - Communicates with background script
 
-### Background Script (`src/background.js`)
+### Background Script (`src/background/index.js`)
 - Service worker (Chrome) or persistent script (Firefox/Safari)
 - Uses webRequest API for request interception
 - Handles message passing
 - Manages storage and state
 
-### Popup (`src/popup.html` + `src/popup.js`)
+### Popup (`src/ui/popup/`)
 - User interface for extension
 - Shows statistics
 - Toggle functionality
@@ -119,7 +119,7 @@ chrome.webRequest.onBeforeRequest.addListener(
 ## Development Workflow
 
 1. **Make changes** in `src/` directory
-2. **Build** for target browser: `npm run build:chrome`
+2. **Build** for target browser: `pnpm build:chrome`
 3. **Reload** extension in browser
 4. **Test** functionality
 5. **Debug** using browser DevTools
@@ -129,9 +129,9 @@ chrome.webRequest.onBeforeRequest.addListener(
 Use watch mode for automatic rebuilds:
 
 ```bash
-npm run watch:chrome
+pnpm watch:chrome
 # In another terminal
-cd chrome && web-ext run  # For Firefox
+pnpm dev:firefox  # For Firefox with web-ext
 ```
 
 ## Testing Strategies
@@ -182,7 +182,7 @@ Consider adding:
 
 ### Example: Add request caching
 
-1. **Update background.js:**
+1. **Update background/index.js:**
 ```javascript
 const cache = new Map();
 
@@ -195,7 +195,7 @@ function processRequest(details) {
 }
 ```
 
-2. **Update popup.html:**
+2. **Update ui/popup/:**
 Add cache statistics display
 
 3. **Update manifest.json:**
@@ -203,7 +203,7 @@ Add storage permission if needed
 
 4. **Build and test:**
 ```bash
-npm run build
+pnpm build
 ```
 
 ## Debugging Tips
