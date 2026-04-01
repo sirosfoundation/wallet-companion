@@ -16,8 +16,8 @@ Complete guide for building, testing, and developing the Digital Credentials Wal
 
 ## Prerequisites
 
-- Node.js (v14 or higher)
-- npm or yarn
+- Node.js (v18 or higher)
+- pnpm (v10 or higher)
 - Browser-specific requirements:
   - **Chrome**: Chrome browser with Developer mode enabled
   - **Firefox**: Firefox browser
@@ -25,28 +25,24 @@ Complete guide for building, testing, and developing the Digital Credentials Wal
 
 ## Project Setup
 
-1. Clone the repository:
-
-   ```bash
-   cd /home/leifj/work/siros.org/browser-extensions
-   ```
+1. Clone the repository and enter the project directory.
 
 2. Install dependencies:
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. Build for your target browser:
 
    ```bash
    # Build for all browsers
-   npm run build
+   pnpm build
 
    # Or build for specific browser
-   npm run build:chrome
-   npm run build:firefox
-   npm run build:safari
+   pnpm build:chrome
+   pnpm build:firefox
+   pnpm build:safari
    ```
 
 ## Development Workflow
@@ -56,13 +52,13 @@ Complete guide for building, testing, and developing the Digital Credentials Wal
 Use watch mode for automatic rebuilds during development:
 
 ```bash
-# Watch all browsers
-npm run watch
+# Watch Chrome (default)
+pnpm watch
 
 # Watch specific browser
-npm run watch:chrome
-npm run watch:firefox
-npm run watch:safari
+pnpm watch:chrome
+pnpm watch:firefox
+pnpm watch:safari
 ```
 
 Watch mode will automatically rebuild when you save changes to source files.
@@ -71,26 +67,26 @@ Watch mode will automatically rebuild when you save changes to source files.
 
 ```bash
 # Build all
-npm run build
+pnpm build
 
 # Build specific browser
-npm run build:chrome
-npm run build:firefox
-npm run build:safari
+pnpm build:chrome
+pnpm build:firefox
+pnpm build:safari
 ```
 
 ## Building
 
-### Using npm Scripts
+### Using pnpm Scripts
 
 ```bash
 # Build all extensions
-npm run build
+pnpm build
 
 # Build specific browser
-npm run build:chrome
-npm run build:firefox
-npm run build:safari
+pnpm build:chrome
+pnpm build:firefox
+pnpm build:safari
 ```
 
 ### Using Makefile
@@ -104,11 +100,16 @@ make build-chrome
 make build-firefox
 make build-safari
 
+# Watch mode
+make watch-chrome
+make watch-firefox
+make watch-safari
+
 # Clean build artifacts
 make clean
 
-# Build and package everything
-make all
+# Type check
+make typecheck
 ```
 
 ## Testing
@@ -154,20 +155,20 @@ Run the complete test suite:
 
 ```bash
 # Run all tests
-npm test
+pnpm test
 
-# Run specific test suites
-npm test -- tests/openid4vp.test.js       # 36 OpenID4VP tests
-npm test -- tests/jwt-verification.test.js # 21 JWT callback tests
+# Run specific test files
+pnpm vitest run tests/openid4vp.test.js
+pnpm vitest run tests/jwt-verification.test.js
 
 # Run with coverage
-npm run test:coverage
+pnpm test:coverage
 
 # Run unit tests only (no integration)
-npm run test:unit
+pnpm test:unit
 
 # Watch mode for tests
-npm run test:watch
+pnpm test:watch
 ```
 
 ### Test Coverage
@@ -189,7 +190,7 @@ Current test coverage:
 Integration tests use Puppeteer to test the extension in a real browser:
 
 ```bash
-npm run test:integration
+pnpm test:integration
 ```
 
 ## Browser-Specific Development
@@ -199,16 +200,16 @@ npm run test:integration
 1. Build the extension:
 
    ```bash
-   npm run build:chrome
+   pnpm build:chrome
    # or
-   npm run watch:chrome
+   pnpm watch:chrome
    ```
 
 2. Load in Chrome:
    - Open `chrome://extensions/`
    - Enable "Developer mode"
    - Click "Load unpacked"
-   - Select the `chrome` directory
+   - Select the `dist/chrome` directory
 
 3. Reload after changes:
    - Click the reload icon on the extension card
@@ -223,20 +224,20 @@ npm run test:integration
 1. Build the extension:
 
    ```bash
-   npm run build:firefox
+   pnpm build:firefox
    # or
-   npm run watch:firefox
+   pnpm watch:firefox
    ```
 
 2. Load in Firefox:
    - Open `about:debugging#/runtime/this-firefox`
    - Click "Load Temporary Add-on"
-   - Select `manifest.json` from the `firefox` directory
+   - Select `manifest.json` from the `dist/firefox` directory
 
 3. Or use web-ext for development:
 
    ```bash
-   npm run dev:firefox
+   pnpm dev:firefox
    ```
 
    This will:
@@ -253,15 +254,15 @@ npm run test:integration
 1. Build the extension:
 
    ```bash
-   npm run build:safari
+   pnpm build:safari
    # or
-   npm run watch:safari
+   pnpm watch:safari
    ```
 
 2. Convert to Safari Web Extension (first time only):
 
    ```bash
-   xcrun safari-web-extension-converter safari/ --app-name "DC API Interceptor"
+   xcrun safari-web-extension-converter dist/safari/ --app-name "DC API Interceptor"
    ```
 
 3. Open the generated Xcode project and run it
@@ -281,14 +282,14 @@ npm run test:integration
 # Using Make
 make package-chrome
 
-# Using npm
-npm run package:chrome
+# Using pnpm
+pnpm package:chrome
 ```
 
 Creates `dist/chrome-extension.zip` ready for Chrome Web Store submission.
 
 **Submission checklist:**
-- [ ] Update version in `manifest.json`
+- [ ] Update version in `manifests/index.ts`
 - [ ] Test in Chrome
 - [ ] Run all tests
 - [ ] Create package
@@ -301,14 +302,14 @@ Creates `dist/chrome-extension.zip` ready for Chrome Web Store submission.
 # Using Make
 make package-firefox
 
-# Using npm
-npm run package:firefox
+# Using pnpm
+pnpm package:firefox
 ```
 
 Creates `dist/firefox-extension.xpi` ready for Firefox Add-ons submission.
 
 **Submission checklist:**
-- [ ] Update version in `manifest.json`
+- [ ] Update version in `manifests/index.ts`
 - [ ] Test in Firefox
 - [ ] Run all tests
 - [ ] Create package
@@ -327,59 +328,85 @@ Use Xcode to archive and export the app:
 ## Project Structure
 
 ```
-browser-extensions/
+web-wallet-selector/
 ├── src/                    # Shared source code
-│   ├── background.js       # Background script (service worker)
-│   ├── content.js          # Content script (bridge)
-│   ├── inject.js           # Page context (DC API interception)
-│   ├── protocols/          # Protocol plugins
-│   │   └── OpenID4VPPlugin.js  # OpenID4VP implementation
-│   ├── protocols.js        # Protocol plugin system
-│   ├── modal.js            # Wallet selection modal UI
-│   ├── popup.html/js       # Extension popup and stats
-│   ├── options.html/js     # Wallet management options page
-│   └── icons/              # Source icons and logos (SVG)
-├── chrome/                 # Chrome extension (built)
-├── firefox/                # Firefox extension (built)
-├── safari/                 # Safari extension (built)
-├── scripts/                # Build and development scripts
-│   ├── build.js            # Build automation
-│   ├── watch.js            # Development watch mode
-│   └── generate-icons.js   # Icon generation from SVG
+│   ├── background/
+│   │   └── index.js        # Background script (service worker)
+│   ├── content/            # Content scripts
+│   │   ├── index.js        # Content script (bridge)
+│   │   ├── inject.js       # Page context (DC API interception)
+│   │   ├── modal.js        # Wallet selection modal UI
+│   │   ├── protocols.js    # Protocol plugin system
+│   │   └── protocols/      # Protocol plugins
+│   │       └── OpenID4VPPlugin.js  # OpenID4VP implementation
+│   ├── ui/                 # Extension UI
+│   │   ├── popup.html      # Extension popup
+│   │   ├── popup.js
+│   │   ├── options.html    # Wallet management options page
+│   │   ├── options.js
+│   │   ├── assets/
+│   │   │   └── icons/      # Source icons and logos (SVG)
+│   │   ├── style/
+│   │   │   └── style.css
+│   │   └── utils/
+│   │       └── icons.ts
+│   └── globals.d.ts
+├── manifests/              # Browser manifest definitions
+│   └── index.ts
+├── dist/                   # Built extensions
+│   ├── chrome/             # Chrome extension (built)
+│   ├── firefox/            # Firefox extension (built)
+│   └── safari/             # Safari extension (built)
 ├── tests/                  # Test suites
-│   ├── *.test.js           # Unit tests (Jest)
+│   ├── *.test.js           # Unit tests (Vitest)
 │   ├── openid4vp.test.js   # OpenID4VP protocol tests
 │   ├── jwt-verification.test.js  # JWT callback tests
-│   └── integration.test.js # Integration tests (Puppeteer)
+│   ├── integration.test.js # Integration tests
+│   ├── setup.js
+│   └── fixtures/           # Test fixtures
+│       └── mock-wallet.html
 ├── docs/                   # Documentation
 │   ├── design/             # Design documents
 │   │   ├── OPENID4VP_IMPLEMENTATION.md
 │   │   ├── JWT_VERIFICATION_CALLBACKS.md
 │   │   ├── PROTOCOL_SUPPORT.md
 │   │   └── AUTO_REGISTRATION_SUMMARY.md
+│   ├── browser/            # Browser-specific docs
+│   │   ├── chrome.md
+│   │   └── safari.md
+│   ├── icons/              # Icon documentation
 │   ├── BRANDING.md         # Brand guidelines
 │   └── BRANDING_UPDATE.md  # Branding changelog
+├── tsconfig/               # TypeScript configurations
+│   ├── background.json
+│   ├── content.json
+│   ├── node.json
+│   └── ui.json
 ├── test-page.html          # DC API test page
 ├── test-wallet-api.html    # Wallet registration test
 ├── Makefile                # Build automation
 ├── package.json            # Dependencies and scripts
+├── pnpm-lock.yaml          # pnpm lockfile
+├── biome.json              # Biome linter/formatter config
+├── vite.config.ts          # Vite build configuration
+├── vitest.config.ts        # Vitest test configuration
+├── tsconfig.json           # TypeScript configuration
 ├── README.md               # This file
 ├── QUICKSTART.md           # Quick start guide
 ├── API_REFERENCE.md        # Complete API reference
-├── DEVELOPMENT.md          # This file
-└── WALLET_MANAGEMENT.md    # Wallet management guide
+└── DEVELOPMENT.md          # This file
 ```
 
 ### Key Files
 
-- **`src/inject.js`** - Injected into page context, intercepts `navigator.credentials.get()`, exposes `window.DCWS` API
-- **`src/content.js`** - Content script, bridges inject script and background script
-- **`src/background.js`** - Service worker (Chrome) / background script (Firefox/Safari), manages wallets and state
-- **`src/protocols.js`** - Protocol plugin registry and base classes
-- **`src/protocols/OpenID4VPPlugin.js`** - Complete OpenID4VP protocol implementation
-- **`src/modal.js`** - Wallet selection modal UI
-- **`src/options.js`** - Wallet management options page
-- **`manifest.json`** - Browser extension manifest (browser-specific)
+- **`src/content/inject.js`** - Injected into page context, intercepts `navigator.credentials.get()`, exposes `window.DCWS` API
+- **`src/content/index.js`** - Content script, bridges inject script and background script
+- **`src/background/index.js`** - Service worker (Chrome) / background script (Firefox/Safari), manages wallets and state
+- **`src/content/protocols.js`** - Protocol plugin registry and base classes
+- **`src/content/protocols/OpenID4VPPlugin.js`** - Complete OpenID4VP protocol implementation
+- **`src/content/modal.js`** - Wallet selection modal UI
+- **`src/ui/options.js`** - Wallet management options page
+- **`manifests/index.ts`** - Browser extension manifest definitions
 
 ## Debugging
 
@@ -399,8 +426,8 @@ browser-extensions/
    - Logs from inject.js appear in the page console
 
 4. **Common Issues**:
-   - Manifest errors: Check syntax in `chrome/manifest.json`
-   - API not intercepted: Check URL patterns in `inject.js`
+   - Manifest errors: Check `manifests/index.ts` and the generated `dist/chrome/manifest.json`
+   - API not intercepted: Check URL patterns in `src/content/inject.js`
    - Modal not showing: Check console for errors
 
 ### Firefox
@@ -416,7 +443,7 @@ browser-extensions/
 
 3. **Debugging with web-ext**:
    ```bash
-   npm run dev:firefox
+   pnpm dev:firefox
    ```
    Auto-reloads on file changes
 
@@ -456,7 +483,7 @@ browser-extensions/
    - Should see configured wallets
 
 4. **View Logs**:
-   - Enable verbose logging in `background.js`
+   - Enable verbose logging in `src/background/index.js`
    - Check all three contexts: background, content, inject
 
 5. **Reset Extension State**:
@@ -470,7 +497,7 @@ browser-extensions/
 
 ### Update URL Patterns
 
-Edit `src/inject.js` to customize which URLs trigger DC API interception:
+Edit `src/content/inject.js` to customize which URLs trigger DC API interception:
 
 ```javascript
 function isDCApiCall(options) {
@@ -481,7 +508,7 @@ function isDCApiCall(options) {
 
 ### Customize Default Wallets
 
-Edit `src/background.js`:
+Edit `src/background/index.js`:
 
 ```javascript
 const DEFAULT_WALLETS = [
@@ -500,20 +527,18 @@ const DEFAULT_WALLETS = [
 
 ### Update Extension Metadata
 
-Each browser has its own manifest:
-- `chrome/manifest.json` - Chrome (Manifest V3)
-- `firefox/manifest.json` - Firefox (Manifest V2)
-- `safari/manifest.json` - Safari (Manifest V2)
+All browser manifests are generated from a single source:
+- `manifests/index.ts` - Manifest definitions for all browsers (Chrome MV3, Firefox MV2, Safari MV2)
 
-Update version, name, description, icons, and permissions as needed.
+Update version, name, description, icons, and permissions there. The built manifests are written to `dist/<browser>/manifest.json` during the build.
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Run tests: `npm test`
-5. Build all browsers: `npm run build`
+4. Run tests: `pnpm test`
+5. Build all browsers: `pnpm build`
 6. Submit a pull request
 
 ### Code Style
@@ -522,13 +547,14 @@ Update version, name, description, icons, and permissions as needed.
 - Add JSDoc comments for public APIs
 - Write tests for new features
 - Follow existing code patterns
+- Lint and format with Biome: `pnpm lint` / `pnpm lint:fix` / `pnpm format`
 
 ## Troubleshooting
 
 ### Extension not loading
-- Ensure all files are built: `npm run build`
+- Ensure all files are built: `pnpm build`
 - Check browser console for errors
-- Verify `manifest.json` syntax
+- Verify manifest: check `manifests/index.ts` and rebuild
 
 ### API calls not intercepted
 - Check URL patterns in `isDCApiCall()` function
@@ -537,12 +563,12 @@ Update version, name, description, icons, and permissions as needed.
 
 ### Changes not reflected
 - Reload the extension in browser
-- Use watch mode for automatic rebuilds: `npm run watch:chrome`
+- Use watch mode for automatic rebuilds: `pnpm watch:chrome`
 - Clear browser cache if needed
 
 ### Tests failing
-- Ensure dependencies are installed: `npm install`
-- Check Node.js version (v14+)
+- Ensure dependencies are installed: `pnpm install`
+- Check Node.js version (v18+)
 - Run tests individually to isolate issues
 
 ## Resources
