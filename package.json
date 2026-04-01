@@ -1,7 +1,9 @@
 {
-  "name": "dc-api-interceptor",
-  "version": "1.0.0",
-  "description": "Cross-browser extension to intercept DC API calls and provide additional functionality",
+  "name": "@sirosfoundation/wallet-companion",
+  "version": "0.0.0",
+  "author": "SIROS Foundation",
+  "license": "BSD-2-Clause",
+  "description": "Companion extension to web wallets, providing support functionality like intercepting DC API calls, and more.",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -37,8 +39,7 @@
     "api-interceptor",
     "webextension"
   ],
-  "author": "SIROS Foundation",
-  "license": "BSD-2-Clause",
+
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",
     "@types/chrome": "^0.1.30",
