@@ -39,9 +39,10 @@
     "api-interceptor",
     "webextension"
   ],
-
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",
+    "@changesets/changelog-github": "^0.6.0",
+    "@changesets/cli": "^2.30.0",
     "@types/chrome": "^0.1.30",
     "@types/node": "^25.5.0",
     "@vitest/coverage-v8": "^4.1.2",
