@@ -2,7 +2,7 @@
 
 ## 🎉 What Was Built
 
-A comprehensive wallet management system has been successfully implemented for the Digital Credentials Wallet Selector extension. This adds powerful wallet configuration capabilities with a focus on **wwWallet integration**.
+A comprehensive wallet management system has been successfully implemented for the Web Wallet Selector extension. This adds powerful wallet configuration capabilities with a focus on **wwWallet integration**.
 
 ## 📦 New Files Created
 

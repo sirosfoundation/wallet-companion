@@ -1,6 +1,6 @@
 # API Reference
 
-Complete API reference for the Digital Credentials Wallet Selector extension.
+Complete API reference for the Web Wallet Selector extension.
 
 ## Table of Contents
 
