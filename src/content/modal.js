@@ -5,8 +5,8 @@
 
 console.log('[modal.js] Loading wallet selector modal');
 
-  // Create modal HTML
-  const modalHTML = `
+// Create modal HTML
+const modalHTML = `
     <div id="dc-wallet-modal-overlay" style="
       position: fixed;
       top: 0;
@@ -91,35 +91,35 @@ console.log('[modal.js] Loading wallet selector modal');
     </div>
   `;
 
-  /**
-   * Show wallet selection modal
-   * @param {Array} wallets - List of configured wallets
-   * @param {Function} onSelect - Callback when wallet is selected
-   * @param {Function} onNative - Callback when native browser wallet is chosen
-   * @param {Function} onCancel - Callback when cancelled
-   */
-  window.showWalletSelector = function(wallets, onSelect, onNative, onCancel) {
-    console.log('[modal.js] showWalletSelector called with', wallets);
-    // Remove any existing modal
-    const existing = document.getElementById('dc-wallet-modal-overlay');
-    if (existing) {
-      existing.remove();
-    }
+/**
+ * Show wallet selection modal
+ * @param {Array} wallets - List of configured wallets
+ * @param {Function} onSelect - Callback when wallet is selected
+ * @param {Function} onNative - Callback when native browser wallet is chosen
+ * @param {Function} onCancel - Callback when cancelled
+ */
+window.showWalletSelector = (wallets, onSelect, onNative, onCancel) => {
+	console.log('[modal.js] showWalletSelector called with', wallets);
+	// Remove any existing modal
+	const existing = document.getElementById('dc-wallet-modal-overlay');
+	if (existing) {
+		existing.remove();
+	}
 
-    // Create modal
-    const modalContainer = document.createElement('div');
-    modalContainer.innerHTML = modalHTML;
-    const modal = modalContainer.firstElementChild;
-    document.body.appendChild(modal);
+	// Create modal
+	const modalContainer = document.createElement('div');
+	modalContainer.innerHTML = modalHTML;
+	const modal = modalContainer.firstElementChild;
+	document.body.appendChild(modal);
 
-    // Get wallet list container
-    const walletList = document.getElementById('dc-wallet-list');
+	// Get wallet list container
+	const walletList = document.getElementById('dc-wallet-list');
 
-    // Add wallets to the list
-    if (wallets && wallets.length > 0) {
-      wallets.forEach((wallet, index) => {
-        const walletItem = document.createElement('div');
-        walletItem.style.cssText = `
+	// Add wallets to the list
+	if (wallets && wallets.length > 0) {
+		wallets.forEach((wallet, _index) => {
+			const walletItem = document.createElement('div');
+			walletItem.style.cssText = `
           padding: 16px;
           margin-bottom: 8px;
           border: 1px solid #e5e7eb;
@@ -131,8 +131,8 @@ console.log('[modal.js] Loading wallet selector modal');
           gap: 12px;
           background: #ffffff;
         `;
-        
-        walletItem.innerHTML = `
+
+			walletItem.innerHTML = `
           <div style="
             width: 48px;
             height: 48px;
@@ -158,28 +158,28 @@ console.log('[modal.js] Loading wallet selector modal');
           </div>
         `;
 
-        // Hover effects
-        walletItem.addEventListener('mouseenter', function() {
-          this.style.borderColor = '#1C4587';
-          this.style.backgroundColor = '#f0f9ff';
-        });
-        
-        walletItem.addEventListener('mouseleave', function() {
-          this.style.borderColor = '#e5e7eb';
-          this.style.backgroundColor = 'transparent';
-        });
+			// Hover effects
+			walletItem.addEventListener('mouseenter', function () {
+				this.style.borderColor = '#1C4587';
+				this.style.backgroundColor = '#f0f9ff';
+			});
 
-        // Click handler
-        walletItem.addEventListener('click', function(e) {
-          e.stopPropagation(); // Prevent bubbling to overlay
-          modal.remove();
-          onSelect(wallet);
-        });
+			walletItem.addEventListener('mouseleave', function () {
+				this.style.borderColor = '#e5e7eb';
+				this.style.backgroundColor = 'transparent';
+			});
 
-        walletList.appendChild(walletItem);
-      });
-    } else {
-      walletList.innerHTML = `
+			// Click handler
+			walletItem.addEventListener('click', (e) => {
+				e.stopPropagation(); // Prevent bubbling to overlay
+				modal.remove();
+				onSelect(wallet);
+			});
+
+			walletList.appendChild(walletItem);
+		});
+	} else {
+		walletList.innerHTML = `
         <div style="
           text-align: center;
           padding: 32px;
@@ -189,123 +189,131 @@ console.log('[modal.js] Loading wallet selector modal');
           <p style="margin: 0; font-size: 12px;">Use the extension settings to add wallet providers</p>
         </div>
       `;
-    }
+	}
 
-    // Button handlers
-    document.getElementById('dc-wallet-native').addEventListener('click', function(e) {
-      e.stopPropagation();
-      modal.remove();
-      onNative();
-    });
+	// Button handlers
+	document.getElementById('dc-wallet-native').addEventListener('click', (e) => {
+		e.stopPropagation();
+		modal.remove();
+		onNative();
+	});
 
-    document.getElementById('dc-wallet-cancel').addEventListener('click', function(e) {
-      e.stopPropagation();
-      modal.remove();
-      onCancel();
-    });
+	document.getElementById('dc-wallet-cancel').addEventListener('click', (e) => {
+		e.stopPropagation();
+		modal.remove();
+		onCancel();
+	});
 
-    // ESC key handler
-    function handleEscape(e) {
-      if (e.key === 'Escape') {
-        modal.remove();
-        onCancel();
-        document.removeEventListener('keydown', handleEscape);
-      }
-    }
-    document.addEventListener('keydown', handleEscape);
+	// ESC key handler
+	function handleEscape(e) {
+		if (e.key === 'Escape') {
+			modal.remove();
+			onCancel();
+			document.removeEventListener('keydown', handleEscape);
+		}
+	}
+	document.addEventListener('keydown', handleEscape);
 
-    // Click outside to close
-    modal.addEventListener('click', function(e) {
-      if (e.target === modal) {
-        modal.remove();
-        onCancel();
-      }
-    });
-  };
+	// Click outside to close
+	modal.addEventListener('click', (e) => {
+		if (e.target === modal) {
+			modal.remove();
+			onCancel();
+		}
+	});
+};
 
-  /**
-   * Render wallet icon - handles emoji, data URLs, and SVG
-   */
-  function renderWalletIcon(icon) {
-    if (!icon) {
-      return '🔐';
-    }
-    // Check if it's a data URL (base64 image)
-    if (icon.startsWith('data:image/')) {
-      return `<img src="${icon}" alt="Wallet icon" style="width: 32px; height: 32px; object-fit: contain;">`;
-    }
-    // Check if it's an SVG
-    if (icon.startsWith('<svg')) {
-      return icon;
-    }
-    // Check if it's a URL
-    if (icon.startsWith('http://') || icon.startsWith('https://')) {
-      return `<img src="${escapeHtml(icon)}" alt="Wallet icon" style="width: 32px; height: 32px; object-fit: contain;">`;
-    }
-    // Otherwise treat as emoji
-    return icon;
-  }
+/**
+ * Render wallet icon - handles emoji, data URLs, and SVG
+ */
+function renderWalletIcon(icon) {
+	if (!icon) {
+		return '🔐';
+	}
+	// Check if it's a data URL (base64 image)
+	if (icon.startsWith('data:image/')) {
+		return `<img src="${icon}" alt="Wallet icon" style="width: 32px; height: 32px; object-fit: contain;">`;
+	}
+	// Check if it's an SVG
+	if (icon.startsWith('<svg')) {
+		return icon;
+	}
+	// Check if it's a URL
+	if (icon.startsWith('http://') || icon.startsWith('https://')) {
+		return `<img src="${escapeHtml(icon)}" alt="Wallet icon" style="width: 32px; height: 32px; object-fit: contain;">`;
+	}
+	// Otherwise treat as emoji
+	return icon;
+}
 
-  /**
-   * Escape HTML to prevent XSS
-   */
-  function escapeHtml(unsafe) {
-    return unsafe
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
+/**
+ * Escape HTML to prevent XSS
+ */
+function escapeHtml(unsafe) {
+	return unsafe
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#039;');
+}
 
-  console.log('[modal.js] Wallet selector modal loaded, window.showWalletSelector =', typeof window.showWalletSelector);
+console.log(
+	'[modal.js] Wallet selector modal loaded, window.showWalletSelector =',
+	typeof window.showWalletSelector,
+);
 
-  // Listen for show wallet selector events from content script
-  window.addEventListener('DC_SHOW_WALLET_SELECTOR', function(event) {
-    console.log('[modal.js] Received DC_SHOW_WALLET_SELECTOR event:', event.detail);
-    const { requestId, wallets, requests } = event.detail;
-    
-    window.showWalletSelector(
-      wallets,
-      // On wallet selected
-      (wallet) => {
-        console.log('[modal.js] Wallet selected:', wallet.name);
-        
-        // Find matching request for this wallet's protocols
-        const selectedRequest = requests.find(req => 
-          wallet.protocols && wallet.protocols.includes(req.protocol)
-        ) || requests[0]; // fallback to first request
-        
-        // Notify content script which will forward to background
-        window.dispatchEvent(new CustomEvent('DC_WALLET_SELECTED', {
-          detail: {
-            requestId: requestId,
-            walletId: wallet.id,
-            wallet: wallet,
-            protocol: selectedRequest.protocol,
-            selectedRequest: selectedRequest
-          }
-        }));
-      },
-      // On native browser wallet chosen
-      () => {
-        console.log('[modal.js] Using native browser wallet');
-        window.dispatchEvent(new CustomEvent('DC_CREDENTIALS_RESPONSE', {
-          detail: {
-            requestId: requestId,
-            useNative: true
-          }
-        }));
-      },
-      // On cancel
-      () => {
-        console.log('[modal.js] Wallet selection cancelled');
-        window.dispatchEvent(new CustomEvent('DC_CREDENTIALS_RESPONSE', {
-          detail: {
-            requestId: requestId,
-            error: 'User cancelled the request'
-          }
-        }));
-      }
-    );
-  });
+// Listen for show wallet selector events from content script
+window.addEventListener('DC_SHOW_WALLET_SELECTOR', (event) => {
+	console.log('[modal.js] Received DC_SHOW_WALLET_SELECTOR event:', event.detail);
+	const { requestId, wallets, requests } = event.detail;
+
+	window.showWalletSelector(
+		wallets,
+		// On wallet selected
+		(wallet) => {
+			console.log('[modal.js] Wallet selected:', wallet.name);
+
+			// Find matching request for this wallet's protocols
+			const selectedRequest =
+				requests.find((req) => wallet.protocols?.includes(req.protocol)) || requests[0]; // fallback to first request
+
+			// Notify content script which will forward to background
+			window.dispatchEvent(
+				new CustomEvent('DC_WALLET_SELECTED', {
+					detail: {
+						requestId: requestId,
+						walletId: wallet.id,
+						wallet: wallet,
+						protocol: selectedRequest.protocol,
+						selectedRequest: selectedRequest,
+					},
+				}),
+			);
+		},
+		// On native browser wallet chosen
+		() => {
+			console.log('[modal.js] Using native browser wallet');
+			window.dispatchEvent(
+				new CustomEvent('DC_CREDENTIALS_RESPONSE', {
+					detail: {
+						requestId: requestId,
+						useNative: true,
+					},
+				}),
+			);
+		},
+		// On cancel
+		() => {
+			console.log('[modal.js] Wallet selection cancelled');
+			window.dispatchEvent(
+				new CustomEvent('DC_CREDENTIALS_RESPONSE', {
+					detail: {
+						requestId: requestId,
+						error: 'User cancelled the request',
+					},
+				}),
+			);
+		},
+	);
+});
