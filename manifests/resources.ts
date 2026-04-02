@@ -1,0 +1,160 @@
+import { resolve } from 'node:path';
+
+export type ManifestProps = {
+	/**
+	 * Helper that returns the output path of a bundled file based on its source file declared in the manifest.
+	 */
+	entry: (file: string) => string;
+	/**
+	 * Helper that generates all required icons from a single source file.
+	 */
+	icons: (file: string) => chrome.runtime.ManifestIcons;
+}
+
+export type CreateBrowserManifest = (props: ManifestProps) => chrome.runtime.ManifestV3 | chrome.runtime.ManifestV2;
+
+export type ManifestFile = {
+	name: string;
+	source: string;
+	output?: string;
+}
+
+export type ManifestIcons = ManifestFile & {
+	icons?: chrome.runtime.ManifestIcons;
+}
+
+export type ManifestFiles = {
+	entries: Map<string, ManifestFile>;
+	icons: Map<string, ManifestIcons>;
+};
+
+export class BrowserManifest {
+	#projectRoot?: string;
+
+	#manifestFiles: ManifestFiles= {
+		entries: new Map(),
+		icons: new Map(),
+	};
+
+	#createManifest: CreateBrowserManifest;
+
+	get projectRoot() {
+		if (!this.#projectRoot) {
+			throw new Error('projectRoot is not set. Please call setProjectRoot()');
+		}
+
+		return this.#projectRoot;
+	}
+
+	constructor(manifest: CreateBrowserManifest) {
+		this.#createManifest = manifest;
+	}
+
+	public setProjectRoot(dir: string) {
+		if (!resolve(dir).startsWith(resolve(process.cwd()))) {
+			throw new Error(`Invalid projectRoot "${dir}". It must be an absolute path within the project directory.`);
+		}
+
+		this.#projectRoot = dir;
+	}
+
+	public collectSourceFiles() {
+		this.#createManifest({
+			entry: (file) => {
+				this.#manifestFiles.entries.set(file, {
+					name: file.replace(/^src\//, '').replace(/\.[^/.]+$/, ''),
+					source: resolve(this.projectRoot, file),
+				});
+
+				return file;
+			},
+			icons: (file) => {
+				this.#manifestFiles.icons.set(file, {
+					name: file.replace(/^src\//, '').replace(/\.[^/.]+$/, ''),
+					source: resolve(this.projectRoot, file),
+				});
+				return {};
+			},
+		});
+
+		return this.#manifestFiles;
+	}
+
+	public getCollectedEntries(): Map<string, ManifestFile> {
+		return this.#manifestFiles.entries
+	}
+	public getCollectedIcons(): Map<string, ManifestFile> {
+		return this.#manifestFiles.icons
+	}
+
+	public getCollectedEntryInputs(): Record<string, string> {
+		return this.#getCollectedInputs('entries');
+	}
+
+	public getCollectedIconInputs(): Record<string, string> {
+		return this.#getCollectedInputs('icons');
+	}
+
+	public collectEntryOutputFile(key: string, value: string) {
+		const existingEntry = this.#manifestFiles.entries.get(key);
+		if (!existingEntry) {
+			throw new Error(`Collected bundled file "${key}" for manifest entry was not declared in the manifest.`);
+		}
+
+		if (existingEntry.output) {
+			console.warn(`Warning: File "${key}" for manifest entry was already collected. Overwriting with "${value}".`);
+		}
+
+		this.#manifestFiles.entries.set(key, {
+			...existingEntry,
+			output: value,
+		})
+	}
+
+	public collectIconOutputFiles(key: string, icons: chrome.runtime.ManifestIcons) {
+		const existingIcons = this.#manifestFiles.icons.get(key);
+		if (!existingIcons) {
+			throw new Error(`Collected bundled file "${key}" for manifest icon was not declared in the manifest.`);
+		}
+
+		if (existingIcons.icons) {
+			console.warn(`Warning: File "${key}" for manifest icon was already collected. Overwriting with "${icons}".`);
+		}
+
+		this.#manifestFiles.icons.set(key, {
+			...existingIcons,
+			icons,
+		});
+	}
+
+	public generateManifest(): chrome.runtime.ManifestV3 | chrome.runtime.ManifestV2 {
+		const manifestProps: ManifestProps = {
+			entry: (file) => {
+				const entry = this.#manifestFiles.entries.get(file);
+				if (!entry?.output) {
+					throw new Error(`Error: File "${file}" was declared in the manifest but not collected as a bundled file.`);
+				}
+				return entry.output;
+			},
+			icons: (file) => {
+				const icons = this.#manifestFiles.icons.get(file);
+				if (!icons?.icons) {
+					throw new Error(`Error: File "${file}" was declared in the manifest but not collected as bundled icons.`);
+				}
+				return icons.icons;
+			},
+		};
+
+		return this.#createManifest(manifestProps);
+	}
+
+	#getCollectedInputs(type: keyof ManifestFiles): Record<string, string> {
+		const output: Record<string, string> = {};
+
+		for (const entry of this.#manifestFiles[type].values()) {
+			output[entry.name] = entry.source;
+		}
+
+		return output;
+	}
+}

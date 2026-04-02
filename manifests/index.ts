@@ -1,19 +1,8 @@
-/** Resolves a single source file path to its output path. */
-export type UseFile = (file: string) => string;
-/** Resolves a glob pattern to an array of output paths. */
-export type MatchFiles = (pattern: string) => string[];
-/** Generates a browser extension manifest, given functions to resolve source files to output files.*/
-export type IconsFrom = (dir: string) => chrome.runtime.ManifestIcons;
-
-export type BrowserManifest = (
-	use: UseFile,
-	match: MatchFiles,
-	iconsFrom: IconsFrom
-) => chrome.runtime.ManifestV3 | chrome.runtime.ManifestV2;
+import { BrowserManifest } from "./resources";
 
 const VERSION = process.env.npm_package_version ?? '0.0.0';
 
-export const CHROME_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
+export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'manifest_version': 3,
 	'name': 'Wallet Companion',
 	'version': VERSION,
@@ -25,33 +14,33 @@ export const CHROME_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
 	],
 	'host_permissions': ['<all_urls>'],
 	'background': {
-		'service_worker': use('src/background/index.js'),
+		'service_worker': entry('src/background/index.js'),
 	},
 	'content_scripts': [
 		{
 			'matches': ['<all_urls>'],
-			'js': [use('src/content/index.js')],
+			'js': [entry('src/content/index.js')],
 			'run_at': 'document_start',
 		},
 	],
 	'web_accessible_resources': [
 		{
 			'resources': [
-				use('src/content/inject.js'),
-				use('src/content/modal.js'),
+				entry('src/content/inject.js'),
+				entry('src/content/modal.js'),
 			],
 			'matches': ['<all_urls>'],
 		},
 	],
 	'action': {
-		'default_popup': use('src/ui/popup.html'),
-		'default_icon': iconsFrom('src/ui/assets/icons/logo-dark.svg'),
+		'default_popup': entry('src/ui/popup.html'),
+		'default_icon': icons('src/ui/assets/icons/logo-dark.svg'),
 	},
-	'options_page': use('src/ui/options.html'),
-	'icons': iconsFrom('src/ui/assets/icons/logo-dark.svg'),
-});
+	'options_page': entry('src/ui/options.html'),
+	'icons': icons('src/ui/assets/icons/logo-dark.svg'),
+}));
 
-export const FIREFOX_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
+export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'manifest_version': 2,
 	'name': 'Wallet Companion',
 	'version': VERSION,
@@ -61,37 +50,37 @@ export const FIREFOX_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
 		'<all_urls>'
 	],
 	'background': {
-		'scripts': [use('src/background/index.js')],
+		'scripts': [entry('src/background/index.js')],
 	},
 	'content_scripts': [
 		{
 			'matches': ['<all_urls>'],
-			'js': [use('src/content/index.js')],
+			'js': [entry('src/content/index.js')],
 			'run_at': 'document_start'
 		}
 	],
 	'web_accessible_resources': [
-		use('src/content/inject.js'),
-		use('src/content/modal.js'),
+		entry('src/content/inject.js'),
+		entry('src/content/modal.js'),
 	],
 	'browser_action': {
-		'default_popup': use('src/ui/popup.html'),
-		'default_icon': iconsFrom('src/ui/assets/icons/logo-dark.svg'),
+		'default_popup': entry('src/ui/popup.html'),
+		'default_icon': icons('src/ui/assets/icons/logo-dark.svg'),
 	},
 	'options_ui': {
-		'page': use('src/ui/options.html'),
+		'page': entry('src/ui/options.html'),
 		'open_in_tab': true
 	},
-	'icons': iconsFrom('src/ui/assets/icons/logo-dark.svg'),
+	'icons': icons('src/ui/assets/icons/logo-dark.svg'),
 	'browser_specific_settings': {
 		'gecko': {
 			'id': 'digital-credentials-wallet-selector@example.com',
 			'strict_min_version': '91.0'
 		}
 	}
-});
+}));
 
-export const SAFARI_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
+export const SAFARI_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'manifest_version': 2,
 	'name': 'Wallet Companion',
 	'version': VERSION,
@@ -101,27 +90,27 @@ export const SAFARI_MANIFEST: BrowserManifest = (use, match, iconsFrom) => ({
 		'<all_urls>'
 	],
 	'background': {
-		'scripts': [use('src/background/index.js')],
+		'scripts': [entry('src/background/index.js')],
 		'persistent': false
 	},
 	'content_scripts': [
 	{
 		'matches': ['<all_urls>'],
-		'js': [use('src/content/index.js')],
+		'js': [entry('src/content/index.js')],
 		'run_at': 'document_start'
 	}
 	],
 	'web_accessible_resources': [
-		use('src/content/inject.js'),
-		use('src/content/modal.js'),
+		entry('src/content/inject.js'),
+		entry('src/content/modal.js'),
 	],
 	'browser_action': {
-		'default_popup': use('src/ui/popup.html'),
-		'default_icon': iconsFrom('src/ui/assets/icons/logo-dark.svg'),
+		'default_popup': entry('src/ui/popup.html'),
+		'default_icon': icons('src/ui/assets/icons/logo-dark.svg'),
 	},
 	'options_ui': {
-		'page': use('src/ui/options.html'),
+		'page': entry('src/ui/options.html'),
 		'open_in_tab': true
 	},
-	'icons': iconsFrom('src/ui/assets/icons/logo-dark.svg'),
-});
+	'icons': icons('src/ui/assets/icons/logo-dark.svg'),
+}));
