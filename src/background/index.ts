@@ -14,7 +14,6 @@ import {
 import type { Options } from './schemas/resources';
 import { Stores } from './storage';
 
-
 /**
  * Initialize on install/startup.
  * Listen for messages from content scripts.
@@ -380,4 +379,3 @@ async function injectWalletModal(tabId: number | undefined, frameId?: number) {
 		console.error('Failed to inject modal:', error);
 	}
 }
-
