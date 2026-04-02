@@ -3,7 +3,8 @@
 .PHONY: help install clean build build-chrome build-firefox build-safari \
         watch watch-chrome watch-firefox watch-safari \
         package package-chrome package-firefox \
-        dev-firefox lint test all
+        dev-firefox lint test all \
+        changeset version tag prerelease-mode
 
 # Default target
 .DEFAULT_GOAL := help
@@ -190,3 +191,16 @@ quick-firefox: build-firefox ## Quick build for Firefox (no clean)
 
 quick-safari: build-safari ## Quick build for Safari (no clean)
 	@echo "$(GREEN)✓ Ready to reload in Safari$(NC)"
+
+# Versioning & Changesets
+changeset:
+	@pnpm changeset add
+
+version:
+	@pnpm dotenv -e .changeset/.env -- changeset version
+
+tag:
+	@pnpm changeset tag
+
+prerelease-mode:
+	@pnpm changeset pre $(filter-out $@,$(MAKECMDGOALS))

@@ -541,6 +541,58 @@ Update version, name, description, icons, and permissions there. The built manif
 5. Build all browsers: `pnpm build`
 6. Submit a pull request
 
+## Changesets
+
+This project uses [Changesets](https://github.com/changesets/changesets) to manage versioning and changelog generation.
+
+### Adding a Changeset
+
+When your PR includes a user-facing change (bug fix, new feature, refactor, breaking change), add a changeset before opening the PR:
+
+```bash
+make changeset
+```
+
+This launches an interactive prompt asking you to:
+1. Select the bump type: `patch` (bug fix), `minor` (new feature), or `major` (breaking change)
+2. Write a summary of what changed
+
+A new file is created in `.changeset/`. Commit it alongside your code changes.
+
+### When Not to Add a Changeset
+
+Skip the changeset for changes that don't affect consumers:
+- Documentation updates
+- Test-only changes
+- CI/build config changes
+
+### Releasing
+
+To cut a release, run:
+
+```bash
+# 1. Apply all pending changesets — bumps version in package.json and updates CHANGELOG.md, and makes a commit automatically.
+make version
+
+# 2. Tag the commit and push
+make tag
+git push && git push --tags
+```
+
+### Pre-releases
+
+To enter pre-release mode (e.g. for a `beta`):
+
+```bash
+make prerelease-mode enter beta
+# add changesets and run `make version` as normal
+make prerelease-mode exit
+```
+
+### GitHub Changelog Integration
+
+The project uses `@changesets/changelog-github` to link PRs and contributors in the changelog. This requires a `GITHUB_TOKEN` environment variable with repo read access. Copy `.changeset/.env.example` to `.changeset/.env` and fill in your token — `make version` loads it automatically.
+
 ### Code Style
 
 - Use consistent indentation (2 spaces)
