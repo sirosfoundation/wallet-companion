@@ -92,7 +92,7 @@ function generateInitialAvatar(name: string, size: number = 48): string {
 
 	// Extract initials (up to 2 characters)
 	const words = name.trim().split(/\s+/);
-	let initials;
+	let initials: string;
 	if (words.length >= 2) {
 		initials = (words[0][0] + words[1][0]).toUpperCase();
 	} else {
@@ -103,7 +103,7 @@ function generateInitialAvatar(name: string, size: number = 48): string {
 
 	return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
     <rect width="${size}" height="${size}" fill="${color}" rx="8"/>
-    <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" 
+    <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle"
           fill="white" font-family="Inter, sans-serif" font-weight="600" font-size="${fontSize}">
       ${initials}
     </text>
