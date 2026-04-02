@@ -8,10 +8,12 @@ console.log('W3C Digital Credentials API Interceptor loaded');
 // Inject modal script (UI for wallet selection)
 const modalScript = document.createElement('script');
 modalScript.src = chrome.runtime.getURL('content/modal.js');
+modalScript.type = 'module';
 modalScript.onload = function () {
 	// After modal is loaded, inject the main interception script
 	const script = document.createElement('script');
 	script.src = chrome.runtime.getURL('content/inject.js');
+	script.type = 'module';
 	script.onload = function () {
 		this.remove();
 	};
