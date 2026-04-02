@@ -1,5 +1,5 @@
 /**
- * Options page script for Digital Wallet Configuration
+ * Options page script for Wallet Companion extension
  */
 
 import {
