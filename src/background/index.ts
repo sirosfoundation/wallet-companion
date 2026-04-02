@@ -4,7 +4,7 @@
  */
 
 import { parse } from 'valibot';
-import { type Message, MessageSchema } from './schemas/messages';
+import { type ContentMessage, ContentMessageSchema, Messages, ServerMessage, ServerMessageSchema } from './schemas/messages';
 import type { Options } from './schemas/resources';
 import { Stores } from './storage';
 
@@ -60,9 +60,7 @@ async function updateStats(action: string) {
 
 	await Stores.stats.setStats(stats);
 
-	// Notify popup if open
-	const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
-	runtime.sendMessage({ type: 'STATS_UPDATE', stats }).catch(() => {});
+	await sendMessage({ type: Messages.STATS_UPDATE, stats });
 }
 
 /**
@@ -97,16 +95,56 @@ async function _getWalletsForProtocol(protocol: string) {
 type SendResponse = (response: unknown) => void;
 
 /**
+ * Send messages from content scripts to the background script.
+ * Handles both Chrome and Firefox environments and gracefully
+ * ignores "Could not establish connection" errors.
+ */
+async function sendMessage(message: ServerMessage): Promise<void> {
+	message = parse(ServerMessageSchema, message);
+
+	if (typeof browser !== 'undefined') {
+		try {
+			return await browser.runtime.sendMessage(message);
+		} catch (err) {
+			const msg = err instanceof Error ? err.message : String(err);
+			if (!msg.includes('Could not establish connection')) {
+				throw err;
+			}
+		}
+	}
+
+	return new Promise<void>((resolve) => {
+		chrome.runtime.sendMessage(message, () => {
+			if (chrome.runtime.lastError) {
+				const msg = chrome.runtime.lastError.message ?? '';
+				if (
+					!msg.includes('Could not establish connection') &&
+					!msg.includes('Receiving end does not exist')
+				) {
+					throw new Error(msg);
+				}
+			}
+			resolve();
+		});
+	});
+}
+
+interface MessageSenderCompat {
+	tab?: { id?: number };
+	frameId?: number;
+}
+
+/**
  * Handle messages from content scripts
  */
 async function handleMessage(
-	message: Message,
-	sender: chrome.runtime.MessageSender,
+	message: ContentMessage,
+	sender: MessageSenderCompat,
 	sendResponse: SendResponse,
 ) {
 	console.log('Received message:', message.type);
 
-	message = parse(MessageSchema, message) as Message;
+	message = parse(ContentMessageSchema, message) as ContentMessage;
 
 	try {
 		if (message.type === 'SHOW_WALLET_SELECTOR') {
@@ -219,7 +257,7 @@ async function handleMessage(
 				id: walletId,
 				enabled: true,
 				autoRegistered: true,
-				registeredFrom: message.origin as string,
+				registeredFrom: message.origin,
 				registeredAt: new Date().toISOString(),
 			};
 
