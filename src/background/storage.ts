@@ -13,8 +13,13 @@ export type StorageSchema = {
 	[StorageKey.OPTIONS]: Options;
 };
 
+interface StorageAreaCompat {
+	get(keys: string | string[] | null): Promise<Record<string, unknown>>;
+	set(items: Record<string, unknown>): Promise<void>;
+}
+
 abstract class BaseStore<T extends StorageKey> {
-	#storage: chrome.storage.StorageArea;
+	#storage: StorageAreaCompat;
 	abstract StorageKey: keyof StorageSchema;
 
 	constructor() {
@@ -22,12 +27,12 @@ abstract class BaseStore<T extends StorageKey> {
 	}
 
 	protected async get(): Promise<StorageSchema[T] | undefined> {
-		const result = await this.#storage.get<StorageSchema>(this.StorageKey);
+		const result = await this.#storage.get(this.StorageKey);
 		return result[this.StorageKey] as StorageSchema[T] | undefined;
 	}
 
 	protected async set(data: Partial<StorageSchema[T]>): Promise<void> {
-		await this.#storage.set<StorageSchema>({ [this.StorageKey]: data });
+		await this.#storage.set({ [this.StorageKey]: data });
 	}
 }
 

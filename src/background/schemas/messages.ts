@@ -11,12 +11,13 @@ import {
 	url,
 	variant,
 } from 'valibot';
-import { WalletSchema, WalletsSchema } from './resources';
+import { UsageStatsSchema, WalletSchema, WalletsSchema } from './resources';
 
 /**
  * Message types for communication between content scripts and background script.
  */
 export enum Messages {
+	STATS_UPDATE = 'STATS_UPDATE',
 	SHOW_WALLET_SELECTOR = 'SHOW_WALLET_SELECTOR',
 	WALLET_SELECTED = 'WALLET_SELECTED',
 	GET_WALLETS = 'GET_WALLETS',
@@ -30,6 +31,11 @@ export enum Messages {
 	CONTENT_SCRIPT_READY = 'CONTENT_SCRIPT_READY',
 	FETCH_FAVICON = 'FETCH_FAVICON',
 }
+
+export const StatsUpdateMessageSchema = object({
+	type: literal(Messages.STATS_UPDATE),
+	stats: UsageStatsSchema,
+});
 
 export const ShowWalletSelectorMessageSchema = object({
 	type: literal(Messages.SHOW_WALLET_SELECTOR),
@@ -94,6 +100,7 @@ export const FetchFaviconMessageSchema = object({
 });
 
 const schemaRegistry = {
+	[Messages.STATS_UPDATE]: StatsUpdateMessageSchema,
 	[Messages.SHOW_WALLET_SELECTOR]: ShowWalletSelectorMessageSchema,
 	[Messages.WALLET_SELECTED]: WalletSelectedMessageSchema,
 	[Messages.GET_WALLETS]: GetWalletsMessageSchema,
@@ -112,9 +119,11 @@ const BaseMessageSchema = object({
 	origin: pipe(string(), url()),
 });
 
-export const MessageSchema = intersect([
+export const ContentMessageSchema = intersect([
 	BaseMessageSchema,
 	variant('type', Object.values(schemaRegistry)),
 ]);
+export type ContentMessage = InferOutput<typeof ContentMessageSchema>;
 
-export type Message = InferOutput<typeof MessageSchema>;
+export const ServerMessageSchema = variant('type', Object.values(schemaRegistry));
+export type ServerMessage = InferOutput<typeof ServerMessageSchema>;
