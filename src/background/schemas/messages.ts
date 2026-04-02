@@ -4,6 +4,7 @@ import {
 	type InferOutput,
 	intersect,
 	literal,
+	nullish,
 	number,
 	object,
 	pipe,
@@ -116,7 +117,7 @@ const schemaRegistry = {
 } satisfies Record<Messages, unknown>;
 
 const BaseMessageSchema = object({
-	origin: pipe(string(), url()),
+	origin: nullish(pipe(string(), url())),
 });
 
 export const ContentMessageSchema = intersect([

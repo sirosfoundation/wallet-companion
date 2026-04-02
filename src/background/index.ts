@@ -257,7 +257,7 @@ async function handleMessage(
 				id: walletId,
 				enabled: true,
 				autoRegistered: true,
-				registeredFrom: message.origin as string,
+				registeredFrom: message.origin,
 				registeredAt: new Date().toISOString(),
 			};
 
