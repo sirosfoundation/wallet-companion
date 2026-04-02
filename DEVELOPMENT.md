@@ -595,7 +595,7 @@ The project uses `@changesets/changelog-github` to link PRs and contributors in 
 
 ### Code Style
 
-- Use consistent indentation (2 spaces)
+- Indent with tabs (size 4), except YAML files which use 2 spaces (and other rules in`.editorconfig`)
 - Add JSDoc comments for public APIs
 - Write tests for new features
 - Follow existing code patterns
