@@ -202,7 +202,10 @@ type WalletIconOptionsResult = {
  * Generate all icon options for a wallet
  * Returns generated icons immediately, favicon is fetched asynchronously
  */
-async function generateWalletIconOptions(url: string, name: string): Promise<WalletIconOptionsResult> {
+async function generateWalletIconOptions(
+	url: string,
+	name: string,
+): Promise<WalletIconOptionsResult> {
 	const identifier = url || name || 'wallet';
 	const walletName = name || 'Wallet';
 

@@ -7,6 +7,7 @@ import {
 	generateGeometricIcon,
 	generateIdenticon,
 	generateInitialAvatar,
+	isIconUrl,
 	svgToDataUrl,
 } from './utils/icons';
 
