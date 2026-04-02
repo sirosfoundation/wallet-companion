@@ -14,6 +14,24 @@ import {
 import type { Options } from './schemas/resources';
 import { Stores } from './storage';
 
+
+/**
+ * Initialize on install/startup.
+ * Listen for messages from content scripts.
+ */
+if (typeof browser !== 'undefined' && browser.runtime) {
+	browser.runtime.onInstalled.addListener(initializeExtension);
+	browser.runtime.onStartup.addListener(initializeExtension);
+	browser.runtime.onMessage.addListener(handleMessage);
+} else if (typeof chrome !== 'undefined' && chrome.runtime) {
+	chrome.runtime.onInstalled.addListener(initializeExtension);
+	chrome.runtime.onStartup.addListener(initializeExtension);
+	chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+		handleMessage(message, sender, sendResponse);
+		return true; // Keep channel open for async
+	});
+}
+
 /**
  * Initialize extension
  */
@@ -28,117 +46,12 @@ async function initializeExtension() {
 	console.log('Digital Credentials API Interceptor initialized');
 }
 
-// Initialize on install/startup
-if (typeof chrome !== 'undefined' && chrome.runtime) {
-	chrome.runtime.onInstalled.addListener(initializeExtension);
-	chrome.runtime.onStartup.addListener(initializeExtension);
-}
-
-/**
- * Get configured wallets
- */
-async function getConfiguredWallets() {
-	const result = await Stores.wallets.getAll();
-	return result || [];
-}
-
-/**
- * Check if extension is enabled
- */
-async function isExtensionEnabled() {
-	const result = await Stores.options.getEnabled();
-	return result !== false;
-}
-
-/**
- * Update usage statistics
- */
-async function updateStats(action: string) {
-	const result = await Stores.stats.getStats();
-	const stats = result || { interceptCount: 0, walletUses: {} };
-
-	if (action === 'intercept') {
-		stats.interceptCount = (stats.interceptCount || 0) + 1;
-	} else if (action.startsWith('wallet:')) {
-		const walletId = action.substring(7);
-		stats.walletUses[walletId] = (stats.walletUses[walletId] || 0) + 1;
-	}
-
-	await Stores.stats.setStats(stats);
-
-	await sendMessage({ type: Messages.STATS_UPDATE, stats });
-}
-
-/**
- * Get all supported protocols from registered wallets
- */
-async function getSupportedProtocols() {
-	const wallets = await getConfiguredWallets();
-	const enabledWallets = wallets.filter((w) => w.enabled);
-
-	// Collect all unique protocols
-	const protocols = new Set();
-	for (const wallet of enabledWallets) {
-		if (wallet.protocols && Array.isArray(wallet.protocols)) {
-			wallet.protocols.forEach((p) => {
-				protocols.add(p);
-			});
-		}
-	}
-
-	return Array.from(protocols);
-}
-
-/**
- * Get wallets that support a specific protocol
- */
-async function _getWalletsForProtocol(protocol: string) {
-	const wallets = await getConfiguredWallets();
-	return wallets.filter(
-		(w) => w.enabled && w.protocols && Array.isArray(w.protocols) && w.protocols.includes(protocol),
-	);
-}
-type SendResponse = (response: unknown) => void;
-
-/**
- * Send messages from content scripts to the background script.
- * Handles both Chrome and Firefox environments and gracefully
- * ignores "Could not establish connection" errors.
- */
-async function sendMessage(message: ServerMessage): Promise<void> {
-	message = parse(ServerMessageSchema, message);
-
-	if (typeof browser !== 'undefined') {
-		try {
-			return await browser.runtime.sendMessage(message);
-		} catch (err) {
-			const msg = err instanceof Error ? err.message : String(err);
-			if (!msg.includes('Could not establish connection')) {
-				throw err;
-			}
-		}
-	}
-
-	return new Promise<void>((resolve) => {
-		chrome.runtime.sendMessage(message, () => {
-			if (chrome.runtime.lastError) {
-				const msg = chrome.runtime.lastError.message ?? '';
-				if (
-					!msg.includes('Could not establish connection') &&
-					!msg.includes('Receiving end does not exist')
-				) {
-					throw new Error(msg);
-				}
-			}
-			resolve();
-		});
-	});
-}
-
 interface MessageSenderCompat {
 	tab?: { id?: number };
 	frameId?: number;
 }
+
+type SendResponse = (response: unknown) => void;
 
 /**
  * Handle messages from content scripts
@@ -351,6 +264,106 @@ async function handleMessage(
 }
 
 /**
+ * Get configured wallets
+ */
+async function getConfiguredWallets() {
+	const result = await Stores.wallets.getAll();
+	return result || [];
+}
+
+/**
+ * Check if extension is enabled
+ */
+async function isExtensionEnabled() {
+	const result = await Stores.options.getEnabled();
+	return result !== false;
+}
+
+/**
+ * Update usage statistics
+ */
+async function updateStats(action: string) {
+	const result = await Stores.stats.getStats();
+	const stats = result || { interceptCount: 0, walletUses: {} };
+
+	if (action === 'intercept') {
+		stats.interceptCount = (stats.interceptCount || 0) + 1;
+	} else if (action.startsWith('wallet:')) {
+		const walletId = action.substring(7);
+		stats.walletUses[walletId] = (stats.walletUses[walletId] || 0) + 1;
+	}
+
+	await Stores.stats.setStats(stats);
+
+	await sendMessage({ type: Messages.STATS_UPDATE, stats });
+}
+
+/**
+ * Get all supported protocols from registered wallets
+ */
+async function getSupportedProtocols() {
+	const wallets = await getConfiguredWallets();
+	const enabledWallets = wallets.filter((w) => w.enabled);
+
+	// Collect all unique protocols
+	const protocols = new Set();
+	for (const wallet of enabledWallets) {
+		if (wallet.protocols && Array.isArray(wallet.protocols)) {
+			wallet.protocols.forEach((p) => {
+				protocols.add(p);
+			});
+		}
+	}
+
+	return Array.from(protocols);
+}
+
+/**
+ * Get wallets that support a specific protocol
+ */
+async function _getWalletsForProtocol(protocol: string) {
+	const wallets = await getConfiguredWallets();
+	return wallets.filter(
+		(w) => w.enabled && w.protocols && Array.isArray(w.protocols) && w.protocols.includes(protocol),
+	);
+}
+
+/**
+ * Send messages from content scripts to the background script.
+ * Handles both Chrome and Firefox environments and gracefully
+ * ignores "Could not establish connection" errors.
+ */
+async function sendMessage(message: ServerMessage): Promise<void> {
+	message = parse(ServerMessageSchema, message);
+
+	if (typeof browser !== 'undefined') {
+		try {
+			return await browser.runtime.sendMessage(message);
+		} catch (err) {
+			const msg = err instanceof Error ? err.message : String(err);
+			if (!msg.includes('Could not establish connection')) {
+				throw err;
+			}
+		}
+	}
+
+	return new Promise<void>((resolve) => {
+		chrome.runtime.sendMessage(message, () => {
+			if (chrome.runtime.lastError) {
+				const msg = chrome.runtime.lastError.message ?? '';
+				if (
+					!msg.includes('Could not establish connection') &&
+					!msg.includes('Receiving end does not exist')
+				) {
+					throw new Error(msg);
+				}
+			}
+			resolve();
+		});
+	});
+}
+
+/**
  * Inject wallet modal into the page
  */
 async function injectWalletModal(tabId: number | undefined, frameId?: number) {
@@ -368,12 +381,3 @@ async function injectWalletModal(tabId: number | undefined, frameId?: number) {
 	}
 }
 
-// Listen for messages from content scripts
-if (typeof browser !== 'undefined') {
-	browser.runtime.onMessage.addListener(handleMessage);
-} else if (typeof chrome !== 'undefined') {
-	chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-		handleMessage(message, sender, sendResponse);
-		return true; // Keep channel open for async
-	});
-}
