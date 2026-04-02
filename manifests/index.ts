@@ -14,7 +14,7 @@ export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	],
 	'host_permissions': ['<all_urls>'],
 	'background': {
-		'service_worker': entry('src/background/index.js'),
+		'service_worker': entry('src/background/index.ts'),
 	},
 	'content_scripts': [
 		{
@@ -50,7 +50,7 @@ export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 		'<all_urls>'
 	],
 	'background': {
-		'scripts': [entry('src/background/index.js')],
+		'scripts': [entry('src/background/index.ts')],
 	},
 	'content_scripts': [
 		{
@@ -90,7 +90,7 @@ export const SAFARI_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 		'<all_urls>'
 	],
 	'background': {
-		'scripts': [entry('src/background/index.js')],
+		'scripts': [entry('src/background/index.ts')],
 		'persistent': false
 	},
 	'content_scripts': [

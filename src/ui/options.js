@@ -897,6 +897,7 @@ async function saveWallets() {
 	} catch (error) {
 		console.error('Failed to save wallets:', error);
 		showNotification('Failed to save changes', 'error');
+		throw error;
 	}
 }
 
@@ -913,6 +914,7 @@ async function saveSettings() {
 	} catch (error) {
 		console.error('Failed to save settings:', error);
 		showNotification('Failed to save settings', 'error');
+		throw error;
 	}
 }
 
