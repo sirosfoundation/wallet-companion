@@ -4,7 +4,13 @@
  */
 
 import { parse } from 'valibot';
-import { type ContentMessage, ContentMessageSchema, Messages, ServerMessage, ServerMessageSchema } from './schemas/messages';
+import {
+	type ContentMessage,
+	ContentMessageSchema,
+	Messages,
+	type ServerMessage,
+	ServerMessageSchema,
+} from './schemas/messages';
 import type { Options } from './schemas/resources';
 import { Stores } from './storage';
 
