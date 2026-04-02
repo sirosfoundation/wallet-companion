@@ -1,6 +1,6 @@
 # API Reference
 
-Complete API reference for the Web Wallet Selector extension.
+Complete API reference for the Wallet Companion extension.
 
 ## Table of Contents
 

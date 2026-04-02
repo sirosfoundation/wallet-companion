@@ -1,6 +1,6 @@
 # Documentation
 
-This directory contains all documentation for the Web Wallet Selector browser extension.
+This directory contains all documentation for the Wallet Companion browser extension.
 
 ## Structure
 
@@ -111,4 +111,4 @@ See [CHANGELOG.md](CHANGELOG.md) for project version history and release notes.
 
 ## License
 
-This documentation is part of the Web Wallet Selector project and is licensed under the same terms as the project itself.
+This documentation is part of the Wallet Companion project and is licensed under the same terms as the project itself.

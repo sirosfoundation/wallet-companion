@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Web Wallet Selector browser extension provides a **callback mechanism** for wallets to register JWT (JSON Web Token) verification functions. This enables wallets to validate JWTs used in protocol operations, particularly for OpenID4VP's JAR (JWT Secured Authorization Request) flow.
+The Wallet Companion browser extension provides a **callback mechanism** for wallets to register JWT (JSON Web Token) verification functions. This enables wallets to validate JWTs used in protocol operations, particularly for OpenID4VP's JAR (JWT Secured Authorization Request) flow.
 
 ## Why This Is Needed
 

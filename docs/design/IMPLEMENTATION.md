@@ -1,4 +1,4 @@
-# Web Wallet Selector - Implementation Summary
+# Wallet Companion - Implementation Summary
 
 ## Overview
 

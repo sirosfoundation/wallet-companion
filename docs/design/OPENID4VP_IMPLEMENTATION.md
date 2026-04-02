@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the OpenID for Verifiable Presentations (OpenID4VP) protocol implementation for the Web Wallet Selector browser extension, based on the [wwWallet](https://github.com/wwWallet) reference implementation.
+This document describes the OpenID for Verifiable Presentations (OpenID4VP) protocol implementation for the Wallet Companion browser extension, based on the [wwWallet](https://github.com/wwWallet) reference implementation.
 
 ## Protocol Specification
 

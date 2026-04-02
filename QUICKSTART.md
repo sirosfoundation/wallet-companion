@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-Get started with the Web Wallet Selector extension in minutes.
+Get started with the Wallet Companion extension in minutes.
 
 ## For Verifiers (Websites Requesting Credentials)
 

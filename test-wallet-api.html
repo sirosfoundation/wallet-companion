@@ -91,7 +91,7 @@
 </head>
 <body>
   <h1>🔐 Wallet Auto-Registration API Test</h1>
-  <p class="subtitle">Test the Web Wallet Selector extension API</p>
+  <p class="subtitle">Test the Wallet Companion extension API</p>
 
   <div id="extension-status"></div>
 
@@ -159,7 +159,7 @@ if (window.DCWS?.isInstalled()) {
       output.innerHTML = '';
 
       if (typeof window.DigitalCredentialsWalletSelector === 'undefined') {
-        showStatus('❌ Extension NOT detected. Please install the Web Wallet Selector extension.', 'error');
+        showStatus('❌ Extension NOT detected. Please install the Wallet Companion extension.', 'error');
         return;
       }
 
