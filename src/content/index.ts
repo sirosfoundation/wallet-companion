@@ -3,37 +3,75 @@
  * Intercepts navigator.credentials.get calls and provides wallet selection
  */
 
+import type {
+	DCCredentialsRequestDetail,
+	DCWalletSelectedDetail,
+	DCWalletRegistrationDetail,
+	DCWalletCheckDetail,
+	DCProtocolsUpdateDetail,
+} from '@content/types';
+
+/**
+ * Send a message to the background script.
+ * Handles both Chrome and Firefox environments and gracefully
+ * ignores "Could not establish connection" errors.
+ */
+async function sendMessage(message: Record<string, unknown>): Promise<any> {
+	if (typeof browser !== 'undefined') {
+		try {
+			return await browser.runtime.sendMessage(message);
+		} catch (err) {
+			const msg = err instanceof Error ? err.message : String(err);
+			if (!msg.includes('Could not establish connection')) {
+				throw err;
+			}
+			return undefined;
+		}
+	}
+
+	return new Promise((resolve, reject) => {
+		chrome.runtime.sendMessage(message, (response) => {
+			if (chrome.runtime.lastError) {
+				const msg = chrome.runtime.lastError.message ?? '';
+				if (
+					!msg.includes('Could not establish connection') &&
+					!msg.includes('Receiving end does not exist')
+				) {
+					reject(new Error(msg));
+					return;
+				}
+				resolve(undefined);
+				return;
+			}
+			resolve(response);
+		});
+	});
+}
+
 console.log('W3C Digital Credentials API Interceptor loaded');
 
 // Inject modal script (UI for wallet selection)
 const modalScript = document.createElement('script');
 modalScript.src = chrome.runtime.getURL('content/modal.js');
 modalScript.type = 'module';
-modalScript.onload = function () {
+modalScript.onload = (event) => {
 	// After modal is loaded, inject the main interception script
 	const script = document.createElement('script');
 	script.src = chrome.runtime.getURL('content/inject.js');
 	script.type = 'module';
-	script.onload = function () {
-		this.remove();
-	};
+	script.onload = (e) => (e.target as HTMLScriptElement).remove();
 	(document.head || document.documentElement).appendChild(script);
-	this.remove();
+	(event.target as HTMLScriptElement).remove();
 };
 (document.head || document.documentElement).appendChild(modalScript);
 
 // Listen for credential requests from the injected script
 window.addEventListener('DC_CREDENTIALS_REQUEST', async (event) => {
-	console.log('Digital Credentials API call intercepted:', event.detail);
-
-	const { requestId, requests, options } = event.detail;
+	const { requestId, requests, options } = (event as CustomEvent<DCCredentialsRequestDetail>).detail;
+	console.log('Digital Credentials API call intercepted:', requestId);
 
 	try {
-		// Get configured wallets from background script
-		const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
-
-		// Request wallet selector (pass the processed requests with protocols)
-		const response = await runtime.sendMessage({
+		const response = await sendMessage({
 			type: 'SHOW_WALLET_SELECTOR',
 			requestId: requestId,
 			requests: requests,
@@ -70,7 +108,7 @@ window.addEventListener('DC_CREDENTIALS_REQUEST', async (event) => {
 			new CustomEvent('DC_CREDENTIALS_RESPONSE', {
 				detail: {
 					requestId: requestId,
-					error: error.message,
+					error: error instanceof Error ? error.message : String(error),
 				},
 			}),
 		);
@@ -79,13 +117,11 @@ window.addEventListener('DC_CREDENTIALS_REQUEST', async (event) => {
 
 // Listen for wallet selection from the page context (modal.js)
 window.addEventListener('DC_WALLET_SELECTED', async (event) => {
-	console.log('Wallet selected from modal:', event.detail);
-	const { requestId, walletId, wallet, protocol, selectedRequest } = event.detail;
+	const { requestId, walletId, wallet, protocol, selectedRequest } = (event as CustomEvent<DCWalletSelectedDetail>).detail;
+	console.log('Wallet selected from modal:', walletId);
 
 	try {
-		const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
-
-		await runtime.sendMessage({
+		await sendMessage({
 			type: 'WALLET_SELECTED',
 			walletId: walletId,
 			requestId: requestId,
@@ -108,7 +144,7 @@ window.addEventListener('DC_WALLET_SELECTED', async (event) => {
 			new CustomEvent('DC_CREDENTIALS_RESPONSE', {
 				detail: {
 					requestId: requestId,
-					error: error.message,
+					error: error instanceof Error ? error.message : String(error),
 				},
 			}),
 		);
@@ -117,14 +153,11 @@ window.addEventListener('DC_WALLET_SELECTED', async (event) => {
 
 // Listen for wallet registration requests
 window.addEventListener('DC_WALLET_REGISTRATION_REQUEST', async (event) => {
-	console.log('Wallet registration request:', event.detail);
-
-	const { registrationId, wallet } = event.detail;
+	const { registrationId, wallet } = (event as CustomEvent<DCWalletRegistrationDetail>).detail;
+	console.log('Wallet registration request:', registrationId);
 
 	try {
-		const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
-
-		const response = await runtime.sendMessage({
+		const response = await sendMessage({
 			type: 'REGISTER_WALLET',
 			wallet: wallet,
 			origin: window.location.origin,
@@ -149,7 +182,7 @@ window.addEventListener('DC_WALLET_REGISTRATION_REQUEST', async (event) => {
 				detail: {
 					registrationId: registrationId,
 					success: false,
-					error: error.message,
+					error: error instanceof Error ? error.message : String(error),
 				},
 			}),
 		);
@@ -158,14 +191,11 @@ window.addEventListener('DC_WALLET_REGISTRATION_REQUEST', async (event) => {
 
 // Listen for wallet check requests
 window.addEventListener('DC_WALLET_CHECK_REQUEST', async (event) => {
-	console.log('Wallet check request:', event.detail);
-
-	const { checkId, url } = event.detail;
+	const { checkId, url } = (event as CustomEvent<DCWalletCheckDetail>).detail;
+	console.log('Wallet check request:', checkId);
 
 	try {
-		const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
-
-		const response = await runtime.sendMessage({
+		const response = await sendMessage({
 			type: 'CHECK_WALLET',
 			url: url,
 		});
@@ -194,14 +224,11 @@ window.addEventListener('DC_WALLET_CHECK_REQUEST', async (event) => {
 
 // Listen for protocol update requests
 window.addEventListener('DC_PROTOCOLS_UPDATE_REQUEST', async (event) => {
-	console.log('Protocols update request:', event.detail);
-
-	const { updateId } = event.detail;
+	const { updateId } = (event as CustomEvent<DCProtocolsUpdateDetail>).detail;
+	console.log('Protocols update request:', updateId);
 
 	try {
-		const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
-
-		const response = await runtime.sendMessage({
+		const response = await sendMessage({
 			type: 'GET_SUPPORTED_PROTOCOLS',
 		});
 
@@ -227,14 +254,14 @@ window.addEventListener('DC_PROTOCOLS_UPDATE_REQUEST', async (event) => {
 	}
 });
 
-// Notify extension that content script is ready
-const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
-runtime
-	.sendMessage({
-		type: 'CONTENT_SCRIPT_READY',
-		origin: window.location.origin,
-		timestamp: Date.now(),
-	})
-	.catch((_err) => {
-		// Ignore errors if background script isn't ready
-	});
+(async () => {
+	try {
+		await sendMessage({
+			type: 'CONTENT_SCRIPT_READY',
+			origin: window.location.origin,
+			timestamp: Date.now(),
+		});
+		console.log('Content script ready message sent to background');
+	} catch (error) {
+	}
+})();

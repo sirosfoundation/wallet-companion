@@ -19,7 +19,7 @@ export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'content_scripts': [
 		{
 			'matches': ['<all_urls>'],
-			'js': [entry('src/content/index.js')],
+			'js': [entry('src/content/index.ts')],
 			'run_at': 'document_start',
 		},
 	],
@@ -55,7 +55,7 @@ export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'content_scripts': [
 		{
 			'matches': ['<all_urls>'],
-			'js': [entry('src/content/index.js')],
+			'js': [entry('src/content/index.ts')],
 			'run_at': 'document_start'
 		}
 	],
@@ -96,7 +96,7 @@ export const SAFARI_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'content_scripts': [
 	{
 		'matches': ['<all_urls>'],
-		'js': [entry('src/content/index.js')],
+		'js': [entry('src/content/index.ts')],
 		'run_at': 'document_start'
 	}
 	],
