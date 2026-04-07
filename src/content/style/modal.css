@@ -1,0 +1,79 @@
+/* --------------------------------------------------------------------------
+   Component: wallet-selector
+   -------------------------------------------------------------------------- */
+
+.wallet-selector {
+  position: fixed;
+  inset: 0;
+  background: var(--temp-overlay);
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--s-font-family-main);
+
+  > .panel {
+    background: var(--s-color-gray-50);
+    border-radius: var(--s-border-radius-sm);
+    border: var(--s-border-light);
+    max-width: 480px;
+    width: 90%;
+    max-height: 80vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    > .header {
+      padding: var(--s-space-5) var(--s-space-6);
+      border-bottom: var(--s-border-light);
+
+      & h2 {
+        margin: 0;
+        font-size: var(--s-font-size-lg);
+        font-weight: var(--s-font-weight-semibold);
+        color: var(--s-color-gray-950);
+      }
+
+      & p {
+        margin: var(--s-space-2) 0 0 0;
+        font-size: var(--s-font-size-sm);
+        color: var(--s-color-gray-700);
+      }
+    }
+
+    > .list {
+      padding: var(--s-space-4) var(--s-space-6);
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-space-2);
+    }
+
+    > .footer {
+      padding: var(--s-space-4) var(--s-space-6);
+      border-top: var(--s-border-light);
+      display: flex;
+      gap: var(--s-space-3);
+      justify-content: flex-end;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Component: empty-state
+   -------------------------------------------------------------------------- */
+
+.empty-state {
+  text-align: center;
+  padding: var(--s-space-8);
+  color: var(--s-color-gray-700);
+  font-size: var(--s-font-size-sm);
+
+  > small {
+    display: block;
+    margin-top: var(--s-space-2);
+    font-size: var(--s-font-size-xs);
+  }
+}
+
