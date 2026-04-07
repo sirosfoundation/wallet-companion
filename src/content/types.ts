@@ -18,6 +18,6 @@ export type ShowWalletSelectorOptions = {
 	onSelect: (wallet: Wallet) => void;
 	onNative: () => void;
 	onCancel: () => void;
-}
+};
 
 export type ShowWalletSelectorFunction = (options: ShowWalletSelectorOptions) => void;

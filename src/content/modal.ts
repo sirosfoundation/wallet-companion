@@ -4,10 +4,9 @@
  * Uses a closed Shadow DOM for full style isolation from the host page.
  */
 
-import type { ShowWalletSelectorOptions, Wallet } from './types';
-
 import globalStyles from '../shared/style/global.css?inline';
 import modalStyles from './style/modal.css?inline';
+import type { ShowWalletSelectorOptions, Wallet } from './types';
 
 const HOST_ID = 'dc-wallet-host';
 
@@ -45,131 +44,163 @@ const EMPTY_STATE_TEMPLATE = `
   </div>`;
 
 function parseTemplate(html: string): DocumentFragment {
-    const t = document.createElement('template');
-    t.innerHTML = html;
-    return t.content;
+	const t = document.createElement('template');
+	t.innerHTML = html;
+	return t.content;
 }
 
 function createWalletIcon(icon: string | undefined): Node {
-    if (!icon) return document.createTextNode('🔐');
+	if (!icon) return document.createTextNode('🔐');
 
-    if (icon.startsWith('<svg')) {
-        const svg = new DOMParser()
-            .parseFromString(icon, 'image/svg+xml')
-            .querySelector('svg');
-        if (!svg) return document.createTextNode('🔐');
-        // Load via <img> — browser sandboxes scripts in SVG loaded this way
-        icon = `data:image/svg+xml,${encodeURIComponent(new XMLSerializer().serializeToString(svg))}`;
-    }
+	if (icon.startsWith('<svg')) {
+		const svg = new DOMParser().parseFromString(icon, 'image/svg+xml').querySelector('svg');
+		if (!svg) return document.createTextNode('🔐');
+		// Load via <img> — browser sandboxes scripts in SVG loaded this way
+		icon = `data:image/svg+xml,${encodeURIComponent(new XMLSerializer().serializeToString(svg))}`;
+	}
 
-    if (icon.startsWith('data:image/') || icon.startsWith('https://')) {
-        const img = document.createElement('img');
-        img.src = icon;
-        img.alt = 'Wallet icon';
-        return img;
-    }
+	if (icon.startsWith('data:image/') || icon.startsWith('https://')) {
+		const img = document.createElement('img');
+		img.src = icon;
+		img.alt = 'Wallet icon';
+		return img;
+	}
 
-    // Emoji or plain text
-    return document.createTextNode(icon);
+	// Emoji or plain text
+	return document.createTextNode(icon);
 }
 
 function createWalletItem(
-    wallet: Wallet,
-    onSelect: (w: Wallet) => void,
-    dismiss: () => void,
+	wallet: Wallet,
+	onSelect: (w: Wallet) => void,
+	dismiss: () => void,
 ): HTMLElement {
-    const fragment = parseTemplate(WALLET_ITEM_TEMPLATE);
-    const item = fragment.querySelector<HTMLElement>('.wallet-item')!;
+	const fragment = parseTemplate(WALLET_ITEM_TEMPLATE);
+	const item = fragment.querySelector<HTMLElement>('.wallet-item');
 
-    // User data via textContent/DOM only — never innerHTML
-    item.querySelector('.wallet-icon')!.appendChild(createWalletIcon(wallet.icon));
-    item.querySelector('.name')!.textContent = wallet.name;
-    item.querySelector('.desc')!.textContent =
-        wallet.description ?? wallet.url ?? 'Digital Identity Wallet';
+	if (!item) {
+		throw new Error('Failed to create wallet item: missing template elements');
+	}
 
-    item.addEventListener('click', (e) => {
-        e.stopPropagation();
-        dismiss();
-        onSelect(wallet);
-    });
+	const icon = item.querySelector('.wallet-icon');
+	const name = item.querySelector('.name');
+	const desc = item.querySelector('.desc');
 
-    return item;
+	if (!icon || !name || !desc) {
+		throw new Error('Failed to create wallet item: missing template elements');
+	}
+
+	icon.appendChild(createWalletIcon(wallet.icon));
+	name.textContent = wallet.name;
+	desc.textContent = wallet.description ?? wallet.url ?? 'Digital Identity Wallet';
+
+	item.addEventListener('click', (e) => {
+		e.stopPropagation();
+		dismiss();
+		onSelect(wallet);
+	});
+
+	return item;
 }
 
 function showWalletSelector(options: ShowWalletSelectorOptions): void {
-    const { wallets, onSelect, onNative, onCancel } = options;
+	const { wallets, onSelect, onNative, onCancel } = options;
 
-    document.getElementById(HOST_ID)?.remove();
+	document.getElementById(HOST_ID)?.remove();
 
-    const host = document.createElement('div');
-    host.id = HOST_ID;
-    const shadow = host.attachShadow({ mode: 'closed' });
-    document.body.appendChild(host);
+	const host = document.createElement('div');
+	host.id = HOST_ID;
+	const shadow = host.attachShadow({ mode: 'closed' });
+	document.body.appendChild(host);
 
-    const dismiss = () => host.remove();
+	const dismiss = () => host.remove();
 
-    const style = document.createElement('style');
-    style.textContent = STYLES;
+	const style = document.createElement('style');
+	style.textContent = STYLES;
 
-    const fragment = parseTemplate(MODAL_TEMPLATE);
-    const overlay   = fragment.querySelector<HTMLElement>('.wallet-selector')!;
-    const list      = fragment.querySelector<HTMLElement>('.list')!;
-    const nativeBtn = fragment.querySelector<HTMLElement>('[data-action="native"]')!;
-    const cancelBtn = fragment.querySelector<HTMLElement>('[data-action="cancel"]')!;
+	const fragment = parseTemplate(MODAL_TEMPLATE);
+	const overlay = fragment.querySelector<HTMLElement>('.wallet-selector');
+	const list = fragment.querySelector<HTMLElement>('.list');
+	const nativeBtn = fragment.querySelector<HTMLElement>('[data-action="native"]');
+	const cancelBtn = fragment.querySelector<HTMLElement>('[data-action="cancel"]');
 
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) { dismiss(); onCancel(); }
-    });
-    nativeBtn.addEventListener('click', () => { dismiss(); onNative(); });
-    cancelBtn.addEventListener('click', () => { dismiss(); onCancel(); });
+	if (!overlay || !list || !nativeBtn || !cancelBtn) {
+		throw new Error('Failed to create wallet selector: missing template elements');
+	}
 
-    if (wallets.length > 0) {
-        for (const wallet of wallets) {
-            list.appendChild(createWalletItem(wallet, onSelect, dismiss));
-        }
-    } else {
-        list.appendChild(parseTemplate(EMPTY_STATE_TEMPLATE));
-    }
+	overlay.addEventListener('click', (e) => {
+		if (e.target === overlay) {
+			dismiss();
+			onCancel();
+		}
+	});
+	nativeBtn.addEventListener('click', () => {
+		dismiss();
+		onNative();
+	});
+	cancelBtn.addEventListener('click', () => {
+		dismiss();
+		onCancel();
+	});
 
-    function handleEscape(e: KeyboardEvent) {
-        if (e.key === 'Escape') {
-            dismiss();
-            onCancel();
-            document.removeEventListener('keydown', handleEscape);
-        }
-    }
-    document.addEventListener('keydown', handleEscape);
+	if (wallets.length > 0) {
+		for (const wallet of wallets) {
+			list.appendChild(createWalletItem(wallet, onSelect, dismiss));
+		}
+	} else {
+		list.appendChild(parseTemplate(EMPTY_STATE_TEMPLATE));
+	}
 
-    shadow.append(style, fragment);
+	function handleEscape(e: KeyboardEvent) {
+		if (e.key === 'Escape') {
+			dismiss();
+			onCancel();
+			document.removeEventListener('keydown', handleEscape);
+		}
+	}
+	document.addEventListener('keydown', handleEscape);
+
+	shadow.append(style, fragment);
 }
 
 window.showWalletSelector = showWalletSelector;
 
 // Event bridge: translate window custom events ↔ showWalletSelector calls
 window.addEventListener('DC_SHOW_WALLET_SELECTOR', (event) => {
-    const { requestId, wallets, requests } = (event as CustomEvent).detail;
+	const { requestId, wallets, requests } = (event as CustomEvent).detail;
 
-    showWalletSelector({
-        wallets,
-        onSelect(wallet) {
-            const selectedRequest =
-                requests.find((req: { protocol: string }) =>
-                    wallet.protocols?.includes(req.protocol),
-                ) ?? requests[0];
+	showWalletSelector({
+		wallets,
+		onSelect(wallet) {
+			const selectedRequest =
+				requests.find((req: { protocol: string }) => wallet.protocols?.includes(req.protocol)) ??
+				requests[0];
 
-            window.dispatchEvent(new CustomEvent('DC_WALLET_SELECTED', {
-                detail: { requestId, walletId: wallet.id, wallet, protocol: selectedRequest.protocol, selectedRequest },
-            }));
-        },
-        onNative() {
-            window.dispatchEvent(new CustomEvent('DC_CREDENTIALS_RESPONSE', {
-                detail: { requestId, useNative: true },
-            }));
-        },
-        onCancel() {
-            window.dispatchEvent(new CustomEvent('DC_CREDENTIALS_RESPONSE', {
-                detail: { requestId, error: 'User cancelled the request' },
-            }));
-        },
-    });
+			window.dispatchEvent(
+				new CustomEvent('DC_WALLET_SELECTED', {
+					detail: {
+						requestId,
+						walletId: wallet.id,
+						wallet,
+						protocol: selectedRequest.protocol,
+						selectedRequest,
+					},
+				}),
+			);
+		},
+		onNative() {
+			window.dispatchEvent(
+				new CustomEvent('DC_CREDENTIALS_RESPONSE', {
+					detail: { requestId, useNative: true },
+				}),
+			);
+		},
+		onCancel() {
+			window.dispatchEvent(
+				new CustomEvent('DC_CREDENTIALS_RESPONSE', {
+					detail: { requestId, error: 'User cancelled the request' },
+				}),
+			);
+		},
+	});
 });
