@@ -1,22 +1,13 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
     "lib": ["ESNext", "WebWorker"],
     "types": ["chrome", "firefox-webext-browser"]
   },
   "include": [
-    "src/globals.d.ts",
-    "src/background/**/*.ts",
-    "src/background/**/*.js"
+    "../src/globals.d.ts",
+    "../src/background/**/*.ts",
+    "../src/background/**/*.js"
   ],
   "exclude": ["node_modules", "dist"]
 }

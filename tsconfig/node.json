@@ -11,12 +11,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "lib": ["ESNext"],
-    "types": ["node"]
+    "types": ["node", "chrome", "firefox-webext-browser"]
   },
   "include": [
-    "manifests/**/*.ts",
-    "vite.config.ts",
-    "scripts/**/*.ts"
+    "../manifests/**/*.ts",
+    "../vite.config.ts",
+    "../scripts/**/*.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }

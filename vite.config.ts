@@ -20,6 +20,14 @@ export default defineConfig(() => {
 		},
 		root: resolve(__dirname, 'src'),
 		base: './',
+		resolve: {
+			alias: {
+				'@shared': resolve(__dirname, 'src/shared'),
+				'@background': resolve(__dirname, 'src/background'),
+				'@content': resolve(__dirname, 'src/content'),
+				'@ui': resolve(__dirname, 'src/ui'),
+			},
+		},
 		plugins: [
 			BrowserExtension({ browser }),
 		],
