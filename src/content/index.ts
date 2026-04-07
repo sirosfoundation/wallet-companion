@@ -5,10 +5,10 @@
 
 import type {
 	DCCredentialsRequestDetail,
-	DCWalletSelectedDetail,
-	DCWalletRegistrationDetail,
-	DCWalletCheckDetail,
 	DCProtocolsUpdateDetail,
+	DCWalletCheckDetail,
+	DCWalletRegistrationDetail,
+	DCWalletSelectedDetail,
 } from '@content/types';
 
 /**
@@ -67,7 +67,8 @@ modalScript.onload = (event) => {
 
 // Listen for credential requests from the injected script
 window.addEventListener('DC_CREDENTIALS_REQUEST', async (event) => {
-	const { requestId, requests, options } = (event as CustomEvent<DCCredentialsRequestDetail>).detail;
+	const { requestId, requests, options } = (event as CustomEvent<DCCredentialsRequestDetail>)
+		.detail;
 	console.log('Digital Credentials API call intercepted:', requestId);
 
 	try {
@@ -117,7 +118,9 @@ window.addEventListener('DC_CREDENTIALS_REQUEST', async (event) => {
 
 // Listen for wallet selection from the page context (modal.js)
 window.addEventListener('DC_WALLET_SELECTED', async (event) => {
-	const { requestId, walletId, wallet, protocol, selectedRequest } = (event as CustomEvent<DCWalletSelectedDetail>).detail;
+	const { requestId, walletId, wallet, protocol, selectedRequest } = (
+		event as CustomEvent<DCWalletSelectedDetail>
+	).detail;
 	console.log('Wallet selected from modal:', walletId);
 
 	try {
@@ -262,6 +265,5 @@ window.addEventListener('DC_PROTOCOLS_UPDATE_REQUEST', async (event) => {
 			timestamp: Date.now(),
 		});
 		console.log('Content script ready message sent to background');
-	} catch (error) {
-	}
+	} catch (_error) {}
 })();
