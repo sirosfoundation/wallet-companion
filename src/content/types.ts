@@ -21,3 +21,36 @@ export type ShowWalletSelectorOptions = {
 };
 
 export type ShowWalletSelectorFunction = (options: ShowWalletSelectorOptions) => void;
+
+export type CredentialRequest = {
+	protocol: string;
+	data: unknown;
+};
+
+export type DCCredentialsRequestDetail = {
+	requestId: string;
+	requests: CredentialRequest[];
+	options: unknown;
+};
+
+export type DCWalletSelectedDetail = {
+	requestId: string;
+	walletId: string;
+	wallet: Wallet;
+	protocol: string;
+	selectedRequest: CredentialRequest;
+};
+
+export type DCWalletRegistrationDetail = {
+	registrationId: string;
+	wallet: Wallet;
+};
+
+export type DCWalletCheckDetail = {
+	checkId: string;
+	url: string;
+};
+
+export type DCProtocolsUpdateDetail = {
+	updateId: string;
+};

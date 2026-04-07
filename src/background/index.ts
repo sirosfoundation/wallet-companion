@@ -346,7 +346,7 @@ async function sendMessage(message: ServerMessage): Promise<void> {
 		}
 	}
 
-	return new Promise<void>((resolve) => {
+	return new Promise<void>((resolve, reject) => {
 		chrome.runtime.sendMessage(message, () => {
 			if (chrome.runtime.lastError) {
 				const msg = chrome.runtime.lastError.message ?? '';
@@ -354,7 +354,8 @@ async function sendMessage(message: ServerMessage): Promise<void> {
 					!msg.includes('Could not establish connection') &&
 					!msg.includes('Receiving end does not exist')
 				) {
-					throw new Error(msg);
+					reject(new Error(msg));
+					return;
 				}
 			}
 			resolve();
