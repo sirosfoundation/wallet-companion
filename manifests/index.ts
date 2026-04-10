@@ -14,29 +14,29 @@ export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	],
 	'host_permissions': ['<all_urls>'],
 	'background': {
-		'service_worker': entry('src/background/index.ts'),
+		'service_worker': entry('es', 'src/background/index.ts'),
 	},
 	'content_scripts': [
 		{
 			'matches': ['<all_urls>'],
-			'js': [entry('src/content/index.ts')],
+			'js': [entry('iife', 'src/content/index.ts')],
 			'run_at': 'document_start',
 		},
 	],
 	'web_accessible_resources': [
 		{
 			'resources': [
-				entry('src/content/inject.js'),
-				entry('src/content/modal.ts'),
+				entry('iife', 'src/content/inject.js'),
+				entry('iife', 'src/content/modal.ts'),
 			],
 			'matches': ['<all_urls>'],
 		},
 	],
 	'action': {
-		'default_popup': entry('src/ui/popup.html'),
+		'default_popup': entry('es', 'src/ui/popup.html'),
 		'default_icon': icons('src/ui/assets/icons/logo-dark.svg'),
 	},
-	'options_page': entry('src/ui/options.html'),
+	'options_page': entry('es', 'src/ui/options.html'),
 	'icons': icons('src/ui/assets/icons/logo-dark.svg'),
 }));
 
@@ -50,25 +50,25 @@ export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 		'<all_urls>'
 	],
 	'background': {
-		'scripts': [entry('src/background/index.ts')],
+		'scripts': [entry('iife', 'src/background/index.ts')],
 	},
 	'content_scripts': [
 		{
 			'matches': ['<all_urls>'],
-			'js': [entry('src/content/index.ts')],
+			'js': [entry('iife', 'src/content/index.ts')],
 			'run_at': 'document_start'
 		}
 	],
 	'web_accessible_resources': [
-		entry('src/content/inject.js'),
-		entry('src/content/modal.ts'),
+		entry('iife', 'src/content/inject.js'),
+		entry('iife', 'src/content/modal.ts'),
 	],
 	'browser_action': {
-		'default_popup': entry('src/ui/popup.html'),
+		'default_popup': entry('es', 'src/ui/popup.html'),
 		'default_icon': icons('src/ui/assets/icons/logo-dark.svg'),
 	},
 	'options_ui': {
-		'page': entry('src/ui/options.html'),
+		'page': entry('es', 'src/ui/options.html'),
 		'open_in_tab': true
 	},
 	'icons': icons('src/ui/assets/icons/logo-dark.svg'),
@@ -90,26 +90,26 @@ export const SAFARI_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 		'<all_urls>'
 	],
 	'background': {
-		'scripts': [entry('src/background/index.ts')],
+		'scripts': [entry('iife', 'src/background/index.ts')],
 		'persistent': false
 	},
 	'content_scripts': [
 	{
 		'matches': ['<all_urls>'],
-		'js': [entry('src/content/index.ts')],
+		'js': [entry('iife', 'src/content/index.ts')],
 		'run_at': 'document_start'
 	}
 	],
 	'web_accessible_resources': [
-		entry('src/content/inject.js'),
-		entry('src/content/modal.ts'),
+		entry('iife', 'src/content/inject.js'),
+		entry('iife', 'src/content/modal.ts'),
 	],
 	'browser_action': {
-		'default_popup': entry('src/ui/popup.html'),
+		'default_popup': entry('es', 'src/ui/popup.html'),
 		'default_icon': icons('src/ui/assets/icons/logo-dark.svg'),
 	},
 	'options_ui': {
-		'page': entry('src/ui/options.html'),
+		'page': entry('es', 'src/ui/options.html'),
 		'open_in_tab': true
 	},
 	'icons': icons('src/ui/assets/icons/logo-dark.svg'),

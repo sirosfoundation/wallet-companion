@@ -4,7 +4,7 @@ export type ManifestProps = {
 	/**
 	 * Helper that returns the output path of a bundled file based on its source file declared in the manifest.
 	 */
-	entry: (file: string) => string;
+	entry: (format: 'iife' | 'es', file: string) => string;
 	/**
 	 * Helper that generates all required icons from a single source file.
 	 */
@@ -17,6 +17,7 @@ export type ManifestFile = {
 	name: string;
 	source: string;
 	output?: string;
+	format: 'iife' | 'es';
 }
 
 export type ManifestIcons = ManifestFile & {
@@ -27,6 +28,11 @@ export type ManifestFiles = {
 	entries: Map<string, ManifestFile>;
 	icons: Map<string, ManifestIcons>;
 };
+
+export type CollectedInput = {
+	source: string;
+	format: 'iife' | 'es';
+}
 
 export class BrowserManifest {
 	#projectRoot?: string;
@@ -60,10 +66,11 @@ export class BrowserManifest {
 
 	public collectSourceFiles() {
 		this.#createManifest({
-			entry: (file) => {
+			entry: (format, file) => {
 				this.#manifestFiles.entries.set(file, {
 					name: file.replace(/^src\//, '').replace(/\.[^/.]+$/, ''),
 					source: resolve(this.projectRoot, file),
+					format,
 				});
 
 				return file;
@@ -72,6 +79,7 @@ export class BrowserManifest {
 				this.#manifestFiles.icons.set(file, {
 					name: file.replace(/^src\//, '').replace(/\.[^/.]+$/, ''),
 					source: resolve(this.projectRoot, file),
+					format: 'iife',
 				});
 				return {};
 			},
@@ -87,11 +95,11 @@ export class BrowserManifest {
 		return this.#manifestFiles.icons
 	}
 
-	public getCollectedEntryInputs(): Record<string, string> {
+	public getCollectedEntryInputs(): Record<string, CollectedInput> {
 		return this.#getCollectedInputs('entries');
 	}
 
-	public getCollectedIconInputs(): Record<string, string> {
+	public getCollectedIconInputs(): Record<string, CollectedInput> {
 		return this.#getCollectedInputs('icons');
 	}
 
@@ -129,7 +137,7 @@ export class BrowserManifest {
 
 	public generateManifest(): chrome.runtime.ManifestV3 | chrome.runtime.ManifestV2 {
 		const manifestProps: ManifestProps = {
-			entry: (file) => {
+			entry: (_format, file) => {
 				const entry = this.#manifestFiles.entries.get(file);
 				if (!entry?.output) {
 					throw new Error(`Error: File "${file}" was declared in the manifest but not collected as a bundled file.`);
@@ -148,11 +156,14 @@ export class BrowserManifest {
 		return this.#createManifest(manifestProps);
 	}
 
-	#getCollectedInputs(type: keyof ManifestFiles): Record<string, string> {
-		const output: Record<string, string> = {};
+	#getCollectedInputs(type: keyof ManifestFiles): Record<string, CollectedInput> {
+		const output: Record<string, CollectedInput> = {};
 
 		for (const entry of this.#manifestFiles[type].values()) {
-			output[entry.name] = entry.source;
+			output[entry.name] = {
+				source: entry.source,
+				format: entry.format,
+			};
 		}
 
 		return output;
