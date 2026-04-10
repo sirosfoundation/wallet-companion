@@ -6,6 +6,7 @@
   },
   "include": [
     "../src/globals.d.ts",
+	"../src/shared/**/*.ts",
     "../src/background/**/*.ts",
     "../src/background/**/*.js"
   ],

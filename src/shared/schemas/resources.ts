@@ -11,6 +11,14 @@ import {
 	url,
 } from 'valibot';
 
+export const WalletRegistrationInputSchema = object({
+	name: string(),
+	url: pipe(string(), url()),
+	icon: nullish(string()),
+	protocols: nullish(array(string())),
+});
+export type WalletRegistrationInput = InferOutput<typeof WalletRegistrationInputSchema>;
+
 export const WalletSchema = object({
 	id: string(),
 	name: string(),

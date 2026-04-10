@@ -10,42 +10,14 @@ import type {
 	DCWalletRegistrationDetail,
 	DCWalletSelectedDetail,
 } from '@content/types';
+import { runtimeSendMessage } from '@shared/runtime';
+import { type InboundMessage, InboundMessages, type ResponseFor } from '@shared/schemas/messages';
 
 /**
  * Send a message to the background script.
- * Handles both Chrome and Firefox environments and gracefully
- * ignores "Could not establish connection" errors.
  */
-async function sendMessage(message: Record<string, unknown>): Promise<any> {
-	if (typeof browser !== 'undefined') {
-		try {
-			return await browser.runtime.sendMessage(message);
-		} catch (err) {
-			const msg = err instanceof Error ? err.message : String(err);
-			if (!msg.includes('Could not establish connection')) {
-				throw err;
-			}
-			return undefined;
-		}
-	}
-
-	return new Promise((resolve, reject) => {
-		chrome.runtime.sendMessage(message, (response) => {
-			if (chrome.runtime.lastError) {
-				const msg = chrome.runtime.lastError.message ?? '';
-				if (
-					!msg.includes('Could not establish connection') &&
-					!msg.includes('Receiving end does not exist')
-				) {
-					reject(new Error(msg));
-					return;
-				}
-				resolve(undefined);
-				return;
-			}
-			resolve(response);
-		});
-	});
+async function sendMessage<M extends InboundMessage>(message: M): Promise<ResponseFor<M['type']>> {
+	return runtimeSendMessage(message) as Promise<ResponseFor<M['type']>>;
 }
 
 console.log('W3C Digital Credentials API Interceptor loaded');
@@ -71,8 +43,7 @@ window.addEventListener('DC_CREDENTIALS_REQUEST', async (event) => {
 
 	try {
 		const response = await sendMessage({
-			type: 'SHOW_WALLET_SELECTOR',
-			requestId: requestId,
+			type: InboundMessages.SHOW_WALLET_SELECTOR,
 			requests: requests,
 			options: options,
 			origin: window.location.origin,
@@ -123,7 +94,7 @@ window.addEventListener('DC_WALLET_SELECTED', async (event) => {
 
 	try {
 		await sendMessage({
-			type: 'WALLET_SELECTED',
+			type: InboundMessages.WALLET_SELECTED,
 			walletId: walletId,
 			requestId: requestId,
 			protocol: protocol,
@@ -157,10 +128,28 @@ window.addEventListener('DC_WALLET_REGISTRATION_REQUEST', async (event) => {
 	const { registrationId, wallet } = (event as CustomEvent<DCWalletRegistrationDetail>).detail;
 	console.log('Wallet registration request:', registrationId);
 
+	if (!wallet.url) {
+		window.dispatchEvent(
+			new CustomEvent('DC_WALLET_REGISTRATION_RESPONSE', {
+				detail: {
+					registrationId,
+					success: false,
+					error: 'Wallet URL is required for registration',
+				},
+			}),
+		);
+		return;
+	}
+
 	try {
 		const response = await sendMessage({
-			type: 'REGISTER_WALLET',
-			wallet: wallet,
+			type: InboundMessages.REGISTER_WALLET,
+			wallet: {
+				name: wallet.name,
+				url: wallet.url,
+				icon: wallet.icon,
+				protocols: wallet.protocols,
+			},
 			origin: window.location.origin,
 		});
 
@@ -197,7 +186,7 @@ window.addEventListener('DC_WALLET_CHECK_REQUEST', async (event) => {
 
 	try {
 		const response = await sendMessage({
-			type: 'CHECK_WALLET',
+			type: InboundMessages.CHECK_WALLET,
 			url: url,
 		});
 
@@ -230,7 +219,7 @@ window.addEventListener('DC_PROTOCOLS_UPDATE_REQUEST', async (event) => {
 
 	try {
 		const response = await sendMessage({
-			type: 'GET_SUPPORTED_PROTOCOLS',
+			type: InboundMessages.GET_SUPPORTED_PROTOCOLS,
 		});
 
 		window.dispatchEvent(
@@ -258,7 +247,7 @@ window.addEventListener('DC_PROTOCOLS_UPDATE_REQUEST', async (event) => {
 (async () => {
 	try {
 		await sendMessage({
-			type: 'CONTENT_SCRIPT_READY',
+			type: InboundMessages.CONTENT_SCRIPT_READY,
 			origin: window.location.origin,
 			timestamp: Date.now(),
 		});

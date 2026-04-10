@@ -1,4 +1,4 @@
-import type { Options, UsageStats, Wallet } from './schemas/resources';
+import type { Options, UsageStats, Wallet } from '@shared/schemas/resources';
 
 // Storage keys
 export enum StorageKey {
