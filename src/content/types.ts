@@ -4,7 +4,10 @@ declare global {
 	}
 }
 
-export type Wallet = {
+/**
+ * For the stored wallet format, see `Wallet` in `@shared/schemas/resources`.
+ */
+export type WalletOption = {
 	id: string;
 	name: string;
 	description?: string;
@@ -14,8 +17,8 @@ export type Wallet = {
 };
 
 export type ShowWalletSelectorOptions = {
-	wallets: Wallet[];
-	onSelect: (wallet: Wallet) => void;
+	wallets: WalletOption[];
+	onSelect: (wallet: WalletOption) => void;
 	onNative: () => void;
 	onCancel: () => void;
 };
@@ -36,14 +39,14 @@ export type DCCredentialsRequestDetail = {
 export type DCWalletSelectedDetail = {
 	requestId: string;
 	walletId: string;
-	wallet: Wallet;
+	wallet: WalletOption;
 	protocol: string;
 	selectedRequest: CredentialRequest;
 };
 
 export type DCWalletRegistrationDetail = {
 	registrationId: string;
-	wallet: Wallet;
+	wallet: WalletOption;
 };
 
 export type DCWalletCheckDetail = {

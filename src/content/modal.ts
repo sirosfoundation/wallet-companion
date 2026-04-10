@@ -5,7 +5,7 @@
  */
 
 import modalStyles from '@content/style/modal.css?inline';
-import type { ShowWalletSelectorOptions, Wallet } from '@content/types';
+import type { ShowWalletSelectorOptions, WalletOption } from '@content/types';
 import globalStyles from '@shared/style/global.css?inline';
 
 const HOST_ID = 'dc-wallet-host';
@@ -71,8 +71,8 @@ function createWalletIcon(icon: string | undefined): Node {
 }
 
 function createWalletItem(
-	wallet: Wallet,
-	onSelect: (w: Wallet) => void,
+	wallet: WalletOption,
+	onSelect: (w: WalletOption) => void,
 	dismiss: () => void,
 ): HTMLElement {
 	const fragment = parseTemplate(WALLET_ITEM_TEMPLATE);
