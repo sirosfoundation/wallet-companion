@@ -15,6 +15,7 @@ export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'host_permissions': ['<all_urls>'],
 	'background': {
 		'service_worker': entry('es', 'src/background/index.ts'),
+		'type': 'module',
 	},
 	'content_scripts': [
 		{
