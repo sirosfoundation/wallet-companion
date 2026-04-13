@@ -74,6 +74,7 @@ async function build({
 			emptyOutDir,
 			target: 'esnext',
 			minify: true,
+			sourcemap: true,
 			rollupOptions: {
 				input,
 				output: {

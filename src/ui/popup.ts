@@ -2,31 +2,51 @@
  * Popup script for Digital Credentials Wallet Selector extension
  */
 
+import { InboundMessages } from '@shared/schemas/messages';
+import type { UsageStats, Wallets } from '@shared/schemas/resources';
 import { generateIdenticon, svgToDataUrl } from './utils/icons';
+import { onMessage, sendMessage } from './utils/messaging';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const statusBar = document.getElementById('statusBar');
-	const _statusIndicator = document.getElementById('statusIndicator');
-	const statusText = document.getElementById('statusText');
-	const extensionToggle = document.getElementById('extensionToggle');
-	const clearBtn = document.getElementById('clearBtn');
-	const configureBtn = document.getElementById('configureBtn');
-	const interceptCount = document.getElementById('interceptCount');
-	const walletCount = document.getElementById('walletCount');
-	const walletList = document.getElementById('walletList');
+	const statusBar = document.querySelector<HTMLElement>('#statusBar');
+	const _statusIndicator = document.querySelector<HTMLElement>('#statusIndicator');
+	const statusText = document.querySelector<HTMLElement>('#statusText');
+	const extensionToggle = document.querySelector<HTMLInputElement>('#extensionToggle');
+	const clearBtn = document.querySelector<HTMLButtonElement>('#clearBtn');
+	const configureBtn = document.querySelector<HTMLButtonElement>('#configureBtn');
+	const interceptCount = document.querySelector<HTMLElement>('#interceptCount');
+	const walletCount = document.querySelector<HTMLElement>('#walletCount');
+	const walletList = document.querySelector<HTMLElement>('#walletList');
+
+	if (
+		!statusBar ||
+		!_statusIndicator ||
+		!statusText ||
+		!extensionToggle ||
+		!clearBtn ||
+		!configureBtn ||
+		!interceptCount ||
+		!walletCount ||
+		!walletList
+	) {
+		console.error('One or more required DOM elements are missing');
+		return;
+	}
 
 	// Cross-browser compatibility
 	const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
-	const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
 
 	// Load initial state
 	loadState();
 
 	// Toggle extension via header toggle switch
-	extensionToggle.addEventListener('change', async function () {
-		const newState = this.checked;
-		await runtime.sendMessage({ type: 'TOGGLE_ENABLED', enabled: newState });
-		const response = await runtime.sendMessage({ type: 'GET_SETTINGS' });
+	extensionToggle.addEventListener('change', async (event) => {
+		const newState = (event.target as HTMLInputElement).checked;
+
+		await sendMessage({ type: InboundMessages.TOGGLE_ENABLED, enabled: newState });
+
+		const response = await sendMessage({ type: InboundMessages.GET_SETTINGS });
+
 		updateUI(newState, response.stats);
 	});
 
@@ -53,8 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	 */
 	async function loadState() {
 		try {
-			const settings = await runtime.sendMessage({ type: 'GET_SETTINGS' });
-			const wallets = await runtime.sendMessage({ type: 'GET_WALLETS' });
+			const settings = await sendMessage({ type: InboundMessages.GET_SETTINGS });
+			const wallets = await sendMessage({ type: InboundMessages.GET_WALLETS });
 
 			updateUI(settings.enabled, settings.stats);
 			displayWallets(wallets.wallets, settings.stats);
@@ -66,7 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	/**
 	 * Update UI based on enabled state
 	 */
-	function updateUI(enabled, stats) {
+	function updateUI(enabled: boolean, stats: UsageStats) {
+		if (!statusBar || !statusText || !extensionToggle || !interceptCount) {
+			console.error('One or more required DOM elements are missing');
+			return;
+		}
+
 		extensionToggle.checked = enabled;
 
 		if (enabled) {
@@ -78,14 +103,19 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		if (stats) {
-			interceptCount.textContent = stats.interceptCount || 0;
+			interceptCount.textContent = (stats.interceptCount || 0).toString();
 		}
 	}
 
 	/**
 	 * Display configured wallets
 	 */
-	function displayWallets(wallets, stats) {
+	function displayWallets(wallets: Wallets, stats: UsageStats) {
+		if (!walletList || !walletCount) {
+			console.error('One or more required DOM elements are missing');
+			return;
+		}
+
 		if (!wallets || wallets.length === 0) {
 			walletList.innerHTML = `
         <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 13px;">
@@ -98,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		const enabledWallets = wallets.filter((w) => w.enabled);
-		walletCount.textContent = enabledWallets.length;
+		walletCount.textContent = enabledWallets.length.toString();
 
 		walletList.innerHTML = wallets
 			.map((wallet) => {
@@ -106,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				const statusClass = wallet.enabled ? '-active' : '-inactive';
 				const statusLabel = wallet.enabled ? 'Active' : 'Inactive';
 
-				let iconHtml;
+				let iconHtml: string;
 				let icon = wallet.icon;
 
 				// If icon is missing or is the default emoji, generate one dynamically
@@ -144,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	/**
 	 * Escape HTML to prevent XSS
 	 */
-	function escapeHtml(unsafe) {
+	function escapeHtml(unsafe: string) {
 		return unsafe
 			.replace(/&/g, '&amp;')
 			.replace(/</g, '&lt;')
@@ -154,9 +184,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	// Listen for updates from background script
-	runtime.onMessage.addListener((message) => {
+	onMessage((message) => {
 		if (message.type === 'STATS_UPDATE') {
-			interceptCount.textContent = message.stats.interceptCount || 0;
+			interceptCount.textContent = (message.stats.interceptCount || 0).toString();
 			loadState(); // Reload to update wallet list with new usage stats
 		}
 	});
