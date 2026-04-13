@@ -29,3 +29,19 @@ export async function runtimeSendMessage(message: unknown): Promise<unknown> {
 		});
 	});
 }
+
+export type MessageSender = browser.runtime.MessageSender | chrome.runtime.MessageSender;
+
+/**
+ * Runtime utility for listening to messages in a browser extension context.
+ * Provides a unified API for both Chrome and Firefox environments.
+ */
+export async function runtimeOnMessage<T>(
+	listener: (message: T, sender: MessageSender) => void,
+): Promise<void> {
+	if (typeof browser !== 'undefined') {
+		browser.runtime.onMessage.addListener(listener);
+	} else {
+		chrome.runtime.onMessage.addListener(listener);
+	}
+}
