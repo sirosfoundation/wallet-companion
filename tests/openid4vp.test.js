@@ -3,7 +3,8 @@
  * Based on wwWallet implementation patterns
  */
 
-import { OpenID4VPPlugin } from '../src/content/protocols/OpenID4VPPlugin.js';
+import { OpenID4VPPlugin } from "../src/content/protocols";
+
 
 describe('OpenID4VPPlugin', () => {
   let plugin;

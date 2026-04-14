@@ -10,15 +10,28 @@
  * - wwWallet implementation: wallet-frontend/src/lib/services/OpenID4VP/OpenID4VP.ts
  */
 
-import { ProtocolPlugin } from '../protocols.js';
+import { ProtocolPlugin } from '../ProtocolPlugin';
+import type {
+	JWTVerificationOptions,
+	JWTVerificationResult,
+	JWTVerifier,
+	OpenID4VPResponse,
+	ParsedJAR,
+	PreparedRequest,
+	PresentationDefinition,
+	PresentationSubmission,
+	RequestData,
+} from './types';
 
 export class OpenID4VPPlugin extends ProtocolPlugin {
+	variant: string;
+
 	constructor(variant = '') {
 		super();
 		this.variant = variant;
 	}
 
-	getProtocolId() {
+	getProtocolId(): string {
 		return this.variant ? `openid4vp-${this.variant}` : 'openid4vp';
 	}
 
@@ -28,12 +41,8 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 	 * The request can come in two forms:
 	 * 1. Direct parameters in URL query string
 	 * 2. Reference via request_uri (JAR - JWT Authorization Request)
-	 *
-	 * @param {Object} requestData - Raw request data from navigator.credentials.get
-	 * @returns {Object} Validated and formatted request data
 	 */
-	prepareRequest(requestData) {
-		// Validate request structure
+	prepareRequest(requestData: RequestData): PreparedRequest {
 		if (!requestData || typeof requestData !== 'object') {
 			throw new Error('OpenID4VP request data must be an object');
 		}
@@ -44,10 +53,7 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 		);
 
 		// For Digital Credentials API, the request data is already well-formed
-		// It contains the full authorization request object
-		// We just add metadata and pass it through
 		if (requestData.client_metadata || requestData.dcql_query || requestData.nonce) {
-			// This is a DC API request - pass through with minimal processing
 			console.log('[OpenID4VPPlugin] DC API request detected, passing through');
 			return {
 				...requestData,
@@ -57,35 +63,23 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 		}
 
 		// For traditional OpenID4VP flows, parse the authorization request
-		const authRequest = this._parseAuthorizationRequest(requestData);
+		const authRequest = this.#parseAuthorizationRequest(requestData);
 
 		// Validate required parameters
-		this._validateAuthorizationRequest(authRequest);
+		this.#validateAuthorizationRequest(authRequest);
 
-		// Return prepared request with metadata
 		return {
 			...authRequest,
 			protocol: this.getProtocolId(),
 			timestamp: new Date().toISOString(),
-		};
+		} as PreparedRequest;
 	}
 
-	/**
-	 * Parse authorization request from Digital Credentials API data
-	 *
-	 * Expected formats:
-	 * - URL with query parameters (openid4vp://?client_id=...&request_uri=...)
-	 * - Object with parsed parameters
-	 *
-	 * @private
-	 */
-	_parseAuthorizationRequest(requestData) {
-		// If requestData has a 'url' field, parse it
+	#parseAuthorizationRequest(requestData: RequestData): RequestData | Partial<RequestData> {
 		if (requestData.url && typeof requestData.url === 'string') {
-			return this._parseUrlParams(requestData.url);
+			return this.#parseUrlParams(requestData.url);
 		}
 
-		// If requestData is already parsed parameters, validate and use them
 		if (requestData.client_id || requestData.request_uri) {
 			return requestData;
 		}
@@ -93,54 +87,37 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 		throw new Error('Invalid OpenID4VP request format: missing url or parameters');
 	}
 
-	/**
-	 * Parse URL parameters from authorization request
-	 *
-	 * @private
-	 */
-	_parseUrlParams(url) {
+	#parseUrlParams(url: string): Partial<RequestData> {
 		try {
 			const authUrl = new URL(url);
 			const params = authUrl.searchParams;
 
 			return {
-				client_id: params.get('client_id'),
-				request_uri: params.get('request_uri'),
-				response_uri: params.get('response_uri'),
-				nonce: params.get('nonce'),
-				state: params.get('state'),
-				presentation_definition: params.get('presentation_definition')
-					? JSON.parse(params.get('presentation_definition'))
-					: null,
-				presentation_definition_uri: params.get('presentation_definition_uri'),
-				client_metadata: params.get('client_metadata')
-					? JSON.parse(params.get('client_metadata'))
-					: null,
-				response_mode: params.get('response_mode'),
-				dcql_query: params.get('dcql_query') ? JSON.parse(params.get('dcql_query')) : null,
+				url: undefined,
+				client_id: params.get('client_id') ?? undefined,
+				request_uri: params.get('request_uri') ?? undefined,
+				response_uri: params.get('response_uri') ?? undefined,
+				nonce: params.get('nonce') ?? undefined,
+				state: params.get('state') ?? undefined,
+				presentation_definition:
+					JSON.parse(params.get('presentation_definition') ?? 'null') ?? undefined,
+				presentation_definition_uri: params.get('presentation_definition_uri') ?? undefined,
+				client_metadata: JSON.parse(params.get('client_metadata') ?? 'null') ?? undefined,
+				response_mode: (params.get('response_mode') ?? undefined) as RequestData['response_mode'],
+				dcql_query: JSON.parse(params.get('dcql_query') ?? 'null') ?? undefined,
 			};
 		} catch (err) {
-			throw new Error(`Failed to parse OpenID4VP URL: ${err.message}`);
+			throw new Error(
+				`Failed to parse OpenID4VP URL: ${err instanceof Error ? err.message : String(err)}`,
+			);
 		}
 	}
 
-	/**
-	 * Validate authorization request has required parameters
-	 *
-	 * According to OpenID4VP spec and wwWallet implementation:
-	 * - MUST have client_id
-	 * - MUST have either presentation_definition, presentation_definition_uri, or request_uri
-	 * - client_id_scheme should be 'x509_san_dns' (for security)
-	 *
-	 * @private
-	 */
-	_validateAuthorizationRequest(authRequest) {
-		// Validate client_id
+	#validateAuthorizationRequest(authRequest: Partial<RequestData>): void {
 		if (!authRequest.client_id) {
 			throw new Error('OpenID4VP request must include client_id');
 		}
 
-		// Validate client_id_scheme (wwWallet only supports x509_san_dns)
 		const client_id_scheme = authRequest.client_id.split(':')[0];
 		if (client_id_scheme !== 'x509_san_dns' && !authRequest.client_id.startsWith('http')) {
 			console.warn(
@@ -148,7 +125,6 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 			);
 		}
 
-		// Must have one of: request_uri, presentation_definition, or presentation_definition_uri
 		if (
 			!authRequest.request_uri &&
 			!authRequest.presentation_definition &&
@@ -160,14 +136,12 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 			);
 		}
 
-		// If using JAR (request_uri), it's required to fetch and validate JWT
 		if (authRequest.request_uri) {
 			console.log('OpenID4VP: request_uri detected, requires JWT validation');
 		}
 
-		// Validate response_mode if present
 		if (authRequest.response_mode) {
-			const validModes = ['direct_post', 'direct_post.jwt'];
+			const validModes: RequestData['response_mode'][] = ['direct_post', 'direct_post.jwt'];
 			if (!validModes.includes(authRequest.response_mode)) {
 				throw new Error(
 					`Invalid response_mode: ${authRequest.response_mode}. Must be one of: ${validModes.join(', ')}`,
@@ -176,57 +150,27 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 		}
 	}
 
-	/**
-	 * Validate response data from wallet
-	 *
-	 * Response formats (based on wwWallet):
-	 * 1. VP token (Verifiable Presentation as JWT)
-	 * 2. Presentation submission (descriptor mapping)
-	 * 3. State (if provided in request)
-	 *
-	 * For encrypted responses (direct_post.jwt):
-	 * - JWE with vp_token and presentation_submission as payload
-	 *
-	 * @param {Object} responseData - Response data from wallet
-	 * @returns {Object} Validated response data
-	 */
-	validateResponse(responseData) {
+	validateResponse(responseData: OpenID4VPResponse): OpenID4VPResponse {
 		if (!responseData || typeof responseData !== 'object') {
 			throw new Error('Invalid OpenID4VP response');
 		}
-
-		// Response should contain either:
-		// 1. vp_token + presentation_submission (standard response)
-		// 2. response (encrypted JWE containing vp_token and presentation_submission)
 
 		if (!responseData.vp_token && !responseData.response) {
 			throw new Error('OpenID4VP response must include vp_token or encrypted response');
 		}
 
-		// If vp_token is present, presentation_submission should also be present
 		if (responseData.vp_token && !responseData.presentation_submission) {
 			console.warn('OpenID4VP: vp_token present but missing presentation_submission');
 		}
 
-		// Validate presentation_submission structure if present
 		if (responseData.presentation_submission) {
-			this._validatePresentationSubmission(responseData.presentation_submission);
+			this.#validatePresentationSubmission(responseData.presentation_submission);
 		}
 
 		return responseData;
 	}
 
-	/**
-	 * Validate presentation submission structure
-	 *
-	 * According to DIF Presentation Exchange spec:
-	 * - MUST have id
-	 * - MUST have definition_id
-	 * - MUST have descriptor_map array
-	 *
-	 * @private
-	 */
-	_validatePresentationSubmission(submission) {
+	#validatePresentationSubmission(submission: Partial<PresentationSubmission>): void {
 		if (!submission.id) {
 			throw new Error('Presentation submission must include id');
 		}
@@ -239,7 +183,6 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 			throw new Error('Presentation submission must include descriptor_map array');
 		}
 
-		// Validate each descriptor in the map
 		submission.descriptor_map.forEach((descriptor, index) => {
 			if (!descriptor.id) {
 				throw new Error(`Descriptor ${index} missing id`);
@@ -253,32 +196,16 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 		});
 	}
 
-	/**
-	 * Format the request for transmission to the wallet
-	 *
-	 * This method prepares the OpenID4VP request in a format suitable
-	 * for the web wallet to process.
-	 *
-	 * @param {Object} preparedRequest - Output from prepareRequest()
-	 * @param {string} walletUrl - Target wallet URL
-	 * @returns {Object} Request ready for transmission
-	 */
-	formatForWallet(preparedRequest, walletUrl) {
-		// Build the authorization request URL for the wallet
-		// The wallet will receive this as an openid4vp:// URL or via query parameters
-
+	formatForWallet(preparedRequest: PreparedRequest, walletUrl: string) {
 		const params = new URLSearchParams();
 
-		// Add required parameters
 		if (preparedRequest.client_id) {
 			params.set('client_id', preparedRequest.client_id);
 		}
 
 		if (preparedRequest.request_uri) {
-			// If using JAR, only request_uri and client_id are needed
 			params.set('request_uri', preparedRequest.request_uri);
 		} else {
-			// Include all parameters directly
 			if (preparedRequest.response_uri) {
 				params.set('response_uri', preparedRequest.response_uri);
 			}
@@ -308,52 +235,34 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 			}
 		}
 
-		// Build the final URL for the wallet
 		const walletAuthUrl = `${walletUrl}?${params.toString()}`;
 
 		return {
 			protocol: this.getProtocolId(),
-			walletUrl: walletUrl,
+			walletUrl,
 			authorizationUrl: walletAuthUrl,
 			requestData: preparedRequest,
 		};
 	}
 
-	/**
-	 * Helper method to extract presentation definition
-	 * This would typically be called by the browser extension to fetch
-	 * the presentation_definition if only presentation_definition_uri is provided
-	 *
-	 * @param {string} uri - URL to fetch presentation definition from
-	 * @returns {Promise<Object>} Presentation definition object
-	 */
-	async fetchPresentationDefinition(uri) {
+	async fetchPresentationDefinition(uri: string): Promise<PresentationDefinition> {
 		try {
 			const response = await fetch(uri);
 			if (!response.ok) {
 				throw new Error(`Failed to fetch presentation definition: ${response.statusText}`);
 			}
-			return await response.json();
+			return (await response.json()) as PresentationDefinition;
 		} catch (err) {
-			throw new Error(`Error fetching presentation definition from ${uri}: ${err.message}`);
+			throw new Error(
+				`Error fetching presentation definition from ${uri}: ${err instanceof Error ? err.message : String(err)}`,
+			);
 		}
 	}
 
-	/**
-	 * Helper method to handle request_uri (JAR - JWT Secured Authorization Request)
-	 *
-	 * According to wwWallet implementation:
-	 * 1. Fetch JWT from request_uri
-	 * 2. Verify JWT signature using x5c certificate
-	 * 3. Validate hostname matches between request_uri and response_uri
-	 * 4. Extract authorization parameters from JWT payload
-	 *
-	 * @param {string} requestUri - URL to fetch JAR from
-	 * @param {Object} options - Optional verification options
-	 * @param {Function} options.jwtVerifier - Optional wallet-provided JWT verifier
-	 * @returns {Promise<Object>} Parsed and validated authorization parameters
-	 */
-	async handleRequestUri(requestUri, options = {}) {
+	async handleRequestUri(
+		requestUri: string,
+		options: { jwtVerifier?: JWTVerifier } = {},
+	): Promise<ParsedJAR> {
 		try {
 			const response = await fetch(requestUri);
 			if (!response.ok) {
@@ -361,25 +270,20 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 			}
 
 			const jwt = await response.text();
-
-			// Parse JWT (header.payload.signature)
 			const [headerB64, payloadB64, _signature] = jwt.split('.');
 
-			// Decode header and payload
 			const header = JSON.parse(atob(headerB64.replace(/-/g, '+').replace(/_/g, '/')));
 			const payload = JSON.parse(atob(payloadB64.replace(/-/g, '+').replace(/_/g, '/')));
 
-			// Validate JWT type
 			if (header.typ !== 'oauth-authz-req+jwt') {
 				throw new Error('Invalid JWT type: expected oauth-authz-req+jwt');
 			}
 
-			// Verify JWT signature if a verifier is provided
-			if (options.jwtVerifier && typeof options.jwtVerifier === 'function') {
+			if (options.jwtVerifier) {
 				console.log('OpenID4VP: Verifying JWT signature using wallet-provided verifier');
 
-				const verificationOptions = {
-					certificate: header.x5c?.[0], // First certificate in chain
+				const verificationOptions: JWTVerificationOptions = {
+					certificate: header.x5c?.[0],
 					algorithm: header.alg,
 					kid: header.kid,
 				};
@@ -395,37 +299,37 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 
 					console.log('OpenID4VP: JWT signature verified successfully');
 				} catch (err) {
-					throw new Error(`JWT verification error: ${err.message}`);
+					throw new Error(
+						`JWT verification error: ${err instanceof Error ? err.message : String(err)}`,
+					);
 				}
 			} else {
-				// No verifier provided - log warning
 				console.warn('OpenID4VP: JWT signature verification skipped - no verifier provided');
 				console.warn(
 					'To enable verification, register a JWT verifier via DCWS.registerJWTVerifier()',
 				);
 			}
 
-			// Return parsed authorization parameters
 			return {
 				...payload,
-				_jarHeader: header, // Include header for certificate validation
-				_jarSignatureVerified: !!options.jwtVerifier, // Indicate if signature was verified
+				_jarHeader: header,
+				_jarSignatureVerified: !!options.jwtVerifier,
 			};
 		} catch (err) {
-			throw new Error(`Error handling request_uri: ${err.message}`);
+			const message = err instanceof Error ? err.message : String(err);
+			// Preserve JWT verification errors without re-wrapping
+			if (message.startsWith('JWT verification error:')) {
+				throw err;
+			}
+			throw new Error(`Error handling request_uri: ${message}`);
 		}
 	}
 
-	/**
-	 * Verify a JWT using a wallet-provided verifier
-	 * This is a helper method that can be called directly
-	 *
-	 * @param {string} jwt - The JWT to verify
-	 * @param {Function} verifier - The verification function
-	 * @param {Object} options - Verification options (certificate, algorithm, etc.)
-	 * @returns {Promise<Object>} Verification result
-	 */
-	async verifyJWT(jwt, verifier, options = {}) {
+	async verifyJWT(
+		jwt: string,
+		verifier: JWTVerifier,
+		options: JWTVerificationOptions = {},
+	): Promise<JWTVerificationResult> {
 		if (typeof verifier !== 'function') {
 			throw new Error('Verifier must be a function');
 		}
@@ -445,7 +349,7 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 		} catch (err) {
 			return {
 				valid: false,
-				error: err.message,
+				error: err instanceof Error ? err.message : String(err),
 			};
 		}
 	}

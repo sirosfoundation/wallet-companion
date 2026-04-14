@@ -2,6 +2,8 @@
  * Tests for JWT Verification Callback System
  */
 
+import { OpenID4VPPlugin } from "../src/content/protocols";
+
 describe('JWT Verification Callbacks', () => {
   let walletCallbacks;
   let DCWS;
@@ -119,20 +121,18 @@ describe('JWT Verification Callbacks', () => {
     it('should return list of registered wallet URLs', () => {
       const wallet1 = 'https://wallet1.example.com';
       const wallet2 = 'https://wallet2.example.com';
-      
+
       DCWS.registerJWTVerifier(wallet1, async () => ({ valid: true }));
       DCWS.registerJWTVerifier(wallet2, async () => ({ valid: true }));
 
       const verifiers = DCWS.getRegisteredJWTVerifiers();
-      
+
       expect(verifiers).toHaveLength(2);
       expect(verifiers).toContain(wallet1);
       expect(verifiers).toContain(wallet2);
     });
   });
 });
-
-import { OpenID4VPPlugin } from '../src/content/protocols/OpenID4VPPlugin.js';
 
 describe('OpenID4VPPlugin - JWT Verification Integration', () => {
   let plugin;
@@ -170,7 +170,7 @@ describe('OpenID4VPPlugin - JWT Verification Integration', () => {
 
     it('should reject non-function verifiers', async () => {
       const jwt = 'eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiIxMjM0In0.signature';
-      
+
       await expect(plugin.verifyJWT(jwt, 'not a function')).rejects.toThrow('Verifier must be a function');
     });
 
@@ -209,7 +209,7 @@ describe('OpenID4VPPlugin - JWT Verification Integration', () => {
     it('should pass options to verifier', async () => {
       const jwt = 'eyJhbGciOiJFUzI1NiJ9.eyJzdWIiOiIxMjM0In0.signature';
       let receivedOptions;
-      
+
       const verifier = async (jwt, options) => {
         receivedOptions = options;
         return { valid: true };
@@ -239,7 +239,7 @@ describe('OpenID4VPPlugin - JWT Verification Integration', () => {
 
     it('should verify JWT when verifier is provided', async () => {
       const mockJWT = 'eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0IiwiYWxnIjoiRVMyNTYiLCJ4NWMiOlsiTUlJQ2VydCJdfQ.eyJjbGllbnRfaWQiOiJodHRwczovL3ZlcmlmaWVyLmV4YW1wbGUuY29tIiwibm9uY2UiOiIxMjMifQ.signature';
-      
+
       global.fetch.mockResolvedValue({
         ok: true,
         text: async () => mockJWT
@@ -265,7 +265,7 @@ describe('OpenID4VPPlugin - JWT Verification Integration', () => {
 
     it('should throw error if verification fails', async () => {
       const mockJWT = 'eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0IiwiYWxnIjoiRVMyNTYifQ.eyJjbGllbnRfaWQiOiJ0ZXN0In0.sig';
-      
+
       global.fetch.mockResolvedValue({
         ok: true,
         text: async () => mockJWT
@@ -284,7 +284,7 @@ describe('OpenID4VPPlugin - JWT Verification Integration', () => {
     it('should skip verification if no verifier provided', async () => {
       const consoleSpy = vi.spyOn(console, 'warn').mockImplementation();
       const mockJWT = 'eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0IiwiYWxnIjoiRVMyNTYifQ.eyJjbGllbnRfaWQiOiJ0ZXN0In0.sig';
-      
+
       global.fetch.mockResolvedValue({
         ok: true,
         text: async () => mockJWT
@@ -302,7 +302,7 @@ describe('OpenID4VPPlugin - JWT Verification Integration', () => {
 
     it('should extract certificate from x5c header', async () => {
       const mockJWT = 'eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0IiwiYWxnIjoiRVMyNTYiLCJ4NWMiOlsiQ2VydDEiLCJDZXJ0MiJdfQ.eyJub25jZSI6IjEyMyJ9.sig';
-      
+
       global.fetch.mockResolvedValue({
         ok: true,
         text: async () => mockJWT
@@ -320,7 +320,7 @@ describe('OpenID4VPPlugin - JWT Verification Integration', () => {
 
     it('should handle verifier throwing error', async () => {
       const mockJWT = 'eyJ0eXAiOiJvYXV0aC1hdXRoei1yZXErand0IiwiYWxnIjoiRVMyNTYifQ.eyJub25jZSI6IjEyMyJ9.sig';
-      
+
       global.fetch.mockResolvedValue({
         ok: true,
         text: async () => mockJWT
