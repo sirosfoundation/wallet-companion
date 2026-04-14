@@ -3,8 +3,7 @@
  * Intercepts navigator.credentials.get() calls for the Digital Credentials API
  */
 
-import { OpenID4VPPlugin } from './protocols/OpenID4VPPlugin.js';
-import { ProtocolPluginRegistry } from './protocols.js';
+import { OpenID4VPPlugin, ProtocolPluginRegistry } from './protocols/';
 
 console.log('Digital Credentials API interceptor injected');
 
