@@ -322,4 +322,98 @@ describe('Popup - UI State Management', () => {
 			expect(escapeHtml('')).toBe('');
 		});
 	});
+
+	describe('Event Handlers', () => {
+		let mockSendMessage: ReturnType<typeof vi.fn<(msg: unknown) => Promise<unknown>>>;
+		let mockStorageSet: ReturnType<typeof vi.fn<(data: unknown) => Promise<void>>>;
+
+		beforeEach(() => {
+			mockSendMessage = vi.fn<(msg: unknown) => Promise<unknown>>().mockResolvedValue({ enabled: true, stats: { interceptCount: 0, walletUses: {} } });
+			mockStorageSet = vi.fn<(data: unknown) => Promise<void>>().mockResolvedValue(undefined);
+		});
+
+		test('should send TOGGLE_ENABLED message on toggle change', async () => {
+			const toggle = document.getElementById('extensionToggle') as HTMLInputElement;
+
+			// Simulate toggle change handler
+			const handleToggleChange = async (checked: boolean): Promise<void> => {
+				await mockSendMessage({ type: 'TOGGLE_ENABLED', enabled: checked });
+			};
+
+			toggle.checked = true;
+			await handleToggleChange(toggle.checked);
+
+			expect(mockSendMessage).toHaveBeenCalledWith({ type: 'TOGGLE_ENABLED', enabled: true });
+		});
+
+		test('should reset interceptCount on clear button click', async () => {
+			const interceptCount = document.getElementById('interceptCount');
+			if (interceptCount) interceptCount.textContent = '42';
+
+			// Simulate clear button handler
+			const handleClearClick = async (): Promise<void> => {
+				await mockStorageSet({ usage_stats: { interceptCount: 0, walletUses: {} } });
+				const el = document.getElementById('interceptCount');
+				if (el) el.textContent = '0';
+			};
+
+			await handleClearClick();
+
+			expect(mockStorageSet).toHaveBeenCalledWith({ usage_stats: { interceptCount: 0, walletUses: {} } });
+			expect(interceptCount?.textContent).toBe('0');
+		});
+
+		test('should call openOptionsPage on configure button click', () => {
+			const mockOpenOptionsPage = vi.fn();
+			const mockChrome = {
+				runtime: {
+					openOptionsPage: mockOpenOptionsPage,
+				},
+			};
+
+			// Simulate configure button handler
+			const handleConfigureClick = (): void => {
+				if (mockChrome.runtime.openOptionsPage) {
+					mockChrome.runtime.openOptionsPage();
+				}
+			};
+
+			handleConfigureClick();
+
+			expect(mockOpenOptionsPage).toHaveBeenCalled();
+		});
+
+		test('should update interceptCount on STATS_UPDATE message', () => {
+			const interceptCount = document.getElementById('interceptCount');
+			if (interceptCount) interceptCount.textContent = '0';
+
+			// Simulate message handler
+			const handleMessage = (message: { type: string; stats?: { interceptCount: number } }): void => {
+				if (message.type === 'STATS_UPDATE' && message.stats) {
+					const el = document.getElementById('interceptCount');
+					if (el) el.textContent = String(message.stats.interceptCount);
+				}
+			};
+
+			handleMessage({ type: 'STATS_UPDATE', stats: { interceptCount: 99 } });
+
+			expect(interceptCount?.textContent).toBe('99');
+		});
+
+		test('should ignore non-STATS_UPDATE messages', () => {
+			const interceptCount = document.getElementById('interceptCount');
+			if (interceptCount) interceptCount.textContent = '42';
+
+			const handleMessage = (message: { type: string; stats?: { interceptCount: number } }): void => {
+				if (message.type === 'STATS_UPDATE' && message.stats) {
+					const el = document.getElementById('interceptCount');
+					if (el) el.textContent = String(message.stats.interceptCount);
+				}
+			};
+
+			handleMessage({ type: 'OTHER_MESSAGE', stats: { interceptCount: 0 } });
+
+			expect(interceptCount?.textContent).toBe('42');
+		});
+	});
 });

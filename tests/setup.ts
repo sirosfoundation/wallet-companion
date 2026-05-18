@@ -101,14 +101,11 @@ Object.defineProperty(globalThis.navigator, 'credentials', {
 });
 
 // Mock console methods to reduce test output noise
-globalThis.console = {
-	...console,
-	log: vi.fn(),
-	debug: vi.fn(),
-	info: vi.fn(),
-	warn: vi.fn(),
-	error: vi.fn(),
-};
+vi.spyOn(console, 'log').mockImplementation(() => {});
+vi.spyOn(console, 'debug').mockImplementation(() => {});
+vi.spyOn(console, 'info').mockImplementation(() => {});
+vi.spyOn(console, 'warn').mockImplementation(() => {});
+vi.spyOn(console, 'error').mockImplementation(() => {});
 
 // Note: Do NOT mock document.createElement - jsdom provides a real implementation
 // that is needed for DOM manipulation tests

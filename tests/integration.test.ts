@@ -4,8 +4,12 @@
  */
 
 import { launch, type Browser, type Page } from 'puppeteer';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import { existsSync } from 'fs';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 describe('Browser Extension - Integration Tests', () => {
 	let browser: Browser;

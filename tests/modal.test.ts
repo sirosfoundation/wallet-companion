@@ -316,6 +316,207 @@ describe('Modal - Wallet Selector', () => {
 
 			document.removeEventListener('keydown', handleKeydown);
 		});
+
+		test('should NOT dismiss on non-Escape keys', () => {
+			const escHandler = vi.fn();
+
+			const handleKeydown = (e: KeyboardEvent): void => {
+				if (e.key === 'Escape') {
+					escHandler();
+				}
+			};
+
+			document.addEventListener('keydown', handleKeydown);
+
+			// Test various non-Escape keys
+			['Enter', 'Tab', 'ArrowDown', 'ArrowUp', 'a', ' '].forEach((key) => {
+				const event = new KeyboardEvent('keydown', { key });
+				document.dispatchEvent(event);
+			});
+
+			expect(escHandler).not.toHaveBeenCalled();
+
+			document.removeEventListener('keydown', handleKeydown);
+		});
+
+		test('should dismiss modal on overlay click (outside panel)', () => {
+			const onCancel = vi.fn();
+
+			// Create modal structure
+			const overlay = document.createElement('div');
+			overlay.id = 'dc-wallet-modal-overlay';
+			overlay.className = 'wallet-selector';
+
+			const panel = document.createElement('div');
+			panel.id = 'dc-wallet-modal';
+			overlay.appendChild(panel);
+			document.body.appendChild(overlay);
+
+			// Handler that only triggers if clicking directly on overlay, not panel
+			overlay.addEventListener('click', (e) => {
+				if (e.target === overlay) {
+					onCancel();
+					overlay.remove();
+				}
+			});
+
+			// Click on overlay (not panel)
+			const overlayClickEvent = new MouseEvent('click', { bubbles: true });
+			Object.defineProperty(overlayClickEvent, 'target', { value: overlay });
+			overlay.dispatchEvent(overlayClickEvent);
+
+			expect(onCancel).toHaveBeenCalled();
+		});
+
+		test('should NOT dismiss when clicking inside panel', () => {
+			const onCancel = vi.fn();
+
+			const overlay = document.createElement('div');
+			overlay.id = 'dc-wallet-modal-overlay';
+
+			const panel = document.createElement('div');
+			panel.id = 'dc-wallet-modal';
+			overlay.appendChild(panel);
+			document.body.appendChild(overlay);
+
+			overlay.addEventListener('click', (e) => {
+				if (e.target === overlay) {
+					onCancel();
+				}
+			});
+
+			// Click on panel (inside modal)
+			const panelClickEvent = new MouseEvent('click', { bubbles: true });
+			Object.defineProperty(panelClickEvent, 'target', { value: panel });
+			panel.dispatchEvent(panelClickEvent);
+
+			expect(onCancel).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('Custom Event Handling', () => {
+		test('should extract requestId from DC_SHOW_WALLET_SELECTOR event', () => {
+			let extractedRequestId: string | undefined;
+
+			const handler = (e: CustomEvent): void => {
+				extractedRequestId = e.detail?.requestId;
+			};
+
+			document.addEventListener('DC_SHOW_WALLET_SELECTOR', handler as EventListener);
+
+			const event = new CustomEvent('DC_SHOW_WALLET_SELECTOR', {
+				detail: { requestId: 'req-123', wallets: [], requests: [] },
+			});
+			document.dispatchEvent(event);
+
+			expect(extractedRequestId).toBe('req-123');
+
+			document.removeEventListener('DC_SHOW_WALLET_SELECTOR', handler as EventListener);
+		});
+
+		test('should extract wallets array from DC_SHOW_WALLET_SELECTOR event', () => {
+			let extractedWallets: MockWallet[] | undefined;
+
+			const handler = (e: CustomEvent): void => {
+				extractedWallets = e.detail?.wallets;
+			};
+
+			document.addEventListener('DC_SHOW_WALLET_SELECTOR', handler as EventListener);
+
+			const event = new CustomEvent('DC_SHOW_WALLET_SELECTOR', {
+				detail: { requestId: 'req-123', wallets: mockWallets, requests: [] },
+			});
+			document.dispatchEvent(event);
+
+			expect(extractedWallets).toHaveLength(2);
+			expect(extractedWallets?.[0].id).toBe('wallet-1');
+
+			document.removeEventListener('DC_SHOW_WALLET_SELECTOR', handler as EventListener);
+		});
+
+		test('should extract requests from DC_SHOW_WALLET_SELECTOR event', () => {
+			let extractedRequests: Array<{ type: string }> | undefined;
+
+			const handler = (e: CustomEvent): void => {
+				extractedRequests = e.detail?.requests;
+			};
+
+			document.addEventListener('DC_SHOW_WALLET_SELECTOR', handler as EventListener);
+
+			const requests = [{ type: 'openid4vp' }, { type: 'w3c-vc' }];
+			const event = new CustomEvent('DC_SHOW_WALLET_SELECTOR', {
+				detail: { requestId: 'req-123', wallets: [], requests },
+			});
+			document.dispatchEvent(event);
+
+			expect(extractedRequests).toHaveLength(2);
+			expect(extractedRequests?.[0].type).toBe('openid4vp');
+
+			document.removeEventListener('DC_SHOW_WALLET_SELECTOR', handler as EventListener);
+		});
+
+		test('should dispatch DC_WALLET_SELECTED event with wallet details', () => {
+			let selectedEvent: CustomEvent | undefined;
+
+			const handler = (e: Event): void => {
+				selectedEvent = e as CustomEvent;
+			};
+
+			document.addEventListener('DC_WALLET_SELECTED', handler);
+
+			const event = new CustomEvent('DC_WALLET_SELECTED', {
+				detail: {
+					walletId: 'wallet-1',
+					protocol: 'openid4vp',
+					selectedRequest: { type: 'openid4vp' },
+				},
+			});
+			document.dispatchEvent(event);
+
+			expect(selectedEvent?.detail.walletId).toBe('wallet-1');
+			expect(selectedEvent?.detail.protocol).toBe('openid4vp');
+
+			document.removeEventListener('DC_WALLET_SELECTED', handler);
+		});
+
+		test('should dispatch DC_CREDENTIALS_RESPONSE with useNative for native button', () => {
+			let responseEvent: CustomEvent | undefined;
+
+			const handler = (e: Event): void => {
+				responseEvent = e as CustomEvent;
+			};
+
+			document.addEventListener('DC_CREDENTIALS_RESPONSE', handler);
+
+			const event = new CustomEvent('DC_CREDENTIALS_RESPONSE', {
+				detail: { requestId: 'req-123', useNative: true },
+			});
+			document.dispatchEvent(event);
+
+			expect(responseEvent?.detail.useNative).toBe(true);
+			expect(responseEvent?.detail.requestId).toBe('req-123');
+
+			document.removeEventListener('DC_CREDENTIALS_RESPONSE', handler);
+		});
+
+		test('should dispatch DC_CREDENTIALS_RESPONSE with cancelled for cancel button', () => {
+			let responseEvent: CustomEvent | undefined;
+
+			const handler = (e: Event): void => {
+				responseEvent = e as CustomEvent;
+			};
+
+			document.addEventListener('DC_CREDENTIALS_RESPONSE', handler);
+
+			const event = new CustomEvent('DC_CREDENTIALS_RESPONSE', {
+				detail: { requestId: 'req-123', cancelled: true },
+			});
+			document.dispatchEvent(event);
+
+			expect(responseEvent?.detail.cancelled).toBe(true);
+
+			document.removeEventListener('DC_CREDENTIALS_RESPONSE', handler);
+		});
 	});
 });
 

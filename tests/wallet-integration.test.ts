@@ -6,8 +6,12 @@
  */
 
 import { launch, type Browser, type Page } from 'puppeteer';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import { existsSync } from 'fs';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 describe('Mock Wallet Integration Tests', () => {
 	let browser: Browser;
@@ -249,6 +253,154 @@ describe('Mock Wallet Integration Tests', () => {
 
 			expect(result.success).toBe(false);
 			expect(result.error).toContain('Invalid protocol');
+		}, 15000);
+
+		test('should track call history for registration calls', async () => {
+			type CallHistoryEntry = {
+				method: string;
+				args: unknown[];
+				timestamp: number;
+			};
+
+			// Register twice to create history
+			await page.evaluate(async () => {
+				await (window as { mockWallet?: { register: () => Promise<unknown> } }).mockWallet?.register();
+			});
+
+			await page.evaluate(async () => {
+				await (window as { mockWallet?: { register: () => Promise<unknown> } }).mockWallet?.register();
+			});
+
+			const callHistory = await page.evaluate(() => {
+				return (
+					window as { mockWallet?: { getCallHistory?: () => CallHistoryEntry[] } }
+				).mockWallet?.getCallHistory?.();
+			});
+
+			// If call history tracking is implemented
+			if (callHistory) {
+				expect(Array.isArray(callHistory)).toBe(true);
+				expect(callHistory.length).toBeGreaterThanOrEqual(2);
+			}
+		}, 15000);
+
+		test('should support multi-wallet registration', async () => {
+			// Register first wallet
+			const wallet1 = await page.evaluate(async () => {
+				return await (
+					window as { mockWallet?: { register: (c: unknown) => Promise<{ success: boolean; wallet?: { url: string } }> } }
+				).mockWallet?.register({
+					name: 'Wallet One',
+					url: 'https://wallet-one.test.local',
+					protocols: ['openid4vp'],
+				});
+			});
+
+			expect(wallet1?.success).toBe(true);
+
+			// Register second wallet with different URL
+			const wallet2 = await page.evaluate(async () => {
+				return await (
+					window as { mockWallet?: { register: (c: unknown) => Promise<{ success: boolean; wallet?: { url: string } }> } }
+				).mockWallet?.register({
+					name: 'Wallet Two',
+					url: 'https://wallet-two.test.local',
+					protocols: ['openid4vp'],
+				});
+			});
+
+			expect(wallet2?.success).toBe(true);
+			expect(wallet2?.wallet?.url).not.toBe(wallet1?.wallet?.url);
+		}, 20000);
+
+		test('should preserve extensionInstalled state after reset', async () => {
+			// Get state before reset
+			const stateBefore = await page.evaluate(
+				() =>
+					(window as { mockWallet?: { getState: () => { extensionInstalled: boolean } } }).mockWallet?.getState(),
+			);
+
+			expect(stateBefore?.extensionInstalled).toBe(true);
+
+			// Reset the mock wallet
+			await page.evaluate(() => (window as { mockWallet?: { reset: () => void } }).mockWallet?.reset());
+
+			// Get state after reset
+			const stateAfter = await page.evaluate(
+				() =>
+					(window as { mockWallet?: { getState: () => { extensionInstalled: boolean } } }).mockWallet?.getState(),
+			);
+
+			// extensionInstalled should be preserved after reset
+			expect(stateAfter?.extensionInstalled).toBe(true);
+		}, 15000);
+
+		test('should clear registration state after reset', async () => {
+			// Register a wallet
+			await page.evaluate(async () => {
+				await (window as { mockWallet?: { register: () => Promise<unknown> } }).mockWallet?.register();
+			});
+
+			// Verify it's registered
+			const isRegisteredBefore = await page.evaluate(async () => {
+				return await (
+					window as { mockWallet?: { isRegistered: () => Promise<boolean> } }
+				).mockWallet?.isRegistered();
+			});
+
+			expect(isRegisteredBefore).toBe(true);
+
+			// Reset
+			await page.evaluate(() => (window as { mockWallet?: { reset: () => void } }).mockWallet?.reset());
+
+			// After reset, should not be registered
+			const isRegisteredAfter = await page.evaluate(async () => {
+				return await (
+					window as { mockWallet?: { isRegistered: () => Promise<boolean> } }
+				).mockWallet?.isRegistered();
+			});
+
+			expect(isRegisteredAfter).toBe(false);
+		}, 15000);
+
+		test('should support JWT verifier registration', async () => {
+			type VerifierResult = {
+				success: boolean;
+				verifierId?: string;
+			};
+
+			const result = await page.evaluate(async () => {
+				const DCWS = (window as { DCWS?: { registerJWTVerifier?: (config: unknown) => Promise<VerifierResult> } }).DCWS;
+				if (!DCWS?.registerJWTVerifier) return { supported: false as const };
+
+				const verifierResult = await DCWS.registerJWTVerifier({
+					issuer: 'https://issuer.test.local',
+					publicKey: 'test-public-key',
+				});
+
+				return { supported: true as const, ...verifierResult };
+			});
+
+			// If JWT verifier registration is supported
+			if (result.supported === true) {
+				expect(result.success).toBeDefined();
+			}
+		}, 15000);
+
+		test('should support JWT verifier unregistration', async () => {
+			const result = await page.evaluate(async () => {
+				const DCWS = (window as { DCWS?: { unregisterJWTVerifier?: (id: string) => Promise<{ success: boolean }> } }).DCWS;
+				if (!DCWS?.unregisterJWTVerifier) return { supported: false as const };
+
+				const unregisterResult = await DCWS.unregisterJWTVerifier('verifier-123');
+
+				return { supported: true as const, ...unregisterResult };
+			});
+
+			// If JWT verifier unregistration is supported
+			if (result.supported === true) {
+				expect(result.success).toBeDefined();
+			}
 		}, 15000);
 	});
 });

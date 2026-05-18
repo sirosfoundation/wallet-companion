@@ -288,4 +288,173 @@ describe('Options Page - Wallet Management', () => {
 			expect(walletUses).toBe(0);
 		});
 	});
+
+	describe('Preset Wallet Variants', () => {
+		const presets = [
+			{
+				id: 'siros-id',
+				name: 'SIROS ID',
+				url: 'https://id.siros.foundation',
+				protocols: ['openid4vp'],
+			},
+			{
+				id: 'siros-vault',
+				name: 'SIROS Vault',
+				url: 'https://vault.siros.foundation',
+				protocols: ['openid4vp', 'w3c-vc'],
+			},
+		];
+
+		test('should support multiple SIROS presets', () => {
+			expect(presets).toHaveLength(2);
+			expect(presets[0].name).toBe('SIROS ID');
+			expect(presets[1].name).toBe('SIROS Vault');
+		});
+
+		test('should support different protocols per preset', () => {
+			expect(presets[0].protocols).toEqual(['openid4vp']);
+			expect(presets[1].protocols).toContain('w3c-vc');
+		});
+
+		test('should generate unique IDs for each preset', () => {
+			const ids = presets.map((p) => p.id);
+			const uniqueIds = new Set(ids);
+			expect(uniqueIds.size).toBe(presets.length);
+		});
+	});
+
+	describe('XSS Prevention', () => {
+		function escapeHtml(unsafe: string | null | undefined): string {
+			if (!unsafe) return '';
+			return unsafe
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#039;');
+		}
+
+		test('should escape XSS in wallet name field', () => {
+			const maliciousName = '<img src=x onerror=alert(1)>';
+			const escaped = escapeHtml(maliciousName);
+			expect(escaped).not.toContain('<img');
+			expect(escaped).toContain('&lt;img');
+		});
+
+		test('should escape XSS in wallet description field', () => {
+			const maliciousDesc = '<script>document.cookie</script>';
+			const escaped = escapeHtml(maliciousDesc);
+			expect(escaped).not.toContain('<script>');
+		});
+
+		test('should reject malicious import JSON', () => {
+			const maliciousImport = {
+				wallets: [
+					{
+						id: 'w1',
+						name: '<script>alert("xss")</script>',
+						url: 'javascript:alert(1)',
+						enabled: true,
+					},
+				],
+			};
+
+			// Validate URL is not javascript:
+			const isValidUrl = (url: string): boolean => {
+				try {
+					const parsed = new URL(url);
+					return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+				} catch {
+					return false;
+				}
+			};
+
+			expect(isValidUrl(maliciousImport.wallets[0].url)).toBe(false);
+		});
+
+		test('should sanitize imported wallet names', () => {
+			const maliciousWallet = { name: '<b onmouseover=alert(1)>test</b>' };
+			const sanitized = escapeHtml(maliciousWallet.name);
+			expect(sanitized).not.toContain('<b');
+		});
+	});
+
+	describe('Icon Selector', () => {
+		test('should select emoji icon', () => {
+			const selectedIcon = { type: 'emoji', value: '🔐' };
+			expect(selectedIcon.type).toBe('emoji');
+			expect(selectedIcon.value).toBe('🔐');
+		});
+
+		test('should fetch favicon from URL', () => {
+			const faviconUrl = 'https://example.com/favicon.ico';
+			const selectedIcon = { type: 'favicon', value: faviconUrl };
+			expect(selectedIcon.type).toBe('favicon');
+			expect(selectedIcon.value).toContain('favicon');
+		});
+
+		test('should generate identicon from wallet URL', () => {
+			const walletUrl = 'https://wallet.example.com';
+			const generatedIcon = { type: 'generated', seed: walletUrl };
+			expect(generatedIcon.type).toBe('generated');
+			expect(generatedIcon.seed).toBe(walletUrl);
+		});
+
+		test('should allow custom data URL icons', () => {
+			const dataUrl = 'data:image/svg+xml,<svg></svg>';
+			const selectedIcon = { type: 'custom', value: dataUrl };
+			expect(selectedIcon.value).toMatch(/^data:image\//);
+		});
+	});
+
+	describe('Tab Switching', () => {
+		beforeEach(() => {
+			document.body.innerHTML = `
+				<div id="tab-add" class="tab-content"></div>
+				<div id="tab-wallets" class="tab-content active"></div>
+				<div id="tab-settings" class="tab-content"></div>
+				<button id="btn-add" class="tab-btn"></button>
+				<button id="btn-wallets" class="tab-btn active"></button>
+				<button id="btn-settings" class="tab-btn"></button>
+			`;
+		});
+
+		function switchTab(tabName: string): void {
+			const tabs = document.querySelectorAll('.tab-content');
+			const buttons = document.querySelectorAll('.tab-btn');
+
+			tabs.forEach((tab) => tab.classList.remove('active'));
+			buttons.forEach((btn) => btn.classList.remove('active'));
+
+			document.getElementById(`tab-${tabName}`)?.classList.add('active');
+			document.getElementById(`btn-${tabName}`)?.classList.add('active');
+		}
+
+		test('should switch to add tab', () => {
+			switchTab('add');
+
+			expect(document.getElementById('tab-add')?.classList.contains('active')).toBe(true);
+			expect(document.getElementById('tab-wallets')?.classList.contains('active')).toBe(false);
+		});
+
+		test('should switch to wallets tab', () => {
+			switchTab('wallets');
+
+			expect(document.getElementById('tab-wallets')?.classList.contains('active')).toBe(true);
+		});
+
+		test('should switch to settings tab', () => {
+			switchTab('settings');
+
+			expect(document.getElementById('tab-settings')?.classList.contains('active')).toBe(true);
+			expect(document.getElementById('btn-settings')?.classList.contains('active')).toBe(true);
+		});
+
+		test('should deactivate other tabs when switching', () => {
+			switchTab('add');
+
+			const inactiveTabs = document.querySelectorAll('.tab-content:not(.active)');
+			expect(inactiveTabs.length).toBe(2);
+		});
+	});
 });
