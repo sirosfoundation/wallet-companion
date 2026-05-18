@@ -63,7 +63,7 @@ The **callback system** lets wallets provide their verification capabilities to 
 
 ## API Reference
 
-### `DCWS.registerJWTVerifier(walletUrl, verifyCallback)`
+### `WalletCompanion.DigitalCredentials.registerJWTVerifier(walletUrl, verifyCallback)`
 
 Registers a JWT verification callback for a wallet.
 
@@ -94,7 +94,7 @@ async function verifyCallback(jwt, options) {
 **Example:**
 ```javascript
 // Wallet registers its JWT verifier
-DCWS.registerJWTVerifier('https://wallet.example.com', async (jwt, options) => {
+WalletCompanion.DigitalCredentials.registerJWTVerifier('https://wallet.example.com', async (jwt, options) => {
   try {
     // Use wallet's crypto library to verify
     const publicKey = await extractPublicKeyFromCert(options.certificate);
@@ -117,7 +117,7 @@ DCWS.registerJWTVerifier('https://wallet.example.com', async (jwt, options) => {
 });
 ```
 
-### `DCWS.unregisterJWTVerifier(walletUrl)`
+### `WalletCompanion.DigitalCredentials.unregisterJWTVerifier(walletUrl)`
 
 Removes a previously registered JWT verifier.
 
@@ -128,10 +128,10 @@ Removes a previously registered JWT verifier.
 
 **Example:**
 ```javascript
-DCWS.unregisterJWTVerifier('https://wallet.example.com');
+WalletCompanion.DigitalCredentials.unregisterJWTVerifier('https://wallet.example.com');
 ```
 
-### `DCWS.getRegisteredJWTVerifiers()`
+### `WalletCompanion.DigitalCredentials.getRegisteredJWTVerifiers()`
 
 Gets a list of wallet URLs that have registered JWT verifiers.
 
@@ -139,7 +139,7 @@ Gets a list of wallet URLs that have registered JWT verifiers.
 
 **Example:**
 ```javascript
-const verifiers = DCWS.getRegisteredJWTVerifiers();
+const verifiers = WalletCompanion.DigitalCredentials.getRegisteredJWTVerifiers();
 console.log('Wallets with JWT verifiers:', verifiers);
 // ['https://wallet1.example.com', 'https://wallet2.example.com']
 ```
@@ -151,14 +151,14 @@ console.log('Wallets with JWT verifiers:', verifiers);
 1. **Wallet Registration with Verifier**
    ```javascript
    // During wallet initialization
-   await DCWS.registerWallet({
+   await WalletCompanion.registerWallet({
      name: 'My Wallet',
      url: 'https://wallet.example.com',
      protocols: ['openid4vp']
    });
    
    // Register JWT verifier
-   DCWS.registerJWTVerifier('https://wallet.example.com', myJWTVerifier);
+   WalletCompanion.DigitalCredentials.registerJWTVerifier('https://wallet.example.com', myJWTVerifier);
    ```
 
 2. **Extension Uses Verifier**
@@ -254,12 +254,12 @@ class WalletJWTVerifier {
    * Register this verifier with the extension
    */
   register() {
-    if (typeof window.DCWS === 'undefined') {
-      throw new Error('DCWS not available - extension not installed?');
+    if (!window.WalletCompanion?.isInstalled) {
+      throw new Error('WalletCompanion not available - extension not installed?');
     }
 
     const boundVerify = this.verify.bind(this);
-    window.DCWS.registerJWTVerifier(this.walletUrl, boundVerify);
+    window.WalletCompanion.DigitalCredentials.registerJWTVerifier(this.walletUrl, boundVerify);
     console.log('JWT verifier registered');
   }
 
@@ -267,8 +267,8 @@ class WalletJWTVerifier {
    * Unregister this verifier
    */
   unregister() {
-    if (typeof window.DCWS !== 'undefined') {
-      window.DCWS.unregisterJWTVerifier(this.walletUrl);
+    if (window.WalletCompanion?.isInstalled) {
+      window.WalletCompanion.DigitalCredentials.unregisterJWTVerifier(this.walletUrl);
     }
   }
 }
@@ -317,7 +317,7 @@ async function simpleJWTVerifier(jwt, options) {
 }
 
 // Register it
-window.DCWS.registerJWTVerifier(
+window.WalletCompanion.DigitalCredentials.registerJWTVerifier(
   'https://simple-wallet.example.com',
   simpleJWTVerifier
 );
@@ -437,7 +437,7 @@ console.assert(typeof result.valid === 'boolean', 'valid must be boolean');
 
 **Verifier not called:**
 - Check wallet URL matches exactly (including trailing slash)
-- Verify DCWS API is available (`typeof window.DCWS !== 'undefined'`)
+- Verify WalletCompanion API is available (`window.WalletCompanion?.isInstalled`)
 - Check browser console for registration errors
 
 **Verification always fails:**

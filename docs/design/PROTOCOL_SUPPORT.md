@@ -71,7 +71,7 @@ registry.validateResponse(protocol, data) // Validate response
 
 **Updated Wallet Registration:**
 ```javascript
-window.DigitalCredentialsWalletSelector.registerWallet({
+window.WalletCompanion.registerWallet({
   name: 'My Wallet',
   url: 'https://wallet.example.com',
   protocols: ['openid4vp', 'w3c-vc'],  // NEW: Required protocols array
@@ -142,16 +142,18 @@ async function getWalletsForProtocol(protocol)
 - `GET_SUPPORTED_PROTOCOLS`: Returns aggregated protocol list
 - `REGISTER_WALLET`: Stores wallet.protocols array
 
-#### 5. Content Script Updates (`content.js`)
+#### 5. Content Script Updates (`content/index.ts`)
 
 **Protocol Update Flow:**
 ```javascript
-// Request protocol update from background
-window.addEventListener('DC_PROTOCOLS_UPDATE_REQUEST', async (event) => {
-  const protocols = await runtime.sendMessage({ 
-    type: 'GET_SUPPORTED_PROTOCOLS' 
-  });
-  // Dispatch back to page context
+// RPC handler receives GET_SUPPORTED_PROTOCOLS
+new RPC(async (type, payload) => {
+  if (type === 'GET_SUPPORTED_PROTOCOLS') {
+    return sendMessage({ 
+      type: InboundMessages.GET_SUPPORTED_PROTOCOLS,
+      origin: window.location.origin
+    });
+  }
 });
 ```
 
@@ -199,7 +201,7 @@ if (DigitalCredential.userAgentAllowsProtocol('openid4vp')) {
 
 ```javascript
 // Wallet registers with extension
-window.DigitalCredentialsWalletSelector.registerWallet({
+window.WalletCompanion.registerWallet({
   name: 'Example Wallet',
   url: 'https://wallet.example.com/present',
   protocols: ['openid4vp', 'mdoc-openid4vp'],

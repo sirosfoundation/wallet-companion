@@ -101,10 +101,10 @@ Register your wallet and provide JWT verification:
 
 ```javascript
 // Check if extension is installed
-if (window.DCWS?.isInstalled()) {
+if (window.WalletCompanion?.isInstalled) {
   
   // 1. Register your wallet
-  await window.DCWS.registerWallet({
+  await window.WalletCompanion.registerWallet({
     name: 'MyWallet',
     url: 'https://wallet.example.com',
     protocols: ['openid4vp', 'w3c-vc'],  // Required: supported protocols
@@ -114,7 +114,7 @@ if (window.DCWS?.isInstalled()) {
   });
   
   // 2. Register JWT verifier (optional but recommended)
-  window.DCWS.registerJWTVerifier(
+  window.WalletCompanion.DigitalCredentials.registerJWTVerifier(
     'https://wallet.example.com',
     async (jwt, options) => {
       // Use your wallet's crypto library to verify the JWT
@@ -136,18 +136,18 @@ if (window.DCWS?.isInstalled()) {
 // wallet-integration.js
 (async function() {
   // Wait for extension to be ready
-  if (!window.DCWS?.isInstalled()) {
+  if (!window.WalletCompanion?.isInstalled) {
     console.log('Extension not installed');
     return;
   }
   
   // Check if already registered
   const walletUrl = 'https://wallet.example.com';
-  const isRegistered = await window.DCWS.isWalletRegistered(walletUrl);
+  const isRegistered = await window.WalletCompanion.isWalletRegistered(walletUrl);
   
   if (!isRegistered) {
     // Register the wallet
-    await window.DCWS.registerWallet({
+    await window.WalletCompanion.registerWallet({
       name: 'Example Wallet',
       url: walletUrl,
       protocols: ['openid4vp', 'w3c-vc'],
@@ -158,7 +158,7 @@ if (window.DCWS?.isInstalled()) {
   }
   
   // Register JWT verifier using wallet's crypto library
-  window.DCWS.registerJWTVerifier(walletUrl, async (jwt, options) => {
+  window.WalletCompanion.DigitalCredentials.registerJWTVerifier(walletUrl, async (jwt, options) => {
     // Import your wallet's crypto functions
     const { verifyJWT } = await import('./crypto.js');
     

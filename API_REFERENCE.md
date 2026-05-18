@@ -49,36 +49,33 @@ const credential = await navigator.credentials.get({
 
 ## Wallet Registration API
 
-The `window.DCWS` (Digital Credentials Wallet Selector) API allows wallets to auto-register with the extension.
+The `window.WalletCompanion` API allows wallets to auto-register with the extension.
 
 ### API Object
 
 ```javascript
-window.DCWS = {
-  isInstalled: function() { /* ... */ },
+window.WalletCompanion = {
+  isInstalled: true,
+  version: '1.0.0',
+  supportedProtocols: ['openid4vp', ...],
   registerWallet: async function(walletInfo) { /* ... */ },
   isWalletRegistered: async function(url) { /* ... */ },
-  registerJWTVerifier: function(walletUrl, verifyCallback) { /* ... */ },
-  unregisterJWTVerifier: function(walletUrl) { /* ... */ },
-  getRegisteredJWTVerifiers: function() { /* ... */ }
+  DigitalCredentials: { /* sub-API */ }
 };
-
-// Short alias
-window.DCWS === window.DigitalCredentialsWalletSelector
 ```
 
 ### Methods
 
-#### `isInstalled()`
+#### `isInstalled`
 
-Check if the extension is installed.
+Boolean property indicating if the extension is installed.
 
-**Returns:** `boolean`
+**Type:** `boolean`
 
 **Example:**
 
 ```javascript
-if (window.DCWS?.isInstalled()) {
+if (window.WalletCompanion?.isInstalled) {
   console.log('Extension is installed');
 }
 ```
@@ -111,7 +108,7 @@ Register a wallet with the extension.
 **Example:**
 
 ```javascript
-const result = await window.DCWS.registerWallet({
+const result = await window.WalletCompanion.registerWallet({
   name: 'MyWallet',
   url: 'https://wallet.example.com',
   protocols: ['openid4vp', 'w3c-vc'],
@@ -144,9 +141,9 @@ Check if a wallet is already registered.
 **Example:**
 
 ```javascript
-const isRegistered = await window.DCWS.isWalletRegistered('https://wallet.example.com');
+const isRegistered = await window.WalletCompanion.isWalletRegistered('https://wallet.example.com');
 if (!isRegistered) {
-  await window.DCWS.registerWallet({...});
+  await window.WalletCompanion.registerWallet({...});
 }
 ```
 
@@ -186,7 +183,7 @@ async (jwt: string, options: Object) => {
 **Example:**
 
 ```javascript
-window.DCWS.registerJWTVerifier(
+window.WalletCompanion.DigitalCredentials.registerJWTVerifier(
   'https://wallet.example.com',
   async (jwt, options) => {
     try {
@@ -219,7 +216,7 @@ Remove a JWT verification callback.
 **Example:**
 
 ```javascript
-const removed = window.DCWS.unregisterJWTVerifier('https://wallet.example.com');
+const removed = window.WalletCompanion.DigitalCredentials.unregisterJWTVerifier('https://wallet.example.com');
 if (removed) {
   console.log('JWT verifier removed');
 }
@@ -234,7 +231,7 @@ Get list of wallets that have registered JWT verifiers.
 **Example:**
 
 ```javascript
-const verifiers = window.DCWS.getRegisteredJWTVerifiers();
+const verifiers = window.WalletCompanion.DigitalCredentials.getRegisteredJWTVerifiers();
 console.log('Wallets with verifiers:', verifiers);
 // ['https://wallet.example.com', 'https://another-wallet.com']
 ```
@@ -450,7 +447,7 @@ async function verifyJWT(jwt, options) {
 Always wrap verification in try-catch and return appropriate error messages:
 
 ```javascript
-window.DCWS.registerJWTVerifier(walletUrl, async (jwt, options) => {
+window.WalletCompanion.DigitalCredentials.registerJWTVerifier(walletUrl, async (jwt, options) => {
   try {
     return await verifyJWT(jwt, options);
   } catch (error) {

@@ -11,14 +11,12 @@ The Wallet Companion extension provides a JavaScript API that allows digital ide
 The API is exposed through the global `window` object:
 
 ```javascript
-window.DigitalCredentialsWalletSelector
-// or the shorter alias:
-window.DCWS
+window.WalletCompanion
 ```
 
 ### Detection
 
-#### `isInstalled()`
+#### `isInstalled`
 
 Check if the extension is installed.
 
@@ -26,8 +24,7 @@ Check if the extension is installed.
 
 **Example:**
 ```javascript
-if (window.DigitalCredentialsWalletSelector && 
-    window.DigitalCredentialsWalletSelector.isInstalled()) {
+if (window.WalletCompanion?.isInstalled) {
   console.log('Extension is installed!');
 }
 ```
@@ -70,7 +67,7 @@ Register the wallet with the extension. If the wallet is already registered (by 
 **Example:**
 ```javascript
 try {
-  const result = await window.DCWS.registerWallet({
+  const result = await window.WalletCompanion.registerWallet({
     name: 'MyWallet',
     url: 'https://wallet.example.com',
     description: 'Secure digital identity wallet',
@@ -102,11 +99,11 @@ Check if a wallet with the given URL is already registered.
 
 **Example:**
 ```javascript
-const isRegistered = await window.DCWS.isWalletRegistered('https://wallet.example.com');
+const isRegistered = await window.WalletCompanion.isWalletRegistered('https://wallet.example.com');
 
 if (!isRegistered) {
   // Register the wallet
-  await window.DCWS.registerWallet({ ... });
+  await window.WalletCompanion.registerWallet({ ... });
 }
 ```
 
@@ -119,7 +116,7 @@ Add this code to your wallet's landing page or application:
 ```javascript
 (async function() {
   // Check if extension is installed
-  if (!window.DigitalCredentialsWalletSelector?.isInstalled()) {
+  if (!window.WalletCompanion?.isInstalled) {
     console.log('Extension not installed');
     return;
   }
@@ -134,7 +131,7 @@ Add this code to your wallet's landing page or application:
   };
   
   // Check if already registered
-  const isRegistered = await window.DCWS.isWalletRegistered(myWalletInfo.url);
+  const isRegistered = await window.WalletCompanion.isWalletRegistered(myWalletInfo.url);
   
   if (isRegistered) {
     console.log('Wallet already registered with extension');
@@ -143,7 +140,7 @@ Add this code to your wallet's landing page or application:
   
   // Register the wallet
   try {
-    const result = await window.DCWS.registerWallet(myWalletInfo);
+    const result = await window.WalletCompanion.registerWallet(myWalletInfo);
     console.log('Successfully registered with extension!', result);
     
     // Optionally, show a notification to the user
@@ -180,8 +177,8 @@ For more control, you can add user-initiated registration:
     
     // Show button only if extension is installed and wallet not registered
     (async function() {
-      if (window.DCWS?.isInstalled()) {
-        const isRegistered = await window.DCWS.isWalletRegistered(walletInfo.url);
+      if (window.WalletCompanion?.isInstalled) {
+        const isRegistered = await window.WalletCompanion.isWalletRegistered(walletInfo.url);
         
         if (!isRegistered) {
           document.getElementById('registerBtn').style.display = 'block';
@@ -195,7 +192,7 @@ For more control, you can add user-initiated registration:
       this.textContent = 'Registering...';
       
       try {
-        const result = await window.DCWS.registerWallet(walletInfo);
+        const result = await window.WalletCompanion.registerWallet(walletInfo);
         this.textContent = '✓ Added to Extension';
         this.style.backgroundColor = '#10b981';
         
@@ -221,7 +218,7 @@ For wwWallet instances:
 ```javascript
 // On wwWallet initialization
 async function registerWithExtension() {
-  if (!window.DCWS?.isInstalled()) {
+  if (!window.WalletCompanion?.isInstalled) {
     return;
   }
   
@@ -235,10 +232,10 @@ async function registerWithExtension() {
   
   try {
     // Check first to avoid unnecessary registration attempts
-    const isRegistered = await window.DCWS.isWalletRegistered(walletInfo.url);
+    const isRegistered = await window.WalletCompanion.isWalletRegistered(walletInfo.url);
     
     if (!isRegistered) {
-      const result = await window.DCWS.registerWallet(walletInfo);
+      const result = await window.WalletCompanion.registerWallet(walletInfo);
       console.log('wwWallet registered with browser extension', result);
     }
   } catch (error) {
@@ -254,7 +251,7 @@ registerWithExtension();
 ## User Experience Flow
 
 1. **User visits wallet website** (e.g., https://wallet.example.com)
-2. **Wallet detects extension** via `isInstalled()`
+2. **Wallet detects extension** via `isInstalled`
 3. **Wallet checks registration** via `isWalletRegistered()`
 4. **If not registered**, wallet calls `registerWallet()`
 5. **Extension adds wallet** to user's configuration automatically
@@ -266,7 +263,7 @@ registerWithExtension();
 ### 1. Always Check for Extension First
 
 ```javascript
-if (!window.DCWS?.isInstalled()) {
+if (!window.WalletCompanion?.isInstalled) {
   // Extension not installed, skip registration
   return;
 }
@@ -277,9 +274,9 @@ if (!window.DCWS?.isInstalled()) {
 Avoid unnecessary registration attempts:
 
 ```javascript
-const isRegistered = await window.DCWS.isWalletRegistered(url);
+const isRegistered = await window.WalletCompanion.isWalletRegistered(url);
 if (!isRegistered) {
-  await window.DCWS.registerWallet(info);
+  await window.WalletCompanion.registerWallet(info);
 }
 ```
 
@@ -289,7 +286,7 @@ Registration failures should not break your wallet:
 
 ```javascript
 try {
-  await window.DCWS.registerWallet(info);
+  await window.WalletCompanion.registerWallet(info);
 } catch (error) {
   console.warn('Extension registration failed:', error);
   // Continue normal wallet operation
@@ -367,7 +364,7 @@ Current API version: **1.0.0**
 
 Access via:
 ```javascript
-console.log(window.DCWS.version);  // "1.0.0"
+console.log(window.WalletCompanion.version);  // "1.0.0"
 ```
 
 ## Browser Compatibility
@@ -383,7 +380,7 @@ The API is injected before page scripts run, ensuring availability.
 
 ### Extension not detected
 
-**Problem:** `window.DCWS` is `undefined`
+**Problem:** `window.WalletCompanion` is `undefined`
 
 **Solutions:**
 - Ensure extension is installed and enabled
@@ -413,8 +410,8 @@ The API is injected before page scripts run, ensuring availability.
 ### Simple Auto-Registration
 
 ```javascript
-if (window.DCWS?.isInstalled()) {
-  window.DCWS.registerWallet({
+if (window.WalletCompanion?.isInstalled) {
+  window.WalletCompanion.registerWallet({
     name: 'MyWallet',
     url: 'https://wallet.example.com',
     icon: '🔐'
@@ -431,8 +428,8 @@ if (window.DCWS?.isInstalled()) {
 
 <script>
   (async () => {
-    if (window.DCWS?.isInstalled()) {
-      const registered = await window.DCWS.isWalletRegistered(location.origin);
+    if (window.WalletCompanion?.isInstalled) {
+      const registered = await window.WalletCompanion.isWalletRegistered(location.origin);
       if (!registered) {
         document.getElementById('add-to-extension').style.display = 'block';
       }
@@ -452,8 +449,8 @@ function ExtensionRegistration() {
   
   useEffect(() => {
     async function checkExtension() {
-      if (window.DCWS?.isInstalled()) {
-        const isRegistered = await window.DCWS.isWalletRegistered(
+      if (window.WalletCompanion?.isInstalled) {
+        const isRegistered = await window.WalletCompanion.isWalletRegistered(
           window.location.origin
         );
         setCanRegister(!isRegistered);
@@ -465,7 +462,7 @@ function ExtensionRegistration() {
   const handleRegister = async () => {
     setStatus('registering');
     try {
-      await window.DCWS.registerWallet({
+      await window.WalletCompanion.registerWallet({
         name: 'MyWallet',
         url: window.location.origin,
         description: 'My digital wallet',

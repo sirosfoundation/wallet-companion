@@ -205,13 +205,26 @@ src/
 { type: 'TOGGLE_ENABLED', enabled }
 ```
 
-### Page ↔ Content Script (Custom Events)
+### Page ↔ Content Script (RPC over postMessage)
 ```javascript
-// Page → Content Script
-'DC_CREDENTIALS_REQUEST' { requestId, options }
+// Channel: 'WALLET_COMPANION_RPC'
+// Message format: { channel, id, type, payload } → { channel, id, response }
 
-// Content Script → Page
-'DC_CREDENTIALS_RESPONSE' { requestId, response, error, useNative }
+// Page → Content Script (requests)
+'SHOW_WALLET_SELECTOR' { requests, options }
+'WALLET_SELECTED' { walletId, protocol }
+'REGISTER_WALLET' { wallet }
+'CHECK_WALLET' { url }
+'GET_SUPPORTED_PROTOCOLS' {}
+
+// Content Script → Page (responses)
+// Returns response objects via RPC mechanism
+```
+
+### Wallet → Page (postMessage)
+```javascript
+// Wallet sends response after credential selection
+{ type: 'WC_WALLET_RESPONSE', response: { vp_token, ... } }
 ```
 
 ## Testing

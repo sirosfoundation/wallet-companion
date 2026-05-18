@@ -62,8 +62,7 @@ The wallet can send the response via `window.postMessage()`:
 
 ```javascript
 window.opener.postMessage({
-  type: 'DC_WALLET_RESPONSE',
-  requestId: '<request-id>',
+  type: 'WC_WALLET_RESPONSE',
   response: {
     vp_token: '<verifiable-presentation>',
     presentation_submission: {
@@ -77,8 +76,7 @@ window.opener.postMessage({
 
 **Requirements**:
 - Message origin must match wallet's registered domain
-- `type` must be `'DC_WALLET_RESPONSE'`
-- `requestId` must match the original request
+- `type` must be `'WC_WALLET_RESPONSE'`
 - `response` must include required OpenID4VP response fields
 
 #### 2. HTTP Redirect/POST (Future)

@@ -146,7 +146,7 @@ async function walletJWTVerifier(jwt, options) {
 }
 
 // Register with extension
-window.DCWS.registerJWTVerifier(
+window.WalletCompanion.DigitalCredentials.registerJWTVerifier(
   'https://wallet.example.com',
   walletJWTVerifier
 );
