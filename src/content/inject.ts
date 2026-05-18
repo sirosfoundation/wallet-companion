@@ -3,9 +3,13 @@
  * Intercepts navigator.credentials.get() calls for the Digital Credentials API
  */
 
-import { Wallet, WalletRegistrationInput, WalletRegistrationInputSchema } from '@shared/schemas/resources';
-import { OpenID4VPPlugin, ProtocolPluginRegistry } from './protocols/';
+import {
+	type Wallet,
+	type WalletRegistrationInput,
+	WalletRegistrationInputSchema,
+} from '@shared/schemas/resources';
 import { parse } from 'valibot';
+import { OpenID4VPPlugin, ProtocolPluginRegistry } from './protocols/';
 
 console.log('Digital Credentials API interceptor injected');
 
@@ -103,7 +107,7 @@ type DigitalIdentityRequest = {
 		}>;
 	};
 	mediation?: 'optional' | 'required' | 'silent';
-}
+};
 
 /**
  * Override navigator.credentials.get
@@ -259,7 +263,10 @@ window.addEventListener('DC_CREDENTIALS_RESPONSE', (event) => {
 		} catch (validationError) {
 			console.error('Response validation failed:', validationError);
 			pending.reject(
-				new DOMException(`Invalid credential response: ${validationError instanceof Error ? validationError.message : String(validationError)}`, 'AbortError'),
+				new DOMException(
+					`Invalid credential response: ${validationError instanceof Error ? validationError.message : String(validationError)}`,
+					'AbortError',
+				),
 			);
 		}
 	} else {
@@ -286,7 +293,9 @@ window.addEventListener('DC_INVOKE_WALLET', (event) => {
 		const _responseChannel = `dc-response-${requestId}`;
 
 		// Listen for response via postMessage or redirect
-		const messageHandler = (messageEvent: MessageEvent<{ type: string; requestId: string; response?: any }>) => {
+		const messageHandler = (
+			messageEvent: MessageEvent<{ type: string; requestId: string; response?: any }>,
+		) => {
 			// Verify origin matches wallet domain
 			const walletOrigin = new URL(wallet.url).origin;
 			if (messageEvent.origin !== walletOrigin) {
@@ -492,7 +501,7 @@ window.DigitalCredentialsWalletSelector = {
 				new CustomEvent('DC_WALLET_REGISTRATION_REQUEST', {
 					detail: {
 						registrationId: registrationId,
-						wallet: walletRegistration,          // WalletRegistrationInput
+						wallet: walletRegistration, // WalletRegistrationInput
 						registeredFrom: window.location.origin, // only available here in page context
 					},
 				}),
@@ -588,7 +597,7 @@ window.DigitalCredentialsWalletSelector = {
 };
 
 // Also expose under a shorter alias
-// @ts-ignore
+// @ts-expect-error
 window.DCWS = window.DigitalCredentialsWalletSelector;
 
 console.log('Wallet auto-registration API exposed');

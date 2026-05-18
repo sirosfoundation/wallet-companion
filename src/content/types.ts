@@ -1,5 +1,4 @@
-import { Wallet } from "@shared/schemas/resources";
-import { WalletRegistrationInput } from "@shared/schemas/resources";
+import type { Wallet, WalletRegistrationInput } from '@shared/schemas/resources';
 
 declare global {
 	interface Window {
@@ -7,12 +6,20 @@ declare global {
 		DigitalCredentialsWalletSelector: {
 			version: string;
 			isInstalled(): boolean;
-			registerWallet(walletInfo: Wallet): Promise<{ success: boolean; alreadyRegistered: boolean; wallet: WalletOption }>;
+			registerWallet(
+				walletInfo: Wallet,
+			): Promise<{ success: boolean; alreadyRegistered: boolean; wallet: WalletOption }>;
 			isWalletRegistered(url: string): Promise<boolean>;
-			registerJWTVerifier(walletUrl: string, verifyCallback: (jwt: string, options: { publicKey?: string, certificate?: string, algorithm?: string }) => Promise<{ valid: boolean, payload?: any, error?: string }>): void;
+			registerJWTVerifier(
+				walletUrl: string,
+				verifyCallback: (
+					jwt: string,
+					options: { publicKey?: string; certificate?: string; algorithm?: string },
+				) => Promise<{ valid: boolean; payload?: any; error?: string }>,
+			): void;
 			unregisterJWTVerifier(walletUrl: string): void;
-			getRegisteredJWTVerifiers(): { walletUrl: string; }[];
-		}
+			getRegisteredJWTVerifiers(): { walletUrl: string }[];
+		};
 	}
 }
 
