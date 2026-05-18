@@ -108,7 +108,12 @@ navigator.credentials.get = async (options?: CredentialRequestOptions & DigitalI
 	});
 
 	// Invoke wallet and wait for response
-	const response = await invokeWallet(selection.wallet, selection.protocol, selection.request, requestId);
+	const response = await invokeWallet(
+		selection.wallet,
+		selection.protocol,
+		selection.request,
+		requestId,
+	);
 
 	// Validate and return credential
 	const validated = protocolRegistry.validateResponse(selection.protocol, response);
