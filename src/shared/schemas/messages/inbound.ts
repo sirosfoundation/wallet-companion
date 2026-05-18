@@ -38,6 +38,7 @@ export enum InboundMessages {
 	GET_SUPPORTED_PROTOCOLS = 'GET_SUPPORTED_PROTOCOLS',
 	CONTENT_SCRIPT_READY = 'CONTENT_SCRIPT_READY',
 	FETCH_FAVICON = 'FETCH_FAVICON',
+	CLEAR_STATS = 'CLEAR_STATS',
 }
 
 export type ShowWalletSelectorMessage = InferOutput<typeof ShowWalletSelector.MESSAGE>;
@@ -193,6 +194,16 @@ export const FetchFavicon = defineMessage(
 	},
 );
 
+export type ClearStatsMessage = InferOutput<typeof ClearStats.MESSAGE>;
+export type ClearStatsResponse = InferOutput<typeof ClearStats.RESPONSE>;
+export const ClearStats = defineMessage(
+	literal(InboundMessages.CLEAR_STATS),
+	{},
+	{
+		success: boolean(),
+	},
+);
+
 const registry = {
 	[InboundMessages.SHOW_WALLET_SELECTOR]: ShowWalletSelector,
 	[InboundMessages.WALLET_SELECTED]: WalletSelected,
@@ -206,6 +217,7 @@ const registry = {
 	[InboundMessages.GET_SUPPORTED_PROTOCOLS]: GetSupportedProtocols,
 	[InboundMessages.CONTENT_SCRIPT_READY]: ContentScriptReady,
 	[InboundMessages.FETCH_FAVICON]: FetchFavicon,
+	[InboundMessages.CLEAR_STATS]: ClearStats,
 };
 
 export const InboundMessageSchema = variant(

@@ -3,6 +3,9 @@
  * Handles favicon fetching, identicon generation, and initial avatars
  */
 
+import { InboundMessages } from '@shared/schemas/messages';
+import { sendMessage } from './messaging';
+
 /**
  * Color palette for generated icons (brand-safe colors)
  */
@@ -176,14 +179,13 @@ function generateGeometricIcon(input: string, size: number = 48): string {
 async function fetchFavicon(url: string, timeout: number = 3000): Promise<string | null> {
 	try {
 		// Route through background script to avoid CORS issues
-		const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
-		const result = await runtime.sendMessage({
-			type: 'FETCH_FAVICON',
+		const result = await sendMessage({
+			type: InboundMessages.FETCH_FAVICON,
 			url: url,
 			timeout: timeout,
 		});
 
-		if (result?.success && result.dataUri) {
+		if (result.success && result.dataUri) {
 			return result.dataUri;
 		}
 		return null;
