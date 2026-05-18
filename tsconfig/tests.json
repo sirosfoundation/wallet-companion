@@ -1,0 +1,25 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true,
+		"lib": ["ESNext", "DOM"],
+		"types": ["node", "chrome", "firefox-webext-browser", "vitest/globals"],
+		"paths": {
+			"@shared/*": ["../src/shared/*"],
+			"@background/*": ["../src/background/*"],
+			"@content/*": ["../src/content/*"],
+			"@ui/*": ["../src/ui/*"]
+		},
+		"baseUrl": "."
+	},
+	"include": ["../tests/**/*.ts"],
+	"exclude": ["node_modules", "dist"]
+}

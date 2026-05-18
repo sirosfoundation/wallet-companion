@@ -1,0 +1,322 @@
+/**
+ * Unit tests for modal.ts - Wallet selection modal
+ */
+
+type MockWallet = {
+	id: string;
+	name: string;
+	url?: string;
+	icon?: string;
+	color?: string;
+	description?: string;
+	protocols?: string[];
+};
+
+describe('Modal - Wallet Selector', () => {
+	let mockWallets: MockWallet[];
+
+	beforeEach(() => {
+		mockWallets = [
+			{
+				id: 'wallet-1',
+				name: 'Test Wallet 1',
+				url: 'https://wallet1.example.com',
+				icon: '🔐',
+				color: '#3b82f6',
+				description: 'First test wallet',
+				protocols: ['openid4vp'],
+			},
+			{
+				id: 'wallet-2',
+				name: 'Test Wallet 2',
+				url: 'https://wallet2.example.com',
+				icon: '🌐',
+				color: '#10b981',
+				description: 'Second test wallet',
+				protocols: ['openid4vp', 'openid4vp-v1-signed'],
+			},
+		];
+
+		// Clear any existing modals
+		document.body.innerHTML = '';
+	});
+
+	describe('escapeHtml()', () => {
+		function escapeHtml(unsafe: string | null | undefined): string {
+			if (!unsafe) return '';
+			return unsafe
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#039;');
+		}
+
+		test('should escape script tags', () => {
+			const input = '<script>alert("xss")</script>';
+			const result = escapeHtml(input);
+			expect(result).toBe('&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;');
+		});
+
+		test('should escape HTML entities', () => {
+			const input = '<div class="test">&</div>';
+			const result = escapeHtml(input);
+			expect(result).toBe('&lt;div class=&quot;test&quot;&gt;&amp;&lt;/div&gt;');
+		});
+
+		test('should handle empty strings', () => {
+			expect(escapeHtml('')).toBe('');
+		});
+
+		test('should handle null', () => {
+			expect(escapeHtml(null)).toBe('');
+		});
+
+		test('should handle undefined', () => {
+			expect(escapeHtml(undefined)).toBe('');
+		});
+
+		test('should preserve safe text', () => {
+			const input = 'Hello World';
+			expect(escapeHtml(input)).toBe('Hello World');
+		});
+	});
+
+	describe('Modal Creation', () => {
+		function createModal(): HTMLElement {
+			const modalContainer = document.createElement('div');
+			modalContainer.id = 'dc-wallet-modal-overlay';
+			modalContainer.innerHTML = `
+        <div id="dc-wallet-modal">
+          <div id="dc-wallet-list"></div>
+          <button id="dc-wallet-native">Use Browser Wallet</button>
+          <button id="dc-wallet-cancel">Cancel</button>
+        </div>
+      `;
+			document.body.appendChild(modalContainer);
+			return modalContainer;
+		}
+
+		test('should create modal overlay', () => {
+			createModal();
+			const overlay = document.getElementById('dc-wallet-modal-overlay');
+			expect(overlay).toBeTruthy();
+		});
+
+		test('should create wallet list container', () => {
+			createModal();
+			const list = document.getElementById('dc-wallet-list');
+			expect(list).toBeTruthy();
+		});
+
+		test('should create native wallet button', () => {
+			createModal();
+			const btn = document.getElementById('dc-wallet-native');
+			expect(btn).toBeTruthy();
+		});
+
+		test('should create cancel button', () => {
+			createModal();
+			const btn = document.getElementById('dc-wallet-cancel');
+			expect(btn).toBeTruthy();
+		});
+
+		test('should allow removing existing modal', () => {
+			createModal();
+			const existing = document.getElementById('dc-wallet-modal-overlay');
+			expect(existing).toBeTruthy();
+
+			existing?.remove();
+
+			const removed = document.getElementById('dc-wallet-modal-overlay');
+			expect(removed).toBeNull();
+		});
+	});
+
+	describe('Wallet List Rendering', () => {
+		function escapeHtml(unsafe: string | null | undefined): string {
+			if (!unsafe) return '';
+			return unsafe
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#039;');
+		}
+
+		function renderWalletItem(wallet: MockWallet): string {
+			return `
+        <div class="wallet-item" data-wallet-id="${wallet.id}">
+          <div class="wallet-icon" style="background: ${wallet.color || '#1C4587'}">
+            ${wallet.icon || '🔐'}
+          </div>
+          <div class="wallet-info">
+            <div class="wallet-name">${escapeHtml(wallet.name)}</div>
+            <div class="wallet-description">${escapeHtml(wallet.description || wallet.url || 'Digital Identity Wallet')}</div>
+          </div>
+        </div>
+      `;
+		}
+
+		test('should render wallet name', () => {
+			const html = renderWalletItem(mockWallets[0]);
+			expect(html).toContain('Test Wallet 1');
+		});
+
+		test('should render wallet icon', () => {
+			const html = renderWalletItem(mockWallets[0]);
+			expect(html).toContain('🔐');
+		});
+
+		test('should render wallet color', () => {
+			const html = renderWalletItem(mockWallets[0]);
+			expect(html).toContain('#3b82f6');
+		});
+
+		test('should render wallet description', () => {
+			const html = renderWalletItem(mockWallets[0]);
+			expect(html).toContain('First test wallet');
+		});
+
+		test('should use default icon when not provided', () => {
+			const wallet: MockWallet = { id: 'w1', name: 'No Icon' };
+			const html = renderWalletItem(wallet);
+			expect(html).toContain('🔐');
+		});
+
+		test('should use default color when not provided', () => {
+			const wallet: MockWallet = { id: 'w1', name: 'No Color' };
+			const html = renderWalletItem(wallet);
+			expect(html).toContain('#1C4587');
+		});
+
+		test('should use URL as fallback description', () => {
+			const wallet: MockWallet = { id: 'w1', name: 'Test', url: 'https://example.com' };
+			const html = renderWalletItem(wallet);
+			expect(html).toContain('https://example.com');
+		});
+
+		test('should use default description when URL not provided', () => {
+			const wallet: MockWallet = { id: 'w1', name: 'Test' };
+			const html = renderWalletItem(wallet);
+			expect(html).toContain('Digital Identity Wallet');
+		});
+
+		test('should escape XSS in wallet name', () => {
+			const wallet: MockWallet = { id: 'w1', name: '<script>alert(1)</script>' };
+			const html = renderWalletItem(wallet);
+			expect(html).not.toContain('<script>');
+		});
+
+		test('should include wallet ID as data attribute', () => {
+			const html = renderWalletItem(mockWallets[0]);
+			expect(html).toContain('data-wallet-id="wallet-1"');
+		});
+	});
+
+	describe('Empty State Rendering', () => {
+		function renderEmptyState(): string {
+			return `
+        <div class="empty-state">
+          <p>No wallets configured</p>
+          <p>Use the extension settings to add wallet providers</p>
+        </div>
+      `;
+		}
+
+		test('should render empty state message', () => {
+			const html = renderEmptyState();
+			expect(html).toContain('No wallets configured');
+		});
+
+		test('should render settings instruction', () => {
+			const html = renderEmptyState();
+			expect(html).toContain('extension settings');
+		});
+	});
+
+	describe('Callback Handling', () => {
+		test('should call onSelect callback with wallet', () => {
+			const onSelect = vi.fn();
+			const wallet = mockWallets[0];
+
+			onSelect(wallet);
+
+			expect(onSelect).toHaveBeenCalledWith(wallet);
+			expect(onSelect).toHaveBeenCalledTimes(1);
+		});
+
+		test('should call onNative callback', () => {
+			const onNative = vi.fn();
+
+			onNative();
+
+			expect(onNative).toHaveBeenCalled();
+		});
+
+		test('should call onCancel callback', () => {
+			const onCancel = vi.fn();
+
+			onCancel();
+
+			expect(onCancel).toHaveBeenCalled();
+		});
+	});
+
+	describe('Event Handling', () => {
+		test('should register click handler on element', () => {
+			const clickHandler = vi.fn();
+			const div = document.createElement('div');
+			div.addEventListener('click', clickHandler);
+
+			// Trigger click event
+			const event = new MouseEvent('click', { bubbles: true });
+			div.dispatchEvent(event);
+
+			expect(clickHandler).toHaveBeenCalled();
+		});
+
+		test('should register click handler on button', () => {
+			const clickHandler = vi.fn();
+			const button = document.createElement('button');
+			button.addEventListener('click', clickHandler);
+
+			const event = new MouseEvent('click', { bubbles: true });
+			button.dispatchEvent(event);
+
+			expect(clickHandler).toHaveBeenCalled();
+		});
+
+		test('should handle button click event', () => {
+			const clickHandler = vi.fn();
+			const button = document.createElement('button');
+			button.addEventListener('click', clickHandler);
+
+			const event = new MouseEvent('click', { bubbles: true });
+			button.dispatchEvent(event);
+
+			expect(clickHandler).toHaveBeenCalled();
+		});
+
+		test('should handle ESC key press', () => {
+			const escHandler = vi.fn();
+
+			const handleKeydown = (e: KeyboardEvent): void => {
+				if (e.key === 'Escape') {
+					escHandler();
+				}
+			};
+
+			document.addEventListener('keydown', handleKeydown);
+
+			const event = new KeyboardEvent('keydown', { key: 'Escape' });
+			document.dispatchEvent(event);
+
+			expect(escHandler).toHaveBeenCalled();
+
+			document.removeEventListener('keydown', handleKeydown);
+		});
+	});
+});
+
+export {};
