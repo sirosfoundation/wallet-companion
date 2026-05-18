@@ -22,6 +22,7 @@
     { "path": "./tsconfig/node.json" },
     { "path": "./tsconfig/background.json" },
     { "path": "./tsconfig/content.json" },
-    { "path": "./tsconfig/ui.json" }
+    { "path": "./tsconfig/ui.json" },
+    { "path": "./tsconfig/tests.json" }
   ]
 }

@@ -4,17 +4,17 @@ export default defineConfig({
 	test: {
 		globals: true,
 		environment: 'jsdom',
-		setupFiles: ['./tests/setup.js'],
-		include: ['tests/**/*.test.js', 'tests/**/*.spec.js'],
+		setupFiles: ['./tests/setup.ts'],
+		include: ['tests/**/*.test.ts', 'tests/**/*.spec.ts'],
 		exclude: [
 			'**/node_modules/**',
-			'tests/integration.test.js',
-			'tests/wallet-integration.test.js',
+			'tests/integration.test.ts',
+			'tests/wallet-integration.test.ts',
 		],
 		coverage: {
 			provider: 'v8',
-			include: ['src/**/*.js'],
-			exclude: ['src/**/*.test.js'],
+			include: ['src/**/*.ts'],
+			exclude: ['src/**/*.test.ts'],
 			reporter: ['text', 'lcov', 'html'],
 			reportsDirectory: 'coverage',
 		},
