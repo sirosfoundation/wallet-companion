@@ -35,9 +35,6 @@ type ExportConfig = {
 
 type NotificationType = 'success' | 'error' | 'warning' | 'info';
 
-// Cross-browser compatibility (storage still needed for direct stats clear)
-const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
-
 // SIROS ID preset providers
 const SIROS_ID_PRESETS: readonly WalletRegistrationInput[] = [
 	{
@@ -1077,7 +1074,10 @@ async function handleClearStats() {
 	}
 
 	try {
-		await storage.local.set({ usage_stats: { interceptCount: 0, walletUses: {} } });
+		const response = await sendMessage({ type: InboundMessages.CLEAR_STATS });
+		if (!response.success) {
+			throw new Error('Failed to clear stats');
+		}
 		await loadData();
 		renderStats();
 		showNotification('Statistics cleared', 'success');

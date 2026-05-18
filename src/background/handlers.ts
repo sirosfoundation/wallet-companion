@@ -2,6 +2,8 @@ import { runtimeSendMessage } from '@shared/runtime';
 import {
 	type CheckWalletMessage,
 	type CheckWalletResponse,
+	type ClearStatsMessage,
+	type ClearStatsResponse,
 	type ContentScriptReadyMessage,
 	type ContentScriptReadyResponse,
 	type FetchFaviconMessage,
@@ -80,6 +82,8 @@ async function dispatchMessage(
 			return handleContentScriptReady(message, sender);
 		case InboundMessages.FETCH_FAVICON:
 			return handleFetchFavicon(message, sender);
+		case InboundMessages.CLEAR_STATS:
+			return handleClearStats(message, sender);
 		default:
 			throw new Error(`Unhandled message type: ${(message as { type?: string })?.type}`);
 	}
@@ -350,6 +354,14 @@ async function updateStats(action: string) {
 	await Stores.stats.setStats(stats);
 
 	await sendMessage({ type: OutboundMessages.STATS_UPDATE, stats });
+}
+
+async function handleClearStats(
+	_message: ClearStatsMessage,
+	_sender: MessageSenderCompat,
+): Promise<ClearStatsResponse> {
+	await Stores.stats.setStats({ interceptCount: 0, walletUses: {} });
+	return { success: true };
 }
 
 /**
