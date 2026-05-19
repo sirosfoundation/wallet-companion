@@ -1,25 +1,13 @@
-import type { Wallet, WalletRegistrationInput } from '@shared/schemas/resources';
+import type { WalletRegistrationInput } from '@shared/schemas/resources';
+import type { WalletCompanionInterface } from './public-api/WalletCompanionInterface';
+
+export * from './public-api/DigitalCredentialsInterface';
+export * from './public-api/WalletCompanionInterface';
 
 declare global {
 	interface Window {
 		showWalletSelector: ShowWalletSelectorFunction;
-		DigitalCredentialsWalletSelector: {
-			version: string;
-			isInstalled(): boolean;
-			registerWallet(
-				walletInfo: Wallet,
-			): Promise<{ success: boolean; alreadyRegistered: boolean; wallet: WalletOption }>;
-			isWalletRegistered(url: string): Promise<boolean>;
-			registerJWTVerifier(
-				walletUrl: string,
-				verifyCallback: (
-					jwt: string,
-					options: { publicKey?: string; certificate?: string; algorithm?: string },
-				) => Promise<{ valid: boolean; payload?: any; error?: string }>,
-			): void;
-			unregisterJWTVerifier(walletUrl: string): void;
-			getRegisteredJWTVerifiers(): { walletUrl: string }[];
-		};
+		WalletCompanion: WalletCompanionInterface;
 	}
 }
 
@@ -29,10 +17,10 @@ declare global {
 export type WalletOption = {
 	id: string;
 	name: string;
-	description?: string;
-	url?: string;
-	icon?: string;
-	protocols?: string[];
+	description?: string | null;
+	url?: string | null;
+	icon?: string | null;
+	protocols?: string[] | null;
 };
 
 export type ShowWalletSelectorOptions = {

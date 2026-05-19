@@ -122,11 +122,11 @@ const walletInfo = {
 };
 
 // Check extension
-if (window.DCWS?.isInstalled()) {
+if (window.WalletCompanion?.isInstalled) {
   console.log('Extension detected!');
 
   // Register wallet
-  const result = await window.DCWS.registerWallet(walletInfo);
+  const result = await window.WalletCompanion.registerWallet(walletInfo);
   console.log('Registration result:', result);
 }
   </div>
@@ -158,13 +158,13 @@ if (window.DCWS?.isInstalled()) {
       const output = document.getElementById('output');
       output.innerHTML = '';
 
-      if (typeof window.DigitalCredentialsWalletSelector === 'undefined') {
+      if (typeof window.WalletCompanion === 'undefined') {
         showStatus('❌ Extension NOT detected. Please install the Wallet Companion extension.', 'error');
         return;
       }
 
-      if (window.DCWS.isInstalled()) {
-        showStatus(`✅ Extension detected! Version: ${window.DCWS.version}`, 'success');
+      if (window.WalletCompanion.isInstalled) {
+        showStatus(`✅ Extension detected! Version: ${window.WalletCompanion.version}`, 'success');
         document.getElementById('check-wallet').disabled = false;
         document.getElementById('extension-status').innerHTML =
           '<div class="status success">Extension is installed and ready!</div>';
@@ -177,7 +177,7 @@ if (window.DCWS?.isInstalled()) {
       try {
         showStatus('Checking wallet registration...', 'info');
 
-        const isRegistered = await window.DCWS.isWalletRegistered(walletInfo.url);
+        const isRegistered = await window.WalletCompanion.isWalletRegistered(walletInfo.url);
 
         if (isRegistered) {
           showStatus('✅ Wallet is already registered with the extension', 'success');
@@ -199,7 +199,7 @@ if (window.DCWS?.isInstalled()) {
 
         showStatus('Registering wallet with extension...', 'info');
 
-        const result = await window.DCWS.registerWallet(walletInfo);
+        const result = await window.WalletCompanion.registerWallet(walletInfo);
 
         if (result.alreadyRegistered) {
           showStatus('ℹ️ Wallet was already registered. No changes made.', 'info');

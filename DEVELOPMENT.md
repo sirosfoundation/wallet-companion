@@ -144,7 +144,7 @@ start test-wallet-api.html  # Windows
 ```
 
 **Features tested:**
-- Extension detection (`DCWS.isInstalled()`)
+- Extension detection (`WalletCompanion.DigitalCredentials.isInstalled`)
 - Wallet registration with protocols
 - JWT verifier registration
 - API error handling
@@ -399,7 +399,7 @@ web-wallet-selector/
 
 ### Key Files
 
-- **`src/content/inject.js`** - Injected into page context, intercepts `navigator.credentials.get()`, exposes `window.DCWS` API
+- **`src/content/inject.js`** - Injected into page context, intercepts `navigator.credentials.get()`, exposes `window.WalletCompanion` API
 - **`src/content/index.js`** - Content script, bridges inject script and background script
 - **`src/background/index.js`** - Service worker (Chrome) / background script (Firefox/Safari), manages wallets and state
 - **`src/content/protocols.js`** - Protocol plugin registry and base classes
@@ -470,7 +470,7 @@ web-wallet-selector/
 1. **Check Extension is Loaded**:
    ```javascript
    // On any page, in console:
-   window.DCWS?.isInstalled()  // Should return true
+   window.WalletCompanion?.isInstalled  // Should return true
    ```
 
 2. **Test DC API Interception**:

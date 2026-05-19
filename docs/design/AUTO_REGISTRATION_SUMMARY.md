@@ -10,31 +10,31 @@ A JavaScript API has been implemented that allows digital identity wallets to au
 
 **Location:** `src/inject.js`
 
-Exposed via `window.DigitalCredentialsWalletSelector` (alias: `window.DCWS`)
+Exposed via `window.WalletCompanion`
 
 **API Methods:**
 
 ```javascript
-// Detection
-isInstalled()  // Returns: boolean
+// Detection (property, not function)
+window.WalletCompanion.isInstalled  // Returns: boolean
 
 // Registration
-registerWallet(walletInfo)  // Returns: Promise<{success, alreadyRegistered, wallet}>
+window.WalletCompanion.registerWallet(walletInfo)  // Returns: Promise<{success, alreadyRegistered, wallet}>
 
 // Check
-isWalletRegistered(url)  // Returns: Promise<boolean>
+window.WalletCompanion.isWalletRegistered(url)  // Returns: Promise<boolean>
 ```
 
 **API Version:** 1.0.0
 
 ### 2. Message Handling Flow
 
-**Content Script** (`src/content.js`):
-- Listens for `DC_WALLET_REGISTRATION_REQUEST` events from page
-- Forwards to background script via `runtime.sendMessage`
-- Returns response via `DC_WALLET_REGISTRATION_RESPONSE` event
+**Content Script** (`src/content/index.ts`):
+- Listens for RPC messages via `WALLET_COMPANION_RPC` channel
+- Forwards `REGISTER_WALLET` requests to background script
+- Returns response via RPC mechanism
 
-**Background Script** (`src/background.js`):
+**Background Script** (`src/background/handlers.ts`):
 - Handles `REGISTER_WALLET` message type
 - Validates wallet information
 - Checks for duplicates by URL
@@ -118,8 +118,8 @@ Auto-registered wallets include:
 
 ```javascript
 // On wallet page load
-if (window.DCWS?.isInstalled()) {
-  await window.DCWS.registerWallet({
+if (window.WalletCompanion?.isInstalled) {
+  await window.WalletCompanion.registerWallet({
     name: 'MyWallet',
     url: window.location.origin,
     description: 'My digital identity wallet',
@@ -132,13 +132,13 @@ if (window.DCWS?.isInstalled()) {
 ### With Duplicate Check
 
 ```javascript
-if (window.DCWS?.isInstalled()) {
-  const isRegistered = await window.DCWS.isWalletRegistered(
+if (window.WalletCompanion?.isInstalled) {
+  const isRegistered = await window.WalletCompanion.isWalletRegistered(
     window.location.origin
   );
   
   if (!isRegistered) {
-    await window.DCWS.registerWallet({...});
+    await window.WalletCompanion.registerWallet({...});
   }
 }
 ```
@@ -153,7 +153,7 @@ if (window.DCWS?.isInstalled()) {
 <script>
 async function registerWithExtension() {
   try {
-    const result = await window.DCWS.registerWallet({
+    const result = await window.WalletCompanion.registerWallet({
       name: 'MyWallet',
       url: location.origin,
       icon: '🔐'
@@ -169,7 +169,7 @@ async function registerWithExtension() {
 ## User Experience Flow
 
 1. **User visits wallet website** (e.g., wwWallet instance)
-2. **Wallet detects extension** via `window.DCWS.isInstalled()`
+2. **Wallet detects extension** via `window.WalletCompanion?.isInstalled`
 3. **Wallet checks if already registered** via `isWalletRegistered(url)`
 4. **If not registered**, calls `registerWallet(info)`
 5. **Extension receives request** in content script
@@ -222,25 +222,25 @@ For wallet providers integrating the API:
 ### Event Flow
 
 ```
-Page Context (inject.js)
-  ↓ window.DCWS.registerWallet()
-  ↓ Dispatches: DC_WALLET_REGISTRATION_REQUEST
+Page Context (inject.ts)
+  ↓ window.WalletCompanion.registerWallet()
+  ↓ Sends RPC via WALLET_COMPANION_RPC channel
   
-Content Script (content.js)
-  ↓ Listens for: DC_WALLET_REGISTRATION_REQUEST
+Content Script (content/index.ts)
+  ↓ Receives RPC request
   ↓ Sends: runtime.sendMessage({type: 'REGISTER_WALLET'})
   
-Background Script (background.js)
+Background Script (background/handlers.ts)
   ↓ Handles: REGISTER_WALLET
   ↓ Validates, checks duplicates, saves to storage
   ↓ Returns: {success, alreadyRegistered, wallet}
   
-Content Script (content.js)
+Content Script (content/index.ts)
   ↓ Receives response
-  ↓ Dispatches: DC_WALLET_REGISTRATION_RESPONSE
+  ↓ Sends RPC response
   
-Page Context (inject.js)
-  ↓ Listens for: DC_WALLET_REGISTRATION_RESPONSE
+Page Context (inject.ts)
+  ↓ Receives RPC response
   ↓ Resolves Promise with result
 ```
 
@@ -282,7 +282,7 @@ All three browser extensions rebuilt successfully:
 // In wwWallet initialization
 async function registerWithBrowserExtension() {
   // Only proceed if extension is installed
-  if (!window.DCWS?.isInstalled()) {
+  if (!window.WalletCompanion?.isInstalled) {
     return;
   }
   
@@ -296,12 +296,12 @@ async function registerWithBrowserExtension() {
   
   try {
     // Check to avoid unnecessary registration
-    const isRegistered = await window.DCWS.isWalletRegistered(
+    const isRegistered = await window.WalletCompanion.isWalletRegistered(
       walletConfig.url
     );
     
     if (!isRegistered) {
-      const result = await window.DCWS.registerWallet(walletConfig);
+      const result = await window.WalletCompanion.registerWallet(walletConfig);
       console.log('Registered with browser extension', result);
       
       // Optionally notify user

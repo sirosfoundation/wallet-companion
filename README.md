@@ -60,8 +60,8 @@ const credential = await navigator.credentials.get({
 Register your wallet with the extension:
 
 ```javascript
-if (window.DCWS?.isInstalled()) {
-  await window.DCWS.registerWallet({
+if (window.WalletCompanion?.isInstalled) {
+  await window.WalletCompanion.registerWallet({
     name: 'MyWallet',
     url: 'https://wallet.example.com',
     protocols: ['openid4vp'],
@@ -206,7 +206,7 @@ make package
 ┌─────────────────────────────────────┐
 │  Extension (inject.js)              │
 │  - Intercepts DC API calls          │
-│  - Exposes window.DCWS API          │
+│  - Exposes window.WalletCompanion   │
 └──────┬──────────────────────────────┘
        │
        v
