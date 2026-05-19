@@ -1,6 +1,6 @@
 # Development Guide
 
-Complete guide for building, testing, and developing the Digital Credentials Wallet Selector extension.
+Complete guide for building, testing, and developing the Wallet Companion extension.
 
 ## Table of Contents
 

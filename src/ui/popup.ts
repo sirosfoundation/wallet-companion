@@ -1,5 +1,5 @@
 /**
- * Popup script for Digital Credentials Wallet Selector extension
+ * Popup script for Wallet Companion extension
  */
 
 import { InboundMessages } from '@shared/schemas/messages';
