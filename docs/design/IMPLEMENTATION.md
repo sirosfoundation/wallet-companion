@@ -224,7 +224,8 @@ src/
 ### Wallet → Page (postMessage)
 ```javascript
 // Wallet sends response after credential selection
-{ type: 'WC_WALLET_RESPONSE', response: { vp_token, ... } }
+// `requestId` must match the `request_id` URL parameter provided to the wallet.
+{ type: 'WC_WALLET_RESPONSE', requestId, response: { vp_token, ... } }
 ```
 
 ## Testing
