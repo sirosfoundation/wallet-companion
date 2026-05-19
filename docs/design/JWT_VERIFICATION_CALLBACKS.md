@@ -131,7 +131,7 @@ Removes a previously registered JWT verifier.
 WalletCompanion.DigitalCredentials.unregisterJWTVerifier('https://wallet.example.com');
 ```
 
-### `WalletCompanion.DigitalCredentials.getRegisteredJWTVerifiers()`
+### `WalletCompanion.DigitalCredentials.registeredJWTVerifiers()`
 
 Gets a list of wallet URLs that have registered JWT verifiers.
 
@@ -139,7 +139,7 @@ Gets a list of wallet URLs that have registered JWT verifiers.
 
 **Example:**
 ```javascript
-const verifiers = WalletCompanion.DigitalCredentials.getRegisteredJWTVerifiers();
+const verifiers = WalletCompanion.DigitalCredentials.registeredJWTVerifiers();
 console.log('Wallets with JWT verifiers:', verifiers);
 // ['https://wallet1.example.com', 'https://wallet2.example.com']
 ```

@@ -231,7 +231,7 @@ Get list of wallets that have registered JWT verifiers.
 **Example:**
 
 ```javascript
-const verifiers = window.WalletCompanion.DigitalCredentials.getRegisteredJWTVerifiers();
+const verifiers = window.WalletCompanion.DigitalCredentials.registeredJWTVerifiers();
 console.log('Wallets with verifiers:', verifiers);
 // ['https://wallet.example.com', 'https://another-wallet.com']
 ```
