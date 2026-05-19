@@ -194,9 +194,15 @@ function invokeWallet(
 	return new Promise((resolve, reject) => {
 		const walletUrl = buildWalletUrl(wallet, protocol, request, requestId);
 
+		let win: WindowProxy | null;
+
 		const handler = (e: MessageEvent) => {
 			if (e.origin !== new URL(wallet.url!).origin) return;
 			if (e.data?.type !== 'WC_WALLET_RESPONSE') return;
+			if (e.source !== win) {
+				console.warn('Ignoring response with mismatched source');
+				return;
+			};
 			if (e.data?.requestId !== requestId) {
 				console.debug('Ignoring response with mismatched requestId:', e.data?.requestId);
 				return;
@@ -213,7 +219,7 @@ function invokeWallet(
 			reject(new DOMException('Wallet timeout', 'AbortError'));
 		}, 300000);
 
-		const win = window.open(walletUrl, '_blank');
+		win = window.open(walletUrl, '_blank');
 		if (!win) {
 			window.removeEventListener('message', handler);
 			reject(new Error('Popup blocked'));
