@@ -756,6 +756,383 @@ describe('OpenID4VPPlugin', () => {
 			);
 		});
 	});
+
+	/**
+	 * OID4VP 1.0 Spec Compliance Tests
+	 * Reference: https://openid.net/specs/openid-4-verifiable-presentations-1_0.html
+	 */
+	describe('OID4VP 1.0 - Protocol Variants (Appendix A.1)', () => {
+		it('should support openid4vp (legacy) protocol ID', () => {
+			const legacyPlugin = new OpenID4VPPlugin();
+			expect(legacyPlugin.getProtocolId()).toBe('openid4vp');
+		});
+
+		it('should support openid4vp-v1-unsigned variant', () => {
+			const unsignedPlugin = new OpenID4VPPlugin('v1-unsigned');
+			expect(unsignedPlugin.getProtocolId()).toBe('openid4vp-v1-unsigned');
+		});
+
+		it('should support openid4vp-v1-signed variant', () => {
+			const signedPlugin = new OpenID4VPPlugin('v1-signed');
+			expect(signedPlugin.getProtocolId()).toBe('openid4vp-v1-signed');
+		});
+
+		it('should support openid4vp-v1-multisigned variant', () => {
+			const multisignedPlugin = new OpenID4VPPlugin('v1-multisigned');
+			expect(multisignedPlugin.getProtocolId()).toBe('openid4vp-v1-multisigned');
+		});
+
+		it('should handle arbitrary variant strings', () => {
+			const customPlugin = new OpenID4VPPlugin('custom-variant');
+			expect(customPlugin.getProtocolId()).toBe('openid4vp-custom-variant');
+		});
+	});
+
+	describe('OID4VP 1.0 - Response Modes (Section 8)', () => {
+		// OID4VP 1.0 defines: direct_post, direct_post.jwt, dc_api, dc_api.jwt
+		// Implementation validates response_mode only via URL path (not DC API passthrough)
+
+		describe('URL-based requests (validates response_mode)', () => {
+			const makeDcqlUrl = (responseMode: string) => {
+				const dcqlQuery = JSON.stringify({
+					credentials: [{ id: 'cred', format: 'dc+sd-jwt', meta: { vct_values: ['IdentityCredential'] } }],
+				});
+				return `openid4vp://?client_id=https://verifier.example.com&response_mode=${responseMode}&dcql_query=${encodeURIComponent(dcqlQuery)}`;
+			};
+
+			it('should accept response_mode: direct_post', () => {
+				const request = { url: makeDcqlUrl('direct_post') };
+				expect(() => plugin.prepareRequest(request as RequestData)).not.toThrow();
+			});
+
+			it('should accept response_mode: direct_post.jwt', () => {
+				const request = { url: makeDcqlUrl('direct_post.jwt') };
+				expect(() => plugin.prepareRequest(request as RequestData)).not.toThrow();
+			});
+
+			// TODO: OID4VP 1.0 SPEC COMPLIANCE GAP - dc_api response modes not implemented
+			it.skip('should accept response_mode: dc_api (OID4VP 1.0 Section 8.2)', () => {
+				// OID4VP 1.0 Section 8.2: dc_api response mode for Digital Credentials API
+				const request = { url: makeDcqlUrl('dc_api') };
+				expect(() => plugin.prepareRequest(request as RequestData)).not.toThrow();
+			});
+
+			// TODO: OID4VP 1.0 SPEC COMPLIANCE GAP - dc_api.jwt response mode not implemented
+			it.skip('should accept response_mode: dc_api.jwt (OID4VP 1.0 Section 8.3)', () => {
+				// OID4VP 1.0 Section 8.3: dc_api.jwt for encrypted responses via DC API
+				const request = { url: makeDcqlUrl('dc_api.jwt') };
+				expect(() => plugin.prepareRequest(request as RequestData)).not.toThrow();
+			});
+
+			it('should reject invalid response_mode', () => {
+				const request = { url: makeDcqlUrl('invalid_mode') };
+				expect(() => plugin.prepareRequest(request as RequestData)).toThrow('Invalid response_mode');
+			});
+		});
+
+		describe('DC API passthrough (no response_mode validation)', () => {
+			// When dcql_query is present, implementation bypasses validation (DC API path)
+			// This is intentional per OID4VP over DC API - validation happens at DC API layer
+			const baseRequest = {
+				client_id: 'https://verifier.example.com',
+				dcql_query: {
+					credentials: [
+						{ id: 'cred', format: 'dc+sd-jwt', meta: { vct_values: ['IdentityCredential'] } },
+					],
+				},
+			};
+
+			it('should pass through dc_api response_mode without validation', () => {
+				const request = { ...baseRequest, response_mode: 'dc_api' } as unknown as RequestData;
+				// Passes through because dcql_query triggers DC API path (no validation)
+				expect(() => plugin.prepareRequest(request)).not.toThrow();
+			});
+
+			it('should pass through dc_api.jwt response_mode without validation', () => {
+				const request = { ...baseRequest, response_mode: 'dc_api.jwt' } as unknown as RequestData;
+				// Passes through because dcql_query triggers DC API path (no validation)
+				expect(() => plugin.prepareRequest(request)).not.toThrow();
+			});
+		});
+	});
+
+	describe('OID4VP 1.0 - Client ID Schemes (Section 5.9.3)', () => {
+		// OID4VP 1.0 defines client_id prefixes in Section 5.9.3
+		// Implementation validates client_id only via URL path (not DC API passthrough)
+
+		const makeDcqlUrl = (clientId: string) => {
+			const dcqlQuery = JSON.stringify({
+				credentials: [{ id: 'cred', format: 'dc+sd-jwt', meta: { vct_values: ['IdentityCredential'] } }],
+			});
+			return `openid4vp://?client_id=${encodeURIComponent(clientId)}&dcql_query=${encodeURIComponent(dcqlQuery)}`;
+		};
+
+		describe('Implemented client_id schemes (no warning)', () => {
+			it('should accept https URL as client_id without warning', () => {
+				const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+				const request = { url: makeDcqlUrl('https://verifier.example.com') };
+				expect(() => plugin.prepareRequest(request as RequestData)).not.toThrow();
+				expect(consoleSpy).not.toHaveBeenCalled();
+				consoleSpy.mockRestore();
+			});
+
+			it('should accept x509_san_dns: client_id scheme without warning', () => {
+				const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+				const request = { url: makeDcqlUrl('x509_san_dns:verifier.example.com') };
+				expect(() => plugin.prepareRequest(request as RequestData)).not.toThrow();
+				expect(consoleSpy).not.toHaveBeenCalled();
+				consoleSpy.mockRestore();
+			});
+		});
+
+		describe('OID4VP 1.0 client_id schemes (warn but accept)', () => {
+			// These schemes are defined in OID4VP 1.0 but implementation only warns
+
+			it('should warn for redirect_uri: client_id scheme', () => {
+				// OID4VP 1.0 Section 5.9.3: redirect_uri prefix
+				const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+				const request = { url: makeDcqlUrl('redirect_uri:https://verifier.example.com/callback') };
+				expect(() => plugin.prepareRequest(request as RequestData)).not.toThrow();
+				expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('may not be supported'));
+				consoleSpy.mockRestore();
+			});
+
+			it('should warn for x509_san_uri: client_id scheme', () => {
+				// OID4VP 1.0 Section 5.9.3: x509_san_uri prefix
+				const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+				const request = { url: makeDcqlUrl('x509_san_uri:https://verifier.example.com') };
+				expect(() => plugin.prepareRequest(request as RequestData)).not.toThrow();
+				expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('may not be supported'));
+				consoleSpy.mockRestore();
+			});
+
+			it('should warn for x509_hash: client_id scheme', () => {
+				// OID4VP 1.0 Section 5.9.3: x509_hash prefix
+				const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+				const request = { url: makeDcqlUrl('x509_hash:Uvo3HtuIxuhC92rShpgqcT3YXwrqRxWEviRiA0OZszk') };
+				expect(() => plugin.prepareRequest(request as RequestData)).not.toThrow();
+				expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('may not be supported'));
+				consoleSpy.mockRestore();
+			});
+
+			it('should warn for verifier_attestation: client_id scheme', () => {
+				// OID4VP 1.0 Section 5.9.3.4: Verifier Attestation JWT
+				const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+				const request = { url: makeDcqlUrl('verifier_attestation:example-client') };
+				expect(() => plugin.prepareRequest(request as RequestData)).not.toThrow();
+				expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('may not be supported'));
+				consoleSpy.mockRestore();
+			});
+
+			it('should warn for decentralized_identifier: client_id scheme', () => {
+				// OID4VP 1.0 Section 5.9.3: decentralized_identifier prefix for DIDs
+				const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+				const request = { url: makeDcqlUrl('decentralized_identifier:did:web:verifier.example.com') };
+				expect(() => plugin.prepareRequest(request as RequestData)).not.toThrow();
+				expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('may not be supported'));
+				consoleSpy.mockRestore();
+			});
+
+			it('should warn for openid_federation: client_id scheme', () => {
+				// OID4VP 1.0 Section 5.9.3: openid_federation prefix
+				const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+				const request = { url: makeDcqlUrl('openid_federation:https://federation-verifier.example.com') };
+				expect(() => plugin.prepareRequest(request as RequestData)).not.toThrow();
+				expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('may not be supported'));
+				consoleSpy.mockRestore();
+			});
+		});
+
+		describe('DC API passthrough (no client_id validation)', () => {
+			// When dcql_query is present directly, implementation bypasses client_id validation
+
+			it('should pass through any client_id without validation in DC API path', () => {
+				const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+				const request = {
+					client_id: 'any_scheme:any_value',
+					dcql_query: {
+						credentials: [{ id: 'cred', format: 'dc+sd-jwt', meta: { vct_values: ['Test'] } }],
+					},
+				} as unknown as RequestData;
+				expect(() => plugin.prepareRequest(request)).not.toThrow();
+				// No warning because DC API path bypasses validation
+				expect(consoleSpy).not.toHaveBeenCalled();
+				consoleSpy.mockRestore();
+			});
+		});
+	});
+
+	describe('OID4VP 1.0 - DCQL Query (Section 6)', () => {
+		// OID4VP 1.0 Section 6: Digital Credentials Query Language
+		// NOTE: Implementation does NOT validate DCQL structure - passes through via DC API path
+		// NOTE: Type definition DCQLQuery doesn't match OID4VP 1.0 spec:
+		//   - Spec: meta is REQUIRED, claims is array of {id?, path, values?}
+		//   - Type: meta missing, claims is Record<string, unknown>
+
+		describe('DC API passthrough (no DCQL validation)', () => {
+			// The presence of dcql_query triggers DC API passthrough - no structure validation
+
+			it('should pass through DCQL query without validation', () => {
+				// OID4VP 1.0 DCQL: credentials array with id, format, meta
+				const request = {
+					client_id: 'https://verifier.example.com',
+					dcql_query: {
+						credentials: [
+							{
+								id: 'my_credential',
+								format: 'dc+sd-jwt',
+								meta: { vct_values: ['https://credentials.example.com/identity_credential'] },
+							},
+						],
+					},
+				} as unknown as RequestData;
+
+				const result = plugin.prepareRequest(request);
+				expect(result.dcql_query).toBeDefined();
+				expect(result.dcql_query?.credentials).toHaveLength(1);
+			});
+
+			it('should preserve dc+sd-jwt format identifier (OID4VP 1.0 spec)', () => {
+				// OID4VP 1.0 spec uses dc+sd-jwt as the format identifier
+				const request = {
+					client_id: 'https://verifier.example.com',
+					dcql_query: {
+						credentials: [
+							{
+								id: 'my_credential',
+								format: 'dc+sd-jwt',
+								meta: { vct_values: ['https://credentials.example.com/identity_credential'] },
+							},
+						],
+					},
+				} as unknown as RequestData;
+
+				const result = plugin.prepareRequest(request);
+				expect(result.dcql_query?.credentials[0].format).toBe('dc+sd-jwt');
+			});
+
+			it('should preserve multiple credentials in DCQL query', () => {
+				// OID4VP 1.0: Multiple credential queries in same request
+				const request = {
+					client_id: 'https://verifier.example.com',
+					dcql_query: {
+						credentials: [
+							{ id: 'cred1', format: 'dc+sd-jwt', meta: { vct_values: ['IdentityCredential'] } },
+							{ id: 'cred2', format: 'mso_mdoc', meta: { doctype_value: 'org.iso.18013.5.1.mDL' } },
+						],
+					},
+				} as unknown as RequestData;
+
+				const result = plugin.prepareRequest(request);
+				expect(result.dcql_query?.credentials).toHaveLength(2);
+			});
+
+			it('should preserve claims with path pointers (OID4VP 1.0 Section 6.3)', () => {
+				// OID4VP 1.0 Section 6.3: Claims Query with path property
+				const request = {
+					client_id: 'https://verifier.example.com',
+					dcql_query: {
+						credentials: [
+							{
+								id: 'identity',
+								format: 'dc+sd-jwt',
+								meta: { vct_values: ['https://credentials.example.com/identity_credential'] },
+								claims: [
+									{ path: ['given_name'] },
+									{ path: ['family_name'] },
+									{ path: ['birthdate'] },
+								],
+							},
+						],
+					},
+				} as unknown as RequestData;
+
+				const result = plugin.prepareRequest(request);
+				expect(result.dcql_query?.credentials[0].claims).toHaveLength(3);
+			});
+
+			it('should pass through any DCQL structure without validation', () => {
+				// Implementation does NOT validate DCQL - this is a spec compliance gap
+				const request = {
+					client_id: 'https://verifier.example.com',
+					dcql_query: {
+						credentials: [
+							{ id: 'cred', format: 'invalid-format' }, // Missing required meta
+						],
+						invalid_property: 'should pass through', // Unknown property
+					},
+				} as unknown as RequestData;
+
+				// Does not throw because no validation occurs
+				const result = plugin.prepareRequest(request);
+				expect(result.dcql_query).toBeDefined();
+			});
+		});
+
+		describe('URL-based DCQL (parsed from query string)', () => {
+			it('should parse DCQL query from URL', () => {
+				const dcqlQuery = JSON.stringify({
+					credentials: [
+						{
+							id: 'my_credential',
+							format: 'dc+sd-jwt',
+							meta: { vct_values: ['IdentityCredential'] },
+						},
+					],
+				});
+				const request = {
+					url: `openid4vp://?client_id=https://verifier.example.com&dcql_query=${encodeURIComponent(dcqlQuery)}`,
+				};
+
+				const result = plugin.prepareRequest(request as RequestData);
+				expect(result.dcql_query).toBeDefined();
+				expect(result.dcql_query?.credentials[0].format).toBe('dc+sd-jwt');
+			});
+		});
+	});
+
+	describe('OID4VP 1.0 - Error Responses (Section 8.5)', () => {
+		it('should throw invalid_request for malformed request data', () => {
+			expect(() => plugin.prepareRequest(null as unknown as RequestData)).toThrow();
+		});
+
+		it('should throw invalid_request for missing client_id', () => {
+			// Use URL format to test client_id validation
+			const dcqlQuery = JSON.stringify({ credentials: [{ id: 'cred', format: 'vc+sd-jwt' }] });
+			const request = {
+				url: `openid4vp://?dcql_query=${encodeURIComponent(dcqlQuery)}`,
+			};
+
+			expect(() => plugin.prepareRequest(request as unknown as RequestData)).toThrow('must include client_id');
+		});
+
+		it('should throw invalid_request for missing presentation mechanism', () => {
+			const request: RequestData = {
+				client_id: 'https://verifier.example.com',
+				// Missing: request_uri, presentation_definition, presentation_definition_uri, dcql_query
+			};
+
+			expect(() => plugin.prepareRequest(request)).toThrow(
+				'must include request_uri, presentation_definition, presentation_definition_uri, or dcql_query',
+			);
+		});
+
+		it('should throw for invalid response in validateResponse', () => {
+			expect(() => plugin.validateResponse(null as unknown as OpenID4VPResponse)).toThrow(
+				'Invalid OpenID4VP response',
+			);
+		});
+
+		it('should throw when response missing vp_token and encrypted response', () => {
+			const response: OpenID4VPResponse = {
+				state: 'abc123',
+				// Missing vp_token and response (encrypted)
+			};
+
+			expect(() => plugin.validateResponse(response)).toThrow(
+				'must include vp_token or encrypted response',
+			);
+		});
+	});
 });
 
-export {};

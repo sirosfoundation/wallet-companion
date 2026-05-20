@@ -53,6 +53,14 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 		);
 
 		// For Digital Credentials API, the request data is already well-formed
+		// TODO: OID4VP 1.0 SPEC COMPLIANCE - Validate DCQL query structure (Section 6)
+		//   - credentials[].id (REQUIRED string)
+		//   - credentials[].format (REQUIRED: dc+sd-jwt, mso_mdoc, etc.)
+		//   - credentials[].meta (REQUIRED object with format-specific params)
+		//     - vct_values for dc+sd-jwt
+		//     - doctype_value for mso_mdoc
+		//   - credentials[].claims (OPTIONAL array of {id?, path, values?})
+		//   See: https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-6
 		if (requestData.client_metadata || requestData.dcql_query || requestData.nonce) {
 			console.log('[OpenID4VPPlugin] DC API request detected, passing through');
 			return {
@@ -118,6 +126,16 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 			throw new Error('OpenID4VP request must include client_id');
 		}
 
+		// TODO: OID4VP 1.0 SPEC COMPLIANCE - Support all client_id schemes (Section 5.9.3)
+		//   Currently implemented: x509_san_dns, https URL
+		//   Missing full support for:
+		//   - redirect_uri: (Section 5.9.3)
+		//   - x509_san_uri: (Section 5.9.3)
+		//   - x509_hash: (Section 5.9.3)
+		//   - verifier_attestation: (Section 5.9.3.4)
+		//   - decentralized_identifier: (Section 5.9.3 - for DIDs)
+		//   - openid_federation: (Section 5.9.3)
+		//   See: https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-5.9.3
 		const client_id_scheme = authRequest.client_id.split(':')[0];
 		if (client_id_scheme !== 'x509_san_dns' && !authRequest.client_id.startsWith('http')) {
 			console.warn(
@@ -141,6 +159,10 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 		}
 
 		if (authRequest.response_mode) {
+			// TODO: OID4VP 1.0 SPEC COMPLIANCE - Support dc_api response modes (Section 8)
+			//   Missing: dc_api (Section 8.2), dc_api.jwt (Section 8.3)
+			//   These are required for Digital Credentials API integration
+			//   See: https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-8
 			const validModes: RequestData['response_mode'][] = ['direct_post', 'direct_post.jwt'];
 			if (!validModes.includes(authRequest.response_mode)) {
 				throw new Error(

@@ -27,6 +27,15 @@ export type PresentationDefinition = {
 	input_descriptors: InputDescriptor[];
 };
 
+// TODO: OID4VP 1.0 SPEC COMPLIANCE - Update DCQLQuery type to match spec (Section 6)
+//   Current type doesn't match OID4VP 1.0 specification:
+//   - meta: REQUIRED object (missing - should have vct_values for dc+sd-jwt, doctype_value for mso_mdoc)
+//   - claims: should be Array<{id?: string, path: string[], values?: unknown[]}> not Record<string, unknown>
+//   - multiple: OPTIONAL boolean
+//   - trusted_authorities: OPTIONAL array
+//   - require_cryptographic_holder_binding: OPTIONAL boolean
+//   - claim_sets: OPTIONAL array
+//   See: https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-6
 export type DCQLQuery = {
 	credentials: Array<{
 		id: string;
