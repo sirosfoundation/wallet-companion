@@ -14,18 +14,29 @@ This project includes both **unit tests** and **integration tests** to ensure th
 
 ```
 tests/
-├── setup.ts                   # Vitest setup and mocks
-├── background.test.ts         # Background script tests
-├── content.test.ts            # Content script message bridge
-├── inject.test.ts             # DC API & wallet registration tests
-├── jwt-verification.test.ts   # JWT callback tests
-├── modal.test.ts              # Wallet selector modal tests
-├── openid4vp.test.ts          # OpenID4VP protocol tests
-├── options.test.ts            # Options page logic tests
-├── popup.test.ts              # Popup UI tests
-├── protocols.test.ts          # Protocol plugin tests
-├── integration.test.ts        # E2E integration tests (separate config)
-└── wallet-integration.test.ts # Wallet integration tests (separate config)
+├── setup.ts                          # Vitest setup and mocks
+├── fixtures/                         # Test data and mock wallets
+│   └── mock-wallet.html
+├── unit/                             # Per-file unit tests (mirrors src/)
+│   ├── background/
+│   │   └── handlers.test.ts          # Background script tests
+│   ├── content/
+│   │   ├── index.test.ts             # Content script message bridge
+│   │   ├── inject.test.ts            # DC API & wallet registration tests
+│   │   ├── modal.test.ts             # Wallet selector modal tests
+│   │   ├── protocols/
+│   │   │   ├── ProtocolPluginRegistry.test.ts  # Protocol plugin tests
+│   │   │   └── plugins/
+│   │   │       └── OpenID4VPPlugin.test.ts     # OpenID4VP protocol tests
+│   │   └── public-api/
+│   │       └── DigitalCredentials.test.ts      # JWT callback tests
+│   └── ui/
+│       ├── options.test.ts           # Options page logic tests
+│       └── popup.test.ts             # Popup UI tests
+├── integration/                      # Component integration tests
+│   ├── wallet-flow.test.ts           # E2E integration tests
+│   └── wallet-registration.test.ts   # Wallet registration tests
+└── e2e/                              # Browser automation tests (Puppeteer)
 ```
 
 ## Running Tests
@@ -68,7 +79,7 @@ pnpm test:all
 
 ### Unit Tests
 
-#### Background Script Tests (`background.test.ts`)
+#### Background Script Tests (`unit/background/handlers.test.ts`)
 - ✅ Wallet storage and retrieval
 - ✅ Wallet registration (auto-registration API)
 - ✅ Duplicate detection
@@ -76,7 +87,7 @@ pnpm test:all
 - ✅ Usage statistics tracking
 - ✅ Message handling
 
-#### Inject Script Tests (`inject.test.ts`)
+#### Inject Script Tests (`unit/content/inject.test.ts`)
 - ✅ DC API interception detection
 - ✅ Request ID generation
 - ✅ Event dispatching
@@ -85,7 +96,7 @@ pnpm test:all
 - ✅ Response handling
 - ✅ Error handling
 
-#### Options Page Tests (`options.test.ts`)
+#### Options Page Tests (`unit/ui/options.test.ts`)
 - ✅ Wallet CRUD operations
 - ✅ wwWallet preset handling
 - ✅ Form validation
@@ -96,7 +107,7 @@ pnpm test:all
 
 ### Integration Tests
 
-#### Extension Installation (`integration.test.ts`)
+#### Extension Installation (`integration/wallet-flow.test.ts`)
 - ✅ Extension loads successfully
 - ✅ Extension ID is generated
 - ✅ Extension pages are accessible

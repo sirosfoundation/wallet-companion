@@ -3,8 +3,8 @@
  * Based on wwWallet implementation patterns
  */
 
-import { OpenID4VPPlugin } from '../src/content/protocols';
-import type { RequestData, OpenID4VPResponse } from '../src/content/protocols/plugins/types';
+import { OpenID4VPPlugin } from '../../../../../src/content/protocols';
+import type { RequestData, OpenID4VPResponse } from '../../../../../src/content/protocols/plugins/types';
 
 // Partial request data for URL-based inputs
 type URLOnlyRequest = { url: string };

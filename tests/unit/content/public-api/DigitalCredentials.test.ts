@@ -2,8 +2,8 @@
  * Tests for JWT Verification Callback System
  */
 
-import { OpenID4VPPlugin } from '../src/content/protocols';
-import type { JWTVerifier as PluginJWTVerifier } from '../src/content/protocols/plugins/types';
+import { OpenID4VPPlugin } from '../../../../src/content/protocols';
+import type { JWTVerifier as PluginJWTVerifier } from '../../../../src/content/protocols/plugins/types';
 
 type JWTVerifier = (jwt: string, options?: Record<string, unknown>) => Promise<{ valid: boolean; error?: string; payload?: unknown }>;
 

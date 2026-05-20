@@ -5,11 +5,9 @@ export default defineConfig({
 		globals: true,
 		environment: 'jsdom',
 		setupFiles: ['./tests/setup.ts'],
-		include: ['tests/**/*.test.ts', 'tests/**/*.spec.ts'],
+		include: ['tests/unit/**/*.test.ts', 'tests/unit/**/*.spec.ts'],
 		exclude: [
 			'**/node_modules/**',
-			'tests/integration.test.ts',
-			'tests/wallet-integration.test.ts',
 		],
 		coverage: {
 			provider: 'v8',
