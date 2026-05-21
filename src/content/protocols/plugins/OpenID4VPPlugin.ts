@@ -52,6 +52,8 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 			JSON.stringify(requestData, null, 2),
 		);
 
+		const isDirectRequest = !requestData.url && !requestData.request_uri;
+
 		// For Digital Credentials API, the request data is already well-formed
 		// TODO: OID4VP 1.0 SPEC COMPLIANCE - Validate DCQL query structure (Section 6)
 		//   - credentials[].id (REQUIRED string)
@@ -61,7 +63,7 @@ export class OpenID4VPPlugin extends ProtocolPlugin {
 		//     - doctype_value for mso_mdoc
 		//   - credentials[].claims (OPTIONAL array of {id?, path, values?})
 		//   See: https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#section-6
-		if (requestData.client_metadata || requestData.dcql_query || requestData.nonce) {
+		if (isDirectRequest && (requestData.client_metadata || requestData.dcql_query)) {
 			console.log('[OpenID4VPPlugin] DC API request detected, passing through');
 			return {
 				...requestData,

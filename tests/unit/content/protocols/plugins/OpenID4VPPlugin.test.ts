@@ -40,6 +40,10 @@ describe('OpenID4VPPlugin', () => {
 		plugin = new OpenID4VPPlugin();
 	});
 
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
 	describe('Protocol Identification', () => {
 		it('should have correct protocol ID', () => {
 			expect(plugin.getProtocolId()).toBe('openid4vp');
