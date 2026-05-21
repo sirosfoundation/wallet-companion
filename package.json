@@ -29,7 +29,8 @@
     "test:wallet": "vitest run --config vitest.integration.config.ts tests/integration/wallet-registration.test.ts",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:all": "pnpm test:unit && pnpm build:chrome && pnpm test:integration"
+    "test:all": "pnpm test:unit && pnpm build:chrome && pnpm test:integration",
+    "test:server": "tsx tests/fixtures/server.ts"
   },
   "keywords": [
     "browser-extension",
