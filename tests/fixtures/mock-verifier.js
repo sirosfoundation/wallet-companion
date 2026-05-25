@@ -1,11 +1,12 @@
+'use strict';
+
+import { base64urlEncode, base64urlDecode } from './utils.js';
+
 // Generate cryptographically random nonce
 function generateNonce() {
 	const array = new Uint8Array(32);
 	crypto.getRandomValues(array);
-	return btoa(String.fromCharCode(...array))
-		.replace(/\+/g, '-')
-		.replace(/\//g, '_')
-		.replace(/=/g, '');
+	return base64urlEncode(String.fromCharCode(...array));
 }
 
 // Test request configurations (per OpenID4VP spec)
@@ -413,8 +414,8 @@ function verifierApp() {
 						// SD-JWT format: header.payload.signature~disclosures
 						const parts = token.split('~')[0].split('.');
 						if (parts.length >= 2) {
-							const header = JSON.parse(atob(parts[0].replace(/-/g, '+').replace(/_/g, '/')));
-							const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+							const header = JSON.parse(base64urlDecode(parts[0]));
+							const payload = JSON.parse(base64urlDecode(parts[1]));
 
 							this.decodedTokens.push({
 								id,
@@ -424,7 +425,7 @@ function verifierApp() {
 						}
 					} else if (typeof token === 'string') {
 						// Base64-encoded mdoc (no dots = not JWT)
-						const decoded = JSON.parse(atob(token));
+						const decoded = JSON.parse(base64urlDecode(token));
 						this.decodedTokens.push({
 							id,
 							format: 'mso_mdoc (base64)',
@@ -442,3 +443,5 @@ function verifierApp() {
 		},
 	};
 }
+
+window.verifierApp = verifierApp;

@@ -1,6 +1,6 @@
-// ============================================
-// Mock Wallet - Alpine.js Component
-// ============================================
+'use strict';
+
+import { base64urlEncode } from './utils.js';
 
 const WALLET_CONFIG = {
 	name: 'Mock Wallet',
@@ -394,7 +394,7 @@ function walletApp() {
 
 					// For testing purposes, we'll just base64-encode the JSON representation of the mdoc.
 					// This is obviously not how a real mdoc would be encoded. Perhaps adding cbor encoding is a future todo.
-					vp_token[cred.id] = [btoa(JSON.stringify(mdocObject))];
+					vp_token[cred.id] = [base64urlEncode(JSON.stringify(mdocObject))];
 				} else {
 					// Generate SD-JWT VC format - build claims from requested paths
 					const claims = {};
@@ -431,8 +431,9 @@ function walletApp() {
 						...claims,
 					};
 
-					const headerB64 = btoa(JSON.stringify(header)).replace(/=/g, '');
-					const payloadB64 = btoa(JSON.stringify(payload)).replace(/=/g, '');
+
+					const headerB64 = base64urlEncode(JSON.stringify(header));
+					const payloadB64 = base64urlEncode(JSON.stringify(payload));
 
 					// Per OpenID4VP spec, vp_token values must be arrays
 					vp_token[cred.id] = [`${headerB64}.${payloadB64}.mock_signature_${cred.id}`];
@@ -499,3 +500,5 @@ function walletApp() {
 		},
 	};
 }
+
+window.walletApp = walletApp;
