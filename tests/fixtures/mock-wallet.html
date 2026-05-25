@@ -12,51 +12,150 @@
 				<h1 class="h2 mb-0">Mock Wallet</h1>
 				<a href="/" class="btn btn-sm mr-2">Home</a>
 			</div>
-			<p class="color-fg-muted mb-4">Digital Credential Wallet Test Fixture</p>
+			<p class="color-fg-muted mb-4">
+				Digital Credential Wallet Test Fixture
+			</p>
 
 			<div class="Box p-3 mb-3" x-show="requestError" x-cloak>
 				<h2 class="f4 mb-2">Request Error</h2>
 				<div class="flash flash-error" x-text="requestError"></div>
 			</div>
 
-			<dialog class="Box color-shadow-extra-large rounded-2" x-ref="requestDialog" style="max-width: 480px; width: 90%;" data-testid="request-dialog">
-			<div class="Box-header d-flex flex-items-center flex-justify-between">
-				<h2 class="Box-title">Credential Request</h2>
-				<button class="btn-octicon" @click="sendResponse(false)" aria-label="Close">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
-					<path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"></path>
-				</svg>
-				</button>
-			</div>
-			<div class="Box-body">
-				<div class="flash mb-3" :class="requestStatusClass" x-text="requestStatusText"></div>
-				<div class="request-details">
-				<div class="field"><span class="label">Request ID:</span><span class="value" x-text="currentRequest?.request_id"></span></div>
-				<div class="field"><span class="label">Client ID:</span><span class="value" x-text="currentRequest?.client_id || 'N/A'"></span></div>
-				<div class="field"><span class="label">Response Type:</span><span class="value" x-text="currentRequest?.response_type || 'N/A'"></span></div>
-				<div class="field"><span class="label">Response Mode:</span><span class="value" x-text="currentRequest?.response_mode || 'N/A'"></span></div>
-				<div class="field"><span class="label">Nonce:</span><span class="value" x-text="currentRequest?.nonce || 'N/A'"></span></div>
-				<div class="field"><span class="label">Response URI:</span><span class="value" x-text="currentRequest?.response_uri || 'N/A'"></span></div>
-				<template x-if="currentRequest?.dcql_query">
-					<div>
-					<div class="field"><span class="label">DCQL Query:</span></div>
-					<pre class="p-2 rounded-2 color-bg-subtle" x-text="JSON.stringify(currentRequest.dcql_query, null, 2)"></pre>
-					</div>
-				</template>
+			<dialog
+				class="Box color-shadow-extra-large rounded-2"
+				x-ref="requestDialog"
+				style="max-width: 480px; width: 90%"
+				data-testid="request-dialog"
+			>
+				<div
+					class="Box-header d-flex flex-items-center flex-justify-between"
+				>
+					<h2 class="Box-title">Credential Request</h2>
+					<button
+						class="btn-octicon"
+						@click="sendResponse(false)"
+						aria-label="Close"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 16 16"
+							width="16"
+							height="16"
+							fill="currentColor"
+						>
+							<path
+								d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"
+							></path>
+						</svg>
+					</button>
 				</div>
-			</div>
-			<div class="Box-footer d-flex flex-justify-end">
-				<button class="btn btn-danger mr-2" @click="sendResponse(false)" :disabled="!canRespond" data-testid="deny-button">Cancel</button>
-				<button class="btn btn-primary" @click="sendResponse(true)" :disabled="!canRespond" data-testid="approve-button">Send Credential</button>
-			</div>
+				<div class="Box-body">
+					<div
+						class="flash mb-3"
+						:class="requestStatusClass"
+						x-text="requestStatusText"
+					></div>
+					<div class="request-details">
+						<div class="field">
+							<span class="label">Request ID:</span
+							><span
+								class="value"
+								x-text="currentRequest?.request_id"
+							></span>
+						</div>
+						<div class="field">
+							<span class="label">Client ID:</span
+							><span
+								class="value"
+								x-text="currentRequest?.client_id || 'N/A'"
+							></span>
+						</div>
+						<div class="field">
+							<span class="label">Response Type:</span
+							><span
+								class="value"
+								x-text="currentRequest?.response_type || 'N/A'"
+							></span>
+						</div>
+						<div class="field">
+							<span class="label">Response Mode:</span
+							><span
+								class="value"
+								x-text="currentRequest?.response_mode || 'N/A'"
+							></span>
+						</div>
+						<div class="field">
+							<span class="label">Nonce:</span
+							><span
+								class="value"
+								x-text="currentRequest?.nonce || 'N/A'"
+							></span>
+						</div>
+						<div class="field">
+							<span class="label">Response URI:</span
+							><span
+								class="value"
+								x-text="currentRequest?.response_uri || 'N/A'"
+							></span>
+						</div>
+						<template x-if="currentRequest?.dcql_query">
+							<div>
+								<div class="field">
+									<span class="label">DCQL Query:</span>
+								</div>
+								<pre
+									class="p-2 rounded-2 color-bg-subtle"
+									x-text="JSON.stringify(currentRequest.dcql_query, null, 2)"
+								></pre>
+							</div>
+						</template>
+					</div>
+				</div>
+				<div class="Box-footer d-flex flex-justify-end">
+					<button
+						class="btn btn-danger mr-2"
+						@click="sendResponse(false)"
+						:disabled="!canRespond"
+						data-testid="deny-button"
+					>
+						Cancel
+					</button>
+					<button
+						class="btn btn-primary"
+						@click="sendResponse(true)"
+						:disabled="!canRespond"
+						data-testid="approve-button"
+					>
+						Send Credential
+					</button>
+				</div>
 			</dialog>
 
 			<div class="Box p-3 mb-3">
 				<h2 class="f4 mb-2">Extension Status</h2>
-				<div class="flash" :class="extensionStatusClass" x-text="extensionStatusText" data-testid="extension-status"></div>
+				<div
+					class="flash"
+					:class="extensionStatusClass"
+					x-text="extensionStatusText"
+					data-testid="extension-status"
+				></div>
 				<div class="flex mt-2">
-					<button class="btn btn-primary mr-1" @click="registerWallet()" :disabled="!extensionReady" data-testid="register-button">Register Wallet</button>
-					<button class="btn" @click="checkRegistration()" :disabled="!extensionReady" data-testid="check-registration-button">Check Registration</button>
+					<button
+						class="btn btn-primary mr-1"
+						@click="registerWallet()"
+						:disabled="!extensionReady"
+						data-testid="register-button"
+					>
+						Register Wallet
+					</button>
+					<button
+						class="btn"
+						@click="checkRegistration()"
+						:disabled="!extensionReady"
+						data-testid="check-registration-button"
+					>
+						Check Registration
+					</button>
 				</div>
 			</div>
 
@@ -74,10 +173,16 @@
 
 			<div class="Box p-3 mb-3">
 				<h2 class="f4 mb-2">Wallet State</h2>
-				<pre class="p-2 rounded-2 color-bg-subtle" x-text="stateJson"></pre>
+				<pre
+					class="p-2 rounded-2 color-bg-subtle"
+					x-text="stateJson"
+				></pre>
 			</div>
 		</div>
-		<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+		<script
+			defer
+			src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"
+		></script>
 		<script src="mock-wallet.js"></script>
 	</body>
 </html>
