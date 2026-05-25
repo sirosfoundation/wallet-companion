@@ -1,6 +1,11 @@
 const IGNORED_ERRORS = ['Could not establish connection', 'Receiving end does not exist'];
 
 /**
+ * Runtime object for browser extensions.
+ */
+export const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
+
+/**
  * Runtime utilities for sending messages in a browser extension context.
  * Provides a unified API for both Chrome and Firefox environments.
  */

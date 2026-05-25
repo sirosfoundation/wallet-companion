@@ -2,7 +2,7 @@
  * Content script - relays RPC requests from page context to background script.
  */
 
-import { runtimeSendMessage } from '@shared/runtime';
+import { runtime, runtimeSendMessage } from '@shared/runtime';
 import {
 	type CheckWalletMessage,
 	type InboundMessage,
@@ -22,10 +22,10 @@ console.log('W3C Digital Credentials API Interceptor loaded');
 
 // Inject scripts into page context
 const modalScript = document.createElement('script');
-modalScript.src = chrome.runtime.getURL('content/modal.js');
+modalScript.src = runtime.getURL('content/modal.js');
 modalScript.onload = (event) => {
 	const script = document.createElement('script');
-	script.src = chrome.runtime.getURL('content/inject.js');
+	script.src = runtime.getURL('content/inject.js');
 	script.onload = (e) => (e.target as HTMLScriptElement).remove();
 	(document.head || document.documentElement).appendChild(script);
 	(event.target as HTMLScriptElement).remove();

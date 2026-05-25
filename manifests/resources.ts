@@ -11,7 +11,23 @@ export type ManifestProps = {
 	icons: (file: string) => chrome.runtime.ManifestIcons;
 }
 
-export type CreateBrowserManifest = (props: ManifestProps) => chrome.runtime.ManifestV3 | chrome.runtime.ManifestV2;
+
+type FirefoxManifestV3 = Omit<chrome.runtime.ManifestV3, 'background'> & {
+	background?: {
+		scripts: string[];
+		type?: 'module';
+	};
+	browser_specific_settings?: {
+		gecko?: {
+			id: string;
+			strict_min_version?: string;
+		};
+	};
+};
+
+export type Manifest = chrome.runtime.ManifestV3 | chrome.runtime.ManifestV2 | FirefoxManifestV3;
+
+export type CreateBrowserManifest = (props: ManifestProps) => Manifest;
 
 export type ManifestFile = {
 	name: string;
@@ -135,7 +151,7 @@ export class BrowserManifest {
 		});
 	}
 
-	public generateManifest(): chrome.runtime.ManifestV3 | chrome.runtime.ManifestV2 {
+	public generateManifest(): Manifest {
 		const manifestProps: ManifestProps = {
 			entry: (_format, file) => {
 				const entry = this.#manifestFiles.entries.get(file);
