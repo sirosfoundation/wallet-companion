@@ -120,6 +120,14 @@ export function registerWalletConsentModal({
 		shadow.append(style, modal);
 		modal.show();
 
+		document.addEventListener('keydown', (event) => {
+			if (event.key !== 'Escape') return;
+
+			event.preventDefault();
+			dismiss();
+			resolve({ status: 'declined' });
+		});
+
 		const closeButton = modal.querySelector<HTMLButtonElement>(
 			'.register-wallet > .header > .close',
 		);
