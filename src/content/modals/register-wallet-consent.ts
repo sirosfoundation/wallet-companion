@@ -113,7 +113,7 @@ export function registerWalletConsentModal({
 			event.preventDefault();
 			dismiss();
 			resolve({ status: 'declined' });
-		}
+		};
 
 		document.addEventListener('keydown', handleKeydown);
 
