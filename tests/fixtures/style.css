@@ -1,4 +1,4 @@
-/* @import url('https://cdn.jsdelivr.net/npm/@primer/css@^21/dist/primer.css'); */
+@import url('https://cdn.jsdelivr.net/npm/@primer/css@^21/dist/primer.css');
 
 /* Hide elements until Alpine.js initializes */
 [x-cloak] { display: none !important; }
