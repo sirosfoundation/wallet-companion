@@ -29,7 +29,7 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
 	testServer: [
 		async ({}, use) => {
 			const server = await startTestServer(FIXTURES_PATH);
-			console.log(`✓ Test server started at ${server.url}`);
+			console.log(`Test server started at ${server.url}`);
 			await use(server);
 			// Close server with timeout to avoid hanging
 			try {
@@ -37,9 +37,9 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
 					server.close(),
 					new Promise<void>((resolve) => setTimeout(resolve, 1000)),
 				]);
-				console.log('✓ Test server stopped');
+				console.log('Test server stopped');
 			} catch {
-				console.log('✓ Test server cleanup completed');
+				console.log('Test server cleanup completed');
 			}
 		},
 		{ scope: 'worker' },
@@ -83,7 +83,7 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
 				throw new Error('Extension service worker did not start');
 			}
 
-			console.log('✓ Extension service worker started');
+			console.log('Extension service worker started');
 
 			// Force all shadow DOMs to be open for testing
 			// This allows Playwright to see inside the wallet selector modal
@@ -104,9 +104,9 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
 					timeout: 5000,
 				});
 				await warmupPage.waitForTimeout(300);
-				console.log('✓ Extension warmed up');
+				console.log('Extension warmed up');
 			} catch (e) {
-				console.warn('⚠ Could not warm up extension:', e);
+				console.warn('Could not warm up extension:', e);
 			}
 
 			await use(context);
@@ -125,7 +125,6 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
 
 		// Clear extension storage before each test for isolation
 		await extensionWorker.evaluate(() => {
-			// @ts-expect-error Accessing chrome API in service worker context
 			return chrome.storage.local.clear();
 		});
 
