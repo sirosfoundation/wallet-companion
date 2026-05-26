@@ -29,7 +29,8 @@
     "test:wallet": "vitest run --config vitest.integration.config.ts tests/integration/wallet-registration.test.ts",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:all": "pnpm test:unit && pnpm build:chrome && pnpm test:integration"
+    "test:all": "pnpm test:unit && pnpm build:chrome && pnpm test:integration",
+    "test:server": "serve tests/fixtures -l 3456"
   },
   "keywords": [
     "browser-extension",
@@ -53,6 +54,7 @@
     "@vitest/coverage-v8": "^4.1.7",
     "jsdom": "^29.1.1",
     "puppeteer": "^25.0.4",
+    "serve": "^14.2.6",
     "sharp": "^0.34.5",
     "tsx": "^4.22.3",
     "typescript": "^6.0.3",
