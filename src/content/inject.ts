@@ -71,7 +71,6 @@ navigator.credentials.get = async (options?: CredentialRequestOptions & DigitalI
 				return {
 					protocol: req.protocol,
 					data: protocolRegistry.prepareRequest(req.protocol, req.data),
-					originalData: req.data,
 				};
 			} catch {
 				return null;
@@ -139,8 +138,7 @@ navigator.credentials.get = async (options?: CredentialRequestOptions & DigitalI
 
 type ProcessedRequest = {
 	protocol: string;
-	data: RequestData | unknown; // or just use RequestData if only openid4vp
-	originalData: unknown;
+	data: RequestData | unknown;
 };
 
 type WalletSelection = {
