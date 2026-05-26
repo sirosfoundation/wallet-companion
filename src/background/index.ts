@@ -14,8 +14,8 @@ import { Stores } from './storage';
 runtime.onInstalled.addListener(initializeExtension);
 runtime.onStartup.addListener(initializeExtension);
 runtime.onMessage.addListener((message, sender, sendResponse) => {
-    handleMessage(message, sender, sendResponse);
-    return true; // Keep channel open for async
+	handleMessage(message, sender, sendResponse);
+	return true; // Keep channel open for async
 });
 
 /**

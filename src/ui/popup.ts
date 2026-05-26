@@ -2,11 +2,11 @@
  * Popup script for Wallet Companion extension
  */
 
+import { runtime } from '@shared/runtime';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { UsageStats, Wallets } from '@shared/schemas/resources';
 import { generateIdenticon, svgToDataUrl } from './utils/icons';
 import { onMessage, sendMessage } from './utils/messaging';
-import { runtime } from '@shared/runtime';
 
 document.addEventListener('DOMContentLoaded', () => {
 	const statusBar = document.querySelector<HTMLElement>('#statusBar');
