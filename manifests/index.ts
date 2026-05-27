@@ -1,12 +1,14 @@
 import { BrowserManifest } from "./resources";
 
+const NAME = 'Wallet Companion';
+const DESCRIPTION = 'A cross-browser companion extension that intercepts W3C Digital Credentials API calls, enabling users to select from multiple digital identity wallet providers.';
 const VERSION = process.env.npm_package_version ?? '0.0.0';
 
 export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'manifest_version': 3,
-	'name': 'Wallet Companion',
+	'name': NAME,
 	'version': VERSION,
-	'description': 'A cross-browser companion extension that intercepts W3C Digital Credentials API calls, enabling users to select from multiple digital identity wallet providers.',
+	'description': DESCRIPTION,
 	'permissions': [
 		'storage',
 		'activeTab',
@@ -42,9 +44,9 @@ export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 
 export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'manifest_version': 3,
-	'name': 'Wallet Companion',
+	'name': NAME,
 	'version': VERSION,
-	'description': 'A cross-browser companion extension that intercepts W3C Digital Credentials API calls, enabling users to select from multiple digital identity wallet providers.',
+	'description': DESCRIPTION,
 	'permissions': [
 		'storage',
 		'activeTab',
@@ -86,9 +88,9 @@ export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 
 export const SAFARI_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'manifest_version': 2,
-	'name': 'Wallet Companion',
+	'name': NAME,
 	'version': VERSION,
-	'description': 'A cross-browser companion extension that intercepts W3C Digital Credentials API calls, enabling users to select from multiple digital identity wallet providers.',
+	'description': DESCRIPTION,
 	'permissions': [
 		'storage',
 		'<all_urls>'
