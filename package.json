@@ -26,10 +26,12 @@
     "test": "vitest run",
     "test:unit": "vitest run",
     "test:integration": "vitest run --config vitest.integration.config.ts",
-    "test:wallet": "vitest run --config vitest.integration.config.ts tests/integration/wallet-registration.test.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:all": "pnpm test:unit && pnpm build:chrome && pnpm test:integration"
+    "test:all": "pnpm test:unit && pnpm test:integration && pnpm build:chrome && pnpm test:e2e",
+    "test:server": "tsx tests/support/serve.ts"
   },
   "keywords": [
     "browser-extension",
@@ -40,6 +42,7 @@
     "webextension"
   ],
   "dependencies": {
+    "lucide": "^1.16.0",
     "@fontsource/inter": "^5.2.8",
     "valibot": "^1.4.0"
   },
@@ -47,6 +50,7 @@
     "@biomejs/biome": "^2.4.15",
     "@changesets/changelog-github": "^0.7.0",
     "@changesets/cli": "^2.31.0",
+    "@playwright/test": "^1.60.0",
     "@types/chrome": "^0.1.42",
     "@types/firefox-webext-browser": "^143.0.0",
     "@types/node": "^25.9.1",

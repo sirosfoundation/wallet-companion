@@ -4,6 +4,7 @@
  */
 
 import { OpenID4VPProtocols } from '@shared/protocols';
+import { selectWalletModal } from './modals/select-wallet';
 import { OpenID4VPPlugin, ProtocolPluginRegistry } from './protocols/';
 import type { RequestData } from './protocols/plugins/types';
 import { WalletCompanion } from './public-api/WalletCompanion';
@@ -70,7 +71,6 @@ navigator.credentials.get = async (options?: CredentialRequestOptions & DigitalI
 				return {
 					protocol: req.protocol,
 					data: protocolRegistry.prepareRequest(req.protocol, req.data),
-					originalData: req.data,
 				};
 			} catch {
 				return null;
@@ -138,8 +138,7 @@ navigator.credentials.get = async (options?: CredentialRequestOptions & DigitalI
 
 type ProcessedRequest = {
 	protocol: string;
-	data: RequestData | unknown; // or just use RequestData if only openid4vp
-	originalData: unknown;
+	data: RequestData | unknown;
 };
 
 type WalletSelection = {
@@ -159,7 +158,7 @@ async function showWalletSelector(
 	requests: ProcessedRequest[],
 ): Promise<SelectionResult> {
 	return new Promise((resolve) => {
-		window.showWalletSelector({
+		selectWalletModal({
 			wallets,
 			onSelect(wallet: WalletOption) {
 				const selectedRequest =

@@ -28,7 +28,6 @@ export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 		{
 			'resources': [
 				entry('iife', 'src/content/inject.ts'),
-				entry('iife', 'src/content/modal.ts'),
 			],
 			'matches': ['<all_urls>'],
 		},
@@ -67,7 +66,6 @@ export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 		{
 			'resources': [
 				entry('iife', 'src/content/inject.ts'),
-				entry('iife', 'src/content/modal.ts'),
 			],
 			'matches': ['<all_urls>'],
 		},
@@ -108,7 +106,6 @@ export const SAFARI_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	],
 	'web_accessible_resources': [
 		entry('iife', 'src/content/inject.ts'),
-		entry('iife', 'src/content/modal.ts'),
 	],
 	'browser_action': {
 		'default_popup': entry('es', 'src/ui/popup.html'),
