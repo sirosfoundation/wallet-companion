@@ -11,21 +11,21 @@ export type ManifestProps = {
 	icons: (file: string) => chrome.runtime.ManifestIcons;
 }
 
-
-type FirefoxManifestV3 = Omit<chrome.runtime.ManifestV3, 'background'> & {
-	background?: {
-		scripts: string[];
-		type?: 'module';
-	};
-	browser_specific_settings?: {
-		gecko?: {
-			id: string;
-			strict_min_version?: string;
-		};
-	};
-};
-
-export type Manifest = chrome.runtime.ManifestV3 | chrome.runtime.ManifestV2 | FirefoxManifestV3;
+export type Manifest = Omit<chrome.runtime.ManifestV3, 'background'> & (
+    | {
+        background: {
+            service_worker: string;
+            type?: 'module';
+        };
+    }
+	// Firefox wants 'scripts'.
+    | {
+        background: {
+            scripts: string[];
+            type?: 'module';
+        };
+    }
+);
 
 export type CreateBrowserManifest = (props: ManifestProps) => Manifest;
 
