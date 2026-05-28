@@ -8,7 +8,7 @@ export type DCResponse = InferInput<typeof DCResponseSchema>;
 const DCResponseSchema = object({
 	type: literal('WC_WALLET_RESPONSE'),
 	requestId: string(),
-	response: unknown(), // TODO: type this.
+	response: unknown(),
 });
 
 type Pending = {
