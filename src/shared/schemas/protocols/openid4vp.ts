@@ -1,14 +1,14 @@
 import {
-    type InferInput,
-    array,
-    object,
-    optional,
-    picklist,
-    pipe,
-    record,
-    string,
-    nonEmpty,
-    unknown,
+	array,
+	type InferInput,
+	nonEmpty,
+	object,
+	optional,
+	picklist,
+	pipe,
+	record,
+	string,
+	unknown,
 } from 'valibot';
 
 /**
@@ -26,10 +26,10 @@ export const OpenID4VPResponseTypeSchema = picklist(['vp_token', 'vp_token id_to
  */
 export type OpenID4VPResponseMode = InferInput<typeof OpenID4VPResponseModeSchema>;
 export const OpenID4VPResponseModeSchema = picklist([
-    'direct_post',
-    'dc_api',
-    'direct_post.jwt',
-    'dc_api.jwt',
+	'direct_post',
+	'dc_api',
+	'direct_post.jwt',
+	'dc_api.jwt',
 ]);
 
 /**
@@ -39,9 +39,11 @@ export const OpenID4VPResponseModeSchema = picklist([
  */
 export type OpenID4VPClientMetadata = InferInput<typeof OpenID4VPClientMetadataSchema>;
 export const OpenID4VPClientMetadataSchema = object({
-    jwks: optional(object({
-        keys: pipe(array(record(string(), unknown())), nonEmpty()),
-    })),
-    encrypted_response_enc_values_supported: optional(pipe(array(string()), nonEmpty())),
-    vp_formats_supported: optional(record(string(), unknown())),
+	jwks: optional(
+		object({
+			keys: pipe(array(record(string(), unknown())), nonEmpty()),
+		}),
+	),
+	encrypted_response_enc_values_supported: optional(pipe(array(string()), nonEmpty())),
+	vp_formats_supported: optional(record(string(), unknown())),
 });
