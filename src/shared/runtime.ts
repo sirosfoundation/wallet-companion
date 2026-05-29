@@ -6,7 +6,9 @@ const IGNORED_ERRORS = ['Could not establish connection', 'Receiving end does no
 export const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
 
 if (!runtime) {
-	throw new Error('No browser runtime found. This extension can only run in a browser environment.');
+	throw new Error(
+		'No browser runtime found. This extension can only run in a browser environment.',
+	);
 }
 
 /**

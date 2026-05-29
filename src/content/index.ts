@@ -2,7 +2,7 @@
  * Content script - relays RPC requests from page context to background script.
  */
 
-import { runtime, runtimeSendMessage } from '@shared/runtime';
+import { runtimeSendMessage } from '@shared/runtime';
 import {
 	type CheckWalletMessage,
 	type InboundMessage,
