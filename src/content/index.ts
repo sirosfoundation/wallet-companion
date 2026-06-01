@@ -2,6 +2,7 @@
  * Content script - relays RPC requests from page context to background script.
  */
 
+import { logger } from '@shared/logger';
 import { runtimeSendMessage } from '@shared/runtime';
 import {
 	type CheckWalletMessage,
@@ -13,7 +14,6 @@ import {
 	type WalletSelectedMessage,
 } from '@shared/schemas/messages';
 import { RPC } from './rpc';
-import { logger } from '@shared/logger';
 
 async function sendMessage<M extends InboundMessage>(message: M): Promise<ResponseFor<M['type']>> {
 	return runtimeSendMessage(message) as Promise<ResponseFor<M['type']>>;

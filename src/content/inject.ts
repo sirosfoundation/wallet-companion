@@ -3,6 +3,7 @@
  * Intercepts navigator.credentials.get() calls for the Digital Credentials API
  */
 
+import { logger } from '@shared/logger';
 import { isProtocol, type Protocol, protocolsToArray } from '@shared/protocols';
 import { DCGateway } from './dc-api/gateway';
 import type { PreparedRequest } from './dc-api/types';
@@ -10,7 +11,6 @@ import { selectWalletModal } from './modals/select-wallet';
 import { WalletCompanion } from './public-api/WalletCompanion';
 import { RPC } from './rpc';
 import type { WalletOption } from './types';
-import { logger } from '@shared/logger';
 
 logger.debug('Digital Credentials API interceptor injected');
 
