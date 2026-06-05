@@ -69,6 +69,7 @@ async function build({
 		define: {
 			'process.env.VITE_APP_VERSION': JSON.stringify(process.env.npm_package_version ?? '0.0.0'),
 			'import.meta.env.VITE_APP_VERSION': JSON.stringify(process.env.npm_package_version ?? '0.0.0'),
+			'import.meta.env.VITE_LOG_LEVEL': JSON.stringify(process.env.LOG_LEVEL),
 		},
 		build: {
 			outDir,
