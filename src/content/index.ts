@@ -2,6 +2,7 @@
  * Content script - relays RPC requests from page context to background script.
  */
 
+import { logger } from '@shared/logger';
 import { runtimeSendMessage } from '@shared/runtime';
 import {
 	type CheckWalletMessage,
@@ -18,7 +19,7 @@ async function sendMessage<M extends InboundMessage>(message: M): Promise<Respon
 	return runtimeSendMessage(message) as Promise<ResponseFor<M['type']>>;
 }
 
-console.log('W3C Digital Credentials API Interceptor loaded');
+logger.debug('W3C Digital Credentials API Interceptor loaded');
 
 // Inject scripts into page context
 const script = document.createElement('script');

@@ -11,6 +11,9 @@ importers:
       '@fontsource/inter':
         specifier: ^5.2.8
         version: 5.2.8
+      '@sirosfoundation/browser-log':
+        specifier: 0.1.0-beta.1
+        version: 0.1.0-beta.1
       lucide:
         specifier: ^1.17.0
         version: 1.17.0
@@ -837,6 +840,9 @@ packages:
 
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
+
+  '@sirosfoundation/browser-log@0.1.0-beta.1':
+    resolution: {integrity: sha512-Ci5XnfjoJSHT38pxvjTMGS64l2AeRLIubfG87zMuSl/PGYx8DNwb2E6hoP3q8js++KdFsdXdxmk6WMkLcg8s6Q==}
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
@@ -3385,6 +3391,10 @@ snapshots:
     optional: true
 
   '@rolldown/pluginutils@1.0.1': {}
+
+  '@sirosfoundation/browser-log@0.1.0-beta.1':
+    dependencies:
+      '@biomejs/biome': 2.4.16
 
   '@standard-schema/spec@1.1.0': {}
 
