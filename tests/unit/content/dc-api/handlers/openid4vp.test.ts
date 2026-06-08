@@ -62,23 +62,14 @@ describe('OpenID4VPDCHandler', () => {
 			expect(result.dcql_query).toBeDefined();
 		});
 
-		it('should accept request with request_uri (JAR)', () => {
+		it('should accept request with nonce and state', () => {
 			const result = handler.prepareRequest({
-				request_uri: 'https://verifier.example.com/request/abc123',
-			});
-
-			expect(result.protocol).toBe(OpenID4VPProtocols.NORMAL);
-			expect(result.request_uri).toBe('https://verifier.example.com/request/abc123');
-		});
-
-		it('should accept request_uri with nonce and state', () => {
-			const result = handler.prepareRequest({
-				request_uri: 'https://verifier.example.com/request/abc123',
+				request: 'eyJ...signed-jwt...',
 				nonce: 'test-nonce',
 				state: 'test-state',
 			});
 
-			expect(result.request_uri).toBe('https://verifier.example.com/request/abc123');
+			expect(result.request).toBe('eyJ...signed-jwt...');
 			expect(result.nonce).toBe('test-nonce');
 			expect(result.state).toBe('test-state');
 		});
@@ -98,6 +89,25 @@ describe('OpenID4VPDCHandler', () => {
 			expect(() => handler.prepareRequest({
 				dcql_query: validDcqlQuery,
 				response_mode: 'invalid',
+			})).toThrow();
+		});
+
+		it('should accept request (inline JAR)', () => {
+			const result = handler.prepareRequest({
+				request: 'eyJ...signed-jwt...',
+			});
+
+			expect(result.protocol).toBe(OpenID4VPProtocols.NORMAL);
+			expect(result.request).toBe('eyJ...signed-jwt...');
+		});
+
+		it('should reject request with invalid type', () => {
+			expect(() => handler.prepareRequest({
+				request: 123,
+			})).toThrow();
+
+			expect(() => handler.prepareRequest({
+				request: { foo: 'bar' },
 			})).toThrow();
 		});
 	});
@@ -192,66 +202,85 @@ describe('OpenID4VPDCHandler', () => {
 			expect(url.searchParams.get('dcql_query')).toBe('{}');
 		});
 
-		describe('JAR (request_uri) support', () => {
-			it('should set request_uri when provided', () => {
+		it('should prioritize request over dcql_query when both provided', () => {
+			const url = handler.buildUrl(
+				wallet,
+				{ 
+					request: 'eyJ...signed-jwt...',
+					dcql_query: validDcqlQuery,
+				},
+				'req-123',
+			);
+
+			expect(url.searchParams.get('request')).toBe('eyJ...signed-jwt...');
+			expect(url.searchParams.has('dcql_query')).toBe(false);
+		});
+
+		it('should prioritize request over client_metadata when both provided', () => {
+			const url = handler.buildUrl(
+				wallet,
+				{ 
+					request: 'eyJ...signed-jwt...',
+					client_metadata: { vp_formats_supported: {} },
+				},
+				'req-123',
+			);
+
+			expect(url.searchParams.get('request')).toBe('eyJ...signed-jwt...');
+			expect(url.searchParams.has('client_metadata')).toBe(false);
+		});
+
+		describe('JAR (inline request) support', () => {
+			it('should set request when provided', () => {
 				const url = handler.buildUrl(
 					wallet,
-					{ request_uri: 'https://verifier.example.com/request/abc123' },
+					{ request: 'eyJ...signed-jwt...' },
 					'req-123',
 				);
 
-				expect(url.searchParams.get('request_uri')).toBe(
-					'https://verifier.example.com/request/abc123',
-				);
+				expect(url.searchParams.get('request')).toBe('eyJ...signed-jwt...');
 			});
 
-			it('should NOT set client_metadata when request_uri is provided', () => {
+			it('should NOT set client_metadata when request is provided', () => {
 				const url = handler.buildUrl(
 					wallet,
-					{ request_uri: 'https://verifier.example.com/request/abc123' },
+					{ request: 'eyJ...signed-jwt...' },
 					'req-123',
 				);
 
 				expect(url.searchParams.has('client_metadata')).toBe(false);
 			});
 
-			it('should NOT set dcql_query when request_uri is provided', () => {
+			it('should NOT set dcql_query when request is provided', () => {
 				const url = handler.buildUrl(
 					wallet,
-					{ request_uri: 'https://verifier.example.com/request/abc123' },
+					{ request: 'eyJ...signed-jwt...' },
 					'req-123',
 				);
 
 				expect(url.searchParams.has('dcql_query')).toBe(false);
 			});
 
-			it('should still set common params with request_uri', () => {
+			it('should still set common params with request', () => {
 				const url = handler.buildUrl(
 					wallet,
-					{
-						request_uri: 'https://verifier.example.com/request/abc123',
-						nonce: 'test-nonce',
-						state: 'test-state',
-					},
+					{ request: 'eyJ...signed-jwt...' },
 					'req-123',
 				);
 
 				expect(url.searchParams.get('request_id')).toBe('req-123');
 				expect(url.searchParams.get('client_id')).toBe(window.location.origin);
-				expect(url.searchParams.get('nonce')).toBe('test-nonce');
-				expect(url.searchParams.get('state')).toBe('test-state');
-				expect(url.searchParams.get('response_uri')).toBe(window.location.href);
 			});
 
-			it('should use default response_type and response_mode with request_uri', () => {
+			it('should NOT set response_type/response_mode with request', () => {
 				const url = handler.buildUrl(
 					wallet,
-					{ request_uri: 'https://verifier.example.com/request/abc123' },
+					{ request: 'eyJ...signed-jwt...' },
 					'req-123',
 				);
 
-				expect(url.searchParams.get('response_type')).toBe('vp_token');
-				expect(url.searchParams.get('response_mode')).toBe('dc_api');
+				expect(url.searchParams.has('response_type')).toBe(false);
+				expect(url.searchParams.has('response_mode')).toBe(false);
 			});
 		});
 	});
