@@ -12,8 +12,8 @@ importers:
         specifier: ^5.2.8
         version: 5.2.8
       '@sirosfoundation/browser-log':
-        specifier: 0.1.0-beta.2
-        version: 0.1.0-beta.2
+        specifier: 0.1.0-beta.4
+        version: 0.1.0-beta.4
       lucide:
         specifier: ^1.17.0
         version: 1.17.0
@@ -841,8 +841,8 @@ packages:
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
 
-  '@sirosfoundation/browser-log@0.1.0-beta.2':
-    resolution: {integrity: sha512-fOU41q7wd//bwrcZsJ7fWXBCf0T2ybU2OqZigoikepgkOwx3Oe3LEZiPcmZUP3cqVrs5mJf1HKai2eEIdq+3/g==}
+  '@sirosfoundation/browser-log@0.1.0-beta.4':
+    resolution: {integrity: sha512-trXcS7UhZuM8k6+652rVC5OAUeT8mxKeYIyPOG8uVlJPK+aRBU7scLrMnmNOsVU6QORUbe4cii1nys12EIjR8Q==}
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
@@ -3398,7 +3398,7 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@sirosfoundation/browser-log@0.1.0-beta.2': {}
+  '@sirosfoundation/browser-log@0.1.0-beta.4': {}
 
   '@standard-schema/spec@1.1.0': {}
 
