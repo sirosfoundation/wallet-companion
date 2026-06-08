@@ -210,5 +210,5 @@ The extension validates responses according to OpenID4VP:
 
 - [Quick Start Guide](QUICKSTART.md) - Get started quickly
 - [Development Guide](DEVELOPMENT.md) - Build and test the extension
-- [OpenID4VP Implementation](docs/design/OPENID4VP_IMPLEMENTATION.md) - Complete protocol documentation
-- [Wallet Management](WALLET_MANAGEMENT.md) - User guide for managing wallets
+- [OpenID4VP Implementation](design/OPENID4VP_IMPLEMENTATION.md) - Complete protocol documentation
+- [Wallet Management](design/WALLET_MANAGEMENT.md) - User guide for managing wallets

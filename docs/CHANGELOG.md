@@ -30,7 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - README.md - Main documentation
   - QUICKSTART.md - Quick start guide
   - DEVELOPMENT.md - Developer guide
-  - PROJECT_SUMMARY.md - Project overview
 - Chrome extension (Manifest V3)
 - Firefox extension (Manifest V2)
 - Safari extension (Manifest V2)
