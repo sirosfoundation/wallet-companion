@@ -4,5 +4,10 @@
   "initialVersions": {
     "@sirosfoundation/wallet-companion": "0.0.0"
   },
-  "changesets": []
+  "changesets": [
+    "nine-boats-stop",
+    "social-cows-go",
+    "solid-weeks-live",
+    "sunny-dancers-dream"
+  ]
 }
