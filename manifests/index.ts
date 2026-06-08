@@ -2,7 +2,7 @@ import { BrowserManifest } from "./resources";
 
 const NAME = 'Wallet Companion';
 const DESCRIPTION = 'A companion for supported web-based digital identity wallets. Adds cross-browser credential sharing, wallet switching, and seamless site compatibility.';
-const VERSION = process.env.npm_package_version ?? '0.0.0';
+const VERSION = (process.env.npm_package_version ?? '0.0.0').replace(/-.*$/, '');
 
 export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'manifest_version': 3,
