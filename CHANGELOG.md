@@ -1,5 +1,11 @@
 # @sirosfoundation/wallet-companion
 
+## 0.1.0-beta.1
+
+### Patch Changes
+
+- [#71](https://github.com/sirosfoundation/wallet-companion/pull/71) [`8dfc2f1`](https://github.com/sirosfoundation/wallet-companion/commit/8dfc2f1ce796a7d15f658eb1c03c27665fae77d6) Thanks [@smncd](https://github.com/smncd)! - strip version prefix from manifest version entry
+
 ## 0.1.0-beta.0
 
 ### Minor Changes
