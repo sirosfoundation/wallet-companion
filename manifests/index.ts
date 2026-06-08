@@ -1,7 +1,7 @@
 import { BrowserManifest } from "./resources";
 
 const NAME = 'Wallet Companion';
-const DESCRIPTION = 'A cross-browser companion extension that intercepts W3C Digital Credentials API calls, enabling users to select from multiple digital identity wallet providers.';
+const DESCRIPTION = 'A cross-browser companion extension that polyfill the W3C API to enable wide cross-browser support for the OpenID 4 Verifiable Presentation and OpenID 4 Credential Issuance protocols, enabling users to select from multiple digital identity wallet providers.';
 const VERSION = process.env.npm_package_version ?? '0.0.0';
 
 export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
