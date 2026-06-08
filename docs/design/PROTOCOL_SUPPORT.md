@@ -328,7 +328,7 @@ registry.register(new CustomProtocolPlugin());
 
 **Run protocol tests:**
 ```bash
-pnpm test:unit  # Includes 35 protocol plugin tests
+make test-unit  # Includes protocol plugin tests
 ```
 
 **Test Coverage:**

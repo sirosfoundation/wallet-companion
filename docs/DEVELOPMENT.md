@@ -1,6 +1,6 @@
 # Development Guide
 
-This guide covers setup, build, testing, and packaging for Wallet Companion.
+This guide covers setup, build, testing, and packaging for Wallet Companion using Make targets.
 
 ## Prerequisites
 
@@ -13,36 +13,30 @@ This guide covers setup, build, testing, and packaging for Wallet Companion.
 
 ## Setup
 
-1. Install dependencies:
-
 ```bash
-pnpm install
-```
+# Install dependencies
+make install
 
-2. Build extensions:
-
-```bash
 # Build all browsers
-pnpm build
-
-# Build specific browser
-pnpm build:chrome
-pnpm build:firefox
-pnpm build:safari
+make build
 ```
 
-## Development Workflow
-
-Use watch mode during development:
+## Build Targets
 
 ```bash
-# Default watch target
-pnpm watch
+make build
+make build-chrome
+make build-firefox
+make build-safari
+```
 
-# Browser-specific watch targets
-pnpm watch:chrome
-pnpm watch:firefox
-pnpm watch:safari
+## Watch Targets
+
+```bash
+make watch
+make watch-chrome
+make watch-firefox
+make watch-safari
 ```
 
 ## Load In Browser
@@ -60,58 +54,35 @@ pnpm watch:safari
 2. Click Load Temporary Add-on
 3. Select dist/firefox/manifest.json
 
-Optional dev runner:
+Optional runner:
 
 ```bash
-pnpm dev:firefox
+make dev-firefox
 ```
 
 ### Safari
 
-1. Build Safari output:
-
 ```bash
-pnpm build:safari
+make dev-safari
 ```
 
-2. Convert extension bundle:
-
-```bash
-xcrun safari-web-extension-converter dist/safari/ --app-name "Wallet Companion"
-```
-
-3. Open generated Xcode project and run
+Follow the printed conversion and Xcode steps.
 
 ## Testing
 
-Run tests by suite:
-
 ```bash
-# Unit tests
-pnpm test
-
-# Integration tests
-pnpm test:integration
-
-# End-to-end tests
-pnpm test:e2e
-
-# Full pipeline
-pnpm test:all
-
-# Coverage
-pnpm test:coverage
+make test
+make test-unit
+make test-integration
+make test-e2e
+make test-e2e-headed
+make test-watch
+make test-coverage
+make test-server
+make test-all
 ```
 
-### Test Fixtures
-
-Serve local fixture pages for manual checks:
-
-```bash
-pnpm test:server
-```
-
-Then open:
+Fixture pages are served at:
 
 - http://127.0.0.1:3456/
 - http://127.0.0.1:3456/mock-wallet.html
@@ -120,14 +91,9 @@ Then open:
 ## Packaging
 
 ```bash
-# Chrome package
-pnpm package:chrome
-
-# Firefox package
-pnpm package:firefox
-
-# Package both (Makefile)
 make package
+make package-chrome
+make package-firefox
 ```
 
 Output artifacts:
@@ -135,22 +101,18 @@ Output artifacts:
 - dist/chrome-extension.zip
 - dist/firefox-extension.xpi
 
-## Makefile Commands
-
-Common alternatives to pnpm scripts:
+## Utility Targets
 
 ```bash
-make build
-make build-chrome
-make build-firefox
-make build-safari
-make watch-chrome
-make watch-firefox
-make watch-safari
-make test
-make test-all
-make package
+make help
+make status
+make check-deps
+make typecheck
+make lint
+make lint-fix
+make format
 make clean
+make rebuild
 ```
 
 ## Project Pointers
@@ -166,5 +128,5 @@ make clean
 
 1. Create a feature branch
 2. Add or update tests for changed behavior
-3. Run pnpm test:all
+3. Run `make test-all`
 4. Open a pull request with a clear change summary

@@ -312,7 +312,7 @@ The implementation includes comprehensive tests covering:
 
 Run tests:
 ```bash
-pnpm test tests/unit/content/dc-api/handlers/openid4vp.test.ts
+make test-unit
 ```
 
 ## References

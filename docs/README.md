@@ -87,7 +87,7 @@ Documentation is currently maintained manually. For API and test details, use ex
 
 ```bash
 # Generate test coverage reports
-pnpm test:coverage
+make test-coverage
 ```
 
 ## License

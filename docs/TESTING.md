@@ -12,22 +12,22 @@ This guide covers how to run and debug tests for Wallet Companion.
 
 ```bash
 # Unit tests
-pnpm test
+make test
 
 # Integration tests
-pnpm test:integration
+make test-integration
 
 # E2E tests
-pnpm test:e2e
+make test-e2e
 
 # Watch mode
-pnpm test:watch
+make test-watch
 
 # Coverage
-pnpm test:coverage
+make test-coverage
 
 # Full validation pipeline
-pnpm test:all
+make test-all
 ```
 
 ## Fixture Pages
@@ -35,7 +35,7 @@ pnpm test:all
 Start the local fixture server:
 
 ```bash
-pnpm test:server
+make test-server
 ```
 
 Then open:
@@ -46,10 +46,10 @@ Then open:
 
 ## Suggested Workflow
 
-1. Run `pnpm test` while iterating on unit-level behavior.
-2. Run `pnpm test:integration` for cross-module behavior.
-3. Run `pnpm build:chrome && pnpm test:e2e` before merge.
-4. Run `pnpm test:all` for final validation.
+1. Run `make test` while iterating on unit-level behavior.
+2. Run `make test-integration` for cross-module behavior.
+3. Run `make build-chrome && make test-e2e` before merge.
+4. Run `make test-all` for final validation.
 
 ## Debugging Failures
 

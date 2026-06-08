@@ -59,26 +59,26 @@ Related docs:
 
 ### Prerequisites
 
-- Node.js 18 or newer
-- pnpm 10.4.0
+- Node.js 22 or newer
+- pnpm 10.4.0 (invoked by Makefile targets)
 - Chrome, Firefox, or Safari
 
 ### Setup
 
 ```bash
 # Install dependencies
-pnpm install
+make install
 
 # Build for all browsers
-pnpm build
+make build
 
 # Build for a specific browser
-pnpm build:chrome
-pnpm build:firefox
-pnpm build:safari
+make build-chrome
+make build-firefox
+make build-safari
 
 # Watch mode
-pnpm watch:chrome
+make watch-chrome
 ```
 
 ### Load In Browser
@@ -156,16 +156,16 @@ See [docs/API_REFERENCE.md](docs/API_REFERENCE.md) for API details.
 
 ```bash
 # Run unit test suite
-pnpm test
+make test
 
 # Run integration tests
-pnpm test:integration
+make test-integration
 
 # Run e2e tests
-pnpm test:e2e
+make test-e2e
 
 # Serve test fixtures locally
-pnpm test:server
+make test-server
 ```
 
 See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md#testing) for full testing workflow.
@@ -174,10 +174,10 @@ See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md#testing) for full testing workflow
 
 ```bash
 # Package for Chrome Web Store
-pnpm package:chrome
+make package-chrome
 
 # Package for Firefox Add-ons
-pnpm package:firefox
+make package-firefox
 
 # Or package both with Makefile
 make package
@@ -239,7 +239,7 @@ Contributions welcome! Please:
 1. Fork the repository
 2. Create a feature branch
 3. Write tests for new features
-4. Run `pnpm test:all` to verify
+4. Run `make test-all` to verify
 5. Submit a pull request
 
 See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md#contributing) for contribution workflow.

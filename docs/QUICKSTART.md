@@ -130,7 +130,7 @@ if (window.WalletCompanion?.isInstalled) {
 Open the included test page:
 
 ```bash
-pnpm test:server
+make test-server
 # then open http://127.0.0.1:3456/ in your browser
 ```
 
@@ -139,7 +139,7 @@ pnpm test:server
 Open the wallet API test page:
 
 ```bash
-pnpm test:server
+make test-server
 # then open http://127.0.0.1:3456/mock-wallet.html
 ```
 
