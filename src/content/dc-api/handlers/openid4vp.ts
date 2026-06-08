@@ -23,7 +23,7 @@ const OpenID4VPDCRequestSchema = pipe(
 	check(
 		(input) =>
 			input.client_metadata != null || input.dcql_query != null || input.request_uri != null,
-		'Either client_metadata, dcql_query, or request_uri is required.',
+		'At least one of client_metadata, dcql_query, or request_uri is required.',
 	),
 );
 
