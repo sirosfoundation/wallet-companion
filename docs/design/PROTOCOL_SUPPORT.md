@@ -6,7 +6,7 @@ This document describes the protocol-aware business logic implemented in the Wal
 
 The extension now includes sophisticated protocol filtering and plugin architecture to:
 
-1. **Filter credential requests by supported protocols** - Only intercept requests for protocols supported by registered web wallets
+1. **Filter credential requests by supported protocols** - Only handle requests for protocols supported by registered web wallets
 2. **Pass unsupported protocols to native API** - Silently delegate unsupported protocols to the browser's native implementation
 3. **Plugin-based request/response processing** - Extensible architecture for protocol-specific validation and formatting
 4. **Override `userAgentAllowsProtocol()`** - Report protocols supported by registered web wallets
@@ -18,7 +18,7 @@ The extension now includes sophisticated protocol filtering and plugin architect
 ```
 1. Website calls navigator.credentials.get({ digital: { requests: [...] } })
    ↓
-2. inject.js intercepts the call
+2. inject.js handles the call
    ↓
 3. Extract protocols from digital.requests[]
    ↓
@@ -175,16 +175,13 @@ if (DigitalCredential.userAgentAllowsProtocol('openid4vp')) {
       requests: [{
         protocol: 'openid4vp',
         data: {
-          presentation_definition: {
-            id: 'age-verification',
-            input_descriptors: [{
-              id: 'age',
-              constraints: {
-                fields: [{
-                  path: ['$.credentialSubject.age'],
-                  filter: { type: 'number', minimum: 18 }
-                }]
-              }
+          dcql_query: {
+            credentials: [{
+              id: 'org.example.age_verification',
+              format: 'vc+sd-jwt',
+              claims: [
+                { path: ['age'], filter: { type: 'number', minimum: 18 } }
+              ]
             }]
           }
         }
@@ -253,9 +250,8 @@ registry.register(new CustomProtocolPlugin());
 {
   protocol: 'openid4vp',
   data: {
-    presentation_definition: {
-      id: string,
-      input_descriptors: [...]
+    dcql_query: {
+      credentials: [...]
     }
     // OR
     request_uri: string
@@ -266,13 +262,7 @@ registry.register(new CustomProtocolPlugin());
 **Response Structure:**
 ```javascript
 {
-  vp_token: string,
-  presentation_submission: {
-    id: string,
-    definition_id: string
-  }
-  // OR
-  id_token: string
+  vp_token: string
 }
 ```
 
@@ -284,8 +274,6 @@ registry.register(new CustomProtocolPlugin());
   protocol: 'mdoc-openid4vp',
   data: {
     doctype: 'org.iso.18013.5.1.mDL'
-    // OR
-    presentation_definition: {...}
   }
 }
 ```
@@ -340,7 +328,7 @@ registry.register(new CustomProtocolPlugin());
 
 **Run protocol tests:**
 ```bash
-pnpm test:unit  # Includes 35 protocol plugin tests
+make test-unit  # Includes protocol plugin tests
 ```
 
 **Test Coverage:**

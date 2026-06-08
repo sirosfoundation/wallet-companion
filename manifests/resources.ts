@@ -84,7 +84,7 @@ export class BrowserManifest {
 		this.#createManifest({
 			entry: (format, file) => {
 				this.#manifestFiles.entries.set(file, {
-					name: file.replace(/^src\//, '').replace(/\.[^/.]+$/, ''),
+					name: this.#formatEntryName(file),
 					source: resolve(this.projectRoot, file),
 					format,
 				});
@@ -93,7 +93,7 @@ export class BrowserManifest {
 			},
 			icons: (file) => {
 				this.#manifestFiles.icons.set(file, {
-					name: file.replace(/^src\//, '').replace(/\.[^/.]+$/, ''),
+					name: this.#formatEntryName(file),
 					source: resolve(this.projectRoot, file),
 					format: 'iife',
 				});
@@ -170,6 +170,23 @@ export class BrowserManifest {
 		};
 
 		return this.#createManifest(manifestProps);
+	}
+
+	public getEntryMap(): Record<string, string> {
+		const map: Record<string, string> = {};
+		for (const [key, entry] of this.#manifestFiles.entries) {
+			if (entry.output) {
+				map[key] = entry.output;
+			}
+		}
+		return map;
+	}
+
+	#formatEntryName(name: string): string {
+		const output = name.replace(/^src\//, '').replace(/\.[^/.]+$/, '').replaceAll('/index', '').split('/').pop();
+		if (!output) throw new Error('Failed to format entry file name: ' + name);
+
+		return output;
 	}
 
 	#getCollectedInputs(type: keyof ManifestFiles): Record<string, CollectedInput> {

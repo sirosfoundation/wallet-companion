@@ -10,7 +10,7 @@ When a user selects a wallet from the wallet selector modal, the extension invok
 
 ```
 1. Website calls navigator.credentials.get()
-2. Extension intercepts the call (inject.js)
+2. Extension handles the call (inject.js)
 3. Extension shows wallet selector modal (modal.js)
 4. User selects a wallet
 5. Extension builds wallet authorization URL (inject.js: buildWalletUrl)
@@ -36,7 +36,7 @@ For `openid4vp` protocol variants, the extension constructs an authorization req
 - `response_mode`: `direct_post` (wallet should POST response)
 - `nonce`: Cryptographic nonce for replay protection
 - `client_metadata`: Verifier capabilities (vp_formats_supported, etc.)
-- `presentation_definition`: Credential requirements (mapped from DC QL query)
+- `dcql_query`: Credential requirements (DCQL format)
 - `response_uri`: Where wallet should send the response
 - `_protocol`: Protocol variant identifier (for debugging)
 
@@ -49,7 +49,7 @@ https://demo.wwwallet.org/cb?
   response_mode=direct_post&
   nonce=abc123&
   client_metadata={"vp_formats_supported":...}&
-  presentation_definition={"credentials":[...]}&
+  dcql_query={"credentials":[...]}&
   response_uri=https://demo.digitalcredentials.dev/&
   _protocol=openid4vp-v1-unsigned
 ```
@@ -67,12 +67,7 @@ window.opener.postMessage({
   type: 'WC_WALLET_RESPONSE',
   requestId: '<request-id>',  // Must match request_id from URL
   response: {
-    vp_token: '<verifiable-presentation>',
-    presentation_submission: {
-      id: '<submission-id>',
-      definition_id: '<definition-id>',
-      descriptor_map: [...]
-    }
+    vp_token: '<verifiable-presentation>'
   }
 }, verifierOrigin);
 ```
@@ -116,24 +111,13 @@ For a wallet to work with this extension, it must:
 1. **Endpoint**: Expose an OpenID4VP authorization endpoint (e.g., `/cb`, `/authorize`)
 
 2. **Request Handling**: Accept authorization requests via URL parameters:
-   - Parse `client_metadata`, `presentation_definition`, `nonce`, etc.
-   - Support DC QL query format (or map from presentation definition)
+   - Parse `client_metadata`, `dcql_query`, `nonce`, etc.
+   - Support DCQL query format
 
 3. **Response Format**: Return responses in OpenID4VP format:
    ```json
    {
-     "vp_token": "<jwt-or-json-vp>",
-     "presentation_submission": {
-       "id": "<submission-id>",
-       "definition_id": "<definition-id>",
-       "descriptor_map": [
-         {
-           "id": "<descriptor-id>",
-           "format": "mso_mdoc",
-           "path": "$"
-         }
-       ]
-     }
+     "vp_token": "<jwt-or-json-vp>"
    }
    ```
 

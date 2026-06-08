@@ -10,7 +10,7 @@ Complete API reference for the Wallet Companion extension.
 
 ## Digital Credentials API (Verifier Side)
 
-The extension intercepts standard W3C Digital Credentials API calls. Websites request credentials using the native browser API.
+The extension polyfills the W3C Digital Credentials API for cross-browser support. Websites request credentials using the standard browser API.
 
 ### Basic Request
 
@@ -27,17 +27,14 @@ const credential = await navigator.credentials.get({
         response_mode: "direct_post",
         response_uri: "https://verifier.example.com/callback",
         nonce: "n-0S6_WzA2Mj",
-        presentation_definition: {
-          id: "example-request",
-          input_descriptors: [{
-            id: "id_credential",
-            format: { jwt_vp: { alg: ["ES256"] } },
-            constraints: {
-              fields: [{
-                path: ["$.vc.type"],
-                filter: { type: "string", const: "IdentityCredential" }
-              }]
-            }
+        dcql_query: {
+          credentials: [{
+            id: "org.example.identity",
+            format: "vc+sd-jwt",
+            claims: [
+              { path: ["given_name"] },
+              { path: ["family_name"] }
+            ]
           }]
         }
       }
@@ -161,25 +158,7 @@ if (!isRegistered) {
 
 ### Request Formats
 
-#### 1. Direct Parameters
-
-All parameters inline in the request object:
-
-```javascript
-{
-  protocol: "openid4vp",
-  data: {
-    client_id: "https://verifier.example.com",
-    response_type: "vp_token",
-    response_mode: "direct_post",
-    response_uri: "https://verifier.example.com/callback",
-    nonce: "n-0S6_WzA2Mj",
-    presentation_definition: { /* Presentation Exchange v2.0 */ }
-  }
-}
-```
-
-#### 2. JAR (JWT-secured Authorization Request)
+#### 1. JAR (JWT-secured Authorization Request)
 
 Request by reference using `request_uri`:
 
@@ -197,7 +176,7 @@ The extension will:
 1. Fetch the JWT from `request_uri`
 2. Extract and validate the authorization request from the JWT payload
 
-#### 3. DCQL (Digital Credentials Query Language)
+#### 2. DCQL (Digital Credentials Query Language)
 
 Credential requests using DCQL format:
 
@@ -221,66 +200,15 @@ Credential requests using DCQL format:
 }
 ```
 
-### Presentation Exchange v2.0
-
-The extension supports full Presentation Exchange v2.0 format:
-
-```javascript
-presentation_definition: {
-  id: "example-request",
-  input_descriptors: [{
-    id: "id_credential",
-    name: "Identity Credential",
-    purpose: "We need to verify your identity",
-    format: {
-      jwt_vp: { alg: ["ES256"] }
-    },
-    constraints: {
-      fields: [{
-        path: ["$.vc.type"],
-        filter: {
-          type: "string",
-          const: "IdentityCredential"
-        }
-      }, {
-        path: ["$.vc.credentialSubject.age"],
-        filter: {
-          type: "number",
-          minimum: 18
-        }
-      }]
-    }
-  }]
-}
-```
-
 ### Response Validation
 
 The extension validates responses according to OpenID4VP:
 
 **vp_token:** Must be a valid JWT or JSON object containing verifiable presentation
 
-**presentation_submission:** Must match the Presentation Exchange format:
-
-```javascript
-{
-  id: "example-submission",
-  definition_id: "example-request",
-  descriptor_map: [{
-    id: "id_credential",
-    format: "jwt_vp",
-    path: "$",
-    path_nested: {
-      format: "jwt_vc",
-      path: "$.vp.verifiableCredential[0]"
-    }
-  }]
-}
-```
-
 ## See Also
 
 - [Quick Start Guide](QUICKSTART.md) - Get started quickly
 - [Development Guide](DEVELOPMENT.md) - Build and test the extension
-- [OpenID4VP Implementation](docs/design/OPENID4VP_IMPLEMENTATION.md) - Complete protocol documentation
-- [Wallet Management](WALLET_MANAGEMENT.md) - User guide for managing wallets
+- [OpenID4VP Implementation](design/OPENID4VP_IMPLEMENTATION.md) - Complete protocol documentation
+- [Wallet Management](design/WALLET_MANAGEMENT.md) - User guide for managing wallets

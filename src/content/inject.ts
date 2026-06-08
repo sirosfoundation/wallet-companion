@@ -3,6 +3,7 @@
  * Intercepts navigator.credentials.get() calls for the Digital Credentials API
  */
 
+import { logger } from '@shared/logger';
 import { isProtocol, type Protocol, protocolsToArray } from '@shared/protocols';
 import { DCGateway } from './dc-api/gateway';
 import type { PreparedRequest } from './dc-api/types';
@@ -11,7 +12,7 @@ import { WalletCompanion } from './public-api/WalletCompanion';
 import { RPC } from './rpc';
 import type { WalletOption } from './types';
 
-console.debug('Digital Credentials API interceptor injected');
+logger.debug('Digital Credentials API interceptor injected');
 
 const originalCredentialsGet = navigator.credentials.get.bind(navigator.credentials);
 
@@ -38,7 +39,7 @@ type DigitalIdentityRequest = {
  * Override navigator.credentials.get
  */
 navigator.credentials.get = async (options?: CredentialRequestOptions & DigitalIdentityRequest) => {
-	console.debug('navigator.credentials.get intercepted:', options);
+	logger.debug('navigator.credentials.get intercepted:', options);
 
 	const requestId = crypto.randomUUID();
 	const digitalRequests = options?.digital?.requests || [];
@@ -163,4 +164,4 @@ async function showWalletSelector(
 }
 
 window.WalletCompanion = publicAPI;
-console.debug('Digital Credentials API interception active');
+logger.debug('Digital Credentials API interception active');
