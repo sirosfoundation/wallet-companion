@@ -2,6 +2,7 @@
  * Popup script for Wallet Companion extension
  */
 
+import { runtime } from '@shared/runtime';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { UsageStats, Wallets } from '@shared/schemas/resources';
 import { generateIdenticon, svgToDataUrl } from './utils/icons';
@@ -60,11 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	// Configure wallets
 	configureBtn.addEventListener('click', () => {
 		// Open options page or show wallet configuration
-		if (chrome.runtime.openOptionsPage) {
-			chrome.runtime.openOptionsPage();
+		if (runtime.openOptionsPage) {
+			runtime.openOptionsPage();
 		} else {
 			// Fallback: open in new tab
-			window.open(chrome.runtime.getURL('options.html'));
+			window.open(runtime.getURL('options.html'));
 		}
 	});
 
