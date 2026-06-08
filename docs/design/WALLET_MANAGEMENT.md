@@ -27,7 +27,7 @@ Configured wallets are persisted in extension storage.
 
 ## Selection Behavior
 
-When a request is intercepted:
+When a request arrives:
 
 1. Wallets are filtered by protocol compatibility.
 2. Disabled wallets are excluded.

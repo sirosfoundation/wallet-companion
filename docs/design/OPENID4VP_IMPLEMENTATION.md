@@ -21,7 +21,7 @@ Verifier Website                Browser Extension              Web Wallet
       | 1. navigator.credentials.get() |                             |
       |------------------------------->|                             |
       |                                |                             |
-      | 2. Intercept & Parse           |                             |
+      | 2. Handle & Parse              |                             |
       |                                |                             |
       | 3. Validate OpenID4VP Request  |                             |
       |                                |                             |
@@ -278,7 +278,7 @@ const credential = await navigator.credentials.get({
   }
 });
 
-// Extension intercepts, validates, and forwards to wallet
+// Extension handles, validates, and forwards to wallet
 // Wallet returns VP token
 // Extension validates response and returns to verifier
 ```
