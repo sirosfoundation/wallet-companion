@@ -62,6 +62,18 @@ describe('OpenID4VPDCHandler', () => {
 			expect(result.dcql_query).toBeDefined();
 		});
 
+		it('should accept request with nonce and state', () => {
+			const result = handler.prepareRequest({
+				request: 'eyJ...signed-jwt...',
+				nonce: 'test-nonce',
+				state: 'test-state',
+			});
+
+			expect(result.request).toBe('eyJ...signed-jwt...');
+			expect(result.nonce).toBe('test-nonce');
+			expect(result.state).toBe('test-state');
+		});
+
 		it('should reject empty object', () => {
 			expect(() => handler.prepareRequest({})).toThrow();
 		});
@@ -77,6 +89,25 @@ describe('OpenID4VPDCHandler', () => {
 			expect(() => handler.prepareRequest({
 				dcql_query: validDcqlQuery,
 				response_mode: 'invalid',
+			})).toThrow();
+		});
+
+		it('should accept request (inline JAR)', () => {
+			const result = handler.prepareRequest({
+				request: 'eyJ...signed-jwt...',
+			});
+
+			expect(result.protocol).toBe(OpenID4VPProtocols.NORMAL);
+			expect(result.request).toBe('eyJ...signed-jwt...');
+		});
+
+		it('should reject request with invalid type', () => {
+			expect(() => handler.prepareRequest({
+				request: 123,
+			})).toThrow();
+
+			expect(() => handler.prepareRequest({
+				request: { foo: 'bar' },
 			})).toThrow();
 		});
 	});
@@ -169,6 +200,88 @@ describe('OpenID4VPDCHandler', () => {
 		it('should set empty object for missing dcql_query', () => {
 			const url = handler.buildUrl(wallet, { client_metadata: {} }, 'req-123');
 			expect(url.searchParams.get('dcql_query')).toBe('{}');
+		});
+
+		it('should prioritize request over dcql_query when both provided', () => {
+			const url = handler.buildUrl(
+				wallet,
+				{ 
+					request: 'eyJ...signed-jwt...',
+					dcql_query: validDcqlQuery,
+				},
+				'req-123',
+			);
+
+			expect(url.searchParams.get('request')).toBe('eyJ...signed-jwt...');
+			expect(url.searchParams.has('dcql_query')).toBe(false);
+		});
+
+		it('should prioritize request over client_metadata when both provided', () => {
+			const url = handler.buildUrl(
+				wallet,
+				{ 
+					request: 'eyJ...signed-jwt...',
+					client_metadata: { vp_formats_supported: {} },
+				},
+				'req-123',
+			);
+
+			expect(url.searchParams.get('request')).toBe('eyJ...signed-jwt...');
+			expect(url.searchParams.has('client_metadata')).toBe(false);
+		});
+
+		describe('JAR (inline request) support', () => {
+			it('should set request when provided', () => {
+				const url = handler.buildUrl(
+					wallet,
+					{ request: 'eyJ...signed-jwt...' },
+					'req-123',
+				);
+
+				expect(url.searchParams.get('request')).toBe('eyJ...signed-jwt...');
+			});
+
+			it('should NOT set client_metadata when request is provided', () => {
+				const url = handler.buildUrl(
+					wallet,
+					{ request: 'eyJ...signed-jwt...' },
+					'req-123',
+				);
+
+				expect(url.searchParams.has('client_metadata')).toBe(false);
+			});
+
+			it('should NOT set dcql_query when request is provided', () => {
+				const url = handler.buildUrl(
+					wallet,
+					{ request: 'eyJ...signed-jwt...' },
+					'req-123',
+				);
+
+				expect(url.searchParams.has('dcql_query')).toBe(false);
+			});
+
+			it('should still set common params with request', () => {
+				const url = handler.buildUrl(
+					wallet,
+					{ request: 'eyJ...signed-jwt...' },
+					'req-123',
+				);
+
+				expect(url.searchParams.get('request_id')).toBe('req-123');
+				expect(url.searchParams.get('client_id')).toBe(window.location.origin);
+			});
+
+			it('should NOT set response_type/response_mode with request', () => {
+				const url = handler.buildUrl(
+					wallet,
+					{ request: 'eyJ...signed-jwt...' },
+					'req-123',
+				);
+
+				expect(url.searchParams.has('response_type')).toBe(false);
+				expect(url.searchParams.has('response_mode')).toBe(false);
+			});
 		});
 	});
 });

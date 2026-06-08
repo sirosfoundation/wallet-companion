@@ -14,14 +14,16 @@ const OpenID4VPDCRequestSchema = pipe(
 	strictObject({
 		nonce: optional(string()),
 		state: optional(string()),
+		client_id: optional(string()),
 		client_metadata: optional(OpenID4VPClientMetadataSchema),
 		dcql_query: optional(DCQLQuerySchema),
 		response_type: optional(OpenID4VPResponseTypeSchema),
 		response_mode: optional(OpenID4VPResponseModeSchema),
+		request: optional(string()),
 	}),
 	check(
-		(input) => input.client_metadata != null || input.dcql_query != null,
-		'Either client_metadata or dcql_query is required.',
+		(input) => input.client_metadata != null || input.dcql_query != null || input.request != null,
+		'At least one of client_metadata, dcql_query, or request is required.',
 	),
 );
 
@@ -52,17 +54,23 @@ export class OpenID4VPDCHandler implements DCProtocolHandler {
 		if (!wallet.url) throw new Error('Wallet URL is required');
 		const url = new URL(wallet.url);
 
-		// Always include request_id for response correlation
 		url.searchParams.set('request_id', requestId);
-
 		url.searchParams.set('client_id', window.location.origin);
+
+		// JAR signed request
+		if (request.request) {
+			url.searchParams.set('request', request.request);
+			return url;
+		}
+
+		// Unsigned request
 		url.searchParams.set('response_type', request.response_type || 'vp_token');
 		url.searchParams.set('response_mode', request.response_mode || 'dc_api');
 		if (request.nonce) url.searchParams.set('nonce', request.nonce);
 		url.searchParams.set('response_uri', window.location.href);
+		if (request.state) url.searchParams.set('state', request.state);
 		url.searchParams.set('client_metadata', JSON.stringify(request.client_metadata || {}));
 		url.searchParams.set('dcql_query', JSON.stringify(request.dcql_query || {}));
-		if (request.state) url.searchParams.set('state', request.state);
 
 		return url;
 	}
