@@ -21,7 +21,8 @@ const OpenID4VPDCRequestSchema = pipe(
 		response_mode: optional(OpenID4VPResponseModeSchema),
 	}),
 	check(
-		(input) => input.client_metadata != null || input.dcql_query != null || input.request_uri != null,
+		(input) =>
+			input.client_metadata != null || input.dcql_query != null || input.request_uri != null,
 		'Either client_metadata, dcql_query, or request_uri is required.',
 	),
 );
