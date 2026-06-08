@@ -10,6 +10,9 @@
 
 .DEFAULT_GOAL := help
 
+# Variables
+VERSION := $(shell node -p "require('./package.json').version")
+NAME := wallet-companion
 DIST := dist
 
 help: ## Show this help
@@ -57,10 +60,12 @@ watch-safari: ## Watch Safari
 package: package-chrome package-firefox ## Package all browsers
 
 package-chrome: build-chrome ## Package Chrome as ZIP
-	pnpm package:chrome
+	@cd $(DIST)/chrome && zip -r ../$(NAME)_chrome_$(VERSION).zip . -x '*.git*' -x 'README.md'
+	@echo "Created $(DIST)/$(NAME)_chrome_$(VERSION).zip"
 
 package-firefox: build-firefox ## Package Firefox as XPI
-	pnpm package:firefox
+	@cd $(DIST)/firefox && zip -r ../$(NAME)_firefox_$(VERSION).xpi . -x '*.git*' -x 'README.md'
+	@echo "Created $(DIST)/$(NAME)_firefox_$(VERSION).xpi"
 
 # Development
 dev-chrome: ## Open Chrome extensions page
