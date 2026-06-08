@@ -14,14 +14,15 @@ const OpenID4VPDCRequestSchema = pipe(
 	strictObject({
 		nonce: optional(string()),
 		state: optional(string()),
+		request_uri: optional(string()),
 		client_metadata: optional(OpenID4VPClientMetadataSchema),
 		dcql_query: optional(DCQLQuerySchema),
 		response_type: optional(OpenID4VPResponseTypeSchema),
 		response_mode: optional(OpenID4VPResponseModeSchema),
 	}),
 	check(
-		(input) => input.client_metadata != null || input.dcql_query != null,
-		'Either client_metadata or dcql_query is required.',
+		(input) => input.client_metadata != null || input.dcql_query != null || input.request_uri != null,
+		'Either client_metadata, dcql_query, or request_uri is required.',
 	),
 );
 
@@ -60,9 +61,15 @@ export class OpenID4VPDCHandler implements DCProtocolHandler {
 		url.searchParams.set('response_mode', request.response_mode || 'dc_api');
 		if (request.nonce) url.searchParams.set('nonce', request.nonce);
 		url.searchParams.set('response_uri', window.location.href);
-		url.searchParams.set('client_metadata', JSON.stringify(request.client_metadata || {}));
-		url.searchParams.set('dcql_query', JSON.stringify(request.dcql_query || {}));
 		if (request.state) url.searchParams.set('state', request.state);
+
+		// If request_uri provided, pass it to wallet instead of inline params
+		if (request.request_uri) {
+			url.searchParams.set('request_uri', request.request_uri);
+		} else {
+			url.searchParams.set('client_metadata', JSON.stringify(request.client_metadata || {}));
+			url.searchParams.set('dcql_query', JSON.stringify(request.dcql_query || {}));
+		}
 
 		return url;
 	}
