@@ -14,6 +14,7 @@ const OpenID4VPDCRequestSchema = pipe(
 	strictObject({
 		nonce: optional(string()),
 		state: optional(string()),
+		client_id: optional(string()),
 		client_metadata: optional(OpenID4VPClientMetadataSchema),
 		dcql_query: optional(DCQLQuerySchema),
 		response_type: optional(OpenID4VPResponseTypeSchema),
