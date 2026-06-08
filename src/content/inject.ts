@@ -1,6 +1,6 @@
 /**
  * Injected script that runs in the page context
- * Intercepts navigator.credentials.get() calls for the Digital Credentials API
+ * Polyfills navigator.credentials.get() calls for the Digital Credentials API
  */
 
 import { logger } from '@shared/logger';
@@ -12,7 +12,7 @@ import { WalletCompanion } from './public-api/WalletCompanion';
 import { RPC } from './rpc';
 import type { WalletOption } from './types';
 
-logger.debug('Digital Credentials API interceptor injected');
+logger.debug('Digital Credentials API polyfill injected');
 
 const originalCredentialsGet = navigator.credentials.get.bind(navigator.credentials);
 
@@ -39,7 +39,7 @@ type DigitalIdentityRequest = {
  * Override navigator.credentials.get
  */
 navigator.credentials.get = async (options?: CredentialRequestOptions & DigitalIdentityRequest) => {
-	logger.debug('navigator.credentials.get intercepted:', options);
+	logger.debug('navigator.credentials.get called (polyfill):', options);
 
 	const requestId = crypto.randomUUID();
 	const digitalRequests = options?.digital?.requests || [];
@@ -164,4 +164,4 @@ async function showWalletSelector(
 }
 
 window.WalletCompanion = publicAPI;
-logger.debug('Digital Credentials API interception active');
+logger.debug('Digital Credentials API polyfill active');

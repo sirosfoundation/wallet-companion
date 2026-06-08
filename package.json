@@ -38,7 +38,7 @@
     "chrome-extension",
     "firefox-addon",
     "safari-extension",
-    "api-interceptor",
+    "api-polyfill",
     "webextension"
   ],
   "dependencies": {

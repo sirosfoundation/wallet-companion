@@ -1,5 +1,5 @@
 /**
- * Background script for W3C Digital Credentials API interceptor
+ * Background script for W3C Digital Credentials API polyfill
  * Manages wallet configuration and credential requests
  */
 
@@ -29,5 +29,5 @@ async function initializeExtension() {
 		await Stores.options.setEnabled(true);
 	}
 
-	console.log('Digital Credentials API Interceptor initialized');
+	console.log('Digital Credentials API polyfill initialized');
 }
