@@ -4,7 +4,7 @@
 
 import { createServer, type Server } from 'http';
 import { readFileSync, existsSync, statSync } from 'fs';
-import { join, extname, dirname } from 'path';
+import { join, extname, dirname, resolve, normalize } from 'path';
 import { fileURLToPath } from 'url';
 
 export interface TestServer {
@@ -20,9 +20,16 @@ const MIME: Record<string, string> = {
 };
 
 function createHandler(root: string) {
+	const resolvedRoot = resolve(root);
 	return (req: import('http').IncomingMessage, res: import('http').ServerResponse) => {
-		const path = (req.url || '/').split('?')[0];
-		const file = join(root, path === '/' ? 'index.html' : path);
+		const urlPath = normalize((req.url || '/').split('?')[0]);
+		const file = resolve(resolvedRoot, urlPath.replace(/^\/+/, ''));
+
+		if (!file.startsWith(resolvedRoot)) {
+			res.writeHead(403);
+			res.end('Forbidden');
+			return;
+		}
 
 		if (!existsSync(file) || statSync(file).isDirectory()) {
 			res.writeHead(404);
