@@ -4,6 +4,12 @@ import type { WalletOption } from '../types';
 import { OpenID4VPDCHandler } from './handlers/openid4vp';
 import type { DCProtocolHandler, PreparedRequest, RawCredentialRequest } from './types';
 
+export type DCOriginCheck = InferInput<typeof DCOriginCheckSchema>;
+const DCOriginCheckSchema = object({
+	type: literal('WC_ORIGIN_CHECK'),
+	requestId: string(),
+});
+
 export type DCResponse = InferInput<typeof DCResponseSchema>;
 const DCResponseSchema = object({
 	type: literal('WC_WALLET_RESPONSE'),
@@ -100,6 +106,22 @@ export class DCGateway {
 	}
 
 	#onMessage(event: MessageEvent) {
+		const { success: originCheckSuccess, output: originCheckData } = safeParse(
+			DCOriginCheckSchema,
+			event.data,
+		);
+
+		if (originCheckSuccess) {
+			const pending = this.#pending.get(originCheckData.requestId);
+			if (pending && event.source === pending.source) {
+				(event.source as Window).postMessage(
+					{ type: 'WC_ORIGIN_ACK', requestId: originCheckData.requestId },
+					pending.origin, // Reply to wallet's origin
+				);
+			}
+			return;
+		}
+
 		const { success, output: data } = safeParse(DCResponseSchema, event.data);
 		if (!success) return;
 
