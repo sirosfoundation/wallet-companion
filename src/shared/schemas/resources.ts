@@ -25,7 +25,7 @@ export const WalletSchema = object({
 	id: string(),
 	name: string(),
 	url: pipe(string(), url()),
-	icon: nullish(string()),
+	icon: string(),
 	description: nullish(string()),
 	color: nullish(string()),
 	protocols: nullish(array(string())),

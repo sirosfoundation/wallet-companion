@@ -9,12 +9,11 @@ import {
 	fetchFavicon,
 	generateGeometricIcon,
 	generateIdenticon,
-	generateInitialAvatar,
 	type IconOption,
 	isIconUrl,
-	svgToDataUrl,
 } from './utils/icons';
 import { sendMessage } from './utils/messaging';
+import { generateInitialAvatar, svgToDataUrl } from '@shared/icons';
 
 // ============================================================================
 // Types

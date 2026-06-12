@@ -35,6 +35,7 @@ import type { Options } from '@shared/schemas/resources';
 import { parse } from 'valibot';
 import { Stores } from './storage';
 import type { MessageSenderCompat } from './types';
+import { fetchRemoteIconDataUri, parseWalletIcon } from './icons';
 
 export async function handleMessage(
 	rawMessage: unknown,
@@ -152,7 +153,13 @@ async function handleSaveWallets(
 	message: SaveWalletsMessage,
 	_sender: MessageSenderCompat,
 ): Promise<{ success: boolean }> {
-	await Stores.wallets.setAll(message.wallets);
+	const wallets = await Promise.all(message.wallets.map(async (wallet) => ({
+		...wallet,
+		icon: await parseWalletIcon(wallet.icon, wallet)
+	})));
+
+	await Stores.wallets.setAll(wallets);
+
 	return { success: true };
 }
 
@@ -223,6 +230,7 @@ async function handleRegisterWallet(
 	// Add wallet to the list
 	const newWallet = {
 		...message.wallet,
+		icon: await parseWalletIcon(message.wallet.icon, message.wallet),
 		id: walletId,
 		enabled: true,
 		autoRegistered: true,
@@ -276,40 +284,7 @@ async function handleFetchFavicon(
 ): Promise<FetchFaviconResponse> {
 	// Fetch favicon from a wallet URL via background script to avoid CORS
 	try {
-		const urlObj = new URL(message.url);
-		const faviconUrl = `${urlObj.origin}${urlObj.pathname.replace(/\/?$/, '/')}favicon.ico`;
-
-		const controller = new AbortController();
-		const timeoutMs = message.timeout || 3000;
-		const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-
-		const res = await fetch(faviconUrl, { signal: controller.signal });
-		clearTimeout(timeoutId);
-
-		if (!res.ok) {
-			return { success: false };
-		}
-
-		const contentType = res.headers.get('content-type') || 'image/x-icon';
-		if (!contentType.startsWith('image/')) {
-			return { success: false };
-		}
-
-		const buf = await res.arrayBuffer();
-		if (!buf.byteLength) {
-			return { success: false };
-		}
-
-		// Convert ArrayBuffer to base64 data URI
-		// (Service workers in MV3 lack FileReader/btoa for binary)
-		const bytes = new Uint8Array(buf);
-		let binary = '';
-		for (const byte of bytes) {
-			binary += String.fromCharCode(byte);
-		}
-
-		const base64 = btoa(binary);
-		const dataUri = `data:${contentType};base64,${base64}`;
+		const dataUri = await fetchRemoteIconDataUri(message.url);
 
 		return { success: true, dataUri };
 	} catch (e) {
