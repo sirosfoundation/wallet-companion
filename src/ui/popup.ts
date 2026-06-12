@@ -141,19 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
 				let iconHtml: string;
 				let icon = wallet.icon;
 
-				// If icon is missing or is the default emoji, generate one dynamically
-				if (!icon || icon === '🔐') {
-					// Generate an identicon based on the wallet URL or name
-					const identifier = wallet.url || wallet.name || wallet.id;
-					try {
-						const svg = generateIdenticon(identifier);
-						icon = svgToDataUrl(svg);
-					} catch (e) {
-						console.error('Icon generation failed:', e);
-						icon = '🔐'; // Fallback to emoji if generation fails
-					}
-				}
-
 				// Check if icon is a URL (data: or http)
 				const iconIsUrl = icon && (icon.startsWith('data:') || icon.startsWith('http'));
 				if (iconIsUrl) {
