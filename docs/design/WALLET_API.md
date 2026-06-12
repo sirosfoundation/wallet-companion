@@ -44,7 +44,6 @@ Register the wallet with the extension. If the wallet is already registered (by 
 | `walletInfo.url` | `string` | Yes | Wallet endpoint URL (must be valid) |
 | `walletInfo.description` | `string` | No | Brief description of the wallet |
 | `walletInfo.icon` | `string` | No | Emoji or URL for the wallet icon |
-| `walletInfo.logo` | `string` | No | Logo URL (alternative to icon) |
 | `walletInfo.color` | `string` | No | Brand color (hex format, default: #3b82f6) |
 
 **Returns:** `Promise<Object>` with the following structure:
@@ -171,7 +170,7 @@ For more control, you can add user-initiated registration:
       name: 'MyWallet',
       url: 'https://wallet.example.com',
       description: 'Secure digital credentials',
-      logo: 'https://wallet.example.com/logo.png',
+      icon: 'https://wallet.example.com/icon.png',
       color: '#2563eb'
     };
     

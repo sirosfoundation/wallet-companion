@@ -87,7 +87,6 @@ Register a wallet with the extension.
   - `protocols` (string[], required) - Supported protocol identifiers (e.g., `['openid4vp', 'w3c-vc']`)
   - `description` (string, optional) - Description of the wallet
   - `icon` (string, optional) - Icon emoji or URL
-  - `logo` (string, optional) - Logo URL (alternative to icon)
   - `color` (string, optional) - Brand color in hex format (default: `'#1C4587'`)
 
 **Returns:** `Promise<Object>`

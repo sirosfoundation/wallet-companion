@@ -15,7 +15,6 @@ export const WalletRegistrationInputSchema = object({
 	name: string(),
 	url: pipe(string(), url()),
 	icon: nullish(string()),
-	logo: nullish(string()),
 	description: nullish(string()),
 	color: nullish(string()),
 	protocols: nullish(array(string())),
