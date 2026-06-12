@@ -33,9 +33,9 @@ import {
 } from '@shared/schemas/messages';
 import type { Options } from '@shared/schemas/resources';
 import { parse } from 'valibot';
+import { fetchRemoteIconDataUri, parseWalletIcon } from './icons';
 import { Stores } from './storage';
 import type { MessageSenderCompat } from './types';
-import { fetchRemoteIconDataUri, parseWalletIcon } from './icons';
 
 export async function handleMessage(
 	rawMessage: unknown,
@@ -153,10 +153,12 @@ async function handleSaveWallets(
 	message: SaveWalletsMessage,
 	_sender: MessageSenderCompat,
 ): Promise<{ success: boolean }> {
-	const wallets = await Promise.all(message.wallets.map(async (wallet) => ({
-		...wallet,
-		icon: await parseWalletIcon(wallet.icon, wallet)
-	})));
+	const wallets = await Promise.all(
+		message.wallets.map(async (wallet) => ({
+			...wallet,
+			icon: await parseWalletIcon(wallet.icon, wallet),
+		})),
+	);
 
 	await Stores.wallets.setAll(wallets);
 

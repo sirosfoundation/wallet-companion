@@ -1,12 +1,15 @@
 import { generateInitialAvatar, svgToDataUrl } from '@shared/icons';
 import { logger } from '@shared/logger';
-import { WalletRegistrationInput } from '@shared/schemas/resources';
+import type { WalletRegistrationInput } from '@shared/schemas/resources';
 
 /**
  * Parses a wallet icon from various formats (data URI, SVG string, remote URL) and returns a data URI.
  * If the icon is invalid or cannot be fetched, generates a fallback identicon based on the wallet name.
  */
-export async function parseWalletIcon(icon: string | null | undefined, wallet: WalletRegistrationInput): Promise<string> {
+export async function parseWalletIcon(
+	icon: string | null | undefined,
+	wallet: WalletRegistrationInput,
+): Promise<string> {
 	if (icon?.startsWith('data:')) {
 		return icon;
 	}
@@ -33,7 +36,10 @@ export async function parseWalletIcon(icon: string | null | undefined, wallet: W
 /**
  * Fetches the favicon from the given URL and returns it as a data URI.
  */
-export async function fetchRemoteIconDataUri(url: string, timeoutMs: number = 3000): Promise<string> {
+export async function fetchRemoteIconDataUri(
+	url: string,
+	timeoutMs: number = 3000,
+): Promise<string> {
 	const urlObj = new URL(url);
 	const faviconUrl = `${urlObj.origin}${urlObj.pathname.replace(/\/?$/, '/')}favicon.ico`;
 
@@ -70,4 +76,3 @@ export async function fetchRemoteIconDataUri(url: string, timeoutMs: number = 30
 
 	return dataUri;
 }
-

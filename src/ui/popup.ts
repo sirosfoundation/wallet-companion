@@ -2,12 +2,12 @@
  * Popup script for Wallet Companion extension
  */
 
+import { svgToDataUrl } from '@shared/icons';
 import { runtime } from '@shared/runtime';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { UsageStats, Wallets } from '@shared/schemas/resources';
 import { generateIdenticon } from './utils/icons';
 import { onMessage, sendMessage } from './utils/messaging';
-import { svgToDataUrl } from '@shared/icons';
 
 document.addEventListener('DOMContentLoaded', () => {
 	const statusBar = document.querySelector<HTMLElement>('#statusBar');
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				const statusLabel = wallet.enabled ? 'Active' : 'Inactive';
 
 				let iconHtml: string;
-				let icon = wallet.icon;
+				const icon = wallet.icon;
 
 				// Check if icon is a URL (data: or http)
 				const iconIsUrl = icon && (icon.startsWith('data:') || icon.startsWith('http'));

@@ -68,4 +68,3 @@ export function svgToDataUrl(svg: string): string {
 	const encoded = encodeURIComponent(svg);
 	return `data:image/svg+xml,${encoded}`;
 }
-

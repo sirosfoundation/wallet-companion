@@ -3,11 +3,9 @@
  * Handles favicon fetching, identicon generation, and initial avatars
  */
 
+import { generateInitialAvatar, getColorFromString, hashString, svgToDataUrl } from '@shared/icons';
 import { InboundMessages } from '@shared/schemas/messages';
 import { sendMessage } from './messaging';
-import { generateInitialAvatar, getColorFromString, hashString, svgToDataUrl } from '@shared/icons';
-
-
 
 /**
  * Generate an SVG identicon based on a string
@@ -52,7 +50,6 @@ function generateIdenticon(input: string, size: number = 48): string {
     ${cellsHtml}
   </svg>`;
 }
-
 
 /**
  * Generate a geometric pattern icon

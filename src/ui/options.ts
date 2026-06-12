@@ -2,6 +2,7 @@
  * Options page script for Wallet Companion extension
  */
 
+import { generateInitialAvatar, svgToDataUrl } from '@shared/icons';
 import type { GetSettingsResponse } from '@shared/schemas/messages';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { Wallet, WalletRegistrationInput } from '@shared/schemas/resources';
@@ -13,7 +14,6 @@ import {
 	isIconUrl,
 } from './utils/icons';
 import { sendMessage } from './utils/messaging';
-import { generateInitialAvatar, svgToDataUrl } from '@shared/icons';
 
 // ============================================================================
 // Types
@@ -593,7 +593,7 @@ function renderWalletCard(wallet: Wallet): string {
 
 	// Render icon - handle both emoji and image icons
 	let iconHtml: string;
-	let icon = wallet.icon;
+	const icon = wallet.icon;
 
 	// Check if icon is a URL (data: or http)
 	const iconIsUrl = icon && (icon.startsWith('data:') || icon.startsWith('http'));
