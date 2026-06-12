@@ -84,8 +84,22 @@ describe('Message Routing Integration', () => {
 
 		it('should return all configured wallets', async () => {
 			const mockWallets = [
-				{ id: 'w1', name: 'Wallet 1', url: 'https://w1.com', protocols: ['openid4vp'], enabled: true },
-				{ id: 'w2', name: 'Wallet 2', url: 'https://w2.com', protocols: ['openid4vp'], enabled: false },
+				{
+					id: 'w1',
+					name: 'Wallet 1',
+					url: 'https://w1.com',
+					protocols: ['openid4vp'],
+					enabled: true,
+					icon: 'data:image/png;base64,some-b64-string==',
+				},
+				{
+					id: 'w2',
+					name: 'Wallet 2',
+					url: 'https://w2.com',
+					protocols: ['openid4vp'],
+					enabled: false,
+					icon: 'data:image/png;base64,some-b64-string==',
+				},
 			];
 			mockStores.wallets.getAll.mockResolvedValue(mockWallets);
 
@@ -101,7 +115,14 @@ describe('Message Routing Integration', () => {
 	describe('SAVE_WALLETS', () => {
 		it('should save wallets to storage', async () => {
 			const wallets = [
-				{ id: 'w1', name: 'New Wallet', url: 'https://new.com', protocols: ['openid4vp'], enabled: true },
+				{
+					id: 'w1',
+					name: 'New Wallet',
+					url: 'https://new.com',
+					protocols: ['openid4vp'],
+					enabled: true,
+					icon: 'data:image/png;base64,some-b64-string==',
+				},
 			];
 
 			const response = await sendMessage<{ success: boolean }>({
@@ -118,7 +139,11 @@ describe('Message Routing Integration', () => {
 		it('should register a new wallet', async () => {
 			mockStores.wallets.getAll.mockResolvedValue([]);
 
-			const response = await sendMessage<{ success: boolean; alreadyRegistered: boolean; wallet: { id: string } }>({
+			const response = await sendMessage<{
+				success: boolean;
+				alreadyRegistered: boolean;
+				wallet: { id: string };
+			}>({
 				type: InboundMessages.REGISTER_WALLET,
 				wallet: {
 					name: 'Test Wallet',
@@ -136,7 +161,14 @@ describe('Message Routing Integration', () => {
 
 		it('should detect already registered wallet', async () => {
 			mockStores.wallets.getAll.mockResolvedValue([
-				{ id: 'existing', name: 'Existing', url: 'https://test.wallet.com', protocols: ['openid4vp'], enabled: true },
+				{
+					id: 'existing',
+					name: 'Existing',
+					url: 'https://test.wallet.com',
+					protocols: ['openid4vp'],
+					enabled: true,
+					icon: 'data:image/png;base64,some-b64-string==',
+				},
 			]);
 
 			const response = await sendMessage<{ success: boolean; alreadyRegistered: boolean }>({
@@ -157,7 +189,14 @@ describe('Message Routing Integration', () => {
 	describe('CHECK_WALLET', () => {
 		it('should return true for registered wallet', async () => {
 			mockStores.wallets.getAll.mockResolvedValue([
-				{ id: 'w1', name: 'Wallet', url: 'https://registered.com', protocols: ['openid4vp'], enabled: true },
+				{
+					id: 'w1',
+					name: 'Wallet',
+					url: 'https://registered.com',
+					protocols: ['openid4vp'],
+					enabled: true,
+					icon: 'data:image/png;base64,some-b64-string==',
+				},
 			]);
 
 			const response = await sendMessage<{ isRegistered: boolean }>({
@@ -193,9 +232,30 @@ describe('Message Routing Integration', () => {
 
 		it('should return aggregated protocols from all enabled wallets', async () => {
 			mockStores.wallets.getAll.mockResolvedValue([
-				{ id: 'w1', name: 'W1', url: 'https://w1.com', protocols: ['openid4vp', 'proto-a'], enabled: true },
-				{ id: 'w2', name: 'W2', url: 'https://w2.com', protocols: ['openid4vp', 'proto-b'], enabled: true },
-				{ id: 'w3', name: 'W3', url: 'https://w3.com', protocols: ['proto-c'], enabled: false }, // Disabled
+				{
+					id: 'w1',
+					name: 'W1',
+					url: 'https://w1.com',
+					protocols: ['openid4vp', 'proto-a'],
+					enabled: true,
+					icon: 'data:image/png;base64,some-b64-string==',
+				},
+				{
+					id: 'w2',
+					name: 'W2',
+					url: 'https://w2.com',
+					protocols: ['openid4vp', 'proto-b'],
+					enabled: true,
+					icon: 'data:image/png;base64,some-b64-string==',
+				},
+				{
+					id: 'w3',
+					name: 'W3',
+					url: 'https://w3.com',
+					protocols: ['proto-c'],
+					enabled: false,
+					icon: 'data:image/png;base64,some-b64-string==',
+				}, // Disabled
 			]);
 
 			const response = await sendMessage<{ protocols: string[] }>({
@@ -215,9 +275,16 @@ describe('Message Routing Integration', () => {
 		it('should return current settings', async () => {
 			mockStores.options.getEnabled.mockResolvedValue(true);
 			mockStores.options.getDeveloperMode.mockResolvedValue(true);
-			mockStores.stats.getStats.mockResolvedValue({ interceptCount: 5, walletUses: { w1: 3 } });
+			mockStores.stats.getStats.mockResolvedValue({
+				interceptCount: 5,
+				walletUses: { w1: 3 },
+			});
 
-			const response = await sendMessage<{ enabled: boolean; developerMode: boolean; stats: object }>({
+			const response = await sendMessage<{
+				enabled: boolean;
+				developerMode: boolean;
+				stats: object;
+			}>({
 				type: InboundMessages.GET_SETTINGS,
 			});
 
@@ -273,7 +340,10 @@ describe('Message Routing Integration', () => {
 			});
 
 			expect(response.success).toBe(true);
-			expect(mockStores.stats.setStats).toHaveBeenCalledWith({ interceptCount: 0, walletUses: {} });
+			expect(mockStores.stats.setStats).toHaveBeenCalledWith({
+				interceptCount: 0,
+				walletUses: {},
+			});
 		});
 	});
 

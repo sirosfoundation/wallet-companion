@@ -2,6 +2,7 @@
  * Options page script for Wallet Companion extension
  */
 
+import { generateInitialAvatar, svgToDataUrl } from '@shared/icons';
 import type { GetSettingsResponse } from '@shared/schemas/messages';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { Wallet, WalletRegistrationInput } from '@shared/schemas/resources';
@@ -9,10 +10,8 @@ import {
 	fetchFavicon,
 	generateGeometricIcon,
 	generateIdenticon,
-	generateInitialAvatar,
 	type IconOption,
 	isIconUrl,
-	svgToDataUrl,
 } from './utils/icons';
 import { sendMessage } from './utils/messaging';
 
@@ -594,20 +593,7 @@ function renderWalletCard(wallet: Wallet): string {
 
 	// Render icon - handle both emoji and image icons
 	let iconHtml: string;
-	let icon = wallet.icon;
-
-	// If icon is missing or is the default emoji, generate one dynamically
-	if (!icon || icon === '🔐') {
-		// Generate an identicon based on the wallet URL or name
-		const identifier = wallet.url || wallet.name || wallet.id;
-		try {
-			const svg = generateIdenticon(identifier);
-			icon = svgToDataUrl(svg);
-		} catch (e) {
-			console.error('Icon generation failed:', e);
-			icon = '🔐'; // Fallback to emoji if generation fails
-		}
-	}
+	const icon = wallet.icon;
 
 	// Check if icon is a URL (data: or http)
 	const iconIsUrl = icon && (icon.startsWith('data:') || icon.startsWith('http'));
@@ -794,7 +780,7 @@ async function handleAddWallet(e: Event): Promise<void> {
 		name: nameInput.value,
 		url: urlInput.value,
 		description: descInput.value,
-		icon: iconInput.value || '🔐',
+		icon: iconInput.value,
 		iconType: iconTypeInput instanceof HTMLInputElement ? iconTypeInput.value || 'emoji' : 'emoji',
 		color: '#1C4587',
 		enabled: enabledInput.checked,
@@ -869,7 +855,7 @@ async function openEditModal(wallet: Wallet): Promise<void> {
 	if (descInput instanceof HTMLInputElement || descInput instanceof HTMLTextAreaElement) {
 		descInput.value = wallet.description || '';
 	}
-	if (iconInput instanceof HTMLInputElement) iconInput.value = wallet.icon || '🔐';
+	if (iconInput instanceof HTMLInputElement) iconInput.value = wallet.icon;
 	if (iconTypeInput instanceof HTMLInputElement) iconTypeInput.value = wallet.iconType || 'emoji';
 	if (enabledInput instanceof HTMLInputElement) enabledInput.checked = wallet.enabled;
 	updateWalletStatusLabel();
@@ -965,8 +951,7 @@ async function handleSaveEdit(): Promise<void> {
 			descInput instanceof HTMLInputElement || descInput instanceof HTMLTextAreaElement
 				? descInput.value
 				: wallets[walletIndex].description,
-		icon: iconInput instanceof HTMLInputElement ? iconInput.value || '🔐' : '🔐',
-		iconType: iconTypeInput instanceof HTMLInputElement ? iconTypeInput.value || 'emoji' : 'emoji',
+		icon: iconInput instanceof HTMLInputElement ? iconInput.value : '',
 		enabled: enabledInput.checked,
 	};
 
