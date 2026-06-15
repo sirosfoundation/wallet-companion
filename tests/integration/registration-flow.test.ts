@@ -83,6 +83,7 @@ describe('Registration Flow Integration', () => {
 		url: string;
 		protocols: string[];
 		enabled: boolean;
+		icon: string;
 	}>;
 
 	beforeEach(() => {
@@ -150,7 +151,7 @@ describe('Registration Flow Integration', () => {
 				url: 'https://full.wallet.com',
 				protocols: ['openid4vp'],
 				description: 'A wallet with all optional fields',
-				icon: 'https://full.wallet.com/icon.png',
+				icon: 'data:image/png;base64,some-b64-string==data:image/png;base64,some-b64-string==',
 			};
 
 			const result = await walletCompanion.registerWallet(walletInfo);

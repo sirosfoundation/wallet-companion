@@ -49,27 +49,6 @@ function parseTemplate(html: string): DocumentFragment {
 	return t.content;
 }
 
-function createWalletIcon(icon: string | undefined): Node {
-	if (!icon) return document.createTextNode('🔐');
-
-	if (icon.startsWith('<svg')) {
-		const svg = new DOMParser().parseFromString(icon, 'image/svg+xml').querySelector('svg');
-		if (!svg) return document.createTextNode('🔐');
-		// Load via <img> — browser sandboxes scripts in SVG loaded this way
-		icon = `data:image/svg+xml,${encodeURIComponent(new XMLSerializer().serializeToString(svg))}`;
-	}
-
-	if (icon.startsWith('data:image/') || icon.startsWith('https://')) {
-		const img = document.createElement('img');
-		img.src = icon;
-		img.alt = 'Wallet icon';
-		return img;
-	}
-
-	// Emoji or plain text
-	return document.createTextNode(icon);
-}
-
 function createWalletItem(
 	wallet: WalletOption,
 	onSelect: (w: WalletOption) => void,
@@ -82,17 +61,21 @@ function createWalletItem(
 		throw new Error('Failed to create wallet item: missing template elements');
 	}
 
-	const icon = item.querySelector('.wallet-icon');
-	const name = item.querySelector('.name');
-	const desc = item.querySelector('.desc');
+	const iconEl = item.querySelector('.wallet-icon');
+	const nameEl = item.querySelector('.name');
+	const descEl = item.querySelector('.desc');
 
-	if (!icon || !name || !desc) {
+	if (!iconEl || !nameEl || !descEl) {
 		throw new Error('Failed to create wallet item: missing template elements');
 	}
 
-	icon.appendChild(createWalletIcon(wallet.icon ?? undefined));
-	name.textContent = wallet.name;
-	desc.textContent = wallet.description ?? wallet.url ?? 'Digital Identity Wallet';
+	const icon = document.createElement('img');
+	icon.src = wallet.icon;
+	icon.alt = `${wallet.name} icon`;
+
+	iconEl.appendChild(icon);
+	nameEl.textContent = wallet.name;
+	descEl.textContent = wallet.description ?? wallet.url ?? 'Digital Identity Wallet';
 
 	item.addEventListener('click', (e) => {
 		e.stopPropagation();

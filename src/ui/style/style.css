@@ -475,17 +475,6 @@
 }
 
 /* --------------------------------------------------------------------------
-   Component: wallet-emoji  (emoji font-size in wallet icon wrappers)
-   -------------------------------------------------------------------------- */
-
-.wallet-emoji {
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* --------------------------------------------------------------------------
    Component: badge-label
    -------------------------------------------------------------------------- */
 
@@ -787,44 +776,9 @@
     object-fit: contain;
   }
 
-  &.-emoji {
-    font-size: 24px;
-  }
-
   &.-favicon > img {
     padding: var(--s-space-1);
   }
-}
-
-/* --------------------------------------------------------------------------
-   Component: emoji-btn  (small emoji picker buttons)
-   -------------------------------------------------------------------------- */
-
-.emoji-btn {
-  width: 30px;
-  height: 30px;
-  border: var(--s-border-strong);
-  border-radius: var(--s-border-radius-xs);
-  background: var(--s-color-gray-50);
-  cursor: pointer;
-  font-size: var(--s-font-size-sm);
-  transition: all var(--s-duration-fast);
-
-  &:hover {
-    border-color: var(--s-color-brand);
-    background: var(--temp-brand-tint);
-  }
-
-  &.-selected {
-    border-color: var(--s-color-brand);
-    background: var(--s-color-blue-lighter);
-  }
-}
-
-.emoji-grid {
-  display: flex;
-  gap: var(--s-space-2);
-  flex-wrap: wrap;
 }
 
 /* --------------------------------------------------------------------------
