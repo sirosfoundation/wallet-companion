@@ -1289,7 +1289,10 @@ function selectIconInForm(prefix: string, value: string): void {
 	}
 
 	// Update preview and inputs
-	preview.innerHTML = `<img src="${value}" alt="Wallet icon">`;
+	const img = document.createElement('img');
+	img.src = value;
+	img.alt = 'Wallet icon';
+	preview.replaceChildren(img);
 	iconInput.value = value;
 }
 
