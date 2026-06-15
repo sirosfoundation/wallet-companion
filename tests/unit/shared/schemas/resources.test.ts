@@ -13,12 +13,19 @@ import {
 	WalletsSchema,
 } from '../../../../src/shared/schemas/resources';
 
+vi.mock('../../../src/background/icons', () => ({
+    parseWalletIcon: vi.fn().mockResolvedValue('data:image/png;base64,mock'),
+    fetchRemoteIconDataUri: vi.fn().mockResolvedValue('data:image/png;base64,mock'),
+}));
+
 describe('Resource Schemas', () => {
 	describe('WalletRegistrationInputSchema', () => {
 		it('should validate minimal valid input', () => {
 			const input = {
 				name: 'Test Wallet',
 				url: 'https://wallet.example.com',
+				icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+				protocols: ['openid4vp-v1'],
 			};
 
 			const result = safeParse(WalletRegistrationInputSchema, input);
@@ -30,7 +37,7 @@ describe('Resource Schemas', () => {
 			const input = {
 				name: 'Test Wallet',
 				url: 'https://wallet.example.com',
-				icon: '🏦',
+				icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
 				logo: 'https://example.com/logo.png',
 				description: 'A test wallet',
 				color: '#ff0000',
@@ -93,6 +100,7 @@ describe('Resource Schemas', () => {
 				id: 'wallet-123',
 				name: 'Test Wallet',
 				url: 'https://wallet.example.com',
+				icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
 				enabled: true,
 			};
 
@@ -106,7 +114,7 @@ describe('Resource Schemas', () => {
 				id: 'wallet-123',
 				name: 'Test Wallet',
 				url: 'https://wallet.example.com',
-				icon: '🏦',
+				icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
 				description: 'A test wallet',
 				color: '#ff0000',
 				protocols: ['openid4vp', 'mdoc-openid4vp'],
@@ -114,7 +122,6 @@ describe('Resource Schemas', () => {
 				autoRegistered: true,
 				registeredFrom: 'https://example.com',
 				registeredAt: '2024-01-01T00:00:00Z',
-				iconType: 'emoji',
 			};
 
 			const result = safeParse(WalletSchema, wallet);
@@ -186,12 +193,14 @@ describe('Resource Schemas', () => {
 					id: 'wallet-1',
 					name: 'Wallet 1',
 					url: 'https://wallet1.example.com',
+					icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
 					enabled: true,
 				},
 				{
 					id: 'wallet-2',
 					name: 'Wallet 2',
 					url: 'https://wallet2.example.com',
+					icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
 					enabled: false,
 				},
 			];

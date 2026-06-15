@@ -138,16 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				const statusClass = wallet.enabled ? '-active' : '-inactive';
 				const statusLabel = wallet.enabled ? 'Active' : 'Inactive';
 
-				let iconHtml: string;
-				const icon = wallet.icon;
-
-				// Check if icon is a URL (data: or http)
-				const iconIsUrl = icon && (icon.startsWith('data:') || icon.startsWith('http'));
-				if (iconIsUrl) {
-					iconHtml = `<img src="${escapeHtml(icon)}" alt="${escapeHtml(wallet.name)}" style="width: 32px; height: 32px; object-fit: contain;">`;
-				} else {
-					iconHtml = `<span class="wallet-emoji">${icon}</span>`;
-				}
+				const iconHtml = `<img src="${escapeHtml(wallet.icon)}" alt="${escapeHtml(wallet.name)}" style="width: 32px; height: 32px; object-fit: contain;">`;
 
 				return `
         <div class="wallet-item">

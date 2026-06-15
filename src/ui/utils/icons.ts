@@ -134,7 +134,6 @@ async function fetchFavicon(url: string, timeout: number = 3000): Promise<string
 }
 
 export type IconOption = {
-	type: string;
 	value: string;
 };
 
@@ -163,10 +162,10 @@ async function generateWalletIconOptions(
 	const result: WalletIconOptionsResult = {
 		favicon: null,
 		generated: [
-			{ type: 'identicon', value: svgToDataUrl(identiconSvg) },
-			{ type: 'initial', value: svgToDataUrl(initialSvg) },
-			{ type: 'geometric-1', value: svgToDataUrl(geometric1Svg) },
-			{ type: 'geometric-2', value: svgToDataUrl(geometric2Svg) },
+			{ value: svgToDataUrl(identiconSvg) },
+			{ value: svgToDataUrl(initialSvg) },
+			{ value: svgToDataUrl(geometric1Svg) },
+			{ value: svgToDataUrl(geometric2Svg) },
 		],
 	};
 
@@ -184,7 +183,7 @@ async function generateWalletIconOptions(
 }
 
 /**
- * Check if a string is a data URL or external URL (not an emoji)
+ * Check if a string is a data URL or external URL
  */
 function isIconUrl(icon: string): boolean {
 	return !!(icon && (icon.startsWith('data:') || icon.startsWith('http')));
