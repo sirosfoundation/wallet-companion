@@ -6,7 +6,16 @@ import {
 	OpenID4VPResponseModeSchema,
 	OpenID4VPResponseTypeSchema,
 } from '@shared/schemas/protocols';
-import { check, type InferInput, optional, pipe, safeParse, strictObject, string } from 'valibot';
+import {
+	array,
+	check,
+	type InferInput,
+	optional,
+	pipe,
+	safeParse,
+	strictObject,
+	string,
+} from 'valibot';
 import type { DCProtocolHandler, PreparedRequest } from '../types';
 
 type OpenID4VPDCRequest = InferInput<typeof OpenID4VPDCRequestSchema>;
@@ -20,6 +29,7 @@ const OpenID4VPDCRequestSchema = pipe(
 		response_type: optional(OpenID4VPResponseTypeSchema),
 		response_mode: optional(OpenID4VPResponseModeSchema),
 		request: optional(string()),
+		transaction_data: optional(array(string())),
 	}),
 	check(
 		(input) => input.client_metadata != null || input.dcql_query != null || input.request != null,
@@ -71,6 +81,9 @@ export class OpenID4VPDCHandler implements DCProtocolHandler {
 		if (request.state) url.searchParams.set('state', request.state);
 		url.searchParams.set('client_metadata', JSON.stringify(request.client_metadata || {}));
 		url.searchParams.set('dcql_query', JSON.stringify(request.dcql_query || {}));
+		if (request.transaction_data?.length) {
+			url.searchParams.set('transaction_data', JSON.stringify(request.transaction_data));
+		}
 
 		return url;
 	}
