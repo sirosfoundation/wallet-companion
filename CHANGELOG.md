@@ -1,5 +1,19 @@
 # @sirosfoundation/wallet-companion
 
+## 0.1.0-beta.2
+
+### Minor Changes
+
+- [#75](https://github.com/sirosfoundation/wallet-companion/pull/75) [`c4a3e33`](https://github.com/sirosfoundation/wallet-companion/commit/c4a3e3373012330b674ce61fac259a38578120af) Thanks [@smncd](https://github.com/smncd)! - Remove `emoji` support and `iconType` field
+
+- [#75](https://github.com/sirosfoundation/wallet-companion/pull/75) [`fbb7a40`](https://github.com/sirosfoundation/wallet-companion/commit/fbb7a40935f0b347927f1cb629e8d6bf15eeeac4) Thanks [@smncd](https://github.com/smncd)! - Merge wallet `logo` field with the `icon` field, and ensure there is always a data-uri icon string present
+
+### Patch Changes
+
+- [#73](https://github.com/sirosfoundation/wallet-companion/pull/73) [`866c2a9`](https://github.com/sirosfoundation/wallet-companion/commit/866c2a9d1a39b806a58c178abf2acb8455c72bc6) Thanks [@smncd](https://github.com/smncd)! - Allow wallets to check the request origin
+
+- [#74](https://github.com/sirosfoundation/wallet-companion/pull/74) [`97f0aa2`](https://github.com/sirosfoundation/wallet-companion/commit/97f0aa24fecddf15a792f507b905c95624301d81) Thanks [@smncd](https://github.com/smncd)! - Add support for `transaction_data` parameter
+
 ## 0.1.0-beta.1
 
 ### Patch Changes

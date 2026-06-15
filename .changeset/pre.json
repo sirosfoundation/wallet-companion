@@ -5,10 +5,14 @@
     "@sirosfoundation/wallet-companion": "0.0.0"
   },
   "changesets": [
+    "heavy-cups-sit",
     "nine-boats-stop",
+    "quick-falcons-shave",
     "sixty-seas-begin",
     "social-cows-go",
     "solid-weeks-live",
-    "sunny-dancers-dream"
+    "sunny-dancers-dream",
+    "upset-toys-kiss",
+    "vast-cities-ring"
   ]
 }
