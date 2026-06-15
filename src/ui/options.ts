@@ -1290,6 +1290,12 @@ function selectIconInForm(prefix: string, value: string): void {
 
 	// Update preview and inputs
 	const img = document.createElement('img');
+	const isSafeDataImage = value.startsWith('data:image/');
+	const isSafeUrlIcon = isIconUrl(value);
+	if (!isSafeDataImage && !isSafeUrlIcon) {
+		console.error('selectIconInForm: Unsafe icon value rejected');
+		return;
+	}
 	img.src = value;
 	img.alt = 'Wallet icon';
 	preview.replaceChildren(img);
