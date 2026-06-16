@@ -153,6 +153,5 @@ prerelease-mode: ## Enter/exit prerelease mode
 	pnpm changeset pre $(filter-out $@,$(MAKECMDGOALS))
 
 # Publishing
-
-publish-npm:
+publish-npm: build
 	pnpm -r publish --access public
