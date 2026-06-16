@@ -1,5 +1,6 @@
 {
 	"name": "@sirosfoundation/wcc-types",
+	"version": "0.0.0",
 	"description": "Wallet Companion client types",
 	"type": "module",
 	"exports": {
