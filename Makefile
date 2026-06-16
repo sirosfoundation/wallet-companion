@@ -151,3 +151,8 @@ tag: ## Create git tag
 
 prerelease-mode: ## Enter/exit prerelease mode
 	pnpm changeset pre $(filter-out $@,$(MAKECMDGOALS))
+
+# Publishing
+
+publish-npm:
+	pnpm -r publish --access public
