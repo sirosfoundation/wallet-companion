@@ -1,5 +1,16 @@
 # @sirosfoundation/wallet-companion
 
+## 0.1.0-beta.3
+
+### Minor Changes
+
+- [#77](https://github.com/sirosfoundation/wallet-companion/pull/77) [`ebda888`](https://github.com/sirosfoundation/wallet-companion/commit/ebda888b617a55927339b92d2fa1c25c49c34178) Thanks [@smncd](https://github.com/smncd)! - Separate package `@sirosfoundation/wcc-types` for client API types
+
+### Patch Changes
+
+- Updated dependencies [[`e0e1f3f`](https://github.com/sirosfoundation/wallet-companion/commit/e0e1f3f90160f4e00f57dbdab84408c0a4fc593e)]:
+  - @sirosfoundation/wcc-types@0.1.0-beta.0
+
 ## 0.1.0-beta.2
 
 ### Minor Changes
