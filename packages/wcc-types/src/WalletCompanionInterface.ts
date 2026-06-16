@@ -55,8 +55,6 @@ export interface WalletCompanionInterface {
      *   protocols: ['openid4vp'],
      * });
      * ```
-     *
-     * @todo Replace with `requestWalletRegistration(walletInfo)` that prompts user for confirmation
      */
     registerWallet(walletInfo: WalletRegistrationInput): Promise<WalletRegistrationResult>;
 
