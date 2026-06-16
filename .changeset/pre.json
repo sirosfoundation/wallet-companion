@@ -2,7 +2,8 @@
   "mode": "pre",
   "tag": "beta",
   "initialVersions": {
-    "@sirosfoundation/wallet-companion": "0.0.0"
+    "@sirosfoundation/wallet-companion": "0.0.0",
+    "@sirosfoundation/wcc-types": "0.0.0"
   },
   "changesets": [
     "heavy-cups-sit",
