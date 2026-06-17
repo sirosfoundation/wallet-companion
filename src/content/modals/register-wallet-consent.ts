@@ -98,7 +98,6 @@ export function registerWalletConsentModal({
 
 		const modal = createModal(name, url);
 
-
 		shadow.adoptedStyleSheets = [globalStyles, modalStyles].map((styles) => {
 			const sheet = new CSSStyleSheet();
 			sheet.replaceSync(styles);
