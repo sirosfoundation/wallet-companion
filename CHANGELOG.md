@@ -1,5 +1,11 @@
 # @sirosfoundation/wallet-companion
 
+## 0.1.0-beta.4
+
+### Patch Changes
+
+- [#80](https://github.com/sirosfoundation/wallet-companion/pull/80) [`de3abd9`](https://github.com/sirosfoundation/wallet-companion/commit/de3abd93ac00fa3073cac301e9995b223ce495fa) Thanks [@smncd](https://github.com/smncd)! - Fix modal styles tripping CSP headers
+
 ## 0.1.0-beta.3
 
 ### Minor Changes
