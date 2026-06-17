@@ -67,11 +67,6 @@
     "web-ext": "^10.4.0",
     "ws": "^8.21.0"
   },
-  "pnpm": {
-	"overrides": {
-		"js-yaml": "^4.2.0"
-	}
-  },
   "repository": {
     "type": "git",
     "url": ""
