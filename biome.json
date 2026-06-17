@@ -7,9 +7,10 @@
   },
   "files": {
     "includes": [
-		"src/**/*.ts", 
-		"src/**/*.js", 
-		"src/**/*.tsx", 
+		"packages/wcc-types/src/**/*.ts",
+		"src/**/*.ts",
+		"src/**/*.js",
+		"src/**/*.tsx",
 		"src/**/*.test.ts"
 	]
   },

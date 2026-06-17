@@ -15,7 +15,6 @@ export const WalletRegistrationInputSchema = object({
 	name: string(),
 	url: pipe(string(), url()),
 	icon: nullish(string()),
-	logo: nullish(string()),
 	description: nullish(string()),
 	color: nullish(string()),
 	protocols: nullish(array(string())),
@@ -26,7 +25,7 @@ export const WalletSchema = object({
 	id: string(),
 	name: string(),
 	url: pipe(string(), url()),
-	icon: nullish(string()),
+	icon: string(),
 	description: nullish(string()),
 	color: nullish(string()),
 	protocols: nullish(array(string())),
@@ -34,7 +33,6 @@ export const WalletSchema = object({
 	autoRegistered: nullish(boolean()),
 	registeredFrom: nullish(string()), // Origin that triggered auto-registration
 	registeredAt: nullish(string()), // ISO timestamp of registration
-	iconType: nullish(string()), // Icon source: 'emoji', 'favicon', 'identicon', etc.
 });
 export type Wallet = InferOutput<typeof WalletSchema>;
 

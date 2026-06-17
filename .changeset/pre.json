@@ -2,13 +2,22 @@
   "mode": "pre",
   "tag": "beta",
   "initialVersions": {
-    "@sirosfoundation/wallet-companion": "0.0.0"
+    "@sirosfoundation/wallet-companion": "0.0.0",
+    "@sirosfoundation/wcc-types": "0.0.0"
   },
   "changesets": [
+    "eager-guests-peel",
+    "heavy-cups-sit",
+    "many-emus-shake",
     "nine-boats-stop",
+    "plain-ducks-dance",
+    "quick-falcons-shave",
     "sixty-seas-begin",
     "social-cows-go",
     "solid-weeks-live",
-    "sunny-dancers-dream"
+    "spicy-moons-smile",
+    "sunny-dancers-dream",
+    "upset-toys-kiss",
+    "vast-cities-ring"
   ]
 }

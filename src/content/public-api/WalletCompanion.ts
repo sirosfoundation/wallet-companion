@@ -1,10 +1,11 @@
 import { registerWalletConsentModal } from '@content/modals/register-wallet-consent';
 import type { RPC } from '@content/rpc';
-import type { WalletCompanionInterface, WalletRegistrationResult } from '@content/types';
-import {
-	type WalletRegistrationInput,
-	WalletRegistrationInputSchema,
-} from '@shared/schemas/resources';
+import { WalletRegistrationInputSchema } from '@shared/schemas/resources';
+import type {
+	WalletCompanionInterface,
+	WalletRegistrationInput,
+	WalletRegistrationResult,
+} from '@sirosfoundation/wcc-types';
 import { parse } from 'valibot';
 
 /**
@@ -34,7 +35,7 @@ export class WalletCompanion implements WalletCompanionInterface {
 	}
 
 	/** Fetches supported protocols from the extension. */
-	async #updateSupportedProtocols(): Promise<void> {
+	async #updateSupportedProtocols() {
 		try {
 			const { protocols } = await this.#rpc.send<{ protocols: string[] }>(
 				'GET_SUPPORTED_PROTOCOLS',
@@ -45,7 +46,7 @@ export class WalletCompanion implements WalletCompanionInterface {
 		}
 	}
 
-	async registerWallet(walletInfo: WalletRegistrationInput): Promise<WalletRegistrationResult> {
+	async registerWallet(walletInfo: WalletRegistrationInput) {
 		if (!walletInfo?.name || !walletInfo.url) {
 			throw new Error('Wallet registration requires at least name and url');
 		}
@@ -109,7 +110,7 @@ export class WalletCompanion implements WalletCompanionInterface {
 		return result;
 	}
 
-	async isWalletRegistered(url: string): Promise<boolean> {
+	async isWalletRegistered(url: string) {
 		const { isRegistered } = await this.#rpc.send<{ isRegistered: boolean }>('CHECK_WALLET', {
 			url,
 		});

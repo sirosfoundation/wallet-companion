@@ -12,8 +12,6 @@ type RegisterWalletConsentModalResult = { status: 'approved' | 'declined' };
 
 const HOST_ID = 'wc-register-wallet-host';
 
-const STYLES = [globalStyles, modalStyles].join('\n');
-
 const MODAL_TEMPLATE = `
 <dialog class="register-wallet">
 	<div class="header">
@@ -100,10 +98,13 @@ export function registerWalletConsentModal({
 
 		const modal = createModal(name, url);
 
-		const style = document.createElement('style');
-		style.textContent = STYLES;
+		shadow.adoptedStyleSheets = [globalStyles, modalStyles].map((styles) => {
+			const sheet = new CSSStyleSheet();
+			sheet.replaceSync(styles);
+			return sheet;
+		});
 
-		shadow.append(style, modal);
+		shadow.append(modal);
 
 		modal.show();
 

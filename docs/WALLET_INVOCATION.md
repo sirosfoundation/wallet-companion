@@ -135,7 +135,7 @@ Wallets are configured in the extension options with:
 - **Name**: Display name for the wallet
 - **URL**: Base URL of the wallet (e.g., `https://demo.wwwallet.org/`)
 - **Protocols**: List of supported protocol identifiers (e.g., `["openid4vp-v1-unsigned"]`)
-- **Icon**: Emoji or icon character
+- **Icon**: Url or data uri or svg
 - **Color**: Brand color for UI
 - **Description**: Short description
 

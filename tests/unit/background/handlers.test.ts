@@ -31,8 +31,14 @@ vi.mock('../../../src/shared/runtime', () => ({
 	runtimeSendMessage: vi.fn(),
 }));
 
+vi.mock('../../../src/background/icons', () => ({
+    parseWalletIcon: vi.fn().mockImplementation(() => Promise.resolve('data:image/png;base64,mock')),
+    fetchRemoteIconDataUri: vi.fn().mockImplementation(() => Promise.resolve('data:image/png;base64,mock')),
+}));
+
 // Import mocked stores after mocking
 import { Stores } from '../../../src/background/storage';
+import { parseWalletIcon } from '@background/icons';
 
 // Use vi.mocked for proper typing
 const mockStores = {
@@ -56,21 +62,27 @@ describe('handleMessage', () => {
 	let sendResponse: (r: unknown) => void;
 
 	beforeEach(() => {
-		vi.clearAllMocks();
+		vi.resetAllMocks();
+		vi.spyOn(console, 'error').mockImplementation(() => {});
+		vi.spyOn(console, 'log').mockImplementation(() => {});
 		sendResponse = vi.fn<(r: unknown) => void>();
+
+		vi.mocked(parseWalletIcon).mockResolvedValue('data:image/png;base64,mock');
 
 		// Default mock implementations
 		mockStores.options.getEnabled.mockResolvedValue(true);
 		mockStores.options.getDeveloperMode.mockResolvedValue(false);
 		mockStores.wallets.getAll.mockResolvedValue([]);
+		mockStores.wallets.setAll.mockResolvedValue(undefined);
 		mockStores.stats.getStats.mockResolvedValue({ interceptCount: 0, walletUses: {} });
+		mockStores.stats.setStats.mockResolvedValue(undefined);
 	});
 
 	describe('GET_WALLETS', () => {
 		it('should return wallets from storage', async () => {
 			const mockWallets = [
-				{ id: 'w1', name: 'Wallet 1', url: 'https://w1.com', enabled: true },
-				{ id: 'w2', name: 'Wallet 2', url: 'https://w2.com', enabled: false },
+				{ id: 'w1', name: 'Wallet 1', url: 'https://w1.com', icon: 'data:image/png;base64,mock', enabled: true },
+				{ id: 'w2', name: 'Wallet 2', url: 'https://w2.com', icon: 'data:image/png;base64,mock', enabled: false },
 			];
 			mockStores.wallets.getAll.mockResolvedValue(mockWallets);
 
@@ -99,11 +111,25 @@ describe('handleMessage', () => {
 
 	describe('SAVE_WALLETS', () => {
 		it('should save wallets to storage', async () => {
-			const walletsToSave = [{ id: 'w1', name: 'New Wallet', url: 'https://new.com', enabled: true }];
+			const walletsToSave = [{
+				id: 'w1',
+				name: 'New Wallet',
+				url: 'https://new.com',
+				icon: 'data:image/png;base64,original',
+				enabled: true
+			}];
 
 			await handleMessage({ type: InboundMessages.SAVE_WALLETS, wallets: walletsToSave }, mockSender, sendResponse);
 
-			expect(mockStores.wallets.setAll).toHaveBeenCalledWith(walletsToSave);
+			expect(mockStores.wallets.setAll).toHaveBeenCalledWith([
+				expect.objectContaining({
+					id: 'w1',
+					name: 'New Wallet',
+					url: 'https://new.com',
+					enabled: true,
+					icon: 'data:image/png;base64,mock',
+				})
+			]);
 			expect(sendResponse).toHaveBeenCalledWith({ success: true });
 		});
 
@@ -111,7 +137,13 @@ describe('handleMessage', () => {
 			mockStores.wallets.setAll.mockRejectedValueOnce(new Error('Storage error'));
 
 			await handleMessage(
-				{ type: InboundMessages.SAVE_WALLETS, wallets: [{ id: 'w1', name: 'W', url: 'https://w.com', enabled: true }] },
+				{ type: InboundMessages.SAVE_WALLETS, wallets: [{
+					id: 'w1',
+					name: 'W',
+					url: 'https://w.com',
+					icon: 'data:image/png;base64,test',
+					enabled: true
+				}] },
 				mockSender,
 				sendResponse,
 			);
@@ -262,7 +294,13 @@ describe('handleMessage', () => {
 		});
 
 		it('should return existing wallet if URL already registered', async () => {
-			const existingWallet = { id: 'w1', name: 'Existing', url: 'https://existing.com', enabled: true };
+			const existingWallet = {
+				id: 'w1',
+				name: 'Existing',
+				url: 'https://existing.com',
+				icon: 'data:image/png;base64,mock',
+				enabled: true
+			};
 			mockStores.wallets.getAll.mockResolvedValue([existingWallet]);
 
 			await handleMessage(
@@ -313,7 +351,13 @@ describe('handleMessage', () => {
 
 	describe('CHECK_WALLET', () => {
 		it('should return true when wallet is registered', async () => {
-			mockStores.wallets.getAll.mockResolvedValue([{ id: 'w1', name: 'W1', url: 'https://wallet.example.com', enabled: true }]);
+			mockStores.wallets.getAll.mockResolvedValue([{
+				id: 'w1',
+				name: 'W1',
+				url: 'https://wallet.example.com',
+				icon: 'data:image/png;base64,mock',
+				enabled: true
+			}]);
 
 			await handleMessage(
 				{ type: InboundMessages.CHECK_WALLET, url: 'https://wallet.example.com' },
@@ -368,9 +412,30 @@ describe('handleMessage', () => {
 	describe('GET_SUPPORTED_PROTOCOLS', () => {
 		it('should return protocols from enabled wallets', async () => {
 			mockStores.wallets.getAll.mockResolvedValue([
-				{ id: 'w1', name: 'W1', url: 'https://w1.com', enabled: true, protocols: ['openid4vp', 'dcapi'] },
-				{ id: 'w2', name: 'W2', url: 'https://w2.com', enabled: true, protocols: ['openid4vp'] },
-				{ id: 'w3', name: 'W3', url: 'https://w3.com', enabled: false, protocols: ['other'] },
+				{
+					id: 'w1',
+					name: 'W1',
+					url: 'https://w1.com',
+					icon: 'data:image/png;base64,mock',
+					enabled: true,
+					protocols: ['openid4vp', 'dcapi']
+				},
+				{
+					id: 'w2',
+					name: 'W2',
+					url: 'https://w2.com',
+					icon: 'data:image/png;base64,mock',
+					enabled: true,
+					protocols: ['openid4vp']
+				},
+				{
+					id: 'w3',
+					name: 'W3',
+					url: 'https://w3.com',
+					icon: 'data:image/png;base64,mock',
+					enabled: false,
+					protocols: ['other']
+				},
 			]);
 
 			await handleMessage({ type: InboundMessages.GET_SUPPORTED_PROTOCOLS }, mockSender, sendResponse);
@@ -384,7 +449,13 @@ describe('handleMessage', () => {
 		});
 
 		it('should return empty array when no wallets have protocols', async () => {
-			mockStores.wallets.getAll.mockResolvedValue([{ id: 'w1', name: 'W1', url: 'https://w1.com', enabled: true }]);
+			mockStores.wallets.getAll.mockResolvedValue([{
+				id: 'w1',
+				name: 'W1',
+				url: 'https://w1.com',
+				icon: 'data:image/png;base64,mock',
+				enabled: true
+			}]);
 
 			await handleMessage({ type: InboundMessages.GET_SUPPORTED_PROTOCOLS }, mockSender, sendResponse);
 

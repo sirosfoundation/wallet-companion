@@ -2,10 +2,11 @@
  * Popup script for Wallet Companion extension
  */
 
+import { svgToDataUrl } from '@shared/icons';
 import { runtime } from '@shared/runtime';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { UsageStats, Wallets } from '@shared/schemas/resources';
-import { generateIdenticon, svgToDataUrl } from './utils/icons';
+import { generateIdenticon } from './utils/icons';
 import { onMessage, sendMessage } from './utils/messaging';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -137,29 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				const statusClass = wallet.enabled ? '-active' : '-inactive';
 				const statusLabel = wallet.enabled ? 'Active' : 'Inactive';
 
-				let iconHtml: string;
-				let icon = wallet.icon;
-
-				// If icon is missing or is the default emoji, generate one dynamically
-				if (!icon || icon === '🔐') {
-					// Generate an identicon based on the wallet URL or name
-					const identifier = wallet.url || wallet.name || wallet.id;
-					try {
-						const svg = generateIdenticon(identifier);
-						icon = svgToDataUrl(svg);
-					} catch (e) {
-						console.error('Icon generation failed:', e);
-						icon = '🔐'; // Fallback to emoji if generation fails
-					}
-				}
-
-				// Check if icon is a URL (data: or http)
-				const iconIsUrl = icon && (icon.startsWith('data:') || icon.startsWith('http'));
-				if (iconIsUrl) {
-					iconHtml = `<img src="${escapeHtml(icon)}" alt="${escapeHtml(wallet.name)}" style="width: 32px; height: 32px; object-fit: contain;">`;
-				} else {
-					iconHtml = `<span class="wallet-emoji">${icon}</span>`;
-				}
+				const iconHtml = `<img src="${escapeHtml(wallet.icon)}" alt="${escapeHtml(wallet.name)}" style="width: 32px; height: 32px; object-fit: contain;">`;
 
 				return `
         <div class="wallet-item">

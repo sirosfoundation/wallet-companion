@@ -1,7 +1,6 @@
 import type { WalletRegistrationInput } from '@shared/schemas/resources';
 import type { WalletCompanionInterface } from './public-api/WalletCompanionInterface';
 
-export * from './public-api/DigitalCredentialsInterface';
 export * from './public-api/WalletCompanionInterface';
 
 declare global {
@@ -19,7 +18,7 @@ export type WalletOption = {
 	name: string;
 	description?: string | null;
 	url?: string | null;
-	icon?: string | null;
+	icon: string;
 	protocols?: string[] | null;
 };
 
