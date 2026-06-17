@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Credentials Wallet Selector</title>
+  <style>
+    body {
+      width: 380px;
+      min-height: 400px;
+      max-height: 500px;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      margin: 0;
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .header {
+      background: #ffffff;
+      color: #111827;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e5e7eb;
+      flex-shrink: 0;
+    }
+    
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .header-text h1 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 2px 0;
+      color: #1C4587;
+    }
+    
+    .header-text .subtitle {
+      font-size: 11px;
+      color: #6b7280;
+      margin: 0;
+    }
+    
+    /* Toggle Switch */
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #d1d5db;
+      transition: 0.3s;
+      border-radius: 24px;
+    }
+    
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    
+    .toggle-switch input:checked + .toggle-slider {
+      background-color: #1C4587;
+    }
+    
+    .toggle-switch input:checked + .toggle-slider:before {
+      transform: translateX(20px);
+    }
+    
+    .content {
+      padding: 16px;
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .status {
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    
+    .status.active {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+    
+    .status.inactive {
+      background-color: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+    
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    
+    .wallet-status.disabled {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+    
+    .stat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    
+    .stat-title {
+      font-size: 12px;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .stat-title svg {
+      width: 14px;
+      height: 14px;
+    }
+    
+    .stat-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #1C4587;
+    }
+    
+    .clear-btn {
+      font-size: 11px;
+      color: #6b7280;
+      background: none;
+      border: 1px solid #e5e7eb;
+      cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    
+    .clear-btn:hover {
+      background: #f3f4f6;
+      color: #374151;
+      border-color: #d1d5db;
+    }
+    
+    .section {
+      background: white;
+      border-radius: 8px;
+      padding: 14px;
+      border: 1px solid #e5e7eb;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+    
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111827;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .wallet-count-badge {
+      background: #1C4587;
+      color: white;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+    
+    .wallet-list {
+      flex: 1;
+      overflow-y: auto;
+      margin: 0 -4px;
+      padding: 0 4px;
+    }
+    
+    .wallet-item {
+      padding: 10px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+    
+    .wallet-icon {
+      font-size: 20px;
+    }
+    
+    .wallet-name {
+      flex: 1;
+      font-weight: 500;
+      color: #374151;
+    }
+    
+    .wallet-status {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: #d1fae5;
+      color: #065f46;
+    }
+    
+    button.primary {
+      width: 100%;
+      padding: 10px 16px;
+      background: #1C4587;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.2s;
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
+    
+    button.primary:hover {
+      background: #14366B;
+    }
+    
+    .footer {
+      padding: 10px 16px;
+      background: white;
+      border-top: 1px solid #e5e7eb;
+      font-size: 11px;
+      color: #6b7280;
+      text-align: center;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-left">
+      <img src="icons/logo-dark.svg" alt="Siros" class="logo">
+      <div class="header-text">
+        <h1>Wallet Selector</h1>
+        <p class="subtitle">W3C Digital Credentials</p>
+      </div>
+    </div>
+    <label class="toggle-switch" title="Toggle extension on/off">
+      <input type="checkbox" id="extensionToggle" checked>
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+  
+  <div class="content">
+    <div id="status" class="status active">
+      <span class="status-indicator"></span>
+      <span id="statusText">Active & monitoring</span>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+          Requests handled
+        </span>
+        <button id="clearBtn" class="clear-btn">Clear</button>
+      </div>
+      <div class="stat-value" id="interceptCount">0</div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <h3 class="section-title">
+          My Wallets
+          <span class="wallet-count-badge" id="walletCount">0</span>
+        </h3>
+      </div>
+      <div class="wallet-list" id="walletList">
+        <!-- Wallets will be inserted here -->
+      </div>
+      <button id="configureBtn" class="primary">Configure Wallets</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    Digital Credentials Wallet Selector v1.0.0
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

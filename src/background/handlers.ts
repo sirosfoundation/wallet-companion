@@ -8,6 +8,8 @@ import {
 	type ContentScriptReadyResponse,
 	type FetchFaviconMessage,
 	type FetchFaviconResponse,
+	type GetAttestationKeyMessage,
+	type GetAttestationKeyResponse,
 	type GetSettingsMessage,
 	type GetSettingsResponse,
 	type GetSupportedProtocolsMessage,
@@ -28,11 +30,14 @@ import {
 	type SaveWalletsMessage,
 	type ShowWalletSelectorMessage,
 	type ShowWalletSelectorResponse,
+	type SignWiaChallengeMessage,
+	type SignWiaChallengeResponse,
 	type ToggleEnabledMessage,
 	type ToggleEnabledResponse,
 } from '@shared/schemas/messages';
 import type { Options } from '@shared/schemas/resources';
 import { parse } from 'valibot';
+import { getOrCreateAttestationKey, signWiaChallenge } from './extensionKeyManager';
 import { Stores } from './storage';
 import type { MessageSenderCompat } from './types';
 
@@ -84,6 +89,10 @@ async function dispatchMessage(
 			return handleFetchFavicon(message, sender);
 		case InboundMessages.CLEAR_STATS:
 			return handleClearStats(message, sender);
+		case InboundMessages.SIGN_WIA_CHALLENGE:
+			return handleSignWiaChallenge(message, sender);
+		case InboundMessages.GET_ATTESTATION_KEY:
+			return handleGetAttestationKey(message, sender);
 		default:
 			throw new Error(`Unhandled message type: ${(message as { type?: string })?.type}`);
 	}
@@ -389,6 +398,28 @@ async function _getWalletsForProtocol(protocol: string) {
 	return wallets.filter(
 		(w) => w.enabled && w.protocols && Array.isArray(w.protocols) && w.protocols.includes(protocol),
 	);
+}
+
+// ── Phase G: Extension attestation key handlers ─────────────────────
+
+async function handleSignWiaChallenge(
+	message: SignWiaChallengeMessage,
+	_sender: MessageSenderCompat,
+): Promise<SignWiaChallengeResponse> {
+	try {
+		const jws = await signWiaChallenge(message.challenge);
+		return { jws };
+	} catch (error) {
+		return { error: error instanceof Error ? error.message : String(error) };
+	}
+}
+
+async function handleGetAttestationKey(
+	_message: GetAttestationKeyMessage,
+	_sender: MessageSenderCompat,
+): Promise<GetAttestationKeyResponse> {
+	const { kid, publicKeyJwk } = await getOrCreateAttestationKey();
+	return { kid, publicKeyJwk };
 }
 
 /**
