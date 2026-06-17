@@ -10,8 +10,6 @@ import globalStyles from '@shared/style/global.css?inline';
 
 const HOST_ID = 'dc-wallet-host';
 
-const STYLES = [globalStyles, modalStyles].join('\n');
-
 // Static HTML templates — no user data, safe to use innerHTML via <template>
 const MODAL_TEMPLATE = `
   <div class="wallet-selector">
@@ -98,8 +96,11 @@ export function selectWalletModal(options: ShowWalletSelectorOptions): void {
 
 	const dismiss = () => host.remove();
 
-	const style = document.createElement('style');
-	style.textContent = STYLES;
+	shadow.adoptedStyleSheets = [globalStyles, modalStyles].map((styles) => {
+		const sheet = new CSSStyleSheet();
+		sheet.replaceSync(styles);
+		return sheet;
+	});
 
 	const fragment = parseTemplate(MODAL_TEMPLATE);
 	const overlay = fragment.querySelector<HTMLElement>('.wallet-selector');
@@ -143,5 +144,5 @@ export function selectWalletModal(options: ShowWalletSelectorOptions): void {
 	}
 	document.addEventListener('keydown', handleEscape);
 
-	shadow.append(style, fragment);
+	shadow.append(fragment);
 }
