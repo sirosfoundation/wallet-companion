@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			walletList.innerHTML = `
         <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 13px;">
           ${getMessage('popupNoWallets')}<br>
-          Click "Add or Configure" to add one.
+          ${getMessage('popupNoWalletsHint')}
         </div>
       `;
 			walletCount.textContent = '0';

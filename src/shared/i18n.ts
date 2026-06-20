@@ -1,15 +1,18 @@
 /**
  * Internationalization helper for browser extension messages.
  *
- * Wraps chrome.i18n.getMessage() with a fallback to the message key
- * for environments where the i18n API is not available (e.g. tests).
+ * Uses the WebExtension i18n API when available, with a fallback to the
+ * message key for environments where the API is not present (e.g. tests).
  */
 export function getMessage(key: string, substitutions?: string | string[]): string {
-	try {
-		const msg = chrome.i18n.getMessage(key, substitutions);
+	const g = globalThis as Record<string, unknown>;
+	const chromeApi = (g.chrome as { i18n?: { getMessage: (k: string, s?: string | string[]) => string } })?.i18n;
+	const browserApi = (g.browser as { i18n?: { getMessage: (k: string, s?: string | string[]) => string } })?.i18n;
+	const api = chromeApi ?? browserApi;
+	if (api?.getMessage) {
+		const msg = api.getMessage(key, substitutions);
 		return msg || key;
-	} catch {
-		// Fallback for environments without chrome.i18n (tests, plain page context)
-		return key;
 	}
+	// Fallback for environments without i18n API (tests, plain page context)
+	return key;
 }

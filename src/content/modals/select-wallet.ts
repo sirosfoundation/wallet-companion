@@ -70,7 +70,7 @@ function createWalletItem(
 
 	const icon = document.createElement('img');
 	icon.src = wallet.icon;
-	icon.alt = `${wallet.name} icon`;
+	icon.alt = getMessage('walletIconAlt', wallet.name);
 
 	iconEl.appendChild(icon);
 	nameEl.textContent = wallet.name;
