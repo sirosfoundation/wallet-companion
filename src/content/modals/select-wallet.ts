@@ -6,8 +6,8 @@
 
 import modalStyles from '@content/style/select-wallet.css?inline';
 import type { ShowWalletSelectorOptions, WalletOption } from '@content/types';
-import globalStyles from '@shared/style/global.css?inline';
 import { getMessage } from '@shared/i18n';
+import globalStyles from '@shared/style/global.css?inline';
 
 const HOST_ID = 'dc-wallet-host';
 

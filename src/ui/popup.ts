@@ -2,8 +2,8 @@
  * Popup script for Wallet Companion extension
  */
 
-import { svgToDataUrl } from '@shared/icons';
 import { getMessage } from '@shared/i18n';
+import { svgToDataUrl } from '@shared/icons';
 import { runtime } from '@shared/runtime';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { UsageStats, Wallets } from '@shared/schemas/resources';
