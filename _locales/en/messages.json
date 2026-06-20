@@ -1,0 +1,58 @@
+{
+  "extName": {
+    "message": "SIROS Wallet Companion",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Digital Credentials API wallet bridge for SIROS ID",
+    "description": "Extension description"
+  },
+  "errorNoWallets": {
+    "message": "No wallets available",
+    "description": "Error when no wallet providers are configured"
+  },
+  "errorUserCancelled": {
+    "message": "User cancelled",
+    "description": "Error when user cancels the wallet selection"
+  },
+  "errorWalletTimeout": {
+    "message": "Wallet timeout",
+    "description": "Error when wallet does not respond within timeout"
+  },
+  "errorPopupBlocked": {
+    "message": "Popup blocked",
+    "description": "Error when browser blocks the wallet popup window"
+  },
+  "modalTitle": {
+    "message": "Select Digital Wallet",
+    "description": "Title of the wallet selection modal"
+  },
+  "modalDescription": {
+    "message": "Choose which wallet to use for this credential request",
+    "description": "Description text in the wallet selection modal"
+  },
+  "modalUseBrowserWallet": {
+    "message": "Use Browser Wallet",
+    "description": "Button to use the browser's built-in wallet"
+  },
+  "modalCancel": {
+    "message": "Cancel",
+    "description": "Cancel button label"
+  },
+  "emptyStateTitle": {
+    "message": "No wallets configured",
+    "description": "Title when no wallets are configured"
+  },
+  "emptyStateHint": {
+    "message": "Use the extension settings to add wallet providers",
+    "description": "Hint text when no wallets are configured"
+  },
+  "popupNoWallets": {
+    "message": "No wallets configured yet",
+    "description": "Message shown in the popup when no wallets exist"
+  },
+  "walletDefaultDescription": {
+    "message": "Digital Identity Wallet",
+    "description": "Default description for a wallet that has no description"
+  }
+}

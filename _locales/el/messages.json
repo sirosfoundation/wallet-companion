@@ -1,0 +1,58 @@
+{
+  "extName": {
+    "message": "SIROS Wallet Companion",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Γέφυρα Digital Credentials API πορτοφολιού για SIROS ID",
+    "description": "Extension description"
+  },
+  "errorNoWallets": {
+    "message": "Δεν υπάρχουν διαθέσιμα πορτοφόλια",
+    "description": "Error when no wallet providers are configured"
+  },
+  "errorUserCancelled": {
+    "message": "Ακυρώθηκε από τον χρήστη",
+    "description": "Error when user cancels the wallet selection"
+  },
+  "errorWalletTimeout": {
+    "message": "Χρονικό όριο πορτοφολιού",
+    "description": "Error when wallet does not respond within timeout"
+  },
+  "errorPopupBlocked": {
+    "message": "Το αναδυόμενο παράθυρο αποκλείστηκε",
+    "description": "Error when browser blocks the wallet popup window"
+  },
+  "modalTitle": {
+    "message": "Επιλογή Ψηφιακού Πορτοφολιού",
+    "description": "Title of the wallet selection modal"
+  },
+  "modalDescription": {
+    "message": "Επιλέξτε ποιο πορτοφόλι θα χρησιμοποιήσετε για αυτό το αίτημα πιστοποιητικού",
+    "description": "Description text in the wallet selection modal"
+  },
+  "modalUseBrowserWallet": {
+    "message": "Χρήση Πορτοφολιού Προγράμματος Περιήγησης",
+    "description": "Button to use the browser's built-in wallet"
+  },
+  "modalCancel": {
+    "message": "Ακύρωση",
+    "description": "Cancel button label"
+  },
+  "emptyStateTitle": {
+    "message": "Δεν έχουν ρυθμιστεί πορτοφόλια",
+    "description": "Title when no wallets are configured"
+  },
+  "emptyStateHint": {
+    "message": "Χρησιμοποιήστε τις ρυθμίσεις της επέκτασης για να προσθέσετε παρόχους πορτοφολιού",
+    "description": "Hint text when no wallets are configured"
+  },
+  "popupNoWallets": {
+    "message": "Δεν έχουν ρυθμιστεί πορτοφόλια ακόμα",
+    "description": "Message shown in the popup when no wallets exist"
+  },
+  "walletDefaultDescription": {
+    "message": "Ψηφιακό Πορτοφόλι Ταυτότητας",
+    "description": "Default description for a wallet that has no description"
+  }
+}

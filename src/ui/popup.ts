@@ -3,6 +3,7 @@
  */
 
 import { svgToDataUrl } from '@shared/icons';
+import { getMessage } from '@shared/i18n';
 import { runtime } from '@shared/runtime';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { UsageStats, Wallets } from '@shared/schemas/resources';
@@ -121,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (!wallets || wallets.length === 0) {
 			walletList.innerHTML = `
         <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 13px;">
-          No wallets configured yet.<br>
+          ${getMessage('popupNoWallets')}<br>
           Click "Add or Configure" to add one.
         </div>
       `;

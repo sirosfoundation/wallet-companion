@@ -1,7 +1,7 @@
 import { BrowserManifest } from "./resources";
 
-const NAME = 'Wallet Companion';
-const DESCRIPTION = 'A companion for supported web-based digital identity wallets. Adds cross-browser credential sharing, wallet switching, and seamless site compatibility.';
+const NAME = '__MSG_extName__';
+const DESCRIPTION = '__MSG_extDescription__';
 const VERSION = (process.env.npm_package_version ?? '0.0.0').replace(/-.*$/, '');
 
 export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
@@ -9,6 +9,7 @@ export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'name': NAME,
 	'version': VERSION,
 	'description': DESCRIPTION,
+	'default_locale': 'en',
 	'permissions': [
 		'storage',
 		'activeTab',
@@ -47,6 +48,7 @@ export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'name': NAME,
 	'version': VERSION,
 	'description': DESCRIPTION,
+	'default_locale': 'en',
 	'permissions': [
 		'storage',
 		'activeTab',
@@ -91,6 +93,7 @@ export const SAFARI_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'name': NAME,
 	'version': VERSION,
 	'description': DESCRIPTION,
+	'default_locale': 'en',
 	'permissions': [
 		'storage',
 		'activeTab',
