@@ -69,7 +69,8 @@ function translateUI(): void {
 	const elements = document.querySelectorAll<HTMLElement>('[data-i18n-key]');
 	elements.forEach((element) => {
 		const key = element.dataset.i18nKey;
-		if (key) element.textContent = t(key as keyof typeof t);
+		const sub = element.dataset.i18nSub ? element.dataset.i18nSub.split(',') : undefined;
+		if (key) element.textContent = t(key as keyof typeof t, ...(sub || []));
 	});
 }
 

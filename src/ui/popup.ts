@@ -3,11 +3,9 @@
  */
 
 import { getMessage, getMessageGroup } from '@shared/i18n';
-import { svgToDataUrl } from '@shared/icons';
 import { runtime } from '@shared/runtime';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { UsageStats, Wallets } from '@shared/schemas/resources';
-import { generateIdenticon } from './utils/icons';
 import { onMessage, sendMessage } from './utils/messaging';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -40,7 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	const elements = document.querySelectorAll<HTMLElement>('[data-i18n-key]');
 	elements.forEach((element) => {
 		const key = element.dataset.i18nKey;
-		if (key) element.textContent = t(key as keyof typeof t);
+		const sub = element.dataset.i18nSub ? element.dataset.i18nSub.split(',') : undefined;
+		if (key) element.textContent = t(key as keyof typeof t, ...(sub || []));
 	});
 
 	// Cross-browser compatibility

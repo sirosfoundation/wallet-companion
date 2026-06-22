@@ -316,5 +316,62 @@
   "ui_popup_no_wallets_hint": {
     "message": "Click \"Add or Configure\" to add one.",
     "description": "Hint shown below the no-wallets message in popup"
+  },
+  "ui_popup_title": {
+    "message": "Wallet Companion",
+    "description": "Popup header title"
+  },
+  "ui_popup_subtitle": {
+    "message": "Companion extension for web wallets",
+    "description": "Popup header subtitle"
+  },
+  "ui_popup_status_active": {
+    "message": "Active & monitoring",
+    "description": "Status text when extension is enabled"
+  },
+  "ui_popup_status_inactive": {
+    "message": "Inactive",
+    "description": "Status text when extension is disabled"
+  },
+  "ui_popup_toggle_title": {
+    "message": "Toggle extension on/off",
+    "description": "Tooltip for extension toggle switch"
+  },
+  "ui_popup_stats_title": {
+    "message": "Statistics",
+    "description": "Statistics section title"
+  },
+  "ui_popup_stats_intercepted": {
+    "message": "Requests intercepted",
+    "description": "Label for intercepted requests counter"
+  },
+  "ui_popup_clear": {
+    "message": "Clear",
+    "description": "Button to clear statistics"
+  },
+  "ui_popup_wallets_title": {
+    "message": "My Wallets",
+    "description": "Wallets section title"
+  },
+  "ui_popup_configure": {
+    "message": "Add or Configure",
+    "description": "Button to configure wallets"
+  },
+  "ui_popup_wallet_active": {
+    "message": "Active",
+    "description": "Wallet status label when active"
+  },
+  "ui_popup_wallet_inactive": {
+    "message": "Inactive",
+    "description": "Wallet status label when inactive"
+  },
+  "ui_popup_footer": {
+    "message": "Wallet Companion v$1",
+    "description": "Footer text with version number",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
   }
 }
