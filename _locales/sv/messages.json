@@ -39,6 +39,34 @@
     "message": "Avbryt",
     "description": "Cancel button label"
   },
+  "registerWalletModalTitle": {
+    "message": "Registrera ny plånbok?",
+    "description": "Title of the register wallet consent modal"
+  },
+  "registerWalletModalDescription": {
+    "message": "Wallet Companion har fått en förfrågan om att registrera en ny plånbok.",
+    "description": "Description text in the register wallet consent modal"
+  },
+  "registerWalletModalNameLabel": {
+    "message": "Namn",
+    "description": "Label for wallet name field"
+  },
+  "registerWalletModalUrlLabel": {
+    "message": "URL",
+    "description": "Label for wallet URL field"
+  },
+  "registerWalletModalInfo": {
+    "message": "Genom att tillåta detta kommer plånboken att kunna interagera med Wallet Companion.",
+    "description": "Info text explaining the consequences of registration"
+  },
+  "registerWalletModalDecline": {
+    "message": "Avböj",
+    "description": "Button to decline wallet registration"
+  },
+  "registerWalletModalApprove": {
+    "message": "Registrera plånbok",
+    "description": "Button to approve wallet registration"
+  },
   "emptyStateTitle": {
     "message": "Inga plånböcker konfigurerade",
     "description": "Title when no wallets are configured"

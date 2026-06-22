@@ -39,6 +39,34 @@
     "message": "Cancel",
     "description": "Cancel button label"
   },
+  "registerWalletModalTitle": {
+    "message": "Register New Wallet?",
+    "description": "Title of the register wallet consent modal"
+  },
+  "registerWalletModalDescription": {
+    "message": "Wallet Companion has received a request to register a new wallet.",
+    "description": "Description text in the register wallet consent modal"
+  },
+  "registerWalletModalNameLabel": {
+    "message": "Name",
+    "description": "Label for wallet name field"
+  },
+  "registerWalletModalUrlLabel": {
+    "message": "URL",
+    "description": "Label for wallet URL field"
+  },
+  "registerWalletModalInfo": {
+    "message": "By allowing this, the wallet will be able to interact with Wallet Companion.",
+    "description": "Info text explaining the consequences of registration"
+  },
+  "registerWalletModalDecline": {
+    "message": "Decline",
+    "description": "Button to decline wallet registration"
+  },
+  "registerWalletModalApprove": {
+    "message": "Register wallet",
+    "description": "Button to approve wallet registration"
+  },
   "emptyStateTitle": {
     "message": "No wallets configured",
     "description": "Title when no wallets are configured"

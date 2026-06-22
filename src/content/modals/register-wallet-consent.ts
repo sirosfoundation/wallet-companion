@@ -1,6 +1,7 @@
 import modalStyles from '@content/style/register-wallet-consent.css?inline';
 import logo from '@shared/assets/icons/logo-dark.svg?inline';
 import globalStyles from '@shared/style/global.css?inline';
+import { getMessage } from '@shared/i18n';
 import { createElement, X } from 'lucide';
 
 type RegisterWalletConsentModalOptions = {
@@ -17,27 +18,27 @@ const MODAL_TEMPLATE = `
 	<div class="header">
 		<h1 class="title">
 			<img class="icon" alt="Wallet Companion" />
-			<span>Register New Wallet?</span>
+			<span>${getMessage('registerWalletModalTitle')}</span>
 		</h1>
 		<button class="s-button -invisible -square -small close" commandfor="my-dialog" command="close"></button>
 	</div>
 	<div class="content">
-		<p>Wallet Companion has received a request to register a new wallet.</p>
+		<p>${getMessage('registerWalletModalDescription')}</p>
 		<dl class="details">
 			<div class="detail">
-				<dt class="name">Name</dt>
+				<dt class="name">${getMessage('registerWalletModalNameLabel')}</dt>
 				<dd class="value -name"></dd>
 			</div>
 			<div class="detail">
-				<dt class="name">URL</dt>
+				<dt class="name">${getMessage('registerWalletModalUrlLabel')}</dt>
 				<dd class="value -url"></dd>
 			</div>
 		</dl>
-		<p>By allowing this, the wallet will be able to interact with Wallet Companion.</p>
+		<p>${getMessage('registerWalletModalInfo')}</p>
 	</div>
 	<div class="buttons">
-		<button class="s-button -outline" data-action="decline">Decline</button>
-		<button class="s-button -primary" data-action="approve">Register wallet</button>
+		<button class="s-button -outline" data-action="decline">${getMessage('registerWalletModalDecline')}</button>
+		<button class="s-button -primary" data-action="approve">${getMessage('registerWalletModalApprove')}</button>
 	</div>
 </dialog>
 `;

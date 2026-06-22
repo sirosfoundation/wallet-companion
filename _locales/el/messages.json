@@ -39,6 +39,34 @@
     "message": "Ακύρωση",
     "description": "Cancel button label"
   },
+  "registerWalletModalTitle": {
+    "message": "Καταχώρηση νέου πορτοφολιού;",
+    "description": "Title of the register wallet consent modal"
+  },
+  "registerWalletModalDescription": {
+    "message": "Το Wallet Companion έλαβε αίτημα καταχώρησης νέου πορτοφολιού.",
+    "description": "Description text in the register wallet consent modal"
+  },
+  "registerWalletModalNameLabel": {
+    "message": "Όνομα",
+    "description": "Label for wallet name field"
+  },
+  "registerWalletModalUrlLabel": {
+    "message": "URL",
+    "description": "Label for wallet URL field"
+  },
+  "registerWalletModalInfo": {
+    "message": "Επιτρέποντας αυτό, το πορτοφόλι θα μπορεί να αλληλεπιδρά με το Wallet Companion.",
+    "description": "Info text explaining the consequences of registration"
+  },
+  "registerWalletModalDecline": {
+    "message": "Απόρριψη",
+    "description": "Button to decline wallet registration"
+  },
+  "registerWalletModalApprove": {
+    "message": "Καταχώρηση πορτοφολιού",
+    "description": "Button to approve wallet registration"
+  },
   "emptyStateTitle": {
     "message": "Δεν έχουν ρυθμιστεί πορτοφόλια",
     "description": "Title when no wallets are configured"

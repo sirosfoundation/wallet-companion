@@ -39,6 +39,34 @@
     "message": "Peruuta",
     "description": "Cancel button label"
   },
+  "registerWalletModalTitle": {
+    "message": "Rekisteröidäänkö uusi lompakko?",
+    "description": "Title of the register wallet consent modal"
+  },
+  "registerWalletModalDescription": {
+    "message": "Wallet Companion on vastaanottanut pyynnön uuden lompakon rekisteröimiseksi.",
+    "description": "Description text in the register wallet consent modal"
+  },
+  "registerWalletModalNameLabel": {
+    "message": "Nimi",
+    "description": "Label for wallet name field"
+  },
+  "registerWalletModalUrlLabel": {
+    "message": "URL",
+    "description": "Label for wallet URL field"
+  },
+  "registerWalletModalInfo": {
+    "message": "Hyväksymällä tämän lompakko voi olla vuorovaikutuksessa Wallet Companionin kanssa.",
+    "description": "Info text explaining the consequences of registration"
+  },
+  "registerWalletModalDecline": {
+    "message": "Hylkää",
+    "description": "Button to decline wallet registration"
+  },
+  "registerWalletModalApprove": {
+    "message": "Rekisteröi lompakko",
+    "description": "Button to approve wallet registration"
+  },
   "emptyStateTitle": {
     "message": "Lompakoita ei ole määritetty",
     "description": "Title when no wallets are configured"
