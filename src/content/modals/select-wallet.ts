@@ -6,23 +6,25 @@
 
 import modalStyles from '@content/style/select-wallet.css?inline';
 import type { ShowWalletSelectorOptions, WalletOption } from '@content/types';
-import { getMessage } from '@shared/i18n';
+import { getMessage, getMessageGroup } from '@shared/i18n';
 import globalStyles from '@shared/style/global.css?inline';
 
 const HOST_ID = 'dc-wallet-host';
 
+const t = getMessageGroup('content_modals_select_wallet');
+
 // Static HTML templates — no user data, safe to use innerHTML via <template>
 const MODAL_TEMPLATE = `
   <div class="wallet-selector">
-    <div class="panel" role="dialog" aria-modal="true" aria-label="${getMessage('selectWalletModalTitle')}">
+    <div class="panel" role="dialog" aria-modal="true" aria-label="${t('title')}">
       <div class="header">
-        <h2>${getMessage('selectWalletModalTitle')}</h2>
-        <p>${getMessage('selectWalletModalDescription')}</p>
+        <h2>${t('title')}</h2>
+        <p>${t('description')}</p>
       </div>
       <div class="list"></div>
       <div class="footer">
-        <button class="s-button -outline" data-action="native">${getMessage('selectWalletModalUseBrowserWallet')}</button>
-        <button class="s-button -outline" data-action="cancel">${getMessage('selectWalletModalCancel')}</button>
+        <button class="s-button -outline" data-action="native">${t('use_browser')}</button>
+        <button class="s-button -outline" data-action="cancel">${t('cancel')}</button>
       </div>
     </div>
   </div>`;
@@ -38,8 +40,8 @@ const WALLET_ITEM_TEMPLATE = `
 
 const EMPTY_STATE_TEMPLATE = `
   <div class="empty-state">
-    <p>${getMessage('emptyStateTitle')}</p>
-    <small>${getMessage('emptyStateHint')}</small>
+    <p>${t('empty_title')}</p>
+    <small>${t('empty_hint')}</small>
   </div>`;
 
 function parseTemplate(html: string): DocumentFragment {
@@ -70,11 +72,11 @@ function createWalletItem(
 
 	const icon = document.createElement('img');
 	icon.src = wallet.icon;
-	icon.alt = getMessage('walletIconAlt', wallet.name);
+	icon.alt = getMessage('common_icon_alt', wallet.name);
 
 	iconEl.appendChild(icon);
 	nameEl.textContent = wallet.name;
-	descEl.textContent = wallet.description ?? wallet.url ?? getMessage('walletDefaultDescription');
+	descEl.textContent = wallet.description ?? wallet.url ?? getMessage('common_wallet_description');
 
 	item.addEventListener('click', (e) => {
 		e.stopPropagation();

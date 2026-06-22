@@ -1,7 +1,7 @@
 import modalStyles from '@content/style/register-wallet-consent.css?inline';
 import logo from '@shared/assets/icons/logo-dark.svg?inline';
 import globalStyles from '@shared/style/global.css?inline';
-import { getMessage } from '@shared/i18n';
+import { getMessage, getMessageGroup } from '@shared/i18n';
 import { createElement, X } from 'lucide';
 
 type RegisterWalletConsentModalOptions = {
@@ -13,32 +13,34 @@ type RegisterWalletConsentModalResult = { status: 'approved' | 'declined' };
 
 const HOST_ID = 'wc-register-wallet-host';
 
+const t = getMessageGroup('content_modals_register_wallet');
+
 const MODAL_TEMPLATE = `
 <dialog class="register-wallet">
 	<div class="header">
 		<h1 class="title">
 			<img class="icon" alt="Wallet Companion" />
-			<span>${getMessage('registerWalletModalTitle')}</span>
+			<span>${t('title')}</span>
 		</h1>
 		<button class="s-button -invisible -square -small close" commandfor="my-dialog" command="close"></button>
 	</div>
 	<div class="content">
-		<p>${getMessage('registerWalletModalDescription')}</p>
+		<p>${t('description')}</p>
 		<dl class="details">
 			<div class="detail">
-				<dt class="name">${getMessage('registerWalletModalNameLabel')}</dt>
+				<dt class="name">${t('name_label')}</dt>
 				<dd class="value -name"></dd>
 			</div>
 			<div class="detail">
-				<dt class="name">${getMessage('registerWalletModalUrlLabel')}</dt>
+				<dt class="name">${t('url_label')}</dt>
 				<dd class="value -url"></dd>
 			</div>
 		</dl>
-		<p>${getMessage('registerWalletModalInfo')}</p>
+		<p>${t('info')}</p>
 	</div>
 	<div class="buttons">
-		<button class="s-button -outline" data-action="decline">${getMessage('registerWalletModalDecline')}</button>
-		<button class="s-button -primary" data-action="approve">${getMessage('registerWalletModalApprove')}</button>
+		<button class="s-button -outline" data-action="decline">${t('decline')}</button>
+		<button class="s-button -primary" data-action="approve">${t('approve')}</button>
 	</div>
 </dialog>
 `;

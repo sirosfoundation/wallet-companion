@@ -1,93 +1,17 @@
 {
-  "extName": {
+  "extension_name": {
     "message": "Wallet Companion",
     "description": "Extension name"
   },
-  "extDescription": {
+  "extension_description": {
     "message": "Ett tillägg för webbaserade digitala identitetsplånböcker. Möjliggör delning av intyg mellan webbläsare, plånboksväxling och sömlös kompatibilitet.",
     "description": "Extension description"
   },
-  "errorNoWallets": {
-    "message": "Inga plånböcker tillgängliga",
-    "description": "Error when no wallet providers are configured"
-  },
-  "errorUserCancelled": {
-    "message": "Användaren avbröt",
-    "description": "Error when user cancels the wallet selection"
-  },
-  "errorWalletTimeout": {
-    "message": "Plånboken svarade inte i tid",
-    "description": "Error when wallet does not respond within timeout"
-  },
-  "errorPopupBlocked": {
-    "message": "Popup blockerad",
-    "description": "Error when browser blocks the wallet popup window"
-  },
-  "selectWalletModalTitle": {
-    "message": "Välj digital plånbok",
-    "description": "Title of the wallet selection modal"
-  },
-  "selectWalletModalDescription": {
-    "message": "Välj vilken plånbok som ska användas för denna intygsförfrågan",
-    "description": "Description text in the wallet selection modal"
-  },
-  "selectWalletModalUseBrowserWallet": {
-    "message": "Använd webbläsarplånbok",
-    "description": "Button to use the browser's built-in wallet"
-  },
-  "selectWalletModalCancel": {
-    "message": "Avbryt",
-    "description": "Cancel button label"
-  },
-  "registerWalletModalTitle": {
-    "message": "Registrera ny plånbok?",
-    "description": "Title of the register wallet consent modal"
-  },
-  "registerWalletModalDescription": {
-    "message": "Wallet Companion har fått en förfrågan om att registrera en ny plånbok.",
-    "description": "Description text in the register wallet consent modal"
-  },
-  "registerWalletModalNameLabel": {
-    "message": "Namn",
-    "description": "Label for wallet name field"
-  },
-  "registerWalletModalUrlLabel": {
-    "message": "URL",
-    "description": "Label for wallet URL field"
-  },
-  "registerWalletModalInfo": {
-    "message": "Genom att tillåta detta kommer plånboken att kunna interagera med Wallet Companion.",
-    "description": "Info text explaining the consequences of registration"
-  },
-  "registerWalletModalDecline": {
-    "message": "Avböj",
-    "description": "Button to decline wallet registration"
-  },
-  "registerWalletModalApprove": {
-    "message": "Registrera plånbok",
-    "description": "Button to approve wallet registration"
-  },
-  "emptyStateTitle": {
-    "message": "Inga plånböcker konfigurerade",
-    "description": "Title when no wallets are configured"
-  },
-  "emptyStateHint": {
-    "message": "Använd tilläggsinställningarna för att lägga till plånboksleverantörer",
-    "description": "Hint text when no wallets are configured"
-  },
-  "popupNoWallets": {
-    "message": "Inga plånböcker konfigurerade ännu",
-    "description": "Message shown in the popup when no wallets exist"
-  },
-  "walletDefaultDescription": {
+  "common_wallet_description": {
     "message": "Digital identitetsplånbok",
     "description": "Default description for a wallet that has no description"
   },
-  "popupNoWalletsHint": {
-    "message": "Klicka på \"Lägg till eller konfigurera\" för att lägga till en.",
-    "description": "Hint shown below the no-wallets message in popup"
-  },
-  "walletIconAlt": {
+  "common_icon_alt": {
     "message": "$NAME$-ikon",
     "description": "Alt text for wallet icon in selection modal",
     "placeholders": {
@@ -96,5 +20,81 @@
         "example": "SIROS Wallet"
       }
     }
+  },
+  "error_no_wallets": {
+    "message": "Inga plånböcker tillgängliga",
+    "description": "Error when no wallet providers are configured"
+  },
+  "error_user_cancelled": {
+    "message": "Användaren avbröt",
+    "description": "Error when user cancels the wallet selection"
+  },
+  "error_wallet_timeout": {
+    "message": "Plånboken svarade inte i tid",
+    "description": "Error when wallet does not respond within timeout"
+  },
+  "error_popup_blocked": {
+    "message": "Popup blockerad",
+    "description": "Error when browser blocks the wallet popup window"
+  },
+  "content_modals_select_wallet_title": {
+    "message": "Välj digital plånbok",
+    "description": "Title of the wallet selection modal"
+  },
+  "content_modals_select_wallet_description": {
+    "message": "Välj vilken plånbok som ska användas för denna intygsförfrågan",
+    "description": "Description text in the wallet selection modal"
+  },
+  "content_modals_select_wallet_use_browser": {
+    "message": "Använd webbläsarplånbok",
+    "description": "Button to use the browser's built-in wallet"
+  },
+  "content_modals_select_wallet_cancel": {
+    "message": "Avbryt",
+    "description": "Cancel button label"
+  },
+  "content_modals_select_wallet_empty_title": {
+    "message": "Inga plånböcker konfigurerade",
+    "description": "Title when no wallets are configured"
+  },
+  "content_modals_select_wallet_empty_hint": {
+    "message": "Använd tilläggsinställningarna för att lägga till plånboksleverantörer",
+    "description": "Hint text when no wallets are configured"
+  },
+  "content_modals_register_wallet_title": {
+    "message": "Registrera ny plånbok?",
+    "description": "Title of the register wallet consent modal"
+  },
+  "content_modals_register_wallet_description": {
+    "message": "Wallet Companion har fått en förfrågan om att registrera en ny plånbok.",
+    "description": "Description text in the register wallet consent modal"
+  },
+  "content_modals_register_wallet_name_label": {
+    "message": "Namn",
+    "description": "Label for wallet name field"
+  },
+  "content_modals_register_wallet_url_label": {
+    "message": "URL",
+    "description": "Label for wallet URL field"
+  },
+  "content_modals_register_wallet_info": {
+    "message": "Genom att tillåta detta kommer plånboken att kunna interagera med Wallet Companion.",
+    "description": "Info text explaining the consequences of registration"
+  },
+  "content_modals_register_wallet_decline": {
+    "message": "Avböj",
+    "description": "Button to decline wallet registration"
+  },
+  "content_modals_register_wallet_approve": {
+    "message": "Registrera plånbok",
+    "description": "Button to approve wallet registration"
+  },
+  "ui_popup_no_wallets": {
+    "message": "Inga plånböcker konfigurerade ännu",
+    "description": "Message shown in the popup when no wallets exist"
+  },
+  "ui_popup_no_wallets_hint": {
+    "message": "Klicka på \"Lägg till eller konfigurera\" för att lägga till en.",
+    "description": "Hint shown below the no-wallets message in popup"
   }
 }

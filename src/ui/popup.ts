@@ -122,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (!wallets || wallets.length === 0) {
 			walletList.innerHTML = `
         <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 13px;">
-          ${getMessage('popupNoWallets')}<br>
-          ${getMessage('popupNoWalletsHint')}
+          ${getMessage('ui_popup_no_wallets')}<br>
+          ${getMessage('ui_popup_no_wallets_hint')}
         </div>
       `;
 			walletCount.textContent = '0';

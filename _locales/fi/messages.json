@@ -1,93 +1,17 @@
 {
-  "extName": {
+  "extension_name": {
     "message": "Wallet Companion",
     "description": "Extension name"
   },
-  "extDescription": {
+  "extension_description": {
     "message": "Kumppani tuetuille verkkopohjaisille digitaalisille identiteettilompakoille. Mahdollistaa tunnisteiden jakamisen selainten välillä, lompakon vaihtamisen ja saumattoman yhteensopivuuden.",
     "description": "Extension description"
   },
-  "errorNoWallets": {
-    "message": "Ei lompakoita saatavilla",
-    "description": "Error when no wallet providers are configured"
-  },
-  "errorUserCancelled": {
-    "message": "Käyttäjä peruutti",
-    "description": "Error when user cancels the wallet selection"
-  },
-  "errorWalletTimeout": {
-    "message": "Lompakon aikakatkaisu",
-    "description": "Error when wallet does not respond within timeout"
-  },
-  "errorPopupBlocked": {
-    "message": "Ponnahdusikkuna estetty",
-    "description": "Error when browser blocks the wallet popup window"
-  },
-  "selectWalletModalTitle": {
-    "message": "Valitse digitaalinen lompakko",
-    "description": "Title of the wallet selection modal"
-  },
-  "selectWalletModalDescription": {
-    "message": "Valitse mikä lompakko käytetään tähän todistuspyyntöön",
-    "description": "Description text in the wallet selection modal"
-  },
-  "selectWalletModalUseBrowserWallet": {
-    "message": "Käytä selaimen lompakkoa",
-    "description": "Button to use the browser's built-in wallet"
-  },
-  "selectWalletModalCancel": {
-    "message": "Peruuta",
-    "description": "Cancel button label"
-  },
-  "registerWalletModalTitle": {
-    "message": "Rekisteröidäänkö uusi lompakko?",
-    "description": "Title of the register wallet consent modal"
-  },
-  "registerWalletModalDescription": {
-    "message": "Wallet Companion on vastaanottanut pyynnön uuden lompakon rekisteröimiseksi.",
-    "description": "Description text in the register wallet consent modal"
-  },
-  "registerWalletModalNameLabel": {
-    "message": "Nimi",
-    "description": "Label for wallet name field"
-  },
-  "registerWalletModalUrlLabel": {
-    "message": "URL",
-    "description": "Label for wallet URL field"
-  },
-  "registerWalletModalInfo": {
-    "message": "Hyväksymällä tämän lompakko voi olla vuorovaikutuksessa Wallet Companionin kanssa.",
-    "description": "Info text explaining the consequences of registration"
-  },
-  "registerWalletModalDecline": {
-    "message": "Hylkää",
-    "description": "Button to decline wallet registration"
-  },
-  "registerWalletModalApprove": {
-    "message": "Rekisteröi lompakko",
-    "description": "Button to approve wallet registration"
-  },
-  "emptyStateTitle": {
-    "message": "Lompakoita ei ole määritetty",
-    "description": "Title when no wallets are configured"
-  },
-  "emptyStateHint": {
-    "message": "Käytä laajennuksen asetuksia lisätäksesi lompakkotarjoajia",
-    "description": "Hint text when no wallets are configured"
-  },
-  "popupNoWallets": {
-    "message": "Lompakoita ei ole vielä määritetty",
-    "description": "Message shown in the popup when no wallets exist"
-  },
-  "walletDefaultDescription": {
+  "common_wallet_description": {
     "message": "Digitaalinen identiteettilompakko",
     "description": "Default description for a wallet that has no description"
   },
-  "popupNoWalletsHint": {
-    "message": "Napsauta \"Lisää tai määritä\" lisätäksesi lompakon.",
-    "description": "Hint shown below the no-wallets message in popup"
-  },
-  "walletIconAlt": {
+  "common_icon_alt": {
     "message": "$NAME$ -kuvake",
     "description": "Alt text for wallet icon in selection modal",
     "placeholders": {
@@ -96,5 +20,81 @@
         "example": "SIROS Wallet"
       }
     }
+  },
+  "error_no_wallets": {
+    "message": "Ei lompakoita saatavilla",
+    "description": "Error when no wallet providers are configured"
+  },
+  "error_user_cancelled": {
+    "message": "Käyttäjä peruutti",
+    "description": "Error when user cancels the wallet selection"
+  },
+  "error_wallet_timeout": {
+    "message": "Lompakon aikakatkaisu",
+    "description": "Error when wallet does not respond within timeout"
+  },
+  "error_popup_blocked": {
+    "message": "Ponnahdusikkuna estetty",
+    "description": "Error when browser blocks the wallet popup window"
+  },
+  "content_modals_select_wallet_title": {
+    "message": "Valitse digitaalinen lompakko",
+    "description": "Title of the wallet selection modal"
+  },
+  "content_modals_select_wallet_description": {
+    "message": "Valitse mikä lompakko käytetään tähän todistuspyyntöön",
+    "description": "Description text in the wallet selection modal"
+  },
+  "content_modals_select_wallet_use_browser": {
+    "message": "Käytä selaimen lompakkoa",
+    "description": "Button to use the browser's built-in wallet"
+  },
+  "content_modals_select_wallet_cancel": {
+    "message": "Peruuta",
+    "description": "Cancel button label"
+  },
+  "content_modals_select_wallet_empty_title": {
+    "message": "Lompakoita ei ole määritetty",
+    "description": "Title when no wallets are configured"
+  },
+  "content_modals_select_wallet_empty_hint": {
+    "message": "Käytä laajennuksen asetuksia lisätäksesi lompakkotarjoajia",
+    "description": "Hint text when no wallets are configured"
+  },
+  "content_modals_register_wallet_title": {
+    "message": "Rekisteröidäänkö uusi lompakko?",
+    "description": "Title of the register wallet consent modal"
+  },
+  "content_modals_register_wallet_description": {
+    "message": "Wallet Companion on vastaanottanut pyynnön uuden lompakon rekisteröimiseksi.",
+    "description": "Description text in the register wallet consent modal"
+  },
+  "content_modals_register_wallet_name_label": {
+    "message": "Nimi",
+    "description": "Label for wallet name field"
+  },
+  "content_modals_register_wallet_url_label": {
+    "message": "URL",
+    "description": "Label for wallet URL field"
+  },
+  "content_modals_register_wallet_info": {
+    "message": "Hyväksymällä tämän lompakko voi olla vuorovaikutuksessa Wallet Companionin kanssa.",
+    "description": "Info text explaining the consequences of registration"
+  },
+  "content_modals_register_wallet_decline": {
+    "message": "Hylkää",
+    "description": "Button to decline wallet registration"
+  },
+  "content_modals_register_wallet_approve": {
+    "message": "Rekisteröi lompakko",
+    "description": "Button to approve wallet registration"
+  },
+  "ui_popup_no_wallets": {
+    "message": "Lompakoita ei ole vielä määritetty",
+    "description": "Message shown in the popup when no wallets exist"
+  },
+  "ui_popup_no_wallets_hint": {
+    "message": "Napsauta \"Lisää tai määritä\" lisätäksesi lompakon.",
+    "description": "Hint shown below the no-wallets message in popup"
   }
 }

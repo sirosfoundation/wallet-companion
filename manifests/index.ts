@@ -1,7 +1,7 @@
 import { BrowserManifest } from "./resources";
 
-const NAME = '__MSG_extName__';
-const DESCRIPTION = '__MSG_extDescription__';
+const NAME = '__MSG_extension_name__';
+const DESCRIPTION = '__MSG_extension_description__';
 const VERSION = (process.env.npm_package_version ?? '0.0.0').replace(/-.*$/, '');
 
 export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({

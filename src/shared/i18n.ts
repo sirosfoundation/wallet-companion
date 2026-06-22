@@ -5,10 +5,14 @@ import fiMessages from '../../_locales/fi/messages.json';
 import ptMessages from '../../_locales/pt_PT/messages.json';
 import svMessages from '../../_locales/sv/messages.json';
 
+export type MessageKey = keyof typeof enMessages;
+
+type StripKeyPrefix<P extends string, K extends string> = K extends `${P}_${infer Suffix}` ? Suffix : never;
+
 type Locale = {
 	label: string;
 	messages: Record<
-		string,
+		MessageKey,
 		{
 			message: string;
 			description?: string;
@@ -47,7 +51,7 @@ const locales = {
  * Can be used in both content scripts and extension pages, falling back to
  * the appropriate method of accessing localization data depending on the context.
  */
-export function getMessage(key: string, substitutions?: string | string[]): string {
+export function getMessage(key: MessageKey, substitutions?: string | string[]): string {
 	if (browserApi?.i18n?.getMessage) {
 		const msg = browserApi.i18n.getMessage(key, substitutions);
 		return msg || key;
@@ -58,8 +62,21 @@ export function getMessage(key: string, substitutions?: string | string[]): stri
 
 		const locale = locales[lang] ?? locales.en;
 
-		return locale.messages[key as keyof typeof locale.messages]?.message || key;
+		return locale.messages[key]?.message || key;
 	}
 
 	return key;
+}
+
+/**
+ * Creates a function for retrieving localized messages with a common prefix.
+ */
+export function getMessageGroup<P extends string>(prefix: P) {
+	return <K extends StripKeyPrefix<P, MessageKey>>(
+		key: K,
+		substitutions?: string | string[]
+	): string => {
+		const fullKey = `${prefix}_${key}` as MessageKey;
+		return getMessage(fullKey, substitutions);
+	};
 }

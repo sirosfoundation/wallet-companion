@@ -1,93 +1,17 @@
 {
-  "extName": {
+  "extension_name": {
     "message": "Wallet Companion",
     "description": "Extension name"
   },
-  "extDescription": {
+  "extension_description": {
     "message": "A companion for supported web-based digital identity wallets. Adds cross-browser credential sharing, wallet switching, and seamless site compatibility.",
     "description": "Extension description"
   },
-  "errorNoWallets": {
-    "message": "No wallets available",
-    "description": "Error when no wallet providers are configured"
-  },
-  "errorUserCancelled": {
-    "message": "User cancelled",
-    "description": "Error when user cancels the wallet selection"
-  },
-  "errorWalletTimeout": {
-    "message": "Wallet timeout",
-    "description": "Error when wallet does not respond within timeout"
-  },
-  "errorPopupBlocked": {
-    "message": "Popup blocked",
-    "description": "Error when browser blocks the wallet popup window"
-  },
-  "selectWalletModalTitle": {
-    "message": "Select Digital Wallet",
-    "description": "Title of the wallet selection modal"
-  },
-  "selectWalletModalDescription": {
-    "message": "Choose which wallet to use for this credential request",
-    "description": "Description text in the wallet selection modal"
-  },
-  "selectWalletModalUseBrowserWallet": {
-    "message": "Use Browser Wallet",
-    "description": "Button to use the browser's built-in wallet"
-  },
-  "selectWalletModalCancel": {
-    "message": "Cancel",
-    "description": "Cancel button label"
-  },
-  "registerWalletModalTitle": {
-    "message": "Register New Wallet?",
-    "description": "Title of the register wallet consent modal"
-  },
-  "registerWalletModalDescription": {
-    "message": "Wallet Companion has received a request to register a new wallet.",
-    "description": "Description text in the register wallet consent modal"
-  },
-  "registerWalletModalNameLabel": {
-    "message": "Name",
-    "description": "Label for wallet name field"
-  },
-  "registerWalletModalUrlLabel": {
-    "message": "URL",
-    "description": "Label for wallet URL field"
-  },
-  "registerWalletModalInfo": {
-    "message": "By allowing this, the wallet will be able to interact with Wallet Companion.",
-    "description": "Info text explaining the consequences of registration"
-  },
-  "registerWalletModalDecline": {
-    "message": "Decline",
-    "description": "Button to decline wallet registration"
-  },
-  "registerWalletModalApprove": {
-    "message": "Register wallet",
-    "description": "Button to approve wallet registration"
-  },
-  "emptyStateTitle": {
-    "message": "No wallets configured",
-    "description": "Title when no wallets are configured"
-  },
-  "emptyStateHint": {
-    "message": "Use the extension settings to add wallet providers",
-    "description": "Hint text when no wallets are configured"
-  },
-  "popupNoWallets": {
-    "message": "No wallets configured yet",
-    "description": "Message shown in the popup when no wallets exist"
-  },
-  "walletDefaultDescription": {
+  "common_wallet_description": {
     "message": "Digital Identity Wallet",
     "description": "Default description for a wallet that has no description"
   },
-  "popupNoWalletsHint": {
-    "message": "Click \"Add or Configure\" to add one.",
-    "description": "Hint shown below the no-wallets message in popup"
-  },
-  "walletIconAlt": {
+  "common_icon_alt": {
     "message": "$NAME$ icon",
     "description": "Alt text for wallet icon in selection modal",
     "placeholders": {
@@ -96,5 +20,81 @@
         "example": "SIROS Wallet"
       }
     }
+  },
+  "error_no_wallets": {
+    "message": "No wallets available",
+    "description": "Error when no wallet providers are configured"
+  },
+  "error_user_cancelled": {
+    "message": "User cancelled",
+    "description": "Error when user cancels the wallet selection"
+  },
+  "error_wallet_timeout": {
+    "message": "Wallet timeout",
+    "description": "Error when wallet does not respond within timeout"
+  },
+  "error_popup_blocked": {
+    "message": "Popup blocked",
+    "description": "Error when browser blocks the wallet popup window"
+  },
+  "content_modals_select_wallet_title": {
+    "message": "Select Digital Wallet",
+    "description": "Title of the wallet selection modal"
+  },
+  "content_modals_select_wallet_description": {
+    "message": "Choose which wallet to use for this credential request",
+    "description": "Description text in the wallet selection modal"
+  },
+  "content_modals_select_wallet_use_browser": {
+    "message": "Use Browser Wallet",
+    "description": "Button to use the browser's built-in wallet"
+  },
+  "content_modals_select_wallet_cancel": {
+    "message": "Cancel",
+    "description": "Cancel button label"
+  },
+  "content_modals_select_wallet_empty_title": {
+    "message": "No wallets configured",
+    "description": "Title when no wallets are configured"
+  },
+  "content_modals_select_wallet_empty_hint": {
+    "message": "Use the extension settings to add wallet providers",
+    "description": "Hint text when no wallets are configured"
+  },
+  "content_modals_register_wallet_title": {
+    "message": "Register New Wallet?",
+    "description": "Title of the register wallet consent modal"
+  },
+  "content_modals_register_wallet_description": {
+    "message": "Wallet Companion has received a request to register a new wallet.",
+    "description": "Description text in the register wallet consent modal"
+  },
+  "content_modals_register_wallet_name_label": {
+    "message": "Name",
+    "description": "Label for wallet name field"
+  },
+  "content_modals_register_wallet_url_label": {
+    "message": "URL",
+    "description": "Label for wallet URL field"
+  },
+  "content_modals_register_wallet_info": {
+    "message": "By allowing this, the wallet will be able to interact with Wallet Companion.",
+    "description": "Info text explaining the consequences of registration"
+  },
+  "content_modals_register_wallet_decline": {
+    "message": "Decline",
+    "description": "Button to decline wallet registration"
+  },
+  "content_modals_register_wallet_approve": {
+    "message": "Register wallet",
+    "description": "Button to approve wallet registration"
+  },
+  "ui_popup_no_wallets": {
+    "message": "No wallets configured yet",
+    "description": "Message shown in the popup when no wallets exist"
+  },
+  "ui_popup_no_wallets_hint": {
+    "message": "Click \"Add or Configure\" to add one.",
+    "description": "Hint shown below the no-wallets message in popup"
   }
 }
