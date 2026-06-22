@@ -1,1 +1,42 @@
+Wallet Companion makes supported* web-based digital identity wallets work better across the web.
 
+What it does:
+When a website asks for your digital credentials (like proof of identity, age verification, or membership), Wallet Companion:
+
+* Shows you which of your wallets can handle the request
+* Lets you pick which wallet to use
+* Connects you to your wallet to approve sharing
+* Sends the response back to the site
+
+
+Why you need it:
+Digital identity is moving to the web. Sites are starting to request verifiable credentials instead of asking you to upload documents or enter personal details manually. Wallet Companion bridges the gap between these sites and your compatible digital wallet apps.
+
+Key benefits:
+
+* Use any compatible wallet, Switch between wallets without changing settings
+* Works on any site, No special browser or site support needed
+* You stay in control, Every credential request shows you exactly what's being asked
+* Nothing leaves your device, Your data only goes to the wallet you choose
+
+
+Getting started:
+
+1. Install Wallet Companion
+2. Visit a supported wallet, currently SIROS ID, it registers automatically
+3. When a site requests credentials, pick your wallet from the popup
+4. Approve the request in your wallet
+
+
+Compatibility:
+*Officially supported wallets:
+
+* SIROS ID
+
+Wallet developers can integrate support using our open API.
+
+Supported standards:
+Works with wallets and verifiers using OpenID for Verifiable Presentations (OpenID4VP).
+
+Open Source:
+Free and open source under BSD-2-Clause license. Developed by SIROS Foundation.
