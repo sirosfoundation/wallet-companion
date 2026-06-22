@@ -6,6 +6,7 @@
 
 import modalStyles from '@content/style/select-wallet.css?inline';
 import type { ShowWalletSelectorOptions, WalletOption } from '@content/types';
+import { getMessage } from '@shared/i18n';
 import globalStyles from '@shared/style/global.css?inline';
 
 const HOST_ID = 'dc-wallet-host';
@@ -13,15 +14,15 @@ const HOST_ID = 'dc-wallet-host';
 // Static HTML templates — no user data, safe to use innerHTML via <template>
 const MODAL_TEMPLATE = `
   <div class="wallet-selector">
-    <div class="panel" role="dialog" aria-modal="true" aria-label="Select Digital Wallet">
+    <div class="panel" role="dialog" aria-modal="true" aria-label="${getMessage('modalTitle')}">
       <div class="header">
-        <h2>Select Digital Wallet</h2>
-        <p>Choose which wallet to use for this credential request</p>
+        <h2>${getMessage('modalTitle')}</h2>
+        <p>${getMessage('modalDescription')}</p>
       </div>
       <div class="list"></div>
       <div class="footer">
-        <button class="s-button -outline" data-action="native">Use Browser Wallet</button>
-        <button class="s-button -outline" data-action="cancel">Cancel</button>
+        <button class="s-button -outline" data-action="native">${getMessage('modalUseBrowserWallet')}</button>
+        <button class="s-button -outline" data-action="cancel">${getMessage('modalCancel')}</button>
       </div>
     </div>
   </div>`;
@@ -37,8 +38,8 @@ const WALLET_ITEM_TEMPLATE = `
 
 const EMPTY_STATE_TEMPLATE = `
   <div class="empty-state">
-    <p>No wallets configured</p>
-    <small>Use the extension settings to add wallet providers</small>
+    <p>${getMessage('emptyStateTitle')}</p>
+    <small>${getMessage('emptyStateHint')}</small>
   </div>`;
 
 function parseTemplate(html: string): DocumentFragment {
@@ -69,11 +70,11 @@ function createWalletItem(
 
 	const icon = document.createElement('img');
 	icon.src = wallet.icon;
-	icon.alt = `${wallet.name} icon`;
+	icon.alt = getMessage('walletIconAlt', wallet.name);
 
 	iconEl.appendChild(icon);
 	nameEl.textContent = wallet.name;
-	descEl.textContent = wallet.description ?? wallet.url ?? 'Digital Identity Wallet';
+	descEl.textContent = wallet.description ?? wallet.url ?? getMessage('walletDefaultDescription');
 
 	item.addEventListener('click', (e) => {
 		e.stopPropagation();

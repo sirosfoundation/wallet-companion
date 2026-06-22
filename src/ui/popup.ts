@@ -2,6 +2,7 @@
  * Popup script for Wallet Companion extension
  */
 
+import { getMessage } from '@shared/i18n';
 import { svgToDataUrl } from '@shared/icons';
 import { runtime } from '@shared/runtime';
 import { InboundMessages } from '@shared/schemas/messages';
@@ -121,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (!wallets || wallets.length === 0) {
 			walletList.innerHTML = `
         <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 13px;">
-          No wallets configured yet.<br>
-          Click "Add or Configure" to add one.
+          ${getMessage('popupNoWallets')}<br>
+          ${getMessage('popupNoWalletsHint')}
         </div>
       `;
 			walletCount.textContent = '0';

@@ -1,0 +1,72 @@
+{
+  "extName": {
+    "message": "SIROS Wallet Companion",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Digital Credentials API plånboksbrygga för SIROS ID",
+    "description": "Extension description"
+  },
+  "errorNoWallets": {
+    "message": "Inga plånböcker tillgängliga",
+    "description": "Error when no wallet providers are configured"
+  },
+  "errorUserCancelled": {
+    "message": "Användaren avbröt",
+    "description": "Error when user cancels the wallet selection"
+  },
+  "errorWalletTimeout": {
+    "message": "Plånboken svarade inte i tid",
+    "description": "Error when wallet does not respond within timeout"
+  },
+  "errorPopupBlocked": {
+    "message": "Popup blockerad",
+    "description": "Error when browser blocks the wallet popup window"
+  },
+  "modalTitle": {
+    "message": "Välj digital plånbok",
+    "description": "Title of the wallet selection modal"
+  },
+  "modalDescription": {
+    "message": "Välj vilken plånbok som ska användas för denna intygsförfrågan",
+    "description": "Description text in the wallet selection modal"
+  },
+  "modalUseBrowserWallet": {
+    "message": "Använd webbläsarplånbok",
+    "description": "Button to use the browser's built-in wallet"
+  },
+  "modalCancel": {
+    "message": "Avbryt",
+    "description": "Cancel button label"
+  },
+  "emptyStateTitle": {
+    "message": "Inga plånböcker konfigurerade",
+    "description": "Title when no wallets are configured"
+  },
+  "emptyStateHint": {
+    "message": "Använd tilläggsinställningarna för att lägga till plånboksleverantörer",
+    "description": "Hint text when no wallets are configured"
+  },
+  "popupNoWallets": {
+    "message": "Inga plånböcker konfigurerade ännu",
+    "description": "Message shown in the popup when no wallets exist"
+  },
+  "walletDefaultDescription": {
+    "message": "Digital identitetsplånbok",
+    "description": "Default description for a wallet that has no description"
+  },
+  "popupNoWalletsHint": {
+    "message": "Klicka på \"Lägg till eller konfigurera\" för att lägga till en.",
+    "description": "Hint shown below the no-wallets message in popup"
+  },
+  "walletIconAlt": {
+    "message": "$NAME$-ikon",
+    "description": "Alt text for wallet icon in selection modal",
+    "placeholders": {
+      "NAME": {
+        "content": "$1",
+        "example": "SIROS Wallet"
+      }
+    }
+  }
+}
