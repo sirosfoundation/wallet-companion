@@ -116,4 +116,32 @@ export class WalletCompanion implements WalletCompanionInterface {
 		});
 		return isRegistered;
 	}
+
+	async getAttestationKey(): Promise<{ kid: string; publicKeyJwk: JsonWebKey } | null> {
+		try {
+			const result = await this.#rpc.send<{ kid: string; publicKeyJwk: JsonWebKey }>(
+				'GET_ATTESTATION_KEY',
+			);
+			return result;
+		} catch {
+			return null;
+		}
+	}
+
+	async signWiaChallenge(challenge: string): Promise<string> {
+		if (!challenge || typeof challenge !== 'string') {
+			throw new Error('Challenge must be a non-empty string');
+		}
+		const result = await this.#rpc.send<{ jws?: string; error?: string }>(
+			'SIGN_WIA_CHALLENGE',
+			{ challenge },
+		);
+		if (result.error) {
+			throw new Error(`Extension attestation failed: ${result.error}`);
+		}
+		if (!result.jws) {
+			throw new Error('Extension did not return a signed challenge');
+		}
+		return result.jws;
+	}
 }

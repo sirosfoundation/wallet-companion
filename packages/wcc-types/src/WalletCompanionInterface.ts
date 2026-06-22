@@ -66,6 +66,29 @@ export interface WalletCompanionInterface {
      * @throws {Error} If check times out (5s)
      */
     isWalletRegistered(url: string): Promise<boolean>;
+
+    /**
+     * Get the extension's attestation public key.
+     *
+     * Returns the JWK of the ephemeral P-256 key used for Tier 2 attestation.
+     * Returns `null` if no key has been generated yet.
+     *
+     * The key rotates each browser session and provides extension-attested
+     * binding for WIA requests.
+     */
+    getAttestationKey(): Promise<{ kid: string; publicKeyJwk: JsonWebKey } | null>;
+
+    /**
+     * Sign a WIA challenge with the extension's attestation key.
+     *
+     * The wallet frontend calls this during WIA generation to prove
+     * the request originates from a browser with the extension installed.
+     *
+     * @param challenge - The nonce from the wallet backend's WIA challenge endpoint.
+     * @returns Compact JWS (ES256, typ: extension-attestation+jwt)
+     * @throws {Error} If the attestation key is not available
+     */
+    signWiaChallenge(challenge: string): Promise<string>;
 }
 
 /**
