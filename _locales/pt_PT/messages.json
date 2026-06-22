@@ -1,10 +1,10 @@
 {
   "extName": {
-    "message": "SIROS Wallet Companion",
+    "message": "Wallet Companion",
     "description": "Extension name"
   },
   "extDescription": {
-    "message": "Ponte de Digital Credentials API para SIROS ID",
+    "message": "Um complemento para carteiras de identidade digital baseadas na web. Adiciona partilha de credenciais entre navegadores, alternância de carteiras e compatibilidade transparente.",
     "description": "Extension description"
   },
   "errorNoWallets": {

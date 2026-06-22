@@ -1,10 +1,10 @@
 {
   "extName": {
-    "message": "SIROS Wallet Companion",
+    "message": "Wallet Companion",
     "description": "Extension name"
   },
   "extDescription": {
-    "message": "Digital Credentials API plånboksbrygga för SIROS ID",
+    "message": "Ett tillägg för webbaserade digitala identitetsplånböcker. Möjliggör delning av intyg mellan webbläsare, plånboksväxling och sömlös kompatibilitet.",
     "description": "Extension description"
   },
   "errorNoWallets": {
