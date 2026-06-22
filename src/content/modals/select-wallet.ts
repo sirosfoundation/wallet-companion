@@ -14,15 +14,15 @@ const HOST_ID = 'dc-wallet-host';
 // Static HTML templates — no user data, safe to use innerHTML via <template>
 const MODAL_TEMPLATE = `
   <div class="wallet-selector">
-    <div class="panel" role="dialog" aria-modal="true" aria-label="${getMessage('modalTitle')}">
+    <div class="panel" role="dialog" aria-modal="true" aria-label="${getMessage('selectWalletModalTitle')}">
       <div class="header">
-        <h2>${getMessage('modalTitle')}</h2>
-        <p>${getMessage('modalDescription')}</p>
+        <h2>${getMessage('selectWalletModalTitle')}</h2>
+        <p>${getMessage('selectWalletModalDescription')}</p>
       </div>
       <div class="list"></div>
       <div class="footer">
-        <button class="s-button -outline" data-action="native">${getMessage('modalUseBrowserWallet')}</button>
-        <button class="s-button -outline" data-action="cancel">${getMessage('modalCancel')}</button>
+        <button class="s-button -outline" data-action="native">${getMessage('selectWalletModalUseBrowserWallet')}</button>
+        <button class="s-button -outline" data-action="cancel">${getMessage('selectWalletModalCancel')}</button>
       </div>
     </div>
   </div>`;

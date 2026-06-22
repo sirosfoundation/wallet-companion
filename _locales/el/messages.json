@@ -23,19 +23,19 @@
     "message": "Το αναδυόμενο παράθυρο αποκλείστηκε",
     "description": "Error when browser blocks the wallet popup window"
   },
-  "modalTitle": {
+  "selectWalletModalTitle": {
     "message": "Επιλογή Ψηφιακού Πορτοφολιού",
     "description": "Title of the wallet selection modal"
   },
-  "modalDescription": {
+  "selectWalletModalDescription": {
     "message": "Επιλέξτε ποιο πορτοφόλι θα χρησιμοποιήσετε για αυτό το αίτημα πιστοποιητικού",
     "description": "Description text in the wallet selection modal"
   },
-  "modalUseBrowserWallet": {
+  "selectWalletModalUseBrowserWallet": {
     "message": "Χρήση Πορτοφολιού Προγράμματος Περιήγησης",
     "description": "Button to use the browser's built-in wallet"
   },
-  "modalCancel": {
+  "selectWalletModalCancel": {
     "message": "Ακύρωση",
     "description": "Cancel button label"
   },

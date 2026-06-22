@@ -23,19 +23,19 @@
     "message": "Popup bloqueado",
     "description": "Error when browser blocks the wallet popup window"
   },
-  "modalTitle": {
+  "selectWalletModalTitle": {
     "message": "Selecionar Carteira Digital",
     "description": "Title of the wallet selection modal"
   },
-  "modalDescription": {
+  "selectWalletModalDescription": {
     "message": "Escolha qual carteira usar para este pedido de credencial",
     "description": "Description text in the wallet selection modal"
   },
-  "modalUseBrowserWallet": {
+  "selectWalletModalUseBrowserWallet": {
     "message": "Usar Carteira do Navegador",
     "description": "Button to use the browser's built-in wallet"
   },
-  "modalCancel": {
+  "selectWalletModalCancel": {
     "message": "Cancelar",
     "description": "Cancel button label"
   },

@@ -23,19 +23,19 @@
     "message": "Ponnahdusikkuna estetty",
     "description": "Error when browser blocks the wallet popup window"
   },
-  "modalTitle": {
+  "selectWalletModalTitle": {
     "message": "Valitse digitaalinen lompakko",
     "description": "Title of the wallet selection modal"
   },
-  "modalDescription": {
+  "selectWalletModalDescription": {
     "message": "Valitse mikä lompakko käytetään tähän todistuspyyntöön",
     "description": "Description text in the wallet selection modal"
   },
-  "modalUseBrowserWallet": {
+  "selectWalletModalUseBrowserWallet": {
     "message": "Käytä selaimen lompakkoa",
     "description": "Button to use the browser's built-in wallet"
   },
-  "modalCancel": {
+  "selectWalletModalCancel": {
     "message": "Peruuta",
     "description": "Cancel button label"
   },

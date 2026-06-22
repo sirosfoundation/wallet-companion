@@ -23,19 +23,19 @@
     "message": "Popup blockerad",
     "description": "Error when browser blocks the wallet popup window"
   },
-  "modalTitle": {
+  "selectWalletModalTitle": {
     "message": "Välj digital plånbok",
     "description": "Title of the wallet selection modal"
   },
-  "modalDescription": {
+  "selectWalletModalDescription": {
     "message": "Välj vilken plånbok som ska användas för denna intygsförfrågan",
     "description": "Description text in the wallet selection modal"
   },
-  "modalUseBrowserWallet": {
+  "selectWalletModalUseBrowserWallet": {
     "message": "Använd webbläsarplånbok",
     "description": "Button to use the browser's built-in wallet"
   },
-  "modalCancel": {
+  "selectWalletModalCancel": {
     "message": "Avbryt",
     "description": "Cancel button label"
   },
