@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import { CHROME_MANIFEST, FIREFOX_MANIFEST, SAFARI_MANIFEST } from './manifests';
 import { type BrowserManifest } from './manifests/resources';
-import { readdir, readFile, rm, unlink, writeFile } from 'node:fs/promises';
+import { cp, readdir, readFile, rm, unlink, writeFile } from 'node:fs/promises';
 
 process.env.VITE_APP_VERSION = process.env.npm_package_version ?? '0.0.0';
 
@@ -40,7 +40,7 @@ const outDir = resolve(__dirname, 'dist', browser);
 	await build({ browserManifest, emptyOutDir });
 
 	if (process.env.WATCH) {
-		watcher(['src', 'manifests'], async () => {
+		watcher(['src', 'manifests', '_locales'], async () => {
 			browserManifest.collectSourceFiles();
 			await build({ browserManifest, emptyOutDir });
 		});
@@ -175,6 +175,14 @@ async function build({
 			emptyOutDir = false;
 		}
 	}
+
+	await cp(
+		resolve(__dirname, '_locales'),
+		resolve(outDir, '_locales'),
+		{
+			recursive: true
+		}
+	);
 
 	const manifest = browserManifest.generateManifest();
 	const manifestWithAssets = {
