@@ -39,8 +39,14 @@ const locales = {
 		label: 'Svenska',
 		messages: svMessages,
 	},
- } satisfies Locales ;
+} satisfies Locales ;
 
+/**
+ * Retrieves a localized message based on the provided key and optional substitutions.
+ *
+ * Can be used in both content scripts and extension pages, falling back to
+ * the appropriate method of accessing localization data depending on the context.
+ */
 export function getMessage(key: string, substitutions?: string | string[]): string {
 	if (browserApi?.i18n?.getMessage) {
 		const msg = browserApi.i18n.getMessage(key, substitutions);
