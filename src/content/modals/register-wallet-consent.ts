@@ -1,7 +1,7 @@
 import modalStyles from '@content/style/register-wallet-consent.css?inline';
 import logo from '@shared/assets/icons/logo-dark.svg?inline';
+import { getMessageGroup } from '@shared/i18n';
 import globalStyles from '@shared/style/global.css?inline';
-import { getMessage, getMessageGroup } from '@shared/i18n';
 import { createElement, X } from 'lucide';
 
 type RegisterWalletConsentModalOptions = {
@@ -13,41 +13,9 @@ type RegisterWalletConsentModalResult = { status: 'approved' | 'declined' };
 
 const HOST_ID = 'wc-register-wallet-host';
 
-const t = getMessageGroup('content_modals_register_wallet');
-
-const MODAL_TEMPLATE = `
-<dialog class="register-wallet">
-	<div class="header">
-		<h1 class="title">
-			<img class="icon" alt="Wallet Companion" />
-			<span>${t('title')}</span>
-		</h1>
-		<button class="s-button -invisible -square -small close" commandfor="my-dialog" command="close"></button>
-	</div>
-	<div class="content">
-		<p>${t('description')}</p>
-		<dl class="details">
-			<div class="detail">
-				<dt class="name">${t('name_label')}</dt>
-				<dd class="value -name"></dd>
-			</div>
-			<div class="detail">
-				<dt class="name">${t('url_label')}</dt>
-				<dd class="value -url"></dd>
-			</div>
-		</dl>
-		<p>${t('info')}</p>
-	</div>
-	<div class="buttons">
-		<button class="s-button -outline" data-action="decline">${t('decline')}</button>
-		<button class="s-button -primary" data-action="approve">${t('approve')}</button>
-	</div>
-</dialog>
-`;
-
 function createModal(name: string, url: string): HTMLDialogElement {
 	const template = document.createElement('template');
-	template.innerHTML = MODAL_TEMPLATE.trim();
+	template.innerHTML = modalTemplate().trim();
 	const dialog = template.content.querySelector('dialog');
 	if (!dialog) throw new Error('Failed to create modal');
 
@@ -180,4 +148,38 @@ export function registerWalletConsentModal({
 			resolve({ status: 'approved' });
 		});
 	});
+}
+
+function modalTemplate() {
+	const t = getMessageGroup('content_modals_register_wallet');
+
+	return`
+<dialog class="register-wallet">
+	<div class="header">
+		<h1 class="title">
+			<img class="icon" alt="Wallet Companion" />
+			<span>${t('title')}</span>
+		</h1>
+		<button class="s-button -invisible -square -small close" commandfor="my-dialog" command="close"></button>
+	</div>
+	<div class="content">
+		<p>${t('description')}</p>
+		<dl class="details">
+			<div class="detail">
+				<dt class="name">${t('name_label')}</dt>
+				<dd class="value -name"></dd>
+			</div>
+			<div class="detail">
+				<dt class="name">${t('url_label')}</dt>
+				<dd class="value -url"></dd>
+			</div>
+		</dl>
+		<p>${t('info')}</p>
+	</div>
+	<div class="buttons">
+		<button class="s-button -outline" data-action="decline">${t('decline')}</button>
+		<button class="s-button -primary" data-action="approve">${t('approve')}</button>
+	</div>
+</dialog>
+`;
 }

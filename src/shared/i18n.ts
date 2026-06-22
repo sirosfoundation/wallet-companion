@@ -1,33 +1,30 @@
-import { browserApi } from './browser-api';
 import elMessages from '../../_locales/el/messages.json';
 import enMessages from '../../_locales/en/messages.json';
 import fiMessages from '../../_locales/fi/messages.json';
 import ptMessages from '../../_locales/pt_PT/messages.json';
 import svMessages from '../../_locales/sv/messages.json';
+import { browserApi } from './browser-api';
 
-export type MessageKey =
-	& keyof typeof elMessages
-	& keyof typeof enMessages
-	& keyof typeof fiMessages
-	& keyof typeof ptMessages
-	& keyof typeof svMessages;
+export type MessageKey = keyof typeof elMessages &
+	keyof typeof enMessages &
+	keyof typeof fiMessages &
+	keyof typeof ptMessages &
+	keyof typeof svMessages;
 
-type StripKeyPrefix<P extends string, K extends string> = K extends `${P}_${infer Suffix}` ? Suffix : never;
+type StripKeyPrefix<P extends string, K extends string> = K extends `${P}_${infer Suffix}`
+	? Suffix
+	: never;
+
+type Messages = Record<MessageKey, { message: string; description?: string }>;
 
 type Locale = {
 	label: string;
-	messages: Record<
-		MessageKey,
-		{
-			message: string;
-			description?: string;
-		}
-	>;
+	messages: Messages;
 };
 
 type Locales = Record<string, Locale>;
 
-const locales = {
+export const locales = {
 	el: {
 		label: 'Ελληνικά',
 		messages: elMessages,
@@ -48,40 +45,52 @@ const locales = {
 		label: 'Svenska',
 		messages: svMessages,
 	},
-} satisfies Locales ;
+} satisfies Locales;
+
+let cachedMessages: Messages | null = null;
+/**
+ * Initialize i18n for page context. Call before using getMessage.
+ */
+export async function initPageI18n(fetchMessages: () => Promise<Messages>): Promise<void> {
+  if (!cachedMessages) {
+    cachedMessages = await fetchMessages();
+
+	console.debug('i18n initialized with messages:', cachedMessages);
+  }
+}
 
 /**
- * Retrieves a localized message based on the provided key and optional substitutions.
- *
- * Can be used in both content scripts and extension pages, falling back to
- * the appropriate method of accessing localization data depending on the context.
+ * Get a localized message.
  */
 export function getMessage(key: MessageKey, substitutions?: string | string[]): string {
 	if (browserApi?.i18n?.getMessage) {
-		const msg = browserApi.i18n.getMessage(key, substitutions);
-		return msg || key;
+		return browserApi.i18n.getMessage(key, substitutions) || key;
 	}
 
-	if (typeof navigator !== 'undefined') {
-		const lang = navigator.language.split('-')[0] as keyof typeof locales;
-
-		const locale = locales[lang] ?? locales.en;
-
-		return locale.messages[key]?.message || key;
+	const messages = cachedMessages;
+	const msg = messages?.[key]?.message;
+	if (msg) {
+		let result = msg;
+		if (substitutions) {
+			const subs = Array.isArray(substitutions) ? substitutions : [substitutions];
+			subs.forEach((sub, i) => {
+			result = result.replace(`$${i + 1}`, sub);
+			});
+		}
+		return result;
 	}
 
 	return key;
 }
 
 /**
- * Creates a function for retrieving localized messages with a common prefix.
+ * Create a prefixed getMessage function.
  */
 export function getMessageGroup<P extends string>(prefix: P) {
 	return <K extends StripKeyPrefix<P, MessageKey>>(
 		key: K,
-		substitutions?: string | string[]
+		substitutions?: string | string[],
 	): string => {
-		const fullKey = `${prefix}_${key}` as MessageKey;
-		return getMessage(fullKey, substitutions);
+		return getMessage(`${prefix}_${key}` as MessageKey, substitutions);
 	};
 }

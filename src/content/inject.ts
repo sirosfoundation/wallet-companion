@@ -11,6 +11,7 @@ import { selectWalletModal } from './modals/select-wallet';
 import { WalletCompanion } from './public-api/WalletCompanion';
 import { RPC } from './rpc';
 import type { WalletOption } from './types';
+import { initPageI18n } from '@shared/i18n';
 
 logger.debug('Digital Credentials API polyfill injected');
 
@@ -34,6 +35,8 @@ type DigitalIdentityRequest = {
 	digital?: { requests: Array<{ protocol: string; data: unknown }> };
 	mediation?: 'optional' | 'required' | 'silent';
 };
+
+initPageI18n(() => rpc.send('GET_I18N'));
 
 /**
  * Override navigator.credentials.get

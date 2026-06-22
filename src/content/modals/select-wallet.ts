@@ -11,43 +11,67 @@ import globalStyles from '@shared/style/global.css?inline';
 
 const HOST_ID = 'dc-wallet-host';
 
-const t = getMessageGroup('content_modals_select_wallet');
+export function selectWalletModal(options: ShowWalletSelectorOptions): void {
+	const { wallets, onSelect, onNative, onCancel } = options;
 
-// Static HTML templates — no user data, safe to use innerHTML via <template>
-const MODAL_TEMPLATE = `
-  <div class="wallet-selector">
-    <div class="panel" role="dialog" aria-modal="true" aria-label="${t('title')}">
-      <div class="header">
-        <h2>${t('title')}</h2>
-        <p>${t('description')}</p>
-      </div>
-      <div class="list"></div>
-      <div class="footer">
-        <button class="s-button -outline" data-action="native">${t('use_browser')}</button>
-        <button class="s-button -outline" data-action="cancel">${t('cancel')}</button>
-      </div>
-    </div>
-  </div>`;
+	document.getElementById(HOST_ID)?.remove();
 
-const WALLET_ITEM_TEMPLATE = `
-  <div class="wallet-item -selectable" role="button" tabindex="0">
-    <div class="wallet-icon -large"></div>
-    <div class="info">
-      <div class="name"></div>
-      <div class="desc"></div>
-    </div>
-  </div>`;
+	const host = document.createElement('div');
+	host.id = HOST_ID;
+	const shadow = host.attachShadow({ mode: 'closed' });
+	document.body.appendChild(host);
 
-const EMPTY_STATE_TEMPLATE = `
-  <div class="empty-state">
-    <p>${t('empty_title')}</p>
-    <small>${t('empty_hint')}</small>
-  </div>`;
+	const dismiss = () => host.remove();
 
-function parseTemplate(html: string): DocumentFragment {
-	const t = document.createElement('template');
-	t.innerHTML = html;
-	return t.content;
+	shadow.adoptedStyleSheets = [globalStyles, modalStyles].map((styles) => {
+		const sheet = new CSSStyleSheet();
+		sheet.replaceSync(styles);
+		return sheet;
+	});
+
+	const { modal, emptyState } = modalTemplate();
+	const overlay = modal.querySelector<HTMLElement>('.wallet-selector');
+	const list = modal.querySelector<HTMLElement>('.list');
+	const nativeBtn = modal.querySelector<HTMLElement>('[data-action="native"]');
+	const cancelBtn = modal.querySelector<HTMLElement>('[data-action="cancel"]');
+
+	if (!overlay || !list || !nativeBtn || !cancelBtn) {
+		throw new Error('Failed to create wallet selector: missing template elements');
+	}
+
+	overlay.addEventListener('click', (e) => {
+		if (e.target === overlay) {
+			dismiss();
+			onCancel();
+		}
+	});
+	nativeBtn.addEventListener('click', () => {
+		dismiss();
+		onNative();
+	});
+	cancelBtn.addEventListener('click', () => {
+		dismiss();
+		onCancel();
+	});
+
+	if (wallets.length > 0) {
+		for (const wallet of wallets) {
+			list.appendChild(createWalletItem(wallet, onSelect, dismiss));
+		}
+	} else {
+		list.appendChild(emptyState);
+	}
+
+	function handleEscape(e: KeyboardEvent) {
+		if (e.key === 'Escape') {
+			dismiss();
+			onCancel();
+			document.removeEventListener('keydown', handleEscape);
+		}
+	}
+	document.addEventListener('keydown', handleEscape);
+
+	shadow.append(modal);
 }
 
 function createWalletItem(
@@ -55,8 +79,8 @@ function createWalletItem(
 	onSelect: (w: WalletOption) => void,
 	dismiss: () => void,
 ): HTMLElement {
-	const fragment = parseTemplate(WALLET_ITEM_TEMPLATE);
-	const item = fragment.querySelector<HTMLElement>('.wallet-item');
+	const { walletItem } = modalTemplate();
+	const item = walletItem.querySelector<HTMLElement>('.wallet-item');
 
 	if (!item) {
 		throw new Error('Failed to create wallet item: missing template elements');
@@ -87,65 +111,48 @@ function createWalletItem(
 	return item;
 }
 
-export function selectWalletModal(options: ShowWalletSelectorOptions): void {
-	const { wallets, onSelect, onNative, onCancel } = options;
+function modalTemplate() {
+	const t = getMessageGroup('content_modals_select_wallet');
 
-	document.getElementById(HOST_ID)?.remove();
+	const MODAL_TEMPLATE = `
+	<div class="wallet-selector">
+		<div class="panel" role="dialog" aria-modal="true" aria-label="${t('title')}">
+		<div class="header">
+			<h2>${t('title')}</h2>
+			<p>${t('description')}</p>
+		</div>
+		<div class="list"></div>
+		<div class="footer">
+			<button class="s-button -outline" data-action="native">${t('use_browser')}</button>
+			<button class="s-button -outline" data-action="cancel">${t('cancel')}</button>
+		</div>
+		</div>
+	</div>`;
 
-	const host = document.createElement('div');
-	host.id = HOST_ID;
-	const shadow = host.attachShadow({ mode: 'closed' });
-	document.body.appendChild(host);
+	const WALLET_ITEM_TEMPLATE = `
+	<div class="wallet-item -selectable" role="button" tabindex="0">
+		<div class="wallet-icon -large"></div>
+		<div class="info">
+		<div class="name"></div>
+		<div class="desc"></div>
+		</div>
+	</div>`;
 
-	const dismiss = () => host.remove();
+	const EMPTY_STATE_TEMPLATE = `
+	<div class="empty-state">
+		<p>${t('empty_title')}</p>
+		<small>${t('empty_hint')}</small>
+	</div>`;
 
-	shadow.adoptedStyleSheets = [globalStyles, modalStyles].map((styles) => {
-		const sheet = new CSSStyleSheet();
-		sheet.replaceSync(styles);
-		return sheet;
-	});
-
-	const fragment = parseTemplate(MODAL_TEMPLATE);
-	const overlay = fragment.querySelector<HTMLElement>('.wallet-selector');
-	const list = fragment.querySelector<HTMLElement>('.list');
-	const nativeBtn = fragment.querySelector<HTMLElement>('[data-action="native"]');
-	const cancelBtn = fragment.querySelector<HTMLElement>('[data-action="cancel"]');
-
-	if (!overlay || !list || !nativeBtn || !cancelBtn) {
-		throw new Error('Failed to create wallet selector: missing template elements');
+	return {
+		modal: parseTemplate(MODAL_TEMPLATE),
+		walletItem: parseTemplate(WALLET_ITEM_TEMPLATE),
+		emptyState: parseTemplate(EMPTY_STATE_TEMPLATE),
 	}
+}
 
-	overlay.addEventListener('click', (e) => {
-		if (e.target === overlay) {
-			dismiss();
-			onCancel();
-		}
-	});
-	nativeBtn.addEventListener('click', () => {
-		dismiss();
-		onNative();
-	});
-	cancelBtn.addEventListener('click', () => {
-		dismiss();
-		onCancel();
-	});
-
-	if (wallets.length > 0) {
-		for (const wallet of wallets) {
-			list.appendChild(createWalletItem(wallet, onSelect, dismiss));
-		}
-	} else {
-		list.appendChild(parseTemplate(EMPTY_STATE_TEMPLATE));
-	}
-
-	function handleEscape(e: KeyboardEvent) {
-		if (e.key === 'Escape') {
-			dismiss();
-			onCancel();
-			document.removeEventListener('keydown', handleEscape);
-		}
-	}
-	document.addEventListener('keydown', handleEscape);
-
-	shadow.append(fragment);
+function parseTemplate(html: string): DocumentFragment {
+	const t = document.createElement('template');
+	t.innerHTML = html;
+	return t.content;
 }

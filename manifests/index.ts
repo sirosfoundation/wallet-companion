@@ -31,6 +31,7 @@ export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 		{
 			'resources': [
 				entry('iife', 'src/content/inject.ts'),
+				'_locales/**/messages.json',
 			],
 			'matches': ['<all_urls>'],
 		},
@@ -70,6 +71,7 @@ export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 		{
 			'resources': [
 				entry('iife', 'src/content/inject.ts'),
+				'_locales/**/messages.json',
 			],
 			'matches': ['<all_urls>'],
 		},
@@ -115,6 +117,7 @@ export const SAFARI_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 		{
 			'resources': [
 				entry('iife', 'src/content/inject.ts'),
+				'_locales/**/messages.json',
 			],
 			'matches': ['<all_urls>'],
 		},
