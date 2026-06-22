@@ -5,7 +5,12 @@ import fiMessages from '../../_locales/fi/messages.json';
 import ptMessages from '../../_locales/pt_PT/messages.json';
 import svMessages from '../../_locales/sv/messages.json';
 
-export type MessageKey = keyof typeof enMessages;
+export type MessageKey =
+	& keyof typeof elMessages
+	& keyof typeof enMessages
+	& keyof typeof fiMessages
+	& keyof typeof ptMessages
+	& keyof typeof svMessages;
 
 type StripKeyPrefix<P extends string, K extends string> = K extends `${P}_${infer Suffix}` ? Suffix : never;
 

@@ -89,6 +89,226 @@
     "message": "Καταχώρηση πορτοφολιού",
     "description": "Button to approve wallet registration"
   },
+  "ui_options_title": {
+    "message": "Wallet Companion",
+    "description": "Title of the options page"
+  },
+  "ui_options_description": {
+    "message": "Διαχειριστείτε τα ψηφιακά πορτοφόλια ταυτότητας και τους παρόχους διαπιστευτηρίων σας",
+    "description": "Description on the options page header"
+  },
+  "ui_options_tab_wallets": {
+    "message": "Τα πορτοφόλια μου",
+    "description": "Tab label for wallets list"
+  },
+  "ui_options_tab_add": {
+    "message": "Προσθήκη πορτοφολιού",
+    "description": "Tab label for add wallet form"
+  },
+  "ui_options_tab_settings": {
+    "message": "Ρυθμίσεις",
+    "description": "Tab label for settings"
+  },
+  "ui_options_stat_total_wallets": {
+    "message": "Συνολικά πορτοφόλια",
+    "description": "Label for total wallets statistic"
+  },
+  "ui_options_stat_active_wallets": {
+    "message": "Ενεργά πορτοφόλια",
+    "description": "Label for active wallets statistic"
+  },
+  "ui_options_stat_total_requests": {
+    "message": "Συνολικά αιτήματα",
+    "description": "Label for total requests statistic"
+  },
+  "ui_options_wallets_title": {
+    "message": "Τα πορτοφόλια μου",
+    "description": "Section title for wallets list"
+  },
+  "ui_options_wallets_add_button": {
+    "message": "Προσθήκη νέου πορτοφολιού",
+    "description": "Button to add a new wallet"
+  },
+  "ui_options_add_title": {
+    "message": "Προσθήκη πορτοφολιού",
+    "description": "Title for add wallet page"
+  },
+  "ui_options_add_description": {
+    "message": "Επιλέξτε έναν πάροχο wwWallet παρακάτω ή προσθέστε μια προσαρμοσμένη διεύθυνση URL πορτοφολιού.",
+    "description": "Description for add wallet page"
+  },
+  "ui_options_add_preset_title": {
+    "message": "Γρήγορη προσθήκη - Πάροχοι wwWallet",
+    "description": "Title for preset wallets section"
+  },
+  "ui_options_add_preset_description": {
+    "message": "Το wwWallet είναι ένα ψηφιακό πορτοφόλι ταυτότητας ανοιχτού κώδικα που υποστηρίζει W3C Verifiable Credentials.",
+    "description": "Description for preset wallets section"
+  },
+  "ui_options_add_custom_title": {
+    "message": "Προσθήκη προσαρμοσμένου πορτοφολιού",
+    "description": "Title for custom wallet form"
+  },
+  "ui_options_form_name_label": {
+    "message": "Όνομα πορτοφολιού",
+    "description": "Label for wallet name field"
+  },
+  "ui_options_form_name_help": {
+    "message": "Ένα φιλικό όνομα για την αναγνώριση αυτού του πορτοφολιού",
+    "description": "Help text for wallet name field"
+  },
+  "ui_options_form_name_placeholder": {
+    "message": "π.χ. Προσωπικό πορτοφόλι",
+    "description": "Placeholder for wallet name field"
+  },
+  "ui_options_form_url_label": {
+    "message": "URL πορτοφολιού",
+    "description": "Label for wallet URL field"
+  },
+  "ui_options_form_url_help": {
+    "message": "Η βασική διεύθυνση URL του παρόχου πορτοφολιού σας",
+    "description": "Help text for wallet URL field"
+  },
+  "ui_options_form_url_placeholder": {
+    "message": "https://wallet.example.com",
+    "description": "Placeholder for wallet URL field"
+  },
+  "ui_options_form_description_label": {
+    "message": "Περιγραφή",
+    "description": "Label for wallet description field"
+  },
+  "ui_options_form_description_help": {
+    "message": "Προαιρετική περιγραφή για αυτό το πορτοφόλι",
+    "description": "Help text for wallet description field"
+  },
+  "ui_options_form_description_placeholder": {
+    "message": "Προαιρετική περιγραφή...",
+    "description": "Placeholder for wallet description field"
+  },
+  "ui_options_form_icon_label": {
+    "message": "Εικονίδιο πορτοφολιού",
+    "description": "Label for wallet icon field"
+  },
+  "ui_options_form_icon_help": {
+    "message": "Θα προσπαθήσουμε να ανακτήσουμε το εικονίδιο από τη διεύθυνση URL του πορτοφολιού. Μπορείτε επίσης να επιλέξετε ένα δημιουργημένο εικονίδιο.",
+    "description": "Help text for wallet icon field"
+  },
+  "ui_options_form_icon_placeholder": {
+    "message": "Εισάγετε URL για λήψη εικονιδίου",
+    "description": "Placeholder for icon preview"
+  },
+  "ui_options_form_icon_from_url": {
+    "message": "Από URL",
+    "description": "Label for favicon icon option"
+  },
+  "ui_options_form_icon_generated": {
+    "message": "Δημιουργημένα εικονίδια",
+    "description": "Label for generated icon options"
+  },
+  "ui_options_form_protocols_label": {
+    "message": "Υποστηριζόμενα πρωτόκολλα",
+    "description": "Label for protocols field"
+  },
+  "ui_options_form_protocols_help": {
+    "message": "Εισάγετε τα αναγνωριστικά πρωτοκόλλων που υποστηρίζονται από αυτό το πορτοφόλι (ένα ανά γραμμή)",
+    "description": "Help text for protocols field"
+  },
+  "ui_options_form_protocols_placeholder": {
+    "message": "Ένα πρωτόκολλο ανά γραμμή",
+    "description": "Placeholder for protocols field"
+  },
+  "ui_options_form_enabled_label": {
+    "message": "Ενεργοποίηση αυτού του πορτοφολιού αμέσως",
+    "description": "Label for wallet enabled checkbox"
+  },
+  "ui_options_form_clear": {
+    "message": "Εκκαθάριση φόρμας",
+    "description": "Button to clear the form"
+  },
+  "ui_options_form_submit": {
+    "message": "Προσθήκη πορτοφολιού",
+    "description": "Button to submit the add wallet form"
+  },
+  "ui_options_settings_title": {
+    "message": "Γενικές ρυθμίσεις",
+    "description": "Title for settings page"
+  },
+  "ui_options_settings_extension_title": {
+    "message": "Ρυθμίσεις επέκτασης",
+    "description": "Title for extension settings section"
+  },
+  "ui_options_settings_interception_description": {
+    "message": "Όταν η υποκλοπή πορτοφολιού είναι ανενεργή, όλα τα αιτήματα θα χρησιμοποιούν την εγγενή υλοποίηση του προγράμματος περιήγησης",
+    "description": "Description for wallet interception toggle"
+  },
+  "ui_options_settings_interception_label": {
+    "message": "Υποκλοπή πορτοφολιού",
+    "description": "Label for wallet interception toggle"
+  },
+  "ui_options_settings_developer_description": {
+    "message": "Ενεργοποίηση προηγμένων λειτουργιών όπως η επεξεργασία υποστηριζόμενων πρωτοκόλλων για κάθε πορτοφόλι",
+    "description": "Description for developer mode toggle"
+  },
+  "ui_options_settings_developer_label": {
+    "message": "Λειτουργία προγραμματιστή",
+    "description": "Label for developer mode toggle"
+  },
+  "ui_options_settings_clear_description": {
+    "message": "Εκκαθάριση στατιστικών συνολικών αιτημάτων",
+    "description": "Description for clear stats button"
+  },
+  "ui_options_settings_clear_button": {
+    "message": "Εκκαθάριση",
+    "description": "Button to clear statistics"
+  },
+  "ui_options_settings_config_title": {
+    "message": "Διαχείριση διαμόρφωσης",
+    "description": "Title for configuration management section"
+  },
+  "ui_options_settings_export_description": {
+    "message": "Λήψη των διαμορφώσεων πορτοφολιού ως αρχείο JSON",
+    "description": "Description for export config button"
+  },
+  "ui_options_settings_export_button": {
+    "message": "Λήψη",
+    "description": "Button to download config"
+  },
+  "ui_options_settings_import_description": {
+    "message": "Προσθήκη διαμορφώσεων πορτοφολιού από αρχείο JSON",
+    "description": "Description for import config button"
+  },
+  "ui_options_settings_import_button": {
+    "message": "Αναζήτηση",
+    "description": "Button to browse for config file"
+  },
+  "ui_options_edit_title": {
+    "message": "Επεξεργασία",
+    "description": "Title for edit wallet modal"
+  },
+  "ui_options_edit_status_label": {
+    "message": "Κατάσταση πορτοφολιού",
+    "description": "Label for wallet status field"
+  },
+  "ui_options_edit_status_active": {
+    "message": "Ενεργό",
+    "description": "Status label when wallet is active"
+  },
+  "ui_options_edit_status_inactive": {
+    "message": "Ανενεργό",
+    "description": "Status label when wallet is inactive"
+  },
+  "ui_options_edit_delete": {
+    "message": "Αφαίρεση πορτοφολιού",
+    "description": "Button to delete wallet"
+  },
+  "ui_options_edit_cancel": {
+    "message": "Ακύρωση",
+    "description": "Button to cancel editing"
+  },
+  "ui_options_edit_save": {
+    "message": "Αποθήκευση αλλαγών",
+    "description": "Button to save wallet changes"
+  },
   "ui_popup_no_wallets": {
     "message": "Δεν έχουν ρυθμιστεί πορτοφόλια ακόμα",
     "description": "Message shown in the popup when no wallets exist"

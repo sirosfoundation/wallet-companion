@@ -14,6 +14,7 @@ import {
 	isIconUrl,
 } from './utils/icons';
 import { sendMessage } from './utils/messaging';
+import { getMessageGroup } from '@shared/i18n';
 
 // ============================================================================
 // Types
@@ -55,12 +56,22 @@ let settings: GetSettingsResponse = {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
+	translateUI();
 	await loadData();
 	setupEventListeners();
 	setupIconSelectors();
 	renderAll();
 	updateDeveloperModeUI();
 });
+
+function translateUI(): void {
+	const t = getMessageGroup('ui_options');
+	const elements = document.querySelectorAll<HTMLElement>('[data-i18n-key]');
+	elements.forEach((element) => {
+		const key = element.dataset.i18nKey;
+		if (key) element.textContent = t(key as keyof typeof t);
+	});
+}
 
 /**
  * Load wallets and settings from storage

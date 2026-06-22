@@ -2,7 +2,7 @@
  * Popup script for Wallet Companion extension
  */
 
-import { getMessage } from '@shared/i18n';
+import { getMessage, getMessageGroup } from '@shared/i18n';
 import { svgToDataUrl } from '@shared/icons';
 import { runtime } from '@shared/runtime';
 import { InboundMessages } from '@shared/schemas/messages';
@@ -35,6 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		console.error('One or more required DOM elements are missing');
 		return;
 	}
+
+	const t = getMessageGroup('ui_popup');
+	const elements = document.querySelectorAll<HTMLElement>('[data-i18n-key]');
+	elements.forEach((element) => {
+		const key = element.dataset.i18nKey;
+		if (key) element.textContent = t(key as keyof typeof t);
+	});
 
 	// Cross-browser compatibility
 	const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
