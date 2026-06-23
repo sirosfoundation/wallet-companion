@@ -95,7 +95,11 @@ export async function getAllMessages(): Promise<Messages | null> {
 		const res = await fetch(url);
 		return res.json();
 	} catch {
-		const fallback = browserApi.runtime.getURL('_locales/en/messages.json');
-		return (await fetch(fallback)).json();
+		try {
+			const fallback = browserApi.runtime.getURL('_locales/en/messages.json');
+			return (await fetch(fallback)).json();
+		} catch {
+			throw new Error(`Failed to load locale files for ${lang} and fallback en`);
+		}
 	}
 }
