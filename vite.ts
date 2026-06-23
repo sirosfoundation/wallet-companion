@@ -78,6 +78,7 @@ async function build({
 			minify: true,
 			sourcemap: true,
 			rollupOptions: {
+				treeshake: true,
 				input,
 				output: {
 					format,
