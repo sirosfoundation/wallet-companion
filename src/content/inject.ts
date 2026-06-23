@@ -3,7 +3,7 @@
  * Polyfills navigator.credentials.get() calls for the Digital Credentials API
  */
 
-import { initI18n } from '@shared/i18n';
+import { initI18n, waitForI18n } from '@shared/i18n';
 import { logger } from '@shared/logger';
 import { isProtocol, type Protocol, protocolsToArray } from '@shared/protocols';
 import { DCGateway } from './dc-api/gateway';

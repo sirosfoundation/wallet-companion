@@ -1,6 +1,6 @@
 import modalStyles from '@content/style/register-wallet-consent.css?inline';
 import logo from '@shared/assets/icons/logo-dark.svg?inline';
-import { getMessageGroup } from '@shared/i18n';
+import { getMessageGroup, waitForI18n } from '@shared/i18n';
 import globalStyles from '@shared/style/global.css?inline';
 import { createElement, X } from 'lucide';
 
@@ -49,10 +49,12 @@ function createModal(name: string, url: string): HTMLDialogElement {
  *
  * Allows user to consent to a registration request from a wallet.
  */
-export function registerWalletConsentModal({
+export async function registerWalletConsentModal({
 	name,
 	url,
 }: RegisterWalletConsentModalOptions): Promise<RegisterWalletConsentModalResult> {
+	await waitForI18n();
+
 	return new Promise((resolve, reject) => {
 		const existing = document.getElementById(HOST_ID);
 		if (existing) {

@@ -6,12 +6,14 @@
 
 import modalStyles from '@content/style/select-wallet.css?inline';
 import type { ShowWalletSelectorOptions, WalletOption } from '@content/types';
-import { getMessage, getMessageGroup } from '@shared/i18n';
+import { getMessage, getMessageGroup, waitForI18n } from '@shared/i18n';
 import globalStyles from '@shared/style/global.css?inline';
 
 const HOST_ID = 'dc-wallet-host';
 
-export function selectWalletModal(options: ShowWalletSelectorOptions): void {
+export async function selectWalletModal(options: ShowWalletSelectorOptions): Promise<void> {
+	await waitForI18n();
+
 	const { wallets, onSelect, onNative, onCancel } = options;
 
 	document.getElementById(HOST_ID)?.remove();

@@ -16,19 +16,33 @@ export type Locale = {
 export type Locales = Record<string, Locale>;
 
 let storedMessages: Messages | null = null;
+let initPromise: Promise<void> | null = null;
+
 /**
  * Initialize i18n by storing messages locally.
  * Primarily intended for page contexts where {@link browserApi} is not available.
  */
 export async function initI18n(fetchMessagesFn: () => Promise<Messages>): Promise<void> {
-	if (storedMessages) return;
+    if (storedMessages) return;
+    if (initPromise) return initPromise;
 
-	if (browserApi) {
-		storedMessages = await getAllMessages();
-		return;
-	}
+    initPromise = (async () => {
+        if (browserApi) {
+            storedMessages = await getAllMessages();
+        } else {
+            storedMessages = await fetchMessagesFn();
+        }
+    })();
 
-	storedMessages = await fetchMessagesFn();
+    return initPromise;
+}
+
+/**
+ * Ensures that i18n has been initialized before proceeding.
+ * Primarily intended for page contexts where {@link browserApi} is not available.
+ */
+export function waitForI18n(): Promise<void> {
+	return initPromise ?? Promise.resolve();
 }
 
 /**
@@ -36,7 +50,8 @@ export async function initI18n(fetchMessagesFn: () => Promise<Messages>): Promis
  */
 export function getMessage(key: MessageKey, substitutions?: string | string[]): string {
 	if (browserApi?.i18n?.getMessage) {
-		return browserApi.i18n.getMessage(key, substitutions) || key;
+		const res = browserApi.i18n.getMessage(key, substitutions);
+		if (res) return res;
 	}
 
 	const msg = storedMessages?.[key]?.message;
