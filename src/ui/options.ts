@@ -72,6 +72,11 @@ function translateUI(): void {
 		const sub = element.dataset.i18nSub ? element.dataset.i18nSub.split(',') : undefined;
 		if (key) element.textContent = t(key as keyof typeof t, ...(sub || []));
 	});
+	const placeholders = document.querySelectorAll<HTMLInputElement>('[data-i18n-placeholder]');
+	placeholders.forEach((placeholder) => {
+		const key = placeholder.dataset.i18nPlaceholder;
+		if (key) placeholder.placeholder = t(key as keyof typeof t);
+	});
 }
 
 /**
