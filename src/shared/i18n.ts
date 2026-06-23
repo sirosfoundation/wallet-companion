@@ -60,6 +60,9 @@ export function waitForI18n(): Promise<void> {
 
 /**
  * Get a localized message.
+ *
+ * If {@link browserApi} is not available, it falls back to a local store, which needs
+ * to be initialized with {@link initI18n}.
  */
 export function getMessage(key: MessageKey, substitutions?: string | string[]): string {
 	if (browserApi?.i18n?.getMessage) {
@@ -93,6 +96,13 @@ export function getMessage(key: MessageKey, substitutions?: string | string[]): 
 
 /**
  * Create a prefixed getMessage function.
+ *
+ * @example ```
+ * const t = getMessageGroup('ui_popup');
+ * t('title') // "Wallet Companion"
+ * // is the same as
+ * getMessage('ui_popup_title') // "Wallet Companion"
+ * ```
  */
 export function getMessageGroup<P extends string>(prefix: P) {
 	return <K extends StripKeyPrefix<P, MessageKey>>(
