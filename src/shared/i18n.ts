@@ -28,7 +28,7 @@ export async function initPageI18n(fetchMessagesFn: () => Promise<Messages>): Pr
 		return;
 	}
 
-    storedMessages = await fetchMessagesFn();
+	storedMessages = await fetchMessagesFn();
 }
 
 /**
@@ -70,7 +70,7 @@ export function getMessageGroup<P extends string>(prefix: P) {
  * Get all messages for the current locale (set by the browser).
  * Intended for content script contexts where {@link browserApi} is available.
  */
-export async function getAllMessages(): Promise<Messages|null> {
+export async function getAllMessages(): Promise<Messages | null> {
 	if (!browserApi) throw new Error('No browserApi available');
 
 	const lang = browserApi.i18n.getUILanguage()?.split('-')[0] ?? 'en';

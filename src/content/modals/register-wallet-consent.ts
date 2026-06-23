@@ -153,7 +153,7 @@ export function registerWalletConsentModal({
 function modalTemplate() {
 	const t = getMessageGroup('content_modals_register_wallet');
 
-	return`
+	return `
 <dialog class="register-wallet">
 	<div class="header">
 		<h1 class="title">

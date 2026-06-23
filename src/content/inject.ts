@@ -3,6 +3,7 @@
  * Polyfills navigator.credentials.get() calls for the Digital Credentials API
  */
 
+import { initPageI18n } from '@shared/i18n';
 import { logger } from '@shared/logger';
 import { isProtocol, type Protocol, protocolsToArray } from '@shared/protocols';
 import { DCGateway } from './dc-api/gateway';
@@ -11,7 +12,6 @@ import { selectWalletModal } from './modals/select-wallet';
 import { WalletCompanion } from './public-api/WalletCompanion';
 import { RPC } from './rpc';
 import type { WalletOption } from './types';
-import { initPageI18n } from '@shared/i18n';
 
 logger.debug('Digital Credentials API polyfill injected');
 

@@ -2,6 +2,7 @@
  * Options page script for Wallet Companion extension
  */
 
+import { getMessageGroup } from '@shared/i18n';
 import { generateInitialAvatar, svgToDataUrl } from '@shared/icons';
 import type { GetSettingsResponse } from '@shared/schemas/messages';
 import { InboundMessages } from '@shared/schemas/messages';
@@ -14,7 +15,6 @@ import {
 	isIconUrl,
 } from './utils/icons';
 import { sendMessage } from './utils/messaging';
-import { getMessageGroup } from '@shared/i18n';
 
 // ============================================================================
 // Types

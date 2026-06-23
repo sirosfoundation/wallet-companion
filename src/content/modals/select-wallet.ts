@@ -148,7 +148,7 @@ function modalTemplate() {
 		modal: parseTemplate(MODAL_TEMPLATE),
 		walletItem: parseTemplate(WALLET_ITEM_TEMPLATE),
 		emptyState: parseTemplate(EMPTY_STATE_TEMPLATE),
-	}
+	};
 }
 
 function parseTemplate(html: string): DocumentFragment {

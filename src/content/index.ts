@@ -2,6 +2,7 @@
  * Content script - relays RPC requests from page context to background script.
  */
 
+import { getAllMessages } from '@shared/i18n';
 import { logger } from '@shared/logger';
 import { runtimeSendMessage } from '@shared/runtime';
 import {
@@ -15,7 +16,6 @@ import {
 } from '@shared/schemas/messages';
 import { RPC } from './rpc';
 import { loadContentScript } from './utils';
-import { getAllMessages } from '@shared/i18n';
 
 async function sendMessage<M extends InboundMessage>(message: M): Promise<ResponseFor<M['type']>> {
 	return runtimeSendMessage(message) as Promise<ResponseFor<M['type']>>;
