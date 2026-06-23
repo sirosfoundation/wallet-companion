@@ -23,18 +23,18 @@ let initPromise: Promise<void> | null = null;
  * Primarily intended for page contexts where {@link browserApi} is not available.
  */
 export async function initI18n(fetchMessagesFn: () => Promise<Messages>): Promise<void> {
-    if (storedMessages) return;
-    if (initPromise) return initPromise;
+	if (storedMessages) return;
+	if (initPromise) return initPromise;
 
-    initPromise = (async () => {
-        if (browserApi) {
-            storedMessages = await getAllMessages();
-        } else {
-            storedMessages = await fetchMessagesFn();
-        }
-    })();
+	initPromise = (async () => {
+		if (browserApi) {
+			storedMessages = await getAllMessages();
+		} else {
+			storedMessages = await fetchMessagesFn();
+		}
+	})();
 
-    return initPromise;
+	return initPromise;
 }
 
 /**
