@@ -18,9 +18,9 @@ export type Locales = Record<string, Locale>;
 let storedMessages: Messages | null = null;
 /**
  * Initialize i18n by storing messages locally.
- * Intended for page contexts where {@link browserApi} is not available.
+ * Primarily intended for page contexts where {@link browserApi} is not available.
  */
-export async function initPageI18n(fetchMessagesFn: () => Promise<Messages>): Promise<void> {
+export async function initI18n(fetchMessagesFn: () => Promise<Messages>): Promise<void> {
 	if (storedMessages) return;
 
 	if (browserApi) {
