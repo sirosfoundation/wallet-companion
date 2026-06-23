@@ -1,62 +1,34 @@
-import elMessages from '../../_locales/el/messages.json';
-import enMessages from '../../_locales/en/messages.json';
-import fiMessages from '../../_locales/fi/messages.json';
-import ptMessages from '../../_locales/pt_PT/messages.json';
-import svMessages from '../../_locales/sv/messages.json';
 import { browserApi } from './browser-api';
-
-export type MessageKey = keyof typeof elMessages &
-	keyof typeof enMessages &
-	keyof typeof fiMessages &
-	keyof typeof ptMessages &
-	keyof typeof svMessages;
 
 type StripKeyPrefix<P extends string, K extends string> = K extends `${P}_${infer Suffix}`
 	? Suffix
 	: never;
 
-type Messages = Record<MessageKey, { message: string; description?: string }>;
+export type MessageKey = keyof typeof import('../../_locales/en/messages.json');
 
-type Locale = {
+export type Messages = Record<MessageKey, { message: string; description?: string }>;
+
+export type Locale = {
 	label: string;
 	messages: Messages;
 };
 
-type Locales = Record<string, Locale>;
+export type Locales = Record<string, Locale>;
 
-export const locales = {
-	el: {
-		label: 'Ελληνικά',
-		messages: elMessages,
-	},
-	en: {
-		label: 'English',
-		messages: enMessages,
-	},
-	fi: {
-		label: 'Suomi',
-		messages: fiMessages,
-	},
-	pt_PT: {
-		label: 'Português (Portugal)',
-		messages: ptMessages,
-	},
-	sv: {
-		label: 'Svenska',
-		messages: svMessages,
-	},
-} satisfies Locales;
-
-let cachedMessages: Messages | null = null;
+let storedMessages: Messages | null = null;
 /**
- * Initialize i18n for page context. Call before using getMessage.
+ * Initialize i18n by storing messages locally.
+ * Intended for page contexts where {@link browserApi} is not available.
  */
-export async function initPageI18n(fetchMessages: () => Promise<Messages>): Promise<void> {
-  if (!cachedMessages) {
-    cachedMessages = await fetchMessages();
+export async function initPageI18n(fetchMessagesFn: () => Promise<Messages>): Promise<void> {
+	if (storedMessages) return;
 
-	console.debug('i18n initialized with messages:', cachedMessages);
-  }
+	if (browserApi) {
+		storedMessages = await getAllMessages();
+		return;
+	}
+
+    storedMessages = await fetchMessagesFn();
 }
 
 /**
@@ -67,15 +39,14 @@ export function getMessage(key: MessageKey, substitutions?: string | string[]): 
 		return browserApi.i18n.getMessage(key, substitutions) || key;
 	}
 
-	const messages = cachedMessages;
-	const msg = messages?.[key]?.message;
+	const msg = storedMessages?.[key]?.message;
 	if (msg) {
 		let result = msg;
 		if (substitutions) {
 			const subs = Array.isArray(substitutions) ? substitutions : [substitutions];
-			subs.forEach((sub, i) => {
-			result = result.replace(`$${i + 1}`, sub);
-			});
+			for (const [i, sub] of subs.entries()) {
+				result = result.replace(`$${i + 1}`, sub);
+			}
 		}
 		return result;
 	}
@@ -93,4 +64,23 @@ export function getMessageGroup<P extends string>(prefix: P) {
 	): string => {
 		return getMessage(`${prefix}_${key}` as MessageKey, substitutions);
 	};
+}
+
+/**
+ * Get all messages for the current locale (set by the browser).
+ * Intended for content script contexts where {@link browserApi} is available.
+ */
+export async function getAllMessages(): Promise<Messages|null> {
+	if (!browserApi) throw new Error('No browserApi available');
+
+	const lang = browserApi.i18n.getUILanguage()?.split('-')[0] ?? 'en';
+	const url = browserApi.runtime.getURL(`_locales/${lang}/messages.json`);
+
+	try {
+		const res = await fetch(url);
+		return res.json();
+	} catch {
+		const fallback = browserApi.runtime.getURL('_locales/en/messages.json');
+		return (await fetch(fallback)).json();
+	}
 }

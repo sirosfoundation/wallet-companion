@@ -2,7 +2,6 @@
  * Content script - relays RPC requests from page context to background script.
  */
 
-import { browserApi } from '@shared/browser-api';
 import { logger } from '@shared/logger';
 import { runtimeSendMessage } from '@shared/runtime';
 import {
@@ -16,6 +15,7 @@ import {
 } from '@shared/schemas/messages';
 import { RPC } from './rpc';
 import { loadContentScript } from './utils';
+import { getAllMessages } from '@shared/i18n';
 
 async function sendMessage<M extends InboundMessage>(message: M): Promise<ResponseFor<M['type']>> {
 	return runtimeSendMessage(message) as Promise<ResponseFor<M['type']>>;
@@ -72,18 +72,8 @@ new RPC(async (type, payload) => {
 				type: InboundMessages.GET_SUPPORTED_PROTOCOLS,
 				origin: window.location.origin,
 			});
-		case 'GET_I18N': {
-			const lang = browserApi.i18n.getUILanguage()?.split('-')[0] ?? 'en';
-			const url = browserApi.runtime.getURL(`_locales/${lang}/messages.json`);
-
-			try {
-				const res = await fetch(url);
-				return res.json();
-			} catch {
-				const fallback = browserApi.runtime.getURL('_locales/en/messages.json');
-				return (await fetch(fallback)).json();
-			}
-		}
+		case 'GET_I18N_MESSAGES':
+			return getAllMessages();
 		default:
 			throw new Error(`Unknown RPC: ${type}`);
 	}

@@ -36,7 +36,7 @@ type DigitalIdentityRequest = {
 	mediation?: 'optional' | 'required' | 'silent';
 };
 
-initPageI18n(() => rpc.send('GET_I18N'));
+initPageI18n(() => rpc.send('GET_I18N_MESSAGES'));
 
 /**
  * Override navigator.credentials.get
