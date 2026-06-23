@@ -6,7 +6,20 @@ type StripKeyPrefix<P extends string, K extends string> = K extends `${P}_${infe
 
 export type MessageKey = keyof typeof import('../../_locales/en/messages.json');
 
-export type Messages = Record<MessageKey, { message: string; description?: string }>;
+export type Messages = Record<
+	MessageKey,
+	{
+		message: string;
+		description?: string;
+		placeholders?: Record<
+			string,
+			{
+				content: string;
+				example?: string;
+			}
+		>;
+	}
+>;
 
 export type Locale = {
 	label: string;
@@ -54,15 +67,24 @@ export function getMessage(key: MessageKey, substitutions?: string | string[]): 
 		if (res) return res;
 	}
 
-	const msg = storedMessages?.[key]?.message;
-	if (msg) {
-		let result = msg;
+	const entry = storedMessages?.[key];
+	if (entry?.message) {
+		let result = entry.message;
+
+		if (entry.placeholders) {
+			for (const [name, placeholder] of Object.entries(entry.placeholders)) {
+				const pattern = new RegExp(`\\$${name}\\$`, 'gi');
+				result = result.replace(pattern, placeholder.content);
+			}
+		}
+
 		if (substitutions) {
 			const subs = Array.isArray(substitutions) ? substitutions : [substitutions];
 			for (const [i, sub] of subs.entries()) {
 				result = result.replace(`$${i + 1}`, sub);
 			}
 		}
+
 		return result;
 	}
 
