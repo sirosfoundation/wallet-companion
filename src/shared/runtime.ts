@@ -5,12 +5,6 @@ const IGNORED_ERRORS = ['Could not establish connection', 'Receiving end does no
  */
 export const runtime = typeof browser !== 'undefined' ? browser.runtime : chrome.runtime;
 
-if (!runtime) {
-	throw new Error(
-		'No browser runtime found. This extension can only run in a browser environment.',
-	);
-}
-
 /**
  * Runtime utilities for sending messages in a browser extension context.
  * Provides a unified API for both Chrome and Firefox environments.

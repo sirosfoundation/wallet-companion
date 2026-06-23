@@ -2,11 +2,11 @@
  * Popup script for Wallet Companion extension
  */
 
-import { svgToDataUrl } from '@shared/icons';
+import { getMessage, getMessageGroup } from '@shared/i18n';
 import { runtime } from '@shared/runtime';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { UsageStats, Wallets } from '@shared/schemas/resources';
-import { generateIdenticon } from './utils/icons';
+import { translatePageUI } from './utils/i18n';
 import { onMessage, sendMessage } from './utils/messaging';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -34,6 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		console.error('One or more required DOM elements are missing');
 		return;
 	}
+
+	translatePageUI('ui_popup');
 
 	// Cross-browser compatibility
 	const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
@@ -121,8 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (!wallets || wallets.length === 0) {
 			walletList.innerHTML = `
         <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 13px;">
-          No wallets configured yet.<br>
-          Click "Add or Configure" to add one.
+          ${getMessage('ui_popup_no_wallets')}<br>
+          ${getMessage('ui_popup_no_wallets_hint')}
         </div>
       `;
 			walletCount.textContent = '0';

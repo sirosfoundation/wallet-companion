@@ -1,0 +1,377 @@
+{
+  "extension_name": {
+    "message": "Wallet Companion",
+    "description": "Extension name"
+  },
+  "extension_description": {
+    "message": "A companion for supported web-based digital identity wallets. Adds cross-browser credential sharing, wallet switching, and seamless site compatibility.",
+    "description": "Extension description"
+  },
+  "common_wallet_description": {
+    "message": "Digital Identity Wallet",
+    "description": "Default description for a wallet that has no description"
+  },
+  "common_icon_alt": {
+    "message": "$NAME$ icon",
+    "description": "Alt text for wallet icon in selection modal",
+    "placeholders": {
+      "NAME": {
+        "content": "$1",
+        "example": "SIROS Wallet"
+      }
+    }
+  },
+  "error_no_wallets": {
+    "message": "No wallets available",
+    "description": "Error when no wallet providers are configured"
+  },
+  "error_user_cancelled": {
+    "message": "User cancelled",
+    "description": "Error when user cancels the wallet selection"
+  },
+  "error_wallet_timeout": {
+    "message": "Wallet timeout",
+    "description": "Error when wallet does not respond within timeout"
+  },
+  "error_popup_blocked": {
+    "message": "Popup blocked",
+    "description": "Error when browser blocks the wallet popup window"
+  },
+  "content_modals_select_wallet_title": {
+    "message": "Select Digital Wallet",
+    "description": "Title of the wallet selection modal"
+  },
+  "content_modals_select_wallet_description": {
+    "message": "Choose which wallet to use for this credential request",
+    "description": "Description text in the wallet selection modal"
+  },
+  "content_modals_select_wallet_use_browser": {
+    "message": "Use Browser Wallet",
+    "description": "Button to use the browser's built-in wallet"
+  },
+  "content_modals_select_wallet_cancel": {
+    "message": "Cancel",
+    "description": "Cancel button label"
+  },
+  "content_modals_select_wallet_empty_title": {
+    "message": "No wallets configured",
+    "description": "Title when no wallets are configured"
+  },
+  "content_modals_select_wallet_empty_hint": {
+    "message": "Use the extension settings to add wallet providers",
+    "description": "Hint text when no wallets are configured"
+  },
+  "content_modals_register_wallet_title": {
+    "message": "Register New Wallet?",
+    "description": "Title of the register wallet consent modal"
+  },
+  "content_modals_register_wallet_description": {
+    "message": "Wallet Companion has received a request to register a new wallet.",
+    "description": "Description text in the register wallet consent modal"
+  },
+  "content_modals_register_wallet_name_label": {
+    "message": "Name",
+    "description": "Label for wallet name field"
+  },
+  "content_modals_register_wallet_url_label": {
+    "message": "URL",
+    "description": "Label for wallet URL field"
+  },
+  "content_modals_register_wallet_info": {
+    "message": "By allowing this, the wallet will be able to interact with Wallet Companion.",
+    "description": "Info text explaining the consequences of registration"
+  },
+  "content_modals_register_wallet_decline": {
+    "message": "Decline",
+    "description": "Button to decline wallet registration"
+  },
+  "content_modals_register_wallet_approve": {
+    "message": "Register wallet",
+    "description": "Button to approve wallet registration"
+  },
+  "ui_options_title": {
+    "message": "Wallet Companion",
+    "description": "Title of the options page"
+  },
+  "ui_options_description": {
+    "message": "Manage your digital identity wallets and credential providers",
+    "description": "Description on the options page header"
+  },
+  "ui_options_tab_wallets": {
+    "message": "My Wallets",
+    "description": "Tab label for wallets list"
+  },
+  "ui_options_tab_add": {
+    "message": "Add Wallet",
+    "description": "Tab label for add wallet form"
+  },
+  "ui_options_tab_settings": {
+    "message": "Settings",
+    "description": "Tab label for settings"
+  },
+  "ui_options_stat_total_wallets": {
+    "message": "Total Wallets",
+    "description": "Label for total wallets statistic"
+  },
+  "ui_options_stat_active_wallets": {
+    "message": "Active Wallets",
+    "description": "Label for active wallets statistic"
+  },
+  "ui_options_stat_total_requests": {
+    "message": "Total Requests",
+    "description": "Label for total requests statistic"
+  },
+  "ui_options_wallets_title": {
+    "message": "My Wallets",
+    "description": "Section title for wallets list"
+  },
+  "ui_options_wallets_add_button": {
+    "message": "Add New Wallet",
+    "description": "Button to add a new wallet"
+  },
+  "ui_options_add_title": {
+    "message": "Add a Wallet",
+    "description": "Title for add wallet page"
+  },
+  "ui_options_add_description": {
+    "message": "Select a wwWallet provider below or add a custom wallet URL.",
+    "description": "Description for add wallet page"
+  },
+  "ui_options_add_preset_title": {
+    "message": "Quick Add - wwWallet Providers",
+    "description": "Title for preset wallets section"
+  },
+  "ui_options_add_preset_description": {
+    "message": "wwWallet is an open-source digital identity wallet supporting W3C Verifiable Credentials.",
+    "description": "Description for preset wallets section"
+  },
+  "ui_options_add_custom_title": {
+    "message": "Add Custom Wallet",
+    "description": "Title for custom wallet form"
+  },
+  "ui_options_form_name_label": {
+    "message": "Wallet Name",
+    "description": "Label for wallet name field"
+  },
+  "ui_options_form_name_help": {
+    "message": "A friendly name to identify this wallet",
+    "description": "Help text for wallet name field"
+  },
+  "ui_options_form_name_placeholder": {
+    "message": "e.g., My Personal Wallet",
+    "description": "Placeholder for wallet name field"
+  },
+  "ui_options_form_url_label": {
+    "message": "Wallet URL",
+    "description": "Label for wallet URL field"
+  },
+  "ui_options_form_url_help": {
+    "message": "The base URL of your wallet provider",
+    "description": "Help text for wallet URL field"
+  },
+  "ui_options_form_url_placeholder": {
+    "message": "https://wallet.example.com",
+    "description": "Placeholder for wallet URL field"
+  },
+  "ui_options_form_description_label": {
+    "message": "Description",
+    "description": "Label for wallet description field"
+  },
+  "ui_options_form_description_help": {
+    "message": "Optional description for this wallet",
+    "description": "Help text for wallet description field"
+  },
+  "ui_options_form_description_placeholder": {
+    "message": "Optional description...",
+    "description": "Placeholder for wallet description field"
+  },
+  "ui_options_form_icon_label": {
+    "message": "Wallet Icon",
+    "description": "Label for wallet icon field"
+  },
+  "ui_options_form_icon_help": {
+    "message": "We'll try to fetch the icon from the wallet URL. You can also choose a generated icon.",
+    "description": "Help text for wallet icon field"
+  },
+  "ui_options_form_icon_placeholder": {
+    "message": "Enter URL to get icon",
+    "description": "Placeholder for icon preview"
+  },
+  "ui_options_form_icon_from_url": {
+    "message": "From URL",
+    "description": "Label for favicon icon option"
+  },
+  "ui_options_form_icon_generated": {
+    "message": "Generated icons",
+    "description": "Label for generated icon options"
+  },
+  "ui_options_form_protocols_label": {
+    "message": "Supported Protocols",
+    "description": "Label for protocols field"
+  },
+  "ui_options_form_protocols_help": {
+    "message": "Enter protocol identifiers supported by this wallet (one per line)",
+    "description": "Help text for protocols field"
+  },
+  "ui_options_form_protocols_placeholder": {
+    "message": "One protocol per line",
+    "description": "Placeholder for protocols field"
+  },
+  "ui_options_form_enabled_label": {
+    "message": "Activate this wallet immediately",
+    "description": "Label for wallet enabled checkbox"
+  },
+  "ui_options_form_clear": {
+    "message": "Clear Form",
+    "description": "Button to clear the form"
+  },
+  "ui_options_form_submit": {
+    "message": "Add Wallet",
+    "description": "Button to submit the add wallet form"
+  },
+  "ui_options_settings_title": {
+    "message": "General Settings",
+    "description": "Title for settings page"
+  },
+  "ui_options_settings_extension_title": {
+    "message": "Extension Settings",
+    "description": "Title for extension settings section"
+  },
+  "ui_options_settings_interception_description": {
+    "message": "When wallet interception is inactive, all requests will use the browser's native implementation",
+    "description": "Description for wallet interception toggle"
+  },
+  "ui_options_settings_interception_label": {
+    "message": "Wallet interception",
+    "description": "Label for wallet interception toggle"
+  },
+  "ui_options_settings_developer_description": {
+    "message": "Enable advanced features like editing supported protocols for each wallet",
+    "description": "Description for developer mode toggle"
+  },
+  "ui_options_settings_developer_label": {
+    "message": "Developer Mode",
+    "description": "Label for developer mode toggle"
+  },
+  "ui_options_settings_clear_description": {
+    "message": "Clear Total Requests statistics",
+    "description": "Description for clear stats button"
+  },
+  "ui_options_settings_clear_button": {
+    "message": "Clear",
+    "description": "Button to clear statistics"
+  },
+  "ui_options_settings_config_title": {
+    "message": "Configuration Management",
+    "description": "Title for configuration management section"
+  },
+  "ui_options_settings_export_description": {
+    "message": "Download your wallet configurations as a JSON file",
+    "description": "Description for export config button"
+  },
+  "ui_options_settings_export_button": {
+    "message": "Download",
+    "description": "Button to download config"
+  },
+  "ui_options_settings_import_description": {
+    "message": "Add wallet configurations from a JSON file",
+    "description": "Description for import config button"
+  },
+  "ui_options_settings_import_button": {
+    "message": "Browse",
+    "description": "Button to browse for config file"
+  },
+  "ui_options_edit_title": {
+    "message": "Edit",
+    "description": "Title for edit wallet modal"
+  },
+  "ui_options_edit_status_label": {
+    "message": "Wallet status",
+    "description": "Label for wallet status field"
+  },
+  "ui_options_edit_status_active": {
+    "message": "Active",
+    "description": "Status label when wallet is active"
+  },
+  "ui_options_edit_status_inactive": {
+    "message": "Inactive",
+    "description": "Status label when wallet is inactive"
+  },
+  "ui_options_edit_delete": {
+    "message": "Remove wallet",
+    "description": "Button to delete wallet"
+  },
+  "ui_options_edit_cancel": {
+    "message": "Cancel",
+    "description": "Button to cancel editing"
+  },
+  "ui_options_edit_save": {
+    "message": "Save Changes",
+    "description": "Button to save wallet changes"
+  },
+  "ui_popup_no_wallets": {
+    "message": "No wallets configured yet",
+    "description": "Message shown in the popup when no wallets exist"
+  },
+  "ui_popup_no_wallets_hint": {
+    "message": "Click \"Add or Configure\" to add one.",
+    "description": "Hint shown below the no-wallets message in popup"
+  },
+  "ui_popup_title": {
+    "message": "Wallet Companion",
+    "description": "Popup header title"
+  },
+  "ui_popup_subtitle": {
+    "message": "Companion extension for web wallets",
+    "description": "Popup header subtitle"
+  },
+  "ui_popup_status_active": {
+    "message": "Active & monitoring",
+    "description": "Status text when extension is enabled"
+  },
+  "ui_popup_status_inactive": {
+    "message": "Inactive",
+    "description": "Status text when extension is disabled"
+  },
+  "ui_popup_toggle_title": {
+    "message": "Toggle extension on/off",
+    "description": "Tooltip for extension toggle switch"
+  },
+  "ui_popup_stats_title": {
+    "message": "Statistics",
+    "description": "Statistics section title"
+  },
+  "ui_popup_stats_intercepted": {
+    "message": "Requests intercepted",
+    "description": "Label for intercepted requests counter"
+  },
+  "ui_popup_clear": {
+    "message": "Clear",
+    "description": "Button to clear statistics"
+  },
+  "ui_popup_wallets_title": {
+    "message": "My Wallets",
+    "description": "Wallets section title"
+  },
+  "ui_popup_configure": {
+    "message": "Add or Configure",
+    "description": "Button to configure wallets"
+  },
+  "ui_popup_wallet_active": {
+    "message": "Active",
+    "description": "Wallet status label when active"
+  },
+  "ui_popup_wallet_inactive": {
+    "message": "Inactive",
+    "description": "Wallet status label when inactive"
+  },
+  "ui_popup_footer": {
+    "message": "Wallet Companion v$1",
+    "description": "Footer text with version number",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  }
+}

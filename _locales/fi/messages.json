@@ -1,0 +1,377 @@
+{
+  "extension_name": {
+    "message": "Wallet Companion",
+    "description": "Extension name"
+  },
+  "extension_description": {
+    "message": "Kumppani tuetuille verkkopohjaisille digitaalisille identiteettilompakoille. Mahdollistaa tunnisteiden jakamisen selainten välillä, lompakon vaihtamisen ja saumattoman yhteensopivuuden.",
+    "description": "Extension description"
+  },
+  "common_wallet_description": {
+    "message": "Digitaalinen identiteettilompakko",
+    "description": "Default description for a wallet that has no description"
+  },
+  "common_icon_alt": {
+    "message": "$NAME$ -kuvake",
+    "description": "Alt text for wallet icon in selection modal",
+    "placeholders": {
+      "NAME": {
+        "content": "$1",
+        "example": "SIROS Wallet"
+      }
+    }
+  },
+  "error_no_wallets": {
+    "message": "Ei lompakoita saatavilla",
+    "description": "Error when no wallet providers are configured"
+  },
+  "error_user_cancelled": {
+    "message": "Käyttäjä peruutti",
+    "description": "Error when user cancels the wallet selection"
+  },
+  "error_wallet_timeout": {
+    "message": "Lompakon aikakatkaisu",
+    "description": "Error when wallet does not respond within timeout"
+  },
+  "error_popup_blocked": {
+    "message": "Ponnahdusikkuna estetty",
+    "description": "Error when browser blocks the wallet popup window"
+  },
+  "content_modals_select_wallet_title": {
+    "message": "Valitse digitaalinen lompakko",
+    "description": "Title of the wallet selection modal"
+  },
+  "content_modals_select_wallet_description": {
+    "message": "Valitse mikä lompakko käytetään tähän todistuspyyntöön",
+    "description": "Description text in the wallet selection modal"
+  },
+  "content_modals_select_wallet_use_browser": {
+    "message": "Käytä selaimen lompakkoa",
+    "description": "Button to use the browser's built-in wallet"
+  },
+  "content_modals_select_wallet_cancel": {
+    "message": "Peruuta",
+    "description": "Cancel button label"
+  },
+  "content_modals_select_wallet_empty_title": {
+    "message": "Lompakoita ei ole määritetty",
+    "description": "Title when no wallets are configured"
+  },
+  "content_modals_select_wallet_empty_hint": {
+    "message": "Käytä laajennuksen asetuksia lisätäksesi lompakkotarjoajia",
+    "description": "Hint text when no wallets are configured"
+  },
+  "content_modals_register_wallet_title": {
+    "message": "Rekisteröidäänkö uusi lompakko?",
+    "description": "Title of the register wallet consent modal"
+  },
+  "content_modals_register_wallet_description": {
+    "message": "Wallet Companion on vastaanottanut pyynnön uuden lompakon rekisteröimiseksi.",
+    "description": "Description text in the register wallet consent modal"
+  },
+  "content_modals_register_wallet_name_label": {
+    "message": "Nimi",
+    "description": "Label for wallet name field"
+  },
+  "content_modals_register_wallet_url_label": {
+    "message": "URL",
+    "description": "Label for wallet URL field"
+  },
+  "content_modals_register_wallet_info": {
+    "message": "Hyväksymällä tämän lompakko voi olla vuorovaikutuksessa Wallet Companionin kanssa.",
+    "description": "Info text explaining the consequences of registration"
+  },
+  "content_modals_register_wallet_decline": {
+    "message": "Hylkää",
+    "description": "Button to decline wallet registration"
+  },
+  "content_modals_register_wallet_approve": {
+    "message": "Rekisteröi lompakko",
+    "description": "Button to approve wallet registration"
+  },
+  "ui_options_title": {
+    "message": "Wallet Companion",
+    "description": "Title of the options page"
+  },
+  "ui_options_description": {
+    "message": "Hallitse digitaalisia identiteettilompakoitasi ja tunnistetietojen tarjoajia",
+    "description": "Description on the options page header"
+  },
+  "ui_options_tab_wallets": {
+    "message": "Omat lompakot",
+    "description": "Tab label for wallets list"
+  },
+  "ui_options_tab_add": {
+    "message": "Lisää lompakko",
+    "description": "Tab label for add wallet form"
+  },
+  "ui_options_tab_settings": {
+    "message": "Asetukset",
+    "description": "Tab label for settings"
+  },
+  "ui_options_stat_total_wallets": {
+    "message": "Lompakoita yhteensä",
+    "description": "Label for total wallets statistic"
+  },
+  "ui_options_stat_active_wallets": {
+    "message": "Aktiivisia lompakoita",
+    "description": "Label for active wallets statistic"
+  },
+  "ui_options_stat_total_requests": {
+    "message": "Pyyntöjä yhteensä",
+    "description": "Label for total requests statistic"
+  },
+  "ui_options_wallets_title": {
+    "message": "Omat lompakot",
+    "description": "Section title for wallets list"
+  },
+  "ui_options_wallets_add_button": {
+    "message": "Lisää uusi lompakko",
+    "description": "Button to add a new wallet"
+  },
+  "ui_options_add_title": {
+    "message": "Lisää lompakko",
+    "description": "Title for add wallet page"
+  },
+  "ui_options_add_description": {
+    "message": "Valitse wwWallet-tarjoaja alta tai lisää mukautettu lompakon URL.",
+    "description": "Description for add wallet page"
+  },
+  "ui_options_add_preset_title": {
+    "message": "Pikaluonti - wwWallet-tarjoajat",
+    "description": "Title for preset wallets section"
+  },
+  "ui_options_add_preset_description": {
+    "message": "wwWallet on avoimen lähdekoodin digitaalinen identiteettilompakko, joka tukee W3C Verifiable Credentials -standardia.",
+    "description": "Description for preset wallets section"
+  },
+  "ui_options_add_custom_title": {
+    "message": "Lisää mukautettu lompakko",
+    "description": "Title for custom wallet form"
+  },
+  "ui_options_form_name_label": {
+    "message": "Lompakon nimi",
+    "description": "Label for wallet name field"
+  },
+  "ui_options_form_name_help": {
+    "message": "Ystävällinen nimi tämän lompakon tunnistamiseen",
+    "description": "Help text for wallet name field"
+  },
+  "ui_options_form_name_placeholder": {
+    "message": "esim. Henkilökohtainen lompakko",
+    "description": "Placeholder for wallet name field"
+  },
+  "ui_options_form_url_label": {
+    "message": "Lompakon URL",
+    "description": "Label for wallet URL field"
+  },
+  "ui_options_form_url_help": {
+    "message": "Lompakkotarjoajasi perus-URL",
+    "description": "Help text for wallet URL field"
+  },
+  "ui_options_form_url_placeholder": {
+    "message": "https://wallet.example.com",
+    "description": "Placeholder for wallet URL field"
+  },
+  "ui_options_form_description_label": {
+    "message": "Kuvaus",
+    "description": "Label for wallet description field"
+  },
+  "ui_options_form_description_help": {
+    "message": "Valinnainen kuvaus tälle lompakolle",
+    "description": "Help text for wallet description field"
+  },
+  "ui_options_form_description_placeholder": {
+    "message": "Valinnainen kuvaus...",
+    "description": "Placeholder for wallet description field"
+  },
+  "ui_options_form_icon_label": {
+    "message": "Lompakon kuvake",
+    "description": "Label for wallet icon field"
+  },
+  "ui_options_form_icon_help": {
+    "message": "Yritämme hakea kuvakkeen lompakon URL-osoitteesta. Voit myös valita luodun kuvakkeen.",
+    "description": "Help text for wallet icon field"
+  },
+  "ui_options_form_icon_placeholder": {
+    "message": "Syötä URL saadaksesi kuvakkeen",
+    "description": "Placeholder for icon preview"
+  },
+  "ui_options_form_icon_from_url": {
+    "message": "URL:sta",
+    "description": "Label for favicon icon option"
+  },
+  "ui_options_form_icon_generated": {
+    "message": "Luodut kuvakkeet",
+    "description": "Label for generated icon options"
+  },
+  "ui_options_form_protocols_label": {
+    "message": "Tuetut protokollat",
+    "description": "Label for protocols field"
+  },
+  "ui_options_form_protocols_help": {
+    "message": "Syötä tämän lompakon tukemat protokollatunnisteet (yksi per rivi)",
+    "description": "Help text for protocols field"
+  },
+  "ui_options_form_protocols_placeholder": {
+    "message": "Yksi protokolla per rivi",
+    "description": "Placeholder for protocols field"
+  },
+  "ui_options_form_enabled_label": {
+    "message": "Aktivoi tämä lompakko heti",
+    "description": "Label for wallet enabled checkbox"
+  },
+  "ui_options_form_clear": {
+    "message": "Tyhjennä lomake",
+    "description": "Button to clear the form"
+  },
+  "ui_options_form_submit": {
+    "message": "Lisää lompakko",
+    "description": "Button to submit the add wallet form"
+  },
+  "ui_options_settings_title": {
+    "message": "Yleiset asetukset",
+    "description": "Title for settings page"
+  },
+  "ui_options_settings_extension_title": {
+    "message": "Laajennuksen asetukset",
+    "description": "Title for extension settings section"
+  },
+  "ui_options_settings_interception_description": {
+    "message": "Kun lompakon sieppaus on pois käytöstä, kaikki pyynnöt käyttävät selaimen omaa toteutusta",
+    "description": "Description for wallet interception toggle"
+  },
+  "ui_options_settings_interception_label": {
+    "message": "Lompakon sieppaus",
+    "description": "Label for wallet interception toggle"
+  },
+  "ui_options_settings_developer_description": {
+    "message": "Ota käyttöön edistyneet ominaisuudet, kuten kunkin lompakon protokollien muokkaaminen",
+    "description": "Description for developer mode toggle"
+  },
+  "ui_options_settings_developer_label": {
+    "message": "Kehittäjätila",
+    "description": "Label for developer mode toggle"
+  },
+  "ui_options_settings_clear_description": {
+    "message": "Tyhjennä pyyntöjen kokonaismäärän tilastot",
+    "description": "Description for clear stats button"
+  },
+  "ui_options_settings_clear_button": {
+    "message": "Tyhjennä",
+    "description": "Button to clear statistics"
+  },
+  "ui_options_settings_config_title": {
+    "message": "Konfiguraation hallinta",
+    "description": "Title for configuration management section"
+  },
+  "ui_options_settings_export_description": {
+    "message": "Lataa lompakkokonfiguraatiot JSON-tiedostona",
+    "description": "Description for export config button"
+  },
+  "ui_options_settings_export_button": {
+    "message": "Lataa",
+    "description": "Button to download config"
+  },
+  "ui_options_settings_import_description": {
+    "message": "Lisää lompakkokonfiguraatioita JSON-tiedostosta",
+    "description": "Description for import config button"
+  },
+  "ui_options_settings_import_button": {
+    "message": "Selaa",
+    "description": "Button to browse for config file"
+  },
+  "ui_options_edit_title": {
+    "message": "Muokkaa",
+    "description": "Title for edit wallet modal"
+  },
+  "ui_options_edit_status_label": {
+    "message": "Lompakon tila",
+    "description": "Label for wallet status field"
+  },
+  "ui_options_edit_status_active": {
+    "message": "Aktiivinen",
+    "description": "Status label when wallet is active"
+  },
+  "ui_options_edit_status_inactive": {
+    "message": "Ei aktiivinen",
+    "description": "Status label when wallet is inactive"
+  },
+  "ui_options_edit_delete": {
+    "message": "Poista lompakko",
+    "description": "Button to delete wallet"
+  },
+  "ui_options_edit_cancel": {
+    "message": "Peruuta",
+    "description": "Button to cancel editing"
+  },
+  "ui_options_edit_save": {
+    "message": "Tallenna muutokset",
+    "description": "Button to save wallet changes"
+  },
+  "ui_popup_no_wallets": {
+    "message": "Lompakoita ei ole vielä määritetty",
+    "description": "Message shown in the popup when no wallets exist"
+  },
+  "ui_popup_no_wallets_hint": {
+    "message": "Napsauta \"Lisää tai määritä\" lisätäksesi lompakon.",
+    "description": "Hint shown below the no-wallets message in popup"
+  },
+  "ui_popup_title": {
+    "message": "Wallet Companion",
+    "description": "Popup header title"
+  },
+  "ui_popup_subtitle": {
+    "message": "Kumppanilaajennus verkkolompakkoille",
+    "description": "Popup header subtitle"
+  },
+  "ui_popup_status_active": {
+    "message": "Aktiivinen ja seuraa",
+    "description": "Status text when extension is enabled"
+  },
+  "ui_popup_status_inactive": {
+    "message": "Ei aktiivinen",
+    "description": "Status text when extension is disabled"
+  },
+  "ui_popup_toggle_title": {
+    "message": "Laajennuksen päälle/pois",
+    "description": "Tooltip for extension toggle switch"
+  },
+  "ui_popup_stats_title": {
+    "message": "Tilastot",
+    "description": "Statistics section title"
+  },
+  "ui_popup_stats_intercepted": {
+    "message": "Pyyntöjä siepattua",
+    "description": "Label for intercepted requests counter"
+  },
+  "ui_popup_clear": {
+    "message": "Tyhjennä",
+    "description": "Button to clear statistics"
+  },
+  "ui_popup_wallets_title": {
+    "message": "Minun lompakkoni",
+    "description": "Wallets section title"
+  },
+  "ui_popup_configure": {
+    "message": "Lisää tai määritä",
+    "description": "Button to configure wallets"
+  },
+  "ui_popup_wallet_active": {
+    "message": "Aktiivinen",
+    "description": "Wallet status label when active"
+  },
+  "ui_popup_wallet_inactive": {
+    "message": "Ei aktiivinen",
+    "description": "Wallet status label when inactive"
+  },
+  "ui_popup_footer": {
+    "message": "Wallet Companion v$1",
+    "description": "Footer text with version number",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  }
+}

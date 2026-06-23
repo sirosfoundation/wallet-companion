@@ -1,0 +1,377 @@
+{
+  "extension_name": {
+    "message": "Wallet Companion",
+    "description": "Extension name"
+  },
+  "extension_description": {
+    "message": "Ett tillägg för webbaserade digitala identitetsplånböcker. Möjliggör delning av intyg mellan webbläsare, plånboksväxling och sömlös kompatibilitet.",
+    "description": "Extension description"
+  },
+  "common_wallet_description": {
+    "message": "Digital identitetsplånbok",
+    "description": "Default description for a wallet that has no description"
+  },
+  "common_icon_alt": {
+    "message": "$NAME$-ikon",
+    "description": "Alt text for wallet icon in selection modal",
+    "placeholders": {
+      "NAME": {
+        "content": "$1",
+        "example": "SIROS Wallet"
+      }
+    }
+  },
+  "error_no_wallets": {
+    "message": "Inga plånböcker tillgängliga",
+    "description": "Error when no wallet providers are configured"
+  },
+  "error_user_cancelled": {
+    "message": "Användaren avbröt",
+    "description": "Error when user cancels the wallet selection"
+  },
+  "error_wallet_timeout": {
+    "message": "Plånboken svarade inte i tid",
+    "description": "Error when wallet does not respond within timeout"
+  },
+  "error_popup_blocked": {
+    "message": "Popup blockerad",
+    "description": "Error when browser blocks the wallet popup window"
+  },
+  "content_modals_select_wallet_title": {
+    "message": "Välj digital plånbok",
+    "description": "Title of the wallet selection modal"
+  },
+  "content_modals_select_wallet_description": {
+    "message": "Välj vilken plånbok som ska användas för denna intygsförfrågan",
+    "description": "Description text in the wallet selection modal"
+  },
+  "content_modals_select_wallet_use_browser": {
+    "message": "Använd webbläsarplånbok",
+    "description": "Button to use the browser's built-in wallet"
+  },
+  "content_modals_select_wallet_cancel": {
+    "message": "Avbryt",
+    "description": "Cancel button label"
+  },
+  "content_modals_select_wallet_empty_title": {
+    "message": "Inga plånböcker konfigurerade",
+    "description": "Title when no wallets are configured"
+  },
+  "content_modals_select_wallet_empty_hint": {
+    "message": "Använd tilläggsinställningarna för att lägga till plånboksleverantörer",
+    "description": "Hint text when no wallets are configured"
+  },
+  "content_modals_register_wallet_title": {
+    "message": "Registrera ny plånbok?",
+    "description": "Title of the register wallet consent modal"
+  },
+  "content_modals_register_wallet_description": {
+    "message": "Wallet Companion har fått en förfrågan om att registrera en ny plånbok.",
+    "description": "Description text in the register wallet consent modal"
+  },
+  "content_modals_register_wallet_name_label": {
+    "message": "Namn",
+    "description": "Label for wallet name field"
+  },
+  "content_modals_register_wallet_url_label": {
+    "message": "URL",
+    "description": "Label for wallet URL field"
+  },
+  "content_modals_register_wallet_info": {
+    "message": "Genom att tillåta detta kommer plånboken att kunna interagera med Wallet Companion.",
+    "description": "Info text explaining the consequences of registration"
+  },
+  "content_modals_register_wallet_decline": {
+    "message": "Avböj",
+    "description": "Button to decline wallet registration"
+  },
+  "content_modals_register_wallet_approve": {
+    "message": "Registrera plånbok",
+    "description": "Button to approve wallet registration"
+  },
+  "ui_options_title": {
+    "message": "Wallet Companion",
+    "description": "Title of the options page"
+  },
+  "ui_options_description": {
+    "message": "Hantera dina digitala identitetsplånböcker och intygsutgivare",
+    "description": "Description on the options page header"
+  },
+  "ui_options_tab_wallets": {
+    "message": "Mina plånböcker",
+    "description": "Tab label for wallets list"
+  },
+  "ui_options_tab_add": {
+    "message": "Lägg till plånbok",
+    "description": "Tab label for add wallet form"
+  },
+  "ui_options_tab_settings": {
+    "message": "Inställningar",
+    "description": "Tab label for settings"
+  },
+  "ui_options_stat_total_wallets": {
+    "message": "Totalt antal plånböcker",
+    "description": "Label for total wallets statistic"
+  },
+  "ui_options_stat_active_wallets": {
+    "message": "Aktiva plånböcker",
+    "description": "Label for active wallets statistic"
+  },
+  "ui_options_stat_total_requests": {
+    "message": "Totalt antal förfrågningar",
+    "description": "Label for total requests statistic"
+  },
+  "ui_options_wallets_title": {
+    "message": "Mina plånböcker",
+    "description": "Section title for wallets list"
+  },
+  "ui_options_wallets_add_button": {
+    "message": "Lägg till ny plånbok",
+    "description": "Button to add a new wallet"
+  },
+  "ui_options_add_title": {
+    "message": "Lägg till en plånbok",
+    "description": "Title for add wallet page"
+  },
+  "ui_options_add_description": {
+    "message": "Välj en wwWallet-leverantör nedan eller lägg till en anpassad plånboks-URL.",
+    "description": "Description for add wallet page"
+  },
+  "ui_options_add_preset_title": {
+    "message": "Snabbval - wwWallet-leverantörer",
+    "description": "Title for preset wallets section"
+  },
+  "ui_options_add_preset_description": {
+    "message": "wwWallet är en digital identitetsplånbok med öppen källkod som stöder W3C Verifiable Credentials.",
+    "description": "Description for preset wallets section"
+  },
+  "ui_options_add_custom_title": {
+    "message": "Lägg till anpassad plånbok",
+    "description": "Title for custom wallet form"
+  },
+  "ui_options_form_name_label": {
+    "message": "Plånboksnamn",
+    "description": "Label for wallet name field"
+  },
+  "ui_options_form_name_help": {
+    "message": "Ett vänligt namn för att identifiera denna plånbok",
+    "description": "Help text for wallet name field"
+  },
+  "ui_options_form_name_placeholder": {
+    "message": "t.ex. Min personliga plånbok",
+    "description": "Placeholder for wallet name field"
+  },
+  "ui_options_form_url_label": {
+    "message": "Plånboks-URL",
+    "description": "Label for wallet URL field"
+  },
+  "ui_options_form_url_help": {
+    "message": "Bas-URL för din plånboksleverantör",
+    "description": "Help text for wallet URL field"
+  },
+  "ui_options_form_url_placeholder": {
+    "message": "https://wallet.example.com",
+    "description": "Placeholder for wallet URL field"
+  },
+  "ui_options_form_description_label": {
+    "message": "Beskrivning",
+    "description": "Label for wallet description field"
+  },
+  "ui_options_form_description_help": {
+    "message": "Valfri beskrivning för denna plånbok",
+    "description": "Help text for wallet description field"
+  },
+  "ui_options_form_description_placeholder": {
+    "message": "Valfri beskrivning...",
+    "description": "Placeholder for wallet description field"
+  },
+  "ui_options_form_icon_label": {
+    "message": "Plånboksikon",
+    "description": "Label for wallet icon field"
+  },
+  "ui_options_form_icon_help": {
+    "message": "Vi försöker hämta ikonen från plånboks-URL:en. Du kan också välja en genererad ikon.",
+    "description": "Help text for wallet icon field"
+  },
+  "ui_options_form_icon_placeholder": {
+    "message": "Ange URL för att hämta ikon",
+    "description": "Placeholder for icon preview"
+  },
+  "ui_options_form_icon_from_url": {
+    "message": "Från URL",
+    "description": "Label for favicon icon option"
+  },
+  "ui_options_form_icon_generated": {
+    "message": "Genererade ikoner",
+    "description": "Label for generated icon options"
+  },
+  "ui_options_form_protocols_label": {
+    "message": "Protokoll som stöds",
+    "description": "Label for protocols field"
+  },
+  "ui_options_form_protocols_help": {
+    "message": "Ange protokollidentifierare som stöds av denna plånbok (en per rad)",
+    "description": "Help text for protocols field"
+  },
+  "ui_options_form_protocols_placeholder": {
+    "message": "Ett protokoll per rad",
+    "description": "Placeholder for protocols field"
+  },
+  "ui_options_form_enabled_label": {
+    "message": "Aktivera denna plånbok omedelbart",
+    "description": "Label for wallet enabled checkbox"
+  },
+  "ui_options_form_clear": {
+    "message": "Rensa formulär",
+    "description": "Button to clear the form"
+  },
+  "ui_options_form_submit": {
+    "message": "Lägg till plånbok",
+    "description": "Button to submit the add wallet form"
+  },
+  "ui_options_settings_title": {
+    "message": "Allmänna inställningar",
+    "description": "Title for settings page"
+  },
+  "ui_options_settings_extension_title": {
+    "message": "Tilläggsinställningar",
+    "description": "Title for extension settings section"
+  },
+  "ui_options_settings_interception_description": {
+    "message": "När plånboksavlyssning är inaktiv kommer alla förfrågningar att använda webbläsarens inbyggda implementering",
+    "description": "Description for wallet interception toggle"
+  },
+  "ui_options_settings_interception_label": {
+    "message": "Plånboksavlyssning",
+    "description": "Label for wallet interception toggle"
+  },
+  "ui_options_settings_developer_description": {
+    "message": "Aktivera avancerade funktioner som att redigera protokoll för varje plånbok",
+    "description": "Description for developer mode toggle"
+  },
+  "ui_options_settings_developer_label": {
+    "message": "Utvecklarläge",
+    "description": "Label for developer mode toggle"
+  },
+  "ui_options_settings_clear_description": {
+    "message": "Rensa statistik för totalt antal förfrågningar",
+    "description": "Description for clear stats button"
+  },
+  "ui_options_settings_clear_button": {
+    "message": "Rensa",
+    "description": "Button to clear statistics"
+  },
+  "ui_options_settings_config_title": {
+    "message": "Konfigurationshantering",
+    "description": "Title for configuration management section"
+  },
+  "ui_options_settings_export_description": {
+    "message": "Ladda ner dina plånbokskonfigurationer som en JSON-fil",
+    "description": "Description for export config button"
+  },
+  "ui_options_settings_export_button": {
+    "message": "Ladda ner",
+    "description": "Button to download config"
+  },
+  "ui_options_settings_import_description": {
+    "message": "Lägg till plånbokskonfigurationer från en JSON-fil",
+    "description": "Description for import config button"
+  },
+  "ui_options_settings_import_button": {
+    "message": "Bläddra",
+    "description": "Button to browse for config file"
+  },
+  "ui_options_edit_title": {
+    "message": "Redigera",
+    "description": "Title for edit wallet modal"
+  },
+  "ui_options_edit_status_label": {
+    "message": "Plånboksstatus",
+    "description": "Label for wallet status field"
+  },
+  "ui_options_edit_status_active": {
+    "message": "Aktiv",
+    "description": "Status label when wallet is active"
+  },
+  "ui_options_edit_status_inactive": {
+    "message": "Inaktiv",
+    "description": "Status label when wallet is inactive"
+  },
+  "ui_options_edit_delete": {
+    "message": "Ta bort plånbok",
+    "description": "Button to delete wallet"
+  },
+  "ui_options_edit_cancel": {
+    "message": "Avbryt",
+    "description": "Button to cancel editing"
+  },
+  "ui_options_edit_save": {
+    "message": "Spara ändringar",
+    "description": "Button to save wallet changes"
+  },
+  "ui_popup_no_wallets": {
+    "message": "Inga plånböcker konfigurerade ännu",
+    "description": "Message shown in the popup when no wallets exist"
+  },
+  "ui_popup_no_wallets_hint": {
+    "message": "Klicka på \"Lägg till eller konfigurera\" för att lägga till en.",
+    "description": "Hint shown below the no-wallets message in popup"
+  },
+  "ui_popup_title": {
+    "message": "Wallet Companion",
+    "description": "Popup header title"
+  },
+  "ui_popup_subtitle": {
+    "message": "Tillägg för webbplånböcker",
+    "description": "Popup header subtitle"
+  },
+  "ui_popup_status_active": {
+    "message": "Aktiv & övervakar",
+    "description": "Status text when extension is enabled"
+  },
+  "ui_popup_status_inactive": {
+    "message": "Inaktiv",
+    "description": "Status text when extension is disabled"
+  },
+  "ui_popup_toggle_title": {
+    "message": "Växla tillägg på/av",
+    "description": "Tooltip for extension toggle switch"
+  },
+  "ui_popup_stats_title": {
+    "message": "Statistik",
+    "description": "Statistics section title"
+  },
+  "ui_popup_stats_intercepted": {
+    "message": "Förfrågningar fångade",
+    "description": "Label for intercepted requests counter"
+  },
+  "ui_popup_clear": {
+    "message": "Rensa",
+    "description": "Button to clear statistics"
+  },
+  "ui_popup_wallets_title": {
+    "message": "Mina plånböcker",
+    "description": "Wallets section title"
+  },
+  "ui_popup_configure": {
+    "message": "Lägg till eller konfigurera",
+    "description": "Button to configure wallets"
+  },
+  "ui_popup_wallet_active": {
+    "message": "Aktiv",
+    "description": "Wallet status label when active"
+  },
+  "ui_popup_wallet_inactive": {
+    "message": "Inaktiv",
+    "description": "Wallet status label when inactive"
+  },
+  "ui_popup_footer": {
+    "message": "Wallet Companion v$1",
+    "description": "Footer text with version number",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  }
+}

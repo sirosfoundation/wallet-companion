@@ -6,6 +6,7 @@ import { generateInitialAvatar, svgToDataUrl } from '@shared/icons';
 import type { GetSettingsResponse } from '@shared/schemas/messages';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { Wallet, WalletRegistrationInput } from '@shared/schemas/resources';
+import { translatePageUI } from './utils/i18n';
 import {
 	fetchFavicon,
 	generateGeometricIcon,
@@ -55,6 +56,7 @@ let settings: GetSettingsResponse = {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
+	translatePageUI('ui_options');
 	await loadData();
 	setupEventListeners();
 	setupIconSelectors();

@@ -12,8 +12,8 @@
     <div class="left">
       <img src="../shared/assets/icons/logo-dark.svg" alt="Siros" class="logo">
       <div class="text">
-        <h1>Wallet Companion</h1>
-        <p class="subtitle">Companion extension for web wallets</p>
+        <h1 data-i18n-key="title"></h1>
+        <p class="subtitle" data-i18n-key="subtitle"></p>
       </div>
     </div>
 
@@ -22,29 +22,29 @@
   <div class="popup-content">
     <div class="status-bar" id="statusBar">
       <span class="indicator" id="statusIndicator"></span>
-      <span class="text" id="statusText">Active &amp; monitoring</span>
-      <label class="toggle-switch -compact _ml-auto" title="Toggle extension on/off">
+      <span class="text" id="statusText" data-i18n-key="status_active"></span>
+      <label class="toggle-switch -compact _ml-auto" data-i18n-title="toggle_title">
         <input type="checkbox" id="extensionToggle" checked>
         <span class="slider"></span>
       </label>
     </div>
 
     <div class="popup-stats">
-      <p class="label">Statistics</p>
+      <p class="label" data-i18n-key="stats_title"></p>
       <div class="stat-card -simple">
         <div class="value" id="interceptCount">0</div>
-        <div class="label">Requests intercepted</div>
-        <button id="clearBtn" class="s-button -outline -small">Clear</button>
+        <div class="label" data-i18n-key="stats_intercepted"></div>
+        <button id="clearBtn" class="s-button -outline -small" data-i18n-key="clear"></button>
       </div>
     </div>
 
     <div class="popup-wallets">
       <div class="header">
         <h3 class="title">
-          My Wallets
+          <span data-i18n-key="wallets_title"></span>
           <span class="badge" id="walletCount">0</span>
         </h3>
-        <button id="configureBtn" class="s-button -primary -small">Add or Configure</button>
+        <button id="configureBtn" class="s-button -primary -small" data-i18n-key="configure"></button>
       </div>
       <div class="list" id="walletList">
         <!-- Wallets will be inserted here -->
@@ -52,8 +52,7 @@
     </div>
   </div>
 
-  <div class="popup-footer">
-    Wallet Companion v%VITE_APP_VERSION%
+  <div class="popup-footer" data-i18n-key="footer" data-i18n-sub="%VITE_APP_VERSION%">
   </div>
 
   <script src="./popup.ts" type="module"></script>

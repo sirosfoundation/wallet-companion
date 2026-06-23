@@ -2,8 +2,9 @@
  * Content script - relays RPC requests from page context to background script.
  */
 
+import { getAllMessages } from '@shared/i18n';
 import { logger } from '@shared/logger';
-import { getEntryURL, runtimeSendMessage } from '@shared/runtime';
+import { runtimeSendMessage } from '@shared/runtime';
 import {
 	type CheckWalletMessage,
 	type InboundMessage,
@@ -14,6 +15,7 @@ import {
 	type WalletSelectedMessage,
 } from '@shared/schemas/messages';
 import { RPC } from './rpc';
+import { loadContentScript } from './utils';
 
 async function sendMessage<M extends InboundMessage>(message: M): Promise<ResponseFor<M['type']>> {
 	return runtimeSendMessage(message) as Promise<ResponseFor<M['type']>>;
@@ -22,10 +24,9 @@ async function sendMessage<M extends InboundMessage>(message: M): Promise<Respon
 logger.debug('W3C Digital Credentials API Interceptor loaded');
 
 // Inject scripts into page context
-const script = document.createElement('script');
-script.src = getEntryURL('src/content/inject.ts');
-script.onload = (e) => (e.target as HTMLScriptElement).remove();
-(document.head || document.documentElement).appendChild(script);
+(async () => {
+	await loadContentScript('src/content/inject.ts');
+})();
 
 type Payload<T> = Omit<T, 'type' | 'origin'>;
 
@@ -71,6 +72,8 @@ new RPC(async (type, payload) => {
 				type: InboundMessages.GET_SUPPORTED_PROTOCOLS,
 				origin: window.location.origin,
 			});
+		case 'GET_I18N_MESSAGES':
+			return getAllMessages();
 		default:
 			throw new Error(`Unknown RPC: ${type}`);
 	}
