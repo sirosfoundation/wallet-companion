@@ -6,6 +6,7 @@ import { getMessage, getMessageGroup } from '@shared/i18n';
 import { runtime } from '@shared/runtime';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { UsageStats, Wallets } from '@shared/schemas/resources';
+import { translatePageUI } from './utils/i18n';
 import { onMessage, sendMessage } from './utils/messaging';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -34,13 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		return;
 	}
 
-	const t = getMessageGroup('ui_popup');
-	const elements = document.querySelectorAll<HTMLElement>('[data-i18n-key]');
-	elements.forEach((element) => {
-		const key = element.dataset.i18nKey;
-		const sub = element.dataset.i18nSub ? element.dataset.i18nSub.split(',') : undefined;
-		if (key) element.textContent = t(key as keyof typeof t, ...(sub || []));
-	});
+	translatePageUI('ui_popup');
 
 	// Cross-browser compatibility
 	const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;

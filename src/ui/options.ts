@@ -2,11 +2,11 @@
  * Options page script for Wallet Companion extension
  */
 
-import { getMessageGroup } from '@shared/i18n';
 import { generateInitialAvatar, svgToDataUrl } from '@shared/icons';
 import type { GetSettingsResponse } from '@shared/schemas/messages';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { Wallet, WalletRegistrationInput } from '@shared/schemas/resources';
+import { translatePageUI } from './utils/i18n';
 import {
 	fetchFavicon,
 	generateGeometricIcon,
@@ -56,28 +56,13 @@ let settings: GetSettingsResponse = {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
-	translateUI();
+	translatePageUI('ui_options');
 	await loadData();
 	setupEventListeners();
 	setupIconSelectors();
 	renderAll();
 	updateDeveloperModeUI();
 });
-
-function translateUI(): void {
-	const t = getMessageGroup('ui_options');
-	const elements = document.querySelectorAll<HTMLElement>('[data-i18n-key]');
-	elements.forEach((element) => {
-		const key = element.dataset.i18nKey;
-		const sub = element.dataset.i18nSub ? element.dataset.i18nSub.split(',') : undefined;
-		if (key) element.textContent = t(key as keyof typeof t, ...(sub || []));
-	});
-	const placeholders = document.querySelectorAll<HTMLInputElement>('[data-i18n-placeholder]');
-	placeholders.forEach((placeholder) => {
-		const key = placeholder.dataset.i18nPlaceholder;
-		if (key) placeholder.placeholder = t(key as keyof typeof t);
-	});
-}
 
 /**
  * Load wallets and settings from storage
