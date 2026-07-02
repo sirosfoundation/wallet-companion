@@ -84,7 +84,7 @@ export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'icons': icons('src/shared/assets/icons/logo-dark.svg'),
 	'browser_specific_settings': {
 		'gecko': {
-			'id': 'digital-credentials-wallet-selector@example.com',
+			'id': 'wallet-companion@siros.org',
 			'strict_min_version': '109.0'
 		}
 	}
