@@ -1,6 +1,6 @@
 {
   "name": "@sirosfoundation/wallet-companion",
-  "version": "0.0.0",
+  "version": "0.1.0-beta.5",
   "author": "SIROS Foundation",
   "license": "BSD-2-Clause",
   "description": "A browser extension that enhances web wallets with standards-based credential flows, auto-registration, and protocol-aware routing.",
@@ -16,8 +16,6 @@
     "build:firefox": "BROWSER=firefox LOG_LEVEL=info tsx vite.ts",
     "build:safari": "BROWSER=safari LOG_LEVEL=info tsx vite.ts",
     "dev:firefox": "cd firefox && web-ext run",
-    "package:chrome": "cd dist/chrome && zip -r ../chrome-extension.zip . -x '*.git*' -x 'README.md'",
-    "package:firefox": "cd dist/firefox && zip -r ../firefox-extension.xpi . -x '*.git*' -x 'README.md'",
     "clean": "rm -rf dist/",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src/",
@@ -31,39 +29,42 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:all": "pnpm test:unit && pnpm test:integration && pnpm build:chrome && pnpm test:e2e",
-    "test:server": "tsx tests/support/server.ts"
+    "test:server": "tsx tests/support/server.ts",
+    "wcc-types": "pnpm --filter @sirosfoundation/wcc-types"
   },
   "keywords": [
     "browser-extension",
     "chrome-extension",
     "firefox-addon",
     "safari-extension",
-    "api-interceptor",
+    "api-polyfill",
     "webextension"
   ],
   "dependencies": {
     "@fontsource/inter": "^5.2.8",
     "@sirosfoundation/browser-log": "0.1.0-beta.4",
-    "lucide": "^1.17.0",
-    "valibot": "^1.4.1"
+    "@sirosfoundation/wcc-types": "workspace:^",
+    "lucide": "^1.22.0",
+    "valibot": "^1.4.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.16",
+    "@biomejs/biome": "^2.5.1",
     "@changesets/changelog-github": "^0.7.0",
     "@changesets/cli": "^2.31.0",
-    "@playwright/test": "^1.60.0",
-    "@types/chrome": "^0.1.43",
+    "@playwright/test": "^1.61.1",
+    "@types/chrome": "^0.2.0",
     "@types/firefox-webext-browser": "^143.0.0",
-    "@types/node": "^25.9.2",
-    "@vitest/coverage-v8": "^4.1.8",
+    "@types/node": "^26.0.1",
+    "@vitest/coverage-v8": "^4.1.9",
+    "dotenv-cli": "^11.0.0",
     "jsdom": "^29.1.1",
-    "puppeteer": "^25.1.0",
-    "sharp": "^0.34.5",
+    "puppeteer": "^25.2.1",
+    "sharp": "^0.35.2",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
-    "vite": "^8.0.16",
-    "vitest": "^4.1.8",
-    "web-ext": "^10.3.0",
+    "vite": "^8.1.0",
+    "vitest": "^4.1.9",
+    "web-ext": "^10.4.0",
     "ws": "^8.21.0"
   },
   "repository": {

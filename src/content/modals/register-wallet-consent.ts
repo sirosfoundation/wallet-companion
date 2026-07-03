@@ -1,5 +1,6 @@
 import modalStyles from '@content/style/register-wallet-consent.css?inline';
 import logo from '@shared/assets/icons/logo-dark.svg?inline';
+import { getMessageGroup, waitForI18n } from '@shared/i18n';
 import globalStyles from '@shared/style/global.css?inline';
 import { createElement, X } from 'lucide';
 
@@ -12,41 +13,9 @@ type RegisterWalletConsentModalResult = { status: 'approved' | 'declined' };
 
 const HOST_ID = 'wc-register-wallet-host';
 
-const STYLES = [globalStyles, modalStyles].join('\n');
-
-const MODAL_TEMPLATE = `
-<dialog class="register-wallet">
-	<div class="header">
-		<h1 class="title">
-			<img class="icon" alt="Wallet Companion" />
-			<span>Register New Wallet?</span>
-		</h1>
-		<button class="s-button -invisible -square -small close" commandfor="my-dialog" command="close"></button>
-	</div>
-	<div class="content">
-		<p>Wallet Companion has received a request to register a new wallet.</p>
-		<dl class="details">
-			<div class="detail">
-				<dt class="name">Name</dt>
-				<dd class="value -name"></dd>
-			</div>
-			<div class="detail">
-				<dt class="name">URL</dt>
-				<dd class="value -url"></dd>
-			</div>
-		</dl>
-		<p>By allowing this, the wallet will be able to interact with Wallet Companion.</p>
-	</div>
-	<div class="buttons">
-		<button class="s-button -outline" data-action="decline">Decline</button>
-		<button class="s-button -primary" data-action="approve">Register wallet</button>
-	</div>
-</dialog>
-`;
-
 function createModal(name: string, url: string): HTMLDialogElement {
 	const template = document.createElement('template');
-	template.innerHTML = MODAL_TEMPLATE.trim();
+	template.innerHTML = modalTemplate().trim();
 	const dialog = template.content.querySelector('dialog');
 	if (!dialog) throw new Error('Failed to create modal');
 
@@ -80,10 +49,12 @@ function createModal(name: string, url: string): HTMLDialogElement {
  *
  * Allows user to consent to a registration request from a wallet.
  */
-export function registerWalletConsentModal({
+export async function registerWalletConsentModal({
 	name,
 	url,
 }: RegisterWalletConsentModalOptions): Promise<RegisterWalletConsentModalResult> {
+	await waitForI18n();
+
 	return new Promise((resolve, reject) => {
 		const existing = document.getElementById(HOST_ID);
 		if (existing) {
@@ -100,10 +71,13 @@ export function registerWalletConsentModal({
 
 		const modal = createModal(name, url);
 
-		const style = document.createElement('style');
-		style.textContent = STYLES;
+		shadow.adoptedStyleSheets = [globalStyles, modalStyles].map((styles) => {
+			const sheet = new CSSStyleSheet();
+			sheet.replaceSync(styles);
+			return sheet;
+		});
 
-		shadow.append(style, modal);
+		shadow.append(modal);
 
 		modal.show();
 
@@ -176,4 +150,38 @@ export function registerWalletConsentModal({
 			resolve({ status: 'approved' });
 		});
 	});
+}
+
+function modalTemplate() {
+	const t = getMessageGroup('content_modals_register_wallet');
+
+	return `
+<dialog class="register-wallet">
+	<div class="header">
+		<h1 class="title">
+			<img class="icon" alt="Wallet Companion" />
+			<span>${t('title')}</span>
+		</h1>
+		<button class="s-button -invisible -square -small close" commandfor="my-dialog" command="close"></button>
+	</div>
+	<div class="content">
+		<p>${t('description')}</p>
+		<dl class="details">
+			<div class="detail">
+				<dt class="name">${t('name_label')}</dt>
+				<dd class="value -name"></dd>
+			</div>
+			<div class="detail">
+				<dt class="name">${t('url_label')}</dt>
+				<dd class="value -url"></dd>
+			</div>
+		</dl>
+		<p>${t('info')}</p>
+	</div>
+	<div class="buttons">
+		<button class="s-button -outline" data-action="decline">${t('decline')}</button>
+		<button class="s-button -primary" data-action="approve">${t('approve')}</button>
+	</div>
+</dialog>
+`;
 }

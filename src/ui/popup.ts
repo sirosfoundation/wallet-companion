@@ -2,9 +2,11 @@
  * Popup script for Wallet Companion extension
  */
 
+import { getMessage, getMessageGroup } from '@shared/i18n';
+import { runtime } from '@shared/runtime';
 import { InboundMessages } from '@shared/schemas/messages';
 import type { UsageStats, Wallets } from '@shared/schemas/resources';
-import { generateIdenticon, svgToDataUrl } from './utils/icons';
+import { translatePageUI } from './utils/i18n';
 import { onMessage, sendMessage } from './utils/messaging';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -33,6 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		return;
 	}
 
+	translatePageUI('ui_popup');
+
 	// Cross-browser compatibility
 	const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
 
@@ -60,11 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	// Configure wallets
 	configureBtn.addEventListener('click', () => {
 		// Open options page or show wallet configuration
-		if (chrome.runtime.openOptionsPage) {
-			chrome.runtime.openOptionsPage();
+		if (runtime.openOptionsPage) {
+			runtime.openOptionsPage();
 		} else {
 			// Fallback: open in new tab
-			window.open(chrome.runtime.getURL('options.html'));
+			window.open(runtime.getURL('options.html'));
 		}
 	});
 
@@ -119,8 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (!wallets || wallets.length === 0) {
 			walletList.innerHTML = `
         <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 13px;">
-          No wallets configured yet.<br>
-          Click "Add or Configure" to add one.
+          ${getMessage('ui_popup_no_wallets')}<br>
+          ${getMessage('ui_popup_no_wallets_hint')}
         </div>
       `;
 			walletCount.textContent = '0';
@@ -136,29 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				const statusClass = wallet.enabled ? '-active' : '-inactive';
 				const statusLabel = wallet.enabled ? 'Active' : 'Inactive';
 
-				let iconHtml: string;
-				let icon = wallet.icon;
-
-				// If icon is missing or is the default emoji, generate one dynamically
-				if (!icon || icon === '🔐') {
-					// Generate an identicon based on the wallet URL or name
-					const identifier = wallet.url || wallet.name || wallet.id;
-					try {
-						const svg = generateIdenticon(identifier);
-						icon = svgToDataUrl(svg);
-					} catch (e) {
-						console.error('Icon generation failed:', e);
-						icon = '🔐'; // Fallback to emoji if generation fails
-					}
-				}
-
-				// Check if icon is a URL (data: or http)
-				const iconIsUrl = icon && (icon.startsWith('data:') || icon.startsWith('http'));
-				if (iconIsUrl) {
-					iconHtml = `<img src="${escapeHtml(icon)}" alt="${escapeHtml(wallet.name)}" style="width: 32px; height: 32px; object-fit: contain;">`;
-				} else {
-					iconHtml = `<span class="wallet-emoji">${icon}</span>`;
-				}
+				const iconHtml = `<img src="${escapeHtml(wallet.icon)}" alt="${escapeHtml(wallet.name)}" style="width: 32px; height: 32px; object-fit: contain;">`;
 
 				return `
         <div class="wallet-item">

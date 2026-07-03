@@ -14,17 +14,17 @@
     <div class="left">
       <img src="../shared/assets/icons/logo-dark.svg" alt="Siros" class="logo">
       <div class="text">
-        <h1>Wallet Companion</h1>
-        <p>Manage your digital identity wallets and credential providers</p>
+        <h1 data-i18n-key="title"></h1>
+        <p data-i18n-key="description"></p>
       </div>
     </div>
   </div>
 
   <div class="options-container">
     <div class="tab-bar">
-      <button class="tab-btn -active" data-tab="wallets">My Wallets</button>
-      <button class="tab-btn" data-tab="add">Add Wallet</button>
-      <button class="tab-btn" data-tab="settings">Settings</button>
+      <button class="tab-btn -active" data-tab="wallets" data-i18n-key="tab_wallets"></button>
+      <button class="tab-btn" data-tab="add" data-i18n-key="tab_add"></button>
+      <button class="tab-btn" data-tab="settings" data-i18n-key="tab_settings"></button>
     </div>
 
     <!-- My Wallets Tab -->
@@ -35,30 +35,30 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wallet-cards-icon lucide-wallet-cards"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2"/><path d="M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.5 1.3-.9 2.1-.9H21"/></svg>
           </div>
           <div class="value" id="total-wallets">0</div>
-          <div class="label">Total Wallets</div>
+          <div class="label" data-i18n-key="stat_total_wallets"></div>
         </div>
         <div class="stat-card">
           <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-activity-icon lucide-activity"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg>
           </div>
           <div class="value" id="active-wallets">0</div>
-          <div class="label">Active Wallets</div>
+          <div class="label" data-i18n-key="stat_active_wallets"></div>
         </div>
         <div class="stat-card">
           <div class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
           </div>
           <div class="value" id="total-requests">0</div>
-          <div class="label">Total Requests</div>
+          <div class="label" data-i18n-key="stat_total_requests"></div>
         </div>
       </div>
 
       <div class="content-section">
         <div class="header">
-          <h2 class="title">My Wallets</h2>
+          <h2 class="title" data-i18n-key="wallets_title"></h2>
           <button class="s-button -primary" id="add-wallet-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-            <span>Add New Wallet</span>
+            <span data-i18n-key="wallets_add_button"></span>
           </button>
         </div>
         <div id="wallets-container">
@@ -69,12 +69,12 @@
 
     <!-- Add Wallet Tab -->
     <div class="tab-content" id="add-tab">
-      <h1 class="page-title">Add a Wallet</h1>
-      <p class="page-description">Select a wwWallet provider below or add a custom wallet URL.</p>
+      <h1 class="page-title" data-i18n-key="add_title"></h1>
+      <p class="page-description" data-i18n-key="add_description"></p>
 
       <div class="content-section -card">
-        <h2 class="title">Quick Add - wwWallet Providers</h2>
-        <p class="form-help _mb-16">wwWallet is an open-source digital identity wallet supporting W3C Verifiable Credentials.</p>
+        <h2 class="title" data-i18n-key="add_preset_title"></h2>
+        <p class="form-help _mb-16" data-i18n-key="add_preset_description"></p>
 
         <div class="preset-grid" id="preset-wallets">
           <!-- Preset wallets will be rendered here -->
@@ -82,37 +82,37 @@
       </div>
 
       <div class="content-section -card">
-        <h2 class="title">Add Custom Wallet</h2>
+        <h2 class="title" data-i18n-key="add_custom_title"></h2>
         <form id="add-wallet-form" class="form-grid">
           <div class="form-group">
-            <label class="form-label -required" for="wallet-name">Wallet Name</label>
-            <span class="form-help">A friendly name to identify this wallet</span>
-            <input type="text" id="wallet-name" class="form-input _max-w-400" placeholder="e.g., My Personal Wallet" required>
+            <label class="form-label -required" for="wallet-name" data-i18n-key="form_name_label"></label>
+            <span class="form-help" data-i18n-key="form_name_help"></span>
+            <input type="text" id="wallet-name" class="form-input _max-w-400" data-i18n-placeholder="form_name_placeholder" required>
           </div>
 
           <div class="form-group">
-            <label class="form-label -required" for="wallet-url">Wallet URL</label>
-            <span class="form-help">The base URL of your wallet provider</span>
-            <input type="url" id="wallet-url" class="form-input _max-w-400" placeholder="https://wallet.example.com" required>
+            <label class="form-label -required" for="wallet-url" data-i18n-key="form_url_label"></label>
+            <span class="form-help" data-i18n-key="form_url_help"></span>
+            <input type="url" id="wallet-url" class="form-input _max-w-400" data-i18n-placeholder="form_url_placeholder" required>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="wallet-description">Description</label>
-            <span class="form-help">Optional description for this wallet</span>
-            <textarea id="wallet-description" class="form-textarea _max-w-400" placeholder="Optional description..."></textarea>
+            <label class="form-label" for="wallet-description" data-i18n-key="form_description_label"></label>
+            <span class="form-help" data-i18n-key="form_description_help"></span>
+            <textarea id="wallet-description" class="form-textarea _max-w-400" data-i18n-placeholder="form_description_placeholder"></textarea>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="wallet-icon">Wallet Icon</label>
-            <span class="form-help">We'll try to fetch the logo from the wallet URL. You can also choose a generated icon.</span>
+            <label class="form-label" for="wallet-icon" data-i18n-key="form_icon_label"></label>
+            <span class="form-help" data-i18n-key="form_icon_help"></span>
             <div class="icon-selector">
               <div class="icon-selector-row">
                 <div class="icon-preview" id="icon-preview">
-                  <span class="placeholder">Enter URL to get icon</span>
+                  <span class="placeholder" data-i18n-key="form_icon_placeholder"></span>
                 </div>
                 <div class="icon-options _hidden" id="icon-options">
                   <div id="favicon-section" class="_hidden">
-                    <div class="icon-options-label">From URL</div>
+                    <div class="icon-options-label" data-i18n-key="form_icon_from_url"></div>
                     <div class="icon-options-row">
                       <button type="button" class="icon-option -favicon" id="favicon-option" data-type="favicon">
                         <img id="favicon-img" src="" alt="Favicon">
@@ -121,7 +121,7 @@
                     </div>
                   </div>
                   <div id="generated-section">
-                    <div class="icon-options-label">Generated icons</div>
+                    <div class="icon-options-label" data-i18n-key="form_icon_generated"></div>
                     <div class="icon-options-row" id="generated-icons">
                       <!-- Generated icons will be inserted here -->
                     </div>
@@ -129,26 +129,25 @@
                 </div>
               </div>
               <input type="hidden" id="wallet-icon" value="">
-              <input type="hidden" id="wallet-icon-type" value="">
             </div>
           </div>
 
           <div class="form-group _hidden" id="add-protocols-group">
-            <label class="form-label" for="wallet-protocols">Supported Protocols</label>
-            <span class="form-help">Enter protocol identifiers supported by this wallet (one per line)</span>
-            <textarea id="wallet-protocols" class="form-textarea _max-w-400" placeholder="One protocol per line, e.g.:&#10;openid4vp&#10;openid4vp-v1-unsigned&#10;openid4vp-v1-signed&#10;w3c-vc"></textarea>
+            <label class="form-label" for="wallet-protocols" data-i18n-key="form_protocols_label"></label>
+            <span class="form-help" data-i18n-key="form_protocols_help"></span>
+            <textarea id="wallet-protocols" class="form-textarea _max-w-400" data-i18n-placeholder="form_protocols_placeholder"></textarea>
           </div>
 
           <div class="form-group">
             <div class="checkbox-group">
               <input type="checkbox" id="wallet-enabled" checked>
-              <label for="wallet-enabled">Activate this wallet immediately</label>
+              <label for="wallet-enabled" data-i18n-key="form_enabled_label"></label>
             </div>
           </div>
 
           <div class="form-actions _max-w-400">
-            <button type="reset" class="s-button -outline">Clear Form</button>
-            <button type="submit" class="s-button -primary">Add Wallet</button>
+            <button type="reset" class="s-button -outline" data-i18n-key="form_clear"></button>
+            <button type="submit" class="s-button -primary" data-i18n-key="form_submit"></button>
           </div>
         </form>
       </div>
@@ -156,57 +155,57 @@
 
     <!-- Settings Tab -->
     <div class="tab-content" id="settings-tab">
-      <h1 class="page-title">General Settings</h1>
+      <h1 class="page-title" data-i18n-key="settings_title"></h1>
 
       <div class="content-section -card">
         <div class="settings-section">
-          <h3 class="title">Extension Settings</h3>
+          <h3 class="title" data-i18n-key="settings_extension_title"></h3>
 
           <div class="setting-item -stacked">
-            <div class="description">When wallet interception is inactive, all requests will use the browser's native implementation</div>
+            <div class="description" data-i18n-key="settings_interception_description"></div>
             <label class="toggle-switch -large">
               <input type="checkbox" id="extension-enabled">
               <span class="slider"></span>
-              <span class="label">Wallet interception</span>
+              <span class="label" data-i18n-key="settings_interception_label"></span>
             </label>
           </div>
 
           <div class="setting-item -stacked">
-            <div class="description">Enable advanced features like editing supported protocols for each wallet <span class="info-icon" data-tooltip="Enable advanced features like editing supported protocols for each wallet">
+            <div class="description" data-i18n-key="settings_developer_description"><span class="info-icon" data-tooltip="">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info-icon lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
             </span></div>
             <label class="toggle-switch -large">
               <input type="checkbox" id="developer-mode">
               <span class="slider"></span>
-              <span class="label">Developer Mode</span>
+              <span class="label" data-i18n-key="settings_developer_label"></span>
             </label>
           </div>
 
           <div class="setting-item -stacked">
-            <div class="description">Clear Total Requests statistics</div>
-            <button class="s-button -outline" id="clear-stats">Clear</button>
+            <div class="description" data-i18n-key="settings_clear_description"></div>
+            <button class="s-button -outline" id="clear-stats" data-i18n-key="settings_clear_button"></button>
           </div>
         </div>
       </div>
 
       <div class="content-section -card">
         <div class="settings-section">
-          <h3 class="title">Configuration Management</h3>
+          <h3 class="title" data-i18n-key="settings_config_title"></h3>
 
           <div class="setting-item">
-            <div class="description">Download your wallet configurations as a JSON file</div>
+            <div class="description" data-i18n-key="settings_export_description"></div>
             <button class="s-button -outline" id="export-config">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="7 10 12 15 17 10"/>
                 <line x1="12" y1="15" x2="12" y2="3"/>
               </svg>
-              Download
+              <span data-i18n-key="settings_export_button"></span>
             </button>
           </div>
 
           <div class="setting-item">
-            <div class="description">Add wallet configurations from a JSON file</div>
+            <div class="description" data-i18n-key="settings_import_description"></div>
             <div class="file-input">
               <input type="file" id="import-config" accept=".json">
               <label for="import-config" class="label">
@@ -215,7 +214,7 @@
                   <polyline points="17 8 12 3 7 8"/>
                   <line x1="12" y1="3" x2="12" y2="15"/>
                 </svg>
-                Browse
+                <span data-i18n-key="settings_import_button"></span>
               </label>
             </div>
           </div>
@@ -228,7 +227,7 @@
   <div class="modal-dialog" id="edit-modal">
     <div class="content">
       <div class="header">
-        <h3 class="title">Edit</h3>
+        <h3 class="title" data-i18n-key="edit_title"></h3>
         <button type="button" class="s-button -square -invisible" id="close-edit" aria-label="Close">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
@@ -238,31 +237,31 @@
           <input type="hidden" id="edit-wallet-id">
 
           <div class="form-group">
-            <label class="form-label -required" for="edit-wallet-name">Wallet Name</label>
+            <label class="form-label -required" for="edit-wallet-name" data-i18n-key="form_name_label"></label>
             <input type="text" id="edit-wallet-name" class="form-input" required>
           </div>
 
           <div class="form-group">
-            <label class="form-label -required" for="edit-wallet-url">Wallet URL</label>
+            <label class="form-label -required" for="edit-wallet-url" data-i18n-key="form_url_label"></label>
             <input type="url" id="edit-wallet-url" class="form-input" required>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="edit-wallet-description">Description</label>
+            <label class="form-label" for="edit-wallet-description" data-i18n-key="form_description_label"></label>
             <textarea id="edit-wallet-description" class="form-textarea"></textarea>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="edit-wallet-icon">Wallet Icon</label>
-            <span class="form-help">We'll try to fetch the logo from the wallet URL. You can also choose a generated icon.</span>
+            <label class="form-label" for="edit-wallet-icon" data-i18n-key="form_icon_label"></label>
+            <span class="form-help" data-i18n-key="form_icon_help"></span>
             <div class="icon-selector">
               <div class="icon-selector-row">
                 <div class="icon-preview" id="edit-icon-preview">
-                  <span class="placeholder">Enter URL to get icon</span>
+                  <span class="placeholder" data-i18n-key="form_icon_placeholder"></span>
                 </div>
                 <div class="icon-options _hidden" id="edit-icon-options">
                   <div id="edit-favicon-section" class="_hidden">
-                    <div class="icon-options-label">From URL</div>
+                    <div class="icon-options-label" data-i18n-key="form_icon_from_url"></div>
                     <div class="icon-options-row">
                       <button type="button" class="icon-option -favicon" id="edit-favicon-option" data-type="favicon">
                         <img id="edit-favicon-img" src="" alt="Favicon">
@@ -271,7 +270,7 @@
                     </div>
                   </div>
                   <div id="edit-generated-section">
-                    <div class="icon-options-label">Generated icons</div>
+                    <div class="icon-options-label" data-i18n-key="form_icon_generated"></div>
                     <div class="icon-options-row" id="edit-generated-icons">
                       <!-- Generated icons will be inserted here -->
                     </div>
@@ -279,32 +278,31 @@
                 </div>
               </div>
               <input type="hidden" id="edit-wallet-icon" value="">
-              <input type="hidden" id="edit-wallet-icon-type" value="">
             </div>
           </div>
 
           <div class="form-group _hidden" id="edit-protocols-group">
-            <label class="form-label" for="edit-wallet-protocols">Supported Protocols</label>
-            <textarea id="edit-wallet-protocols" class="form-textarea" placeholder="One protocol per line"></textarea>
-            <span class="form-help">Enter protocol identifiers supported by this wallet (one per line)</span>
+            <label class="form-label" for="edit-wallet-protocols" data-i18n-key="form_protocols_label"></label>
+            <textarea id="edit-wallet-protocols" class="form-textarea" data-i18n-placeholder="form_protocols_placeholder"></textarea>
+            <span class="form-help" data-i18n-key="form_protocols_help"></span>
           </div>
 
           <div class="form-group">
-            <label class="form-label">Wallet status</label>
+            <label class="form-label" data-i18n-key="edit_status_label"></label>
             <div class="checkbox-group">
               <input type="checkbox" id="edit-wallet-enabled">
-              <label for="edit-wallet-enabled" id="edit-wallet-status">Active</label>
+              <label for="edit-wallet-enabled" id="edit-wallet-status" data-i18n-key="edit_status_active"></label>
             </div>
           </div>
         </form>
       </div>
       <div class="footer">
-        <button class="s-button -danger _mr-auto" id="delete-edit" title="Remove wallet">
+        <button class="s-button -danger _mr-auto" id="delete-edit" data-i18n-title="edit_delete">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-          Remove wallet
+          <span data-i18n-key="edit_delete"></span>
         </button>
-        <button class="s-button -outline" id="cancel-edit">Cancel</button>
-        <button class="s-button -primary" id="save-edit">Save Changes</button>
+        <button class="s-button -outline" id="cancel-edit" data-i18n-key="edit_cancel"></button>
+        <button class="s-button -primary" id="save-edit" data-i18n-key="edit_save"></button>
       </div>
     </div>
   </div>

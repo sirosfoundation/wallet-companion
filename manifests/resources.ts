@@ -11,7 +11,23 @@ export type ManifestProps = {
 	icons: (file: string) => chrome.runtime.ManifestIcons;
 }
 
-export type CreateBrowserManifest = (props: ManifestProps) => chrome.runtime.ManifestV3 | chrome.runtime.ManifestV2;
+export type Manifest = Omit<chrome.runtime.ManifestV3, 'background'> & (
+    | {
+        background: {
+            service_worker: string;
+            type?: 'module';
+        };
+    }
+	// Firefox wants 'scripts'.
+    | {
+        background: {
+            scripts: string[];
+            type?: 'module';
+        };
+    }
+);
+
+export type CreateBrowserManifest = (props: ManifestProps) => Manifest;
 
 export type ManifestFile = {
 	name: string;
@@ -135,7 +151,7 @@ export class BrowserManifest {
 		});
 	}
 
-	public generateManifest(): chrome.runtime.ManifestV3 | chrome.runtime.ManifestV2 {
+	public generateManifest(): Manifest {
 		const manifestProps: ManifestProps = {
 			entry: (_format, file) => {
 				const entry = this.#manifestFiles.entries.get(file);

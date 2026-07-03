@@ -10,6 +10,9 @@
 
 .DEFAULT_GOAL := help
 
+# Variables
+VERSION := $(shell node -p "require('./package.json').version")
+NAME := wallet-companion
 DIST := dist
 
 help: ## Show this help
@@ -20,6 +23,7 @@ help: ## Show this help
 
 install: ## Install dependencies
 	pnpm install
+	pnpm wcc-types build
 
 clean: ## Clean build artifacts
 	pnpm clean
@@ -28,8 +32,8 @@ clean: ## Clean build artifacts
 		-o -name '*.swp' -o -name '*.swo' -o -name '*.log' \) -delete
 
 # Build
-build: ## Build all browsers
-	pnpm build
+build: ## Build everything
+	pnpm -r --include-workspace-root build
 
 build-chrome: ## Build Chrome
 	pnpm build:chrome
@@ -57,10 +61,12 @@ watch-safari: ## Watch Safari
 package: package-chrome package-firefox ## Package all browsers
 
 package-chrome: build-chrome ## Package Chrome as ZIP
-	pnpm package:chrome
+	@cd $(DIST)/chrome && zip -r ../$(NAME)_chrome_$(VERSION).zip . -x '*.git*' -x 'README.md'
+	@echo "Created $(DIST)/$(NAME)_chrome_$(VERSION).zip"
 
 package-firefox: build-firefox ## Package Firefox as XPI
-	pnpm package:firefox
+	@cd $(DIST)/firefox && zip -r ../$(NAME)_firefox_$(VERSION).xpi . -x '*.git*' -x 'README.md'
+	@echo "Created $(DIST)/$(NAME)_firefox_$(VERSION).xpi"
 
 # Development
 dev-chrome: ## Open Chrome extensions page
@@ -149,3 +155,7 @@ tag: ## Create git tag
 
 prerelease-mode: ## Enter/exit prerelease mode
 	pnpm changeset pre $(filter-out $@,$(MAKECMDGOALS))
+
+# Publishing
+publish-npm: clean build
+	pnpm -r publish --access public

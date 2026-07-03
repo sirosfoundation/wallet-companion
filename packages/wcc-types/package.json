@@ -1,0 +1,23 @@
+{
+	"name": "@sirosfoundation/wcc-types",
+	"version": "0.1.0-beta.1",
+	"description": "Wallet Companion client types",
+	"type": "module",
+	"types": "./dist/index.d.mts",
+	"import": "./dist/index.mjs",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.mts",
+			"import": "./dist/index.mjs"
+		}
+	},
+	"files": [
+		"dist/"
+	],
+	"scripts": {
+		"build": "tsdown"
+	},
+	"devDependencies": {
+		"tsdown": "^0.22.3"
+	}
+}

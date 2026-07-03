@@ -1,0 +1,377 @@
+{
+  "extension_name": {
+    "message": "Wallet Companion",
+    "description": "Extension name"
+  },
+  "extension_description": {
+    "message": "Um complemento para carteiras de identidade digital baseadas na web. Adiciona partilha de credenciais entre navegadores, alternância de carteiras e compatibilidade transparente.",
+    "description": "Extension description"
+  },
+  "common_wallet_description": {
+    "message": "Carteira de Identidade Digital",
+    "description": "Default description for a wallet that has no description"
+  },
+  "common_icon_alt": {
+    "message": "Ícone de $NAME$",
+    "description": "Alt text for wallet icon in selection modal",
+    "placeholders": {
+      "NAME": {
+        "content": "$1",
+        "example": "SIROS Wallet"
+      }
+    }
+  },
+  "error_no_wallets": {
+    "message": "Nenhuma carteira disponível",
+    "description": "Error when no wallet providers are configured"
+  },
+  "error_user_cancelled": {
+    "message": "Cancelado pelo utilizador",
+    "description": "Error when user cancels the wallet selection"
+  },
+  "error_wallet_timeout": {
+    "message": "Tempo limite da carteira",
+    "description": "Error when wallet does not respond within timeout"
+  },
+  "error_popup_blocked": {
+    "message": "Popup bloqueado",
+    "description": "Error when browser blocks the wallet popup window"
+  },
+  "content_modals_select_wallet_title": {
+    "message": "Selecionar Carteira Digital",
+    "description": "Title of the wallet selection modal"
+  },
+  "content_modals_select_wallet_description": {
+    "message": "Escolha qual carteira usar para este pedido de credencial",
+    "description": "Description text in the wallet selection modal"
+  },
+  "content_modals_select_wallet_use_browser": {
+    "message": "Usar Carteira do Navegador",
+    "description": "Button to use the browser's built-in wallet"
+  },
+  "content_modals_select_wallet_cancel": {
+    "message": "Cancelar",
+    "description": "Cancel button label"
+  },
+  "content_modals_select_wallet_empty_title": {
+    "message": "Nenhuma carteira configurada",
+    "description": "Title when no wallets are configured"
+  },
+  "content_modals_select_wallet_empty_hint": {
+    "message": "Use as configurações da extensão para adicionar provedores de carteira",
+    "description": "Hint text when no wallets are configured"
+  },
+  "content_modals_register_wallet_title": {
+    "message": "Registar nova carteira?",
+    "description": "Title of the register wallet consent modal"
+  },
+  "content_modals_register_wallet_description": {
+    "message": "O Wallet Companion recebeu um pedido para registar uma nova carteira.",
+    "description": "Description text in the register wallet consent modal"
+  },
+  "content_modals_register_wallet_name_label": {
+    "message": "Nome",
+    "description": "Label for wallet name field"
+  },
+  "content_modals_register_wallet_url_label": {
+    "message": "URL",
+    "description": "Label for wallet URL field"
+  },
+  "content_modals_register_wallet_info": {
+    "message": "Ao permitir isto, a carteira poderá interagir com o Wallet Companion.",
+    "description": "Info text explaining the consequences of registration"
+  },
+  "content_modals_register_wallet_decline": {
+    "message": "Recusar",
+    "description": "Button to decline wallet registration"
+  },
+  "content_modals_register_wallet_approve": {
+    "message": "Registar carteira",
+    "description": "Button to approve wallet registration"
+  },
+  "ui_options_title": {
+    "message": "Wallet Companion",
+    "description": "Title of the options page"
+  },
+  "ui_options_description": {
+    "message": "Gerir as suas carteiras de identidade digital e fornecedores de credenciais",
+    "description": "Description on the options page header"
+  },
+  "ui_options_tab_wallets": {
+    "message": "As minhas carteiras",
+    "description": "Tab label for wallets list"
+  },
+  "ui_options_tab_add": {
+    "message": "Adicionar carteira",
+    "description": "Tab label for add wallet form"
+  },
+  "ui_options_tab_settings": {
+    "message": "Definições",
+    "description": "Tab label for settings"
+  },
+  "ui_options_stat_total_wallets": {
+    "message": "Total de carteiras",
+    "description": "Label for total wallets statistic"
+  },
+  "ui_options_stat_active_wallets": {
+    "message": "Carteiras ativas",
+    "description": "Label for active wallets statistic"
+  },
+  "ui_options_stat_total_requests": {
+    "message": "Total de pedidos",
+    "description": "Label for total requests statistic"
+  },
+  "ui_options_wallets_title": {
+    "message": "As minhas carteiras",
+    "description": "Section title for wallets list"
+  },
+  "ui_options_wallets_add_button": {
+    "message": "Adicionar nova carteira",
+    "description": "Button to add a new wallet"
+  },
+  "ui_options_add_title": {
+    "message": "Adicionar uma carteira",
+    "description": "Title for add wallet page"
+  },
+  "ui_options_add_description": {
+    "message": "Selecione um fornecedor wwWallet abaixo ou adicione um URL de carteira personalizado.",
+    "description": "Description for add wallet page"
+  },
+  "ui_options_add_preset_title": {
+    "message": "Adição rápida - Fornecedores wwWallet",
+    "description": "Title for preset wallets section"
+  },
+  "ui_options_add_preset_description": {
+    "message": "wwWallet é uma carteira de identidade digital de código aberto que suporta W3C Verifiable Credentials.",
+    "description": "Description for preset wallets section"
+  },
+  "ui_options_add_custom_title": {
+    "message": "Adicionar carteira personalizada",
+    "description": "Title for custom wallet form"
+  },
+  "ui_options_form_name_label": {
+    "message": "Nome da carteira",
+    "description": "Label for wallet name field"
+  },
+  "ui_options_form_name_help": {
+    "message": "Um nome amigável para identificar esta carteira",
+    "description": "Help text for wallet name field"
+  },
+  "ui_options_form_name_placeholder": {
+    "message": "ex: A minha carteira pessoal",
+    "description": "Placeholder for wallet name field"
+  },
+  "ui_options_form_url_label": {
+    "message": "URL da carteira",
+    "description": "Label for wallet URL field"
+  },
+  "ui_options_form_url_help": {
+    "message": "O URL base do seu fornecedor de carteira",
+    "description": "Help text for wallet URL field"
+  },
+  "ui_options_form_url_placeholder": {
+    "message": "https://wallet.example.com",
+    "description": "Placeholder for wallet URL field"
+  },
+  "ui_options_form_description_label": {
+    "message": "Descrição",
+    "description": "Label for wallet description field"
+  },
+  "ui_options_form_description_help": {
+    "message": "Descrição opcional para esta carteira",
+    "description": "Help text for wallet description field"
+  },
+  "ui_options_form_description_placeholder": {
+    "message": "Descrição opcional...",
+    "description": "Placeholder for wallet description field"
+  },
+  "ui_options_form_icon_label": {
+    "message": "Ícone da carteira",
+    "description": "Label for wallet icon field"
+  },
+  "ui_options_form_icon_help": {
+    "message": "Tentaremos obter o ícone a partir do URL da carteira. Também pode escolher um ícone gerado.",
+    "description": "Help text for wallet icon field"
+  },
+  "ui_options_form_icon_placeholder": {
+    "message": "Introduza URL para obter ícone",
+    "description": "Placeholder for icon preview"
+  },
+  "ui_options_form_icon_from_url": {
+    "message": "Do URL",
+    "description": "Label for favicon icon option"
+  },
+  "ui_options_form_icon_generated": {
+    "message": "Ícones gerados",
+    "description": "Label for generated icon options"
+  },
+  "ui_options_form_protocols_label": {
+    "message": "Protocolos suportados",
+    "description": "Label for protocols field"
+  },
+  "ui_options_form_protocols_help": {
+    "message": "Introduza os identificadores de protocolo suportados por esta carteira (um por linha)",
+    "description": "Help text for protocols field"
+  },
+  "ui_options_form_protocols_placeholder": {
+    "message": "Um protocolo por linha",
+    "description": "Placeholder for protocols field"
+  },
+  "ui_options_form_enabled_label": {
+    "message": "Ativar esta carteira imediatamente",
+    "description": "Label for wallet enabled checkbox"
+  },
+  "ui_options_form_clear": {
+    "message": "Limpar formulário",
+    "description": "Button to clear the form"
+  },
+  "ui_options_form_submit": {
+    "message": "Adicionar carteira",
+    "description": "Button to submit the add wallet form"
+  },
+  "ui_options_settings_title": {
+    "message": "Definições gerais",
+    "description": "Title for settings page"
+  },
+  "ui_options_settings_extension_title": {
+    "message": "Definições da extensão",
+    "description": "Title for extension settings section"
+  },
+  "ui_options_settings_interception_description": {
+    "message": "Quando a interceção de carteira está inativa, todos os pedidos usarão a implementação nativa do navegador",
+    "description": "Description for wallet interception toggle"
+  },
+  "ui_options_settings_interception_label": {
+    "message": "Interceção de carteira",
+    "description": "Label for wallet interception toggle"
+  },
+  "ui_options_settings_developer_description": {
+    "message": "Ativar funcionalidades avançadas como editar protocolos suportados para cada carteira",
+    "description": "Description for developer mode toggle"
+  },
+  "ui_options_settings_developer_label": {
+    "message": "Modo de programador",
+    "description": "Label for developer mode toggle"
+  },
+  "ui_options_settings_clear_description": {
+    "message": "Limpar estatísticas de total de pedidos",
+    "description": "Description for clear stats button"
+  },
+  "ui_options_settings_clear_button": {
+    "message": "Limpar",
+    "description": "Button to clear statistics"
+  },
+  "ui_options_settings_config_title": {
+    "message": "Gestão de configuração",
+    "description": "Title for configuration management section"
+  },
+  "ui_options_settings_export_description": {
+    "message": "Transferir as suas configurações de carteira como ficheiro JSON",
+    "description": "Description for export config button"
+  },
+  "ui_options_settings_export_button": {
+    "message": "Transferir",
+    "description": "Button to download config"
+  },
+  "ui_options_settings_import_description": {
+    "message": "Adicionar configurações de carteira a partir de um ficheiro JSON",
+    "description": "Description for import config button"
+  },
+  "ui_options_settings_import_button": {
+    "message": "Procurar",
+    "description": "Button to browse for config file"
+  },
+  "ui_options_edit_title": {
+    "message": "Editar",
+    "description": "Title for edit wallet modal"
+  },
+  "ui_options_edit_status_label": {
+    "message": "Estado da carteira",
+    "description": "Label for wallet status field"
+  },
+  "ui_options_edit_status_active": {
+    "message": "Ativa",
+    "description": "Status label when wallet is active"
+  },
+  "ui_options_edit_status_inactive": {
+    "message": "Inativa",
+    "description": "Status label when wallet is inactive"
+  },
+  "ui_options_edit_delete": {
+    "message": "Remover carteira",
+    "description": "Button to delete wallet"
+  },
+  "ui_options_edit_cancel": {
+    "message": "Cancelar",
+    "description": "Button to cancel editing"
+  },
+  "ui_options_edit_save": {
+    "message": "Guardar alterações",
+    "description": "Button to save wallet changes"
+  },
+  "ui_popup_no_wallets": {
+    "message": "Nenhuma carteira configurada ainda",
+    "description": "Message shown in the popup when no wallets exist"
+  },
+  "ui_popup_no_wallets_hint": {
+    "message": "Clique em \"Adicionar ou Configurar\" para adicionar uma.",
+    "description": "Hint shown below the no-wallets message in popup"
+  },
+  "ui_popup_title": {
+    "message": "Wallet Companion",
+    "description": "Popup header title"
+  },
+  "ui_popup_subtitle": {
+    "message": "Extensão complementar para carteiras web",
+    "description": "Popup header subtitle"
+  },
+  "ui_popup_status_active": {
+    "message": "Ativo & a monitorizar",
+    "description": "Status text when extension is enabled"
+  },
+  "ui_popup_status_inactive": {
+    "message": "Inativo",
+    "description": "Status text when extension is disabled"
+  },
+  "ui_popup_toggle_title": {
+    "message": "Ativar/desativar extensão",
+    "description": "Tooltip for extension toggle switch"
+  },
+  "ui_popup_stats_title": {
+    "message": "Estatísticas",
+    "description": "Statistics section title"
+  },
+  "ui_popup_stats_intercepted": {
+    "message": "Pedidos intercetados",
+    "description": "Label for intercepted requests counter"
+  },
+  "ui_popup_clear": {
+    "message": "Limpar",
+    "description": "Button to clear statistics"
+  },
+  "ui_popup_wallets_title": {
+    "message": "As Minhas Carteiras",
+    "description": "Wallets section title"
+  },
+  "ui_popup_configure": {
+    "message": "Adicionar ou Configurar",
+    "description": "Button to configure wallets"
+  },
+  "ui_popup_wallet_active": {
+    "message": "Ativo",
+    "description": "Wallet status label when active"
+  },
+  "ui_popup_wallet_inactive": {
+    "message": "Inativo",
+    "description": "Wallet status label when inactive"
+  },
+  "ui_popup_footer": {
+    "message": "Wallet Companion v$1",
+    "description": "Footer text with version number",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      }
+    }
+  }
+}

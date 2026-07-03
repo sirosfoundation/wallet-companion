@@ -1,16 +1,17 @@
 import { BrowserManifest } from "./resources";
 
-const VERSION = process.env.npm_package_version ?? '0.0.0';
+const NAME = '__MSG_extension_name__';
+const DESCRIPTION = '__MSG_extension_description__';
+const VERSION = (process.env.npm_package_version ?? '0.0.0').replace(/-.*$/, '');
 
 export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'manifest_version': 3,
-	'name': 'Wallet Companion',
+	'name': NAME,
 	'version': VERSION,
-	'description': 'A cross-browser companion extension that intercepts W3C Digital Credentials API calls, enabling users to select from multiple digital identity wallet providers.',
+	'description': DESCRIPTION,
+	'default_locale': 'en',
 	'permissions': [
 		'storage',
-		'activeTab',
-		'scripting'
 	],
 	'host_permissions': ['<all_urls>'],
 	'background': {
@@ -28,6 +29,7 @@ export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 		{
 			'resources': [
 				entry('iife', 'src/content/inject.ts'),
+				'_locales/**/messages.json',
 			],
 			'matches': ['<all_urls>'],
 		},
@@ -41,16 +43,18 @@ export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 }));
 
 export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
-	'manifest_version': 2,
-	'name': 'Wallet Companion',
+	'manifest_version': 3,
+	'name': NAME,
 	'version': VERSION,
-	'description': 'A cross-browser companion extension that intercepts W3C Digital Credentials API calls, enabling users to select from multiple digital identity wallet providers.',
+	'description': DESCRIPTION,
+	'default_locale': 'en',
 	'permissions': [
 		'storage',
-		'<all_urls>'
 	],
+	'host_permissions': ['<all_urls>'],
 	'background': {
-		'scripts': [entry('iife', 'src/background/index.ts')],
+		'scripts': [entry('es', 'src/background/index.ts')],
+		'type': 'module',
 	},
 	'content_scripts': [
 		{
@@ -60,37 +64,41 @@ export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 		}
 	],
 	'web_accessible_resources': [
-		entry('iife', 'src/content/inject.ts'),
+		{
+			'resources': [
+				entry('iife', 'src/content/inject.ts'),
+				'_locales/**/messages.json',
+			],
+			'matches': ['<all_urls>'],
+		},
 	],
-	'browser_action': {
+	'action': {
 		'default_popup': entry('es', 'src/ui/popup.html'),
 		'default_icon': icons('src/shared/assets/icons/logo-dark.svg'),
 	},
-	'options_ui': {
-		'page': entry('es', 'src/ui/options.html'),
-		'open_in_tab': true
-	},
+	'options_page': entry('es', 'src/ui/options.html'),
 	'icons': icons('src/shared/assets/icons/logo-dark.svg'),
 	'browser_specific_settings': {
 		'gecko': {
-			'id': 'digital-credentials-wallet-selector@example.com',
-			'strict_min_version': '91.0'
+			'id': 'wallet-companion@siros.org',
+			'strict_min_version': '109.0'
 		}
 	}
 }));
 
 export const SAFARI_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
-	'manifest_version': 2,
-	'name': 'Wallet Companion',
+	'manifest_version': 3,
+	'name': NAME,
 	'version': VERSION,
-	'description': 'A cross-browser companion extension that intercepts W3C Digital Credentials API calls, enabling users to select from multiple digital identity wallet providers.',
+	'description': DESCRIPTION,
+	'default_locale': 'en',
 	'permissions': [
 		'storage',
-		'<all_urls>'
 	],
+	'host_permissions': ['<all_urls>'],
 	'background': {
-		'scripts': [entry('iife', 'src/background/index.ts')],
-		'persistent': false
+		'service_worker': entry('es', 'src/background/index.ts'),
+		'type': 'module'
 	},
 	'content_scripts': [
 	{
@@ -100,15 +108,18 @@ export const SAFARI_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	}
 	],
 	'web_accessible_resources': [
-		entry('iife', 'src/content/inject.ts'),
+		{
+			'resources': [
+				entry('iife', 'src/content/inject.ts'),
+				'_locales/**/messages.json',
+			],
+			'matches': ['<all_urls>'],
+		},
 	],
-	'browser_action': {
+	'action': {
 		'default_popup': entry('es', 'src/ui/popup.html'),
 		'default_icon': icons('src/shared/assets/icons/logo-dark.svg'),
 	},
-	'options_ui': {
-		'page': entry('es', 'src/ui/options.html'),
-		'open_in_tab': true
-	},
+	'options_page': entry('es', 'src/ui/options.html'),
 	'icons': icons('src/shared/assets/icons/logo-dark.svg'),
 }));

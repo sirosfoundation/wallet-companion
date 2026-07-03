@@ -6,104 +6,14 @@
 
 import modalStyles from '@content/style/select-wallet.css?inline';
 import type { ShowWalletSelectorOptions, WalletOption } from '@content/types';
+import { getMessage, getMessageGroup, waitForI18n } from '@shared/i18n';
 import globalStyles from '@shared/style/global.css?inline';
 
 const HOST_ID = 'dc-wallet-host';
 
-const STYLES = [globalStyles, modalStyles].join('\n');
+export async function selectWalletModal(options: ShowWalletSelectorOptions): Promise<void> {
+	await waitForI18n();
 
-// Static HTML templates — no user data, safe to use innerHTML via <template>
-const MODAL_TEMPLATE = `
-  <div class="wallet-selector">
-    <div class="panel" role="dialog" aria-modal="true" aria-label="Select Digital Wallet">
-      <div class="header">
-        <h2>Select Digital Wallet</h2>
-        <p>Choose which wallet to use for this credential request</p>
-      </div>
-      <div class="list"></div>
-      <div class="footer">
-        <button class="s-button -outline" data-action="native">Use Browser Wallet</button>
-        <button class="s-button -outline" data-action="cancel">Cancel</button>
-      </div>
-    </div>
-  </div>`;
-
-const WALLET_ITEM_TEMPLATE = `
-  <div class="wallet-item -selectable" role="button" tabindex="0">
-    <div class="wallet-icon -large"></div>
-    <div class="info">
-      <div class="name"></div>
-      <div class="desc"></div>
-    </div>
-  </div>`;
-
-const EMPTY_STATE_TEMPLATE = `
-  <div class="empty-state">
-    <p>No wallets configured</p>
-    <small>Use the extension settings to add wallet providers</small>
-  </div>`;
-
-function parseTemplate(html: string): DocumentFragment {
-	const t = document.createElement('template');
-	t.innerHTML = html;
-	return t.content;
-}
-
-function createWalletIcon(icon: string | undefined): Node {
-	if (!icon) return document.createTextNode('🔐');
-
-	if (icon.startsWith('<svg')) {
-		const svg = new DOMParser().parseFromString(icon, 'image/svg+xml').querySelector('svg');
-		if (!svg) return document.createTextNode('🔐');
-		// Load via <img> — browser sandboxes scripts in SVG loaded this way
-		icon = `data:image/svg+xml,${encodeURIComponent(new XMLSerializer().serializeToString(svg))}`;
-	}
-
-	if (icon.startsWith('data:image/') || icon.startsWith('https://')) {
-		const img = document.createElement('img');
-		img.src = icon;
-		img.alt = 'Wallet icon';
-		return img;
-	}
-
-	// Emoji or plain text
-	return document.createTextNode(icon);
-}
-
-function createWalletItem(
-	wallet: WalletOption,
-	onSelect: (w: WalletOption) => void,
-	dismiss: () => void,
-): HTMLElement {
-	const fragment = parseTemplate(WALLET_ITEM_TEMPLATE);
-	const item = fragment.querySelector<HTMLElement>('.wallet-item');
-
-	if (!item) {
-		throw new Error('Failed to create wallet item: missing template elements');
-	}
-
-	const icon = item.querySelector('.wallet-icon');
-	const name = item.querySelector('.name');
-	const desc = item.querySelector('.desc');
-
-	if (!icon || !name || !desc) {
-		throw new Error('Failed to create wallet item: missing template elements');
-	}
-
-	icon.appendChild(createWalletIcon(wallet.icon ?? undefined));
-	name.textContent = wallet.name;
-	desc.textContent = wallet.description ?? wallet.url ?? 'Digital Identity Wallet';
-
-	item.addEventListener('click', (e) => {
-		e.stopPropagation();
-		dismiss();
-		onSelect(wallet);
-	});
-
-	return item;
-}
-
-export function selectWalletModal(options: ShowWalletSelectorOptions): void {
 	const { wallets, onSelect, onNative, onCancel } = options;
 
 	document.getElementById(HOST_ID)?.remove();
@@ -115,14 +25,17 @@ export function selectWalletModal(options: ShowWalletSelectorOptions): void {
 
 	const dismiss = () => host.remove();
 
-	const style = document.createElement('style');
-	style.textContent = STYLES;
+	shadow.adoptedStyleSheets = [globalStyles, modalStyles].map((styles) => {
+		const sheet = new CSSStyleSheet();
+		sheet.replaceSync(styles);
+		return sheet;
+	});
 
-	const fragment = parseTemplate(MODAL_TEMPLATE);
-	const overlay = fragment.querySelector<HTMLElement>('.wallet-selector');
-	const list = fragment.querySelector<HTMLElement>('.list');
-	const nativeBtn = fragment.querySelector<HTMLElement>('[data-action="native"]');
-	const cancelBtn = fragment.querySelector<HTMLElement>('[data-action="cancel"]');
+	const { modal, emptyState } = modalTemplate();
+	const overlay = modal.querySelector<HTMLElement>('.wallet-selector');
+	const list = modal.querySelector<HTMLElement>('.list');
+	const nativeBtn = modal.querySelector<HTMLElement>('[data-action="native"]');
+	const cancelBtn = modal.querySelector<HTMLElement>('[data-action="cancel"]');
 
 	if (!overlay || !list || !nativeBtn || !cancelBtn) {
 		throw new Error('Failed to create wallet selector: missing template elements');
@@ -148,7 +61,7 @@ export function selectWalletModal(options: ShowWalletSelectorOptions): void {
 			list.appendChild(createWalletItem(wallet, onSelect, dismiss));
 		}
 	} else {
-		list.appendChild(parseTemplate(EMPTY_STATE_TEMPLATE));
+		list.appendChild(emptyState);
 	}
 
 	function handleEscape(e: KeyboardEvent) {
@@ -160,5 +73,88 @@ export function selectWalletModal(options: ShowWalletSelectorOptions): void {
 	}
 	document.addEventListener('keydown', handleEscape);
 
-	shadow.append(style, fragment);
+	shadow.append(modal);
+}
+
+function createWalletItem(
+	wallet: WalletOption,
+	onSelect: (w: WalletOption) => void,
+	dismiss: () => void,
+): HTMLElement {
+	const { walletItem } = modalTemplate();
+	const item = walletItem.querySelector<HTMLElement>('.wallet-item');
+
+	if (!item) {
+		throw new Error('Failed to create wallet item: missing template elements');
+	}
+
+	const iconEl = item.querySelector('.wallet-icon');
+	const nameEl = item.querySelector('.name');
+	const descEl = item.querySelector('.desc');
+
+	if (!iconEl || !nameEl || !descEl) {
+		throw new Error('Failed to create wallet item: missing template elements');
+	}
+
+	const icon = document.createElement('img');
+	icon.src = wallet.icon;
+	icon.alt = getMessage('common_icon_alt', wallet.name);
+
+	iconEl.appendChild(icon);
+	nameEl.textContent = wallet.name;
+	descEl.textContent = wallet.description ?? wallet.url ?? getMessage('common_wallet_description');
+
+	item.addEventListener('click', (e) => {
+		e.stopPropagation();
+		dismiss();
+		onSelect(wallet);
+	});
+
+	return item;
+}
+
+function modalTemplate() {
+	const t = getMessageGroup('content_modals_select_wallet');
+
+	const MODAL_TEMPLATE = `
+	<div class="wallet-selector">
+		<div class="panel" role="dialog" aria-modal="true" aria-label="${t('title')}">
+		<div class="header">
+			<h2>${t('title')}</h2>
+			<p>${t('description')}</p>
+		</div>
+		<div class="list"></div>
+		<div class="footer">
+			<button class="s-button -outline" data-action="native">${t('use_browser')}</button>
+			<button class="s-button -outline" data-action="cancel">${t('cancel')}</button>
+		</div>
+		</div>
+	</div>`;
+
+	const WALLET_ITEM_TEMPLATE = `
+	<div class="wallet-item -selectable" role="button" tabindex="0">
+		<div class="wallet-icon -large"></div>
+		<div class="info">
+		<div class="name"></div>
+		<div class="desc"></div>
+		</div>
+	</div>`;
+
+	const EMPTY_STATE_TEMPLATE = `
+	<div class="empty-state">
+		<p>${t('empty_title')}</p>
+		<small>${t('empty_hint')}</small>
+	</div>`;
+
+	return {
+		modal: parseTemplate(MODAL_TEMPLATE),
+		walletItem: parseTemplate(WALLET_ITEM_TEMPLATE),
+		emptyState: parseTemplate(EMPTY_STATE_TEMPLATE),
+	};
+}
+
+function parseTemplate(html: string): DocumentFragment {
+	const t = document.createElement('template');
+	t.innerHTML = html;
+	return t.content;
 }
