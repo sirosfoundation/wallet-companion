@@ -12,8 +12,6 @@ export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'default_locale': 'en',
 	'permissions': [
 		'storage',
-		'activeTab',
-		'scripting'
 	],
 	'host_permissions': ['<all_urls>'],
 	'background': {
@@ -52,8 +50,6 @@ export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'default_locale': 'en',
 	'permissions': [
 		'storage',
-		'activeTab',
-		'scripting'
 	],
 	'host_permissions': ['<all_urls>'],
 	'background': {
@@ -98,8 +94,6 @@ export const SAFARI_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'default_locale': 'en',
 	'permissions': [
 		'storage',
-		'activeTab',
-		'scripting'
 	],
 	'host_permissions': ['<all_urls>'],
 	'background': {
