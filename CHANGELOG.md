@@ -1,5 +1,13 @@
 # @sirosfoundation/wallet-companion
 
+## 0.1.0-beta.6
+
+### Patch Changes
+
+- [#95](https://github.com/sirosfoundation/wallet-companion/pull/95) [`bfcc961`](https://github.com/sirosfoundation/wallet-companion/commit/bfcc96107870773dba50236afef80ea5a1dfe837) Thanks [@smncd](https://github.com/smncd)! - rename locale key `extension_name` to `name` to match PR [#94](https://github.com/sirosfoundation/wallet-companion/issues/94).
+
+- [#96](https://github.com/sirosfoundation/wallet-companion/pull/96) [`6e73426`](https://github.com/sirosfoundation/wallet-companion/commit/6e7342644e47c44dbace6af1d3501029fe1d0b15) Thanks [@smncd](https://github.com/smncd)! - fix firefox manifest
+
 ## 0.1.0-beta.5
 
 ### Minor Changes
