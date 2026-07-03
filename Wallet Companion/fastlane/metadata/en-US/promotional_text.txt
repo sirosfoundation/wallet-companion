@@ -1,1 +1,1 @@
-
+A browser extension for supported* web-based digital identity wallets. Adds cross-browser credential sharing, easy wallet switching, and seamless site compatibility.
