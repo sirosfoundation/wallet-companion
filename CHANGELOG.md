@@ -1,5 +1,19 @@
 # @sirosfoundation/wallet-companion
 
+## 0.1.0-beta.5
+
+### Minor Changes
+
+- [#83](https://github.com/sirosfoundation/wallet-companion/pull/83) [`5ae7872`](https://github.com/sirosfoundation/wallet-companion/commit/5ae7872d4fe33d2b87bcf408d54ea44be671bb3b) Thanks [@leifj](https://github.com/leifj)! - feat: add i18n support with Swedish and Finnish translations
+
+- [#87](https://github.com/sirosfoundation/wallet-companion/pull/87) [`5186420`](https://github.com/sirosfoundation/wallet-companion/commit/5186420b6de8ce44ac3fd184f11d477087828f8d) Thanks [@smncd](https://github.com/smncd)! - Complete localization in 5 languages
+
+### Patch Changes
+
+- [#89](https://github.com/sirosfoundation/wallet-companion/pull/89) [`3db166e`](https://github.com/sirosfoundation/wallet-companion/commit/3db166e86df06338c09ecd6be54cb6759c2f5c7e) Thanks [@smncd](https://github.com/smncd)! - Set firefox manifest gecko id
+
+- [#90](https://github.com/sirosfoundation/wallet-companion/pull/90) [`5696efe`](https://github.com/sirosfoundation/wallet-companion/commit/5696efea9017efec31979224c13f2612e2dcd1af) Thanks [@smncd](https://github.com/smncd)! - Remove unused permissions from the extension manifest
+
 ## 0.1.0-beta.4
 
 ### Patch Changes

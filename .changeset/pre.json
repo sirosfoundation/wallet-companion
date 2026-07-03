@@ -6,7 +6,9 @@
     "@sirosfoundation/wcc-types": "0.0.0"
   },
   "changesets": [
+    "brave-wolves-type",
     "eager-guests-peel",
+    "empty-singers-attend",
     "heavy-cups-sit",
     "many-emus-shake",
     "nine-boats-stop",
@@ -18,6 +20,8 @@
     "spicy-moons-smile",
     "sunny-dancers-dream",
     "upset-toys-kiss",
-    "vast-cities-ring"
+    "vast-cities-ring",
+    "wet-coats-build",
+    "whole-lions-sort"
   ]
 }
