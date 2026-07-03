@@ -1,7 +1,13 @@
 import { BrowserManifest } from "./resources";
 
 const NAME = '__MSG_extension_name__';
-const DESCRIPTION = '__MSG_extension_description__';
+
+// ATTENTION: **DO NOT CHANGE ID**. Apple's AppStoreConnect does have a validator working during bundle upload.
+// It expects the web extension description key in the messages.json files to be named exactly "description" and nothing
+// else! It will deny upload otherwise.
+// ADDITIONALLY, there's a 112-character limit on these strings. So keep them short!
+const DESCRIPTION = '__MSG_description__';
+
 const VERSION = (process.env.npm_package_version ?? '0.0.0').replace(/-.*$/, '');
 
 export const CHROME_MANIFEST = new BrowserManifest(({ entry, icons }) => ({

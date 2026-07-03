@@ -3,8 +3,8 @@
     "message": "Wallet Companion",
     "description": "Extension name"
   },
-  "extension_description": {
-    "message": "Kumppani tuetuille verkkopohjaisille digitaalisille identiteettilompakoille. Mahdollistaa tunnisteiden jakamisen selainten välillä, lompakon vaihtamisen ja saumattoman yhteensopivuuden.",
+  "description": {
+    "message": "Kumppani digitaalisille identiteettilompakoille. Mahdollistaa tunnisteiden jaon, vaihdon ja yhteensopivuuden.",
     "description": "Extension description"
   },
   "common_wallet_description": {

@@ -3,8 +3,8 @@
     "message": "Wallet Companion",
     "description": "Extension name"
   },
-  "extension_description": {
-    "message": "Συνοδευτικό για υποστηριζόμενα διαδικτυακά ψηφιακά πορτοφόλια ταυτότητας. Προσθέτει διαμοιρασμό διαπιστευτηρίων μεταξύ προγραμμάτων περιήγησης, εναλλαγή πορτοφολιών και απρόσκοπτη συμβατότητα.",
+  "description": {
+    "message": "Συνοδευτικό για ψηφιακά πορτοφόλια ταυτότητας. Διευκολύνει τον διαμοιρασμό, την εναλλαγή και τη συμβατότητα.",
     "description": "Extension description"
   },
   "common_wallet_description": {

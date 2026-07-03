@@ -3,8 +3,8 @@
     "message": "Wallet Companion",
     "description": "Extension name"
   },
-  "extension_description": {
-    "message": "Ett tillägg för webbaserade digitala identitetsplånböcker. Möjliggör delning av intyg mellan webbläsare, plånboksväxling och sömlös kompatibilitet.",
+  "description": {
+    "message": "Tillägg för digitala identitetsplånböcker. Möjliggör delning, plånboksväxling och sömlös kompatibilitet.",
     "description": "Extension description"
   },
   "common_wallet_description": {
