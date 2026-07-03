@@ -1,39 +1,56 @@
-This extension polyfills the W3C Digital Credentials API to enable OpenID 4 Verifiable Presentations in Safari with *Web wallets*.
+Wallet Companion is a browser extension that acts as a support layer between web browsers and web-based digital identity wallets.
+It is designed to host multiple wallet-interoperability features over time.
 
-Source Code:
+In this initial beta phase, the extension implements a single feature: a polyfill of the [W3C Digital Credentials API](https://www.w3.org/TR/digital-credentials/) (navigator.credentials.get) using [OpenID for Verifiable Presentations (OpenID4VP)](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html) as the transport.
+When a verifier site requests digital credentials, the extension intercepts the request, shows the user a selector of their registered wallets, and routes the request to the chosen wallet.
+
+In Wallet Companion, the user can register the wallets they use, either directly in the extension's options page, or through a `window.WalletCompanion` API the extension exposes to web pages for compatible web wallets to call.
+Registration always requires an explicit user consent prompt.
+Registered wallets are stored locally; no stored data is sent to our servers.
+The extension communicates with the user's chosen wallet and the requesting verifier page, and requires no login or authentication.
+
+
+# Source Code:
+
 https://github.com/sirosfoundation/wallet-companion
 
-TypeScript source provided. Build uses Vite. No minification or obfuscation.
 
-Build Instructions:
+# Build Instructions:
 
 1. Install pnpm 10.4.0+ and Node.js 22+
 2. Run: pnpm install
 3. Run: pnpm build:safari
-4. Output is in `dist/safari/` and will be used in the `/Wallet Companion/` Xcode project.
+4. Output is in `dist/safari/` and will be used in the `Wallet Companion/Wallet Companion.xcodeproj` Xcode project.
 
 
-Testing with Mock Fixtures (Recommended):
+# Testing with Mock Fixtures (Recommended):
+
 The repository includes mock wallet and verifier pages for testing without external dependencies:
 
 1. Build and install the extension
-2. Start the test server: pnpm test:server (serves on http://localhost:3456)
-3. Open http://localhost:3456/mock-wallet.html, click "Register Wallet"
-4. Open http://localhost:3456/mock-verifier.html, click any test scenario (e.g., "Basic Identity")
+2. Start the test server: pnpm test:server (serves on http://127.0.0.1:3456)
+3. Open http://127.0.0.1:3456/mock-wallet.html, click "Register Wallet", and approve the consent prompt shown by the extension
+4. Open http://127.0.0.1:3456/mock-verifier.html, click any test scenario (e.g., "Basic Identity")
 5. The wallet selector modal should appear
 6. Select the mock wallet, approve in mock wallet, response returns to verifier
 
 
-Testing with Production Wallet:
+# Testing with Production Wallet:
 
-1. Build and install the extension
-2. Visit https://id.siros.org and sign in, wallet registers automatically
-3. Visit a verifier site that requests credentials (or use the mock verifier above)
-4. The wallet selector should show "SIROS ID"
-5. Selecting it opens SIROS ID to approve the request
+Note: testing with the production wallet today is limited to registering the wallet with Wallet Companion. We’re working on support for completing a full DC API flow in our wallet and verifier, like shown with the mock wallet and verifier above.
+
+1 Visit https://id.siros.org/id/dev-test-3 and sign up. You will need a passkey, either from OS or security key.
+2. Head to the "Settings" page, and scroll down to the "Wallet Companion (beta)" section, where you need to click "Register with Wallet Companion", and approve the consent popup.
+3. Now, in the Wallet Companion options page, you will see your wallet listed.
 
 
-Permissions Justification:
+# Permissions Justification:
 
-* storage: Store the user's registered wallet configurations
-* <all_urls>: Polyfill the DC API on all pages (verifiers can be any domain)
+- storage: Stores the user's registered wallet configurations and local usage counters (request/intercept counts).
+  This data is only stored locally, and not sent anywhere.
+
+- <all_urls> (host permission): The extension injects a content script at document_start on every page for two reasons, and a wallet or verifier can be hosted on any domain:
+
+  - Verifier support: it polyfills the W3C Digital Credentials API (`navigator.credentials.get`) so that any site requesting credentials works, and the polyfill must be in place before the page's own scripts run.
+
+  - Wallet registration: it exposes a `window.WalletCompanion` API that lets a web wallet register itself (name, URL, supported protocols) with the extension. Because wallets can live on any origin, this API must be available everywhere.
