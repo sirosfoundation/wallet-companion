@@ -321,14 +321,12 @@
 			buildPhases = (
 				A0444DEC2EE1CC4900E7155E /* Sources */,
 				A0444DED2EE1CC4900E7155E /* Frameworks */,
+				A05E81F92FF7F8B300C64A60 /* Copy Web Extension Resources */,
 				A0444DEE2EE1CC4900E7155E /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				A0AF8AB02FD6D0BC00D544C6 /* safari */,
 			);
 			name = "Wallet Companion Extension (iOS)";
 			packageProductDependencies = (
@@ -343,14 +341,12 @@
 			buildPhases = (
 				A0444DF62EE1CC4900E7155E /* Sources */,
 				A0444DF72EE1CC4900E7155E /* Frameworks */,
+				A05E81F82FF7F76F00C64A60 /* Copy Web Extension Resources */,
 				A0444DF82EE1CC4900E7155E /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				A0AF8AB02FD6D0BC00D544C6 /* safari */,
 			);
 			name = "Wallet Companion Extension (macOS)";
 			packageProductDependencies = (
@@ -450,6 +446,47 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A05E81F82FF7F76F00C64A60 /* Copy Web Extension Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Web Extension Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SOURCE_DIR=\"${SRCROOT}/../dist/safari\"\nDEST_DIR=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.appex/Contents/Resources\"\n\nrm -rf \"$DEST_DIR\"\nmkdir -p \"$DEST_DIR\"\n\ncp -R \"$SOURCE_DIR/\" \"$DEST_DIR/\"\n";
+		};
+		A05E81F92FF7F8B300C64A60 /* Copy Web Extension Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Web Extension Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SOURCE_DIR=\"${SRCROOT}/../dist/safari\"\nDEST_DIR=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.appex/Contents/Resources\"\n\nrm -rf \"$DEST_DIR\"\nmkdir -p \"$DEST_DIR\"\n\ncp -R \"$SOURCE_DIR/\" \"$DEST_DIR/\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A0444DCE2EE1CC4900E7155E /* Sources */ = {
@@ -666,6 +703,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Wallet Companion Extension";
@@ -699,6 +737,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Wallet Companion Extension";
@@ -821,6 +860,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
@@ -857,6 +897,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
