@@ -3,8 +3,8 @@
     "message": "Wallet Companion",
     "description": "Extension name"
   },
-  "extension_description": {
-    "message": "Um complemento para carteiras de identidade digital baseadas na web. Adiciona partilha de credenciais entre navegadores, alternância de carteiras e compatibilidade transparente.",
+  "description": {
+    "message": "Complemento para carteiras de identidade digital. Adiciona partilha, alternância e compatibilidade web.",
     "description": "Extension description"
   },
   "common_wallet_description": {

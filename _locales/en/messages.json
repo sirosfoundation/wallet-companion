@@ -3,8 +3,8 @@
     "message": "Wallet Companion",
     "description": "Extension name"
   },
-  "extension_description": {
-    "message": "A companion for supported web-based digital identity wallets. Adds cross-browser credential sharing, wallet switching, and seamless site compatibility.",
+  "description": {
+    "message": "Companion for web digital identity wallets. Adds cross-browser sharing, wallet switching and site compatibility.",
     "description": "Extension description"
   },
   "common_wallet_description": {
