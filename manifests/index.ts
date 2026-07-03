@@ -1,6 +1,6 @@
 import { BrowserManifest } from "./resources";
 
-const NAME = '__MSG_extension_name__';
+const NAME = '__MSG_name__';
 
 // ATTENTION: **DO NOT CHANGE ID**. Apple's AppStoreConnect does have a validator working during bundle upload.
 // It expects the web extension description key in the messages.json files to be named exactly "description" and nothing
