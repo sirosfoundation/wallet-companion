@@ -81,7 +81,7 @@ export const FIREFOX_MANIFEST = new BrowserManifest(({ entry, icons }) => ({
 	'browser_specific_settings': {
 		'gecko': {
 			'id': 'wallet-companion@siros.org',
-			'strict_min_version': '109.0'
+			'strict_min_version': '140.0'
 		}
 	}
 }));
