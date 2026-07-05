@@ -1,26 +1,29 @@
 /**
  * @fileoverview
  * Protocols supported by the extension and registered wallets.
+ * Re-exports protocol constants from @sirosfoundation/dc-api.
  */
+
+import {
+	OID4VP_PROTOCOLS,
+	OID4VP_ALL_PROTOCOLS,
+	isOID4VPProtocol,
+	type OID4VPProtocol,
+} from '@sirosfoundation/dc-api';
 
 /**
  * OpenID4VP protocol variants supported by the extension and wallets.
- * Wallets can support one or more of these variants, and the extension will
- * indicate which ones are supported when showing the wallet selector.
+ * Re-exported from @sirosfoundation/dc-api for backward compatibility.
  */
-export enum OpenID4VPProtocols {
-	NORMAL = 'openid4vp',
-	UNSIGNED = 'openid4vp-v1-unsigned',
-	SIGNED = 'openid4vp-v1-signed',
-	MULTISIGNED = 'openid4vp-v1-multisigned',
-}
+export const OpenID4VPProtocols = OID4VP_PROTOCOLS;
 
-export type Protocol = OpenID4VPProtocols;
+/** Type alias so `import type { OpenID4VPProtocols }` still resolves. */
+export type OpenID4VPProtocols = OID4VPProtocol;
+
+export type Protocol = OID4VPProtocol;
 
 export function protocolsToArray() {
-	return [...Object.values(OpenID4VPProtocols)];
+	return [...OID4VP_ALL_PROTOCOLS];
 }
 
-export function isProtocol(value: unknown): value is Protocol {
-	return protocolsToArray().includes(value as Protocol);
-}
+export const isProtocol = isOID4VPProtocol;
