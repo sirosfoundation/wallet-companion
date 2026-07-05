@@ -15,8 +15,8 @@ importers:
         specifier: 0.1.0-beta.4
         version: 0.1.0-beta.4
       '@sirosfoundation/dc-api':
-        specifier: github:sirosfoundation/dc-api#v0.1.0
-        version: https://codeload.github.com/sirosfoundation/dc-api/tar.gz/eea987df703d2b7f092dee9b8153e5a17dea72ac
+        specifier: ^0.2.0
+        version: 0.2.0
       '@sirosfoundation/wcc-types':
         specifier: workspace:^
         version: link:packages/wcc-types
@@ -986,9 +986,8 @@ packages:
   '@sirosfoundation/browser-log@0.1.0-beta.4':
     resolution: {integrity: sha512-trXcS7UhZuM8k6+652rVC5OAUeT8mxKeYIyPOG8uVlJPK+aRBU7scLrMnmNOsVU6QORUbe4cii1nys12EIjR8Q==}
 
-  '@sirosfoundation/dc-api@https://codeload.github.com/sirosfoundation/dc-api/tar.gz/eea987df703d2b7f092dee9b8153e5a17dea72ac':
-    resolution: {tarball: https://codeload.github.com/sirosfoundation/dc-api/tar.gz/eea987df703d2b7f092dee9b8153e5a17dea72ac}
-    version: 0.1.0
+  '@sirosfoundation/dc-api@0.2.0':
+    resolution: {integrity: sha512-NvSFZIMaRdhidjwaYR4ozMsDvcZcLH03CL0Ea6JqfXJFuIon22fdF1f/WlwpyRnLLp9SkLE5P7jKctiVmepgLA==}
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
@@ -3772,7 +3771,7 @@ snapshots:
 
   '@sirosfoundation/browser-log@0.1.0-beta.4': {}
 
-  '@sirosfoundation/dc-api@https://codeload.github.com/sirosfoundation/dc-api/tar.gz/eea987df703d2b7f092dee9b8153e5a17dea72ac': {}
+  '@sirosfoundation/dc-api@0.2.0': {}
 
   '@standard-schema/spec@1.1.0': {}
 
