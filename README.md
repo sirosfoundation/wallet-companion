@@ -250,6 +250,7 @@ See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md#contributing) for contribution wor
 - Discussions: [GitHub Discussions](https://github.com/sirosfoundation/wallet-companion/discussions)
 - Documentation: see links above
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/sirosfoundation/wallet-companion/badge)](https://scorecard.dev/viewer/?uri=github.com/sirosfoundation/wallet-companion)
 ## License
 
 BSD 2-Clause License - see [LICENSE](LICENSE) file for details.
