@@ -15,8 +15,8 @@ importers:
         specifier: 0.1.0-beta.4
         version: 0.1.0-beta.4
       '@sirosfoundation/dc-api':
-        specifier: ^0.2.0
-        version: 0.2.0
+        specifier: ^0.6.0
+        version: 0.6.0
       '@sirosfoundation/wcc-types':
         specifier: workspace:^
         version: link:packages/wcc-types
@@ -986,8 +986,8 @@ packages:
   '@sirosfoundation/browser-log@0.1.0-beta.4':
     resolution: {integrity: sha512-trXcS7UhZuM8k6+652rVC5OAUeT8mxKeYIyPOG8uVlJPK+aRBU7scLrMnmNOsVU6QORUbe4cii1nys12EIjR8Q==}
 
-  '@sirosfoundation/dc-api@0.2.0':
-    resolution: {integrity: sha512-NvSFZIMaRdhidjwaYR4ozMsDvcZcLH03CL0Ea6JqfXJFuIon22fdF1f/WlwpyRnLLp9SkLE5P7jKctiVmepgLA==}
+  '@sirosfoundation/dc-api@0.6.0':
+    resolution: {integrity: sha512-HsKOmwXKhOvYEzVxnJ2ASbgqbsBAOR7vN2OeCJcNypLeCl06ZV0jJlH3M0OIQL+UbccJaJSnCR7+l4cKo9+uHg==}
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
@@ -3771,7 +3771,7 @@ snapshots:
 
   '@sirosfoundation/browser-log@0.1.0-beta.4': {}
 
-  '@sirosfoundation/dc-api@0.2.0': {}
+  '@sirosfoundation/dc-api@0.6.0': {}
 
   '@standard-schema/spec@1.1.0': {}
 
