@@ -24,7 +24,7 @@ export type WalletOption = {
 
 export type ShowWalletSelectorOptions = {
 	wallets: WalletOption[];
-	onSelect: (wallet: WalletOption) => void;
+	onSelect: (wallet: WalletOption, popup: Window) => void;
 	onNative: () => void;
 	onCancel: () => void;
 };

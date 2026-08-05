@@ -78,7 +78,7 @@ export async function selectWalletModal(options: ShowWalletSelectorOptions): Pro
 
 function createWalletItem(
 	wallet: WalletOption,
-	onSelect: (w: WalletOption) => void,
+	onSelect: (w: WalletOption, popup: Window) => void,
 	dismiss: () => void,
 ): HTMLElement {
 	const { walletItem } = modalTemplate();
@@ -106,8 +106,13 @@ function createWalletItem(
 
 	item.addEventListener('click', (e) => {
 		e.stopPropagation();
+		const popup = window.open('about:blank', '_blank');
+		if (!popup) {
+			console.error('Failed to open wallet popup window');
+			return;
+		}
 		dismiss();
-		onSelect(wallet);
+		onSelect(wallet, popup);
 	});
 
 	return item;

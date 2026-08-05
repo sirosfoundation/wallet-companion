@@ -108,6 +108,15 @@ describe('DCGateway', () => {
 			).rejects.toThrow('Popup blocked');
 		});
 
+		it('should navigate a pre-opened popup instead of calling window.open', async () => {
+			const popup = { closed: false, location: { href: '' }, close: vi.fn() } as unknown as Window;
+
+			gateway.invoke(wallet, OpenID4VPProtocols.NORMAL, request, 'req-123', popup);
+
+			expect(window.open).not.toHaveBeenCalled();
+			expect(popup.location.href).toContain('wallet.example.com');
+		});
+
 		it('should reject on timeout', async () => {
 			vi.useFakeTimers();
 			const mockWindow = { closed: false } as Window;
