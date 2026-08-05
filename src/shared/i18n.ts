@@ -40,7 +40,7 @@ export async function initI18n(fetchMessagesFn: () => Promise<Messages>): Promis
 	if (initPromise) return initPromise;
 
 	initPromise = (async () => {
-		if (browserApi) {
+		if (browserApi?.i18n) {
 			storedMessages = await getAllMessages();
 		} else {
 			storedMessages = await fetchMessagesFn();
@@ -118,7 +118,7 @@ export function getMessageGroup<P extends string>(prefix: P) {
  * Intended for content script contexts where {@link browserApi} is available.
  */
 export async function getAllMessages(): Promise<Messages | null> {
-	if (!browserApi) throw new Error('No browserApi available');
+	if (!browserApi?.i18n) throw new Error('No browserApi.i18n available');
 
 	const lang = browserApi.i18n.getUILanguage()?.split('-')[0] ?? 'en';
 	const url = browserApi.runtime.getURL(`_locales/${lang}/messages.json`);
