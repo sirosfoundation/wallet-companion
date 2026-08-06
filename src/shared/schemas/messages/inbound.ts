@@ -39,6 +39,10 @@ export enum InboundMessages {
 	CONTENT_SCRIPT_READY = 'CONTENT_SCRIPT_READY',
 	FETCH_FAVICON = 'FETCH_FAVICON',
 	CLEAR_STATS = 'CLEAR_STATS',
+	/** Sign a WIA challenge with the extension attestation key (Phase G). */
+	SIGN_WIA_CHALLENGE = 'SIGN_WIA_CHALLENGE',
+	/** Get the extension attestation public key (Phase G). */
+	GET_ATTESTATION_KEY = 'GET_ATTESTATION_KEY',
 }
 
 export type ShowWalletSelectorMessage = InferOutput<typeof ShowWalletSelector.MESSAGE>;
@@ -204,6 +208,30 @@ export const ClearStats = defineMessage(
 	},
 );
 
+export type SignWiaChallengeMessage = InferOutput<typeof SignWiaChallenge.MESSAGE>;
+export type SignWiaChallengeResponse = InferOutput<typeof SignWiaChallenge.RESPONSE>;
+export const SignWiaChallenge = defineMessage(
+	literal(InboundMessages.SIGN_WIA_CHALLENGE),
+	{
+		challenge: string(),
+	},
+	{
+		jws: optional(string()),
+		error: optional(string()),
+	},
+);
+
+export type GetAttestationKeyMessage = InferOutput<typeof GetAttestationKey.MESSAGE>;
+export type GetAttestationKeyResponse = InferOutput<typeof GetAttestationKey.RESPONSE>;
+export const GetAttestationKey = defineMessage(
+	literal(InboundMessages.GET_ATTESTATION_KEY),
+	{},
+	{
+		kid: optional(string()),
+		publicKeyJwk: optional(unknown()),
+	},
+);
+
 const registry = {
 	[InboundMessages.SHOW_WALLET_SELECTOR]: ShowWalletSelector,
 	[InboundMessages.WALLET_SELECTED]: WalletSelected,
@@ -218,6 +246,8 @@ const registry = {
 	[InboundMessages.CONTENT_SCRIPT_READY]: ContentScriptReady,
 	[InboundMessages.FETCH_FAVICON]: FetchFavicon,
 	[InboundMessages.CLEAR_STATS]: ClearStats,
+	[InboundMessages.SIGN_WIA_CHALLENGE]: SignWiaChallenge,
+	[InboundMessages.GET_ATTESTATION_KEY]: GetAttestationKey,
 };
 
 export const InboundMessageSchema = variant(
