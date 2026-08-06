@@ -1,5 +1,15 @@
 # @sirosfoundation/wallet-companion
 
+## 0.1.0-beta.7
+
+### Patch Changes
+
+- [#111](https://github.com/sirosfoundation/wallet-companion/pull/111) [`98169e8`](https://github.com/sirosfoundation/wallet-companion/commit/98169e8949d8411de4d33d56de0a05339bcf243b) Thanks [@smncd](https://github.com/smncd)! - remove old and broken types
+
+- [#110](https://github.com/sirosfoundation/wallet-companion/pull/110) [`5fc6354`](https://github.com/sirosfoundation/wallet-companion/commit/5fc63545e31c7b1b05a1874a6ac06ac495bd2500) Thanks [@smncd](https://github.com/smncd)! - fix: safari blocking wallet tab from opening
+
+- [#109](https://github.com/sirosfoundation/wallet-companion/pull/109) [`4faf875`](https://github.com/sirosfoundation/wallet-companion/commit/4faf875291de2b7a551a695897366f1c02534718) Thanks [@smncd](https://github.com/smncd)! - fix: make sure `browserApi.i18n` is present, rather than just checking for `browserApi`
+
 ## 0.1.0-beta.6
 
 ### Patch Changes
