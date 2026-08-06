@@ -104,6 +104,7 @@ navigator.credentials.get = async (options?: CredentialRequestOptions & DigitalI
 		selection.protocol,
 		selection.request,
 		requestId,
+		selection.popup,
 	);
 
 	// return credential for verifier to validate.
@@ -129,6 +130,7 @@ export type WalletSelection = {
 	wallet: WalletOption;
 	protocol: Protocol;
 	request: PreparedRequest<unknown>;
+	popup?: Window;
 	useNative?: boolean;
 };
 
@@ -144,7 +146,7 @@ async function showWalletSelector(
 	return new Promise((resolve) => {
 		selectWalletModal({
 			wallets,
-			onSelect(wallet: WalletOption) {
+			onSelect(wallet: WalletOption, popup: Window) {
 				const selectedRequest =
 					requests
 						.filter((req) => req !== null)
@@ -154,6 +156,7 @@ async function showWalletSelector(
 					wallet,
 					protocol: selectedRequest.protocol,
 					request: selectedRequest,
+					popup,
 				});
 			},
 			onNative() {

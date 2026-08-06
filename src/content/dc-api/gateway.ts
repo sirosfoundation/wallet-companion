@@ -80,19 +80,25 @@ export class DCGateway {
 		protocol: Protocol,
 		request: PreparedRequest<unknown>,
 		requestId: string,
+		popup?: Window | null,
 	): Promise<unknown> {
 		return new Promise((resolve, reject) => {
 			const url = this.#buildWalletUrl(wallet, protocol, request, requestId);
 
 			const timer = setTimeout(() => {
 				this.#pending.delete(requestId);
+				popup?.close();
 				reject(new DOMException('Wallet timeout', 'AbortError'));
 			}, 300000);
 
-			const win = window.open(url, '_blank');
+			const win = popup ?? window.open(url, '_blank');
 			if (!win) {
 				clearTimeout(timer);
 				return reject(new Error('Popup blocked'));
+			}
+
+			if (popup) {
+				popup.location.href = url;
 			}
 
 			this.#pending.set(requestId, {
