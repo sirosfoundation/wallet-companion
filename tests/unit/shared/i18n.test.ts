@@ -231,11 +231,11 @@ describe('getAllMessages', () => {
 		vi.unstubAllGlobals();
 	});
 
-	it('throws when browserApi is not available', async () => {
+	it('throws when browserApi.i18n is not available', async () => {
 		vi.doMock('@shared/browser-api', () => ({ browserApi: null }));
 
 		const { getAllMessages } = await import('@shared/i18n');
 
-		await expect(getAllMessages()).rejects.toThrow('No browserApi available');
+		await expect(getAllMessages()).rejects.toThrow('No browserApi.i18n available');
 	});
 });
